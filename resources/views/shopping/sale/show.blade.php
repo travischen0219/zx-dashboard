@@ -4,7 +4,7 @@
 
 @section('css')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<link href="{{asset('assets/global/plugins/datatables/datatables.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{asset('assets/global/plugins/datatables/datatables.min.css?20190514')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet" type="text/css" />
 <!-- END PAGE LEVEL PLUGINS -->
@@ -28,7 +28,7 @@
         color:#fff;
         background-color: #8781d2;
     }
-    #sample_3_filter input { 
+    #sample_3_filter input {
         width:300px !important;
     }
 
@@ -43,7 +43,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -52,7 +52,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -84,15 +84,15 @@
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="search_lot_number" id="search_lot_number">
                         </div>
-                    </div> 
+                    </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn" style="background-color: #8781d2;color:#fff;font-size: 16px;">搜 尋</button>
                     </div>
                 </div>
             </div>
         </div>
-    </form> 
-    
+    </form>
+
     <div class="col-md-12">
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet light">
@@ -104,8 +104,8 @@
                 <div class="tools"> </div>
             </div>
 
-            
-                
+
+
             <div class="portlet-body">
                 <table class="table table-striped table-bordered table-hover" id="sample_3" >
                     <thead>
@@ -122,18 +122,18 @@
                             <th>操 作</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                          @foreach($sales as $sale)
 
                             <tr>
-                                
-                                <td>S{{$sale->sale_no}}</td>  
+
+                                <td>S{{$sale->sale_no}}</td>
                                 <td>
                                     <a class=" btn yellow btn-outline sbold" href="/discount.php?id={{$sale->id}}" data-target="#ajax" data-toggle="modal"> 輸入折扣 </a>
                                     <a href="/pdf/sale.php?id={{$sale->id}}" target="_blank" class="btn blue btn-outline btn-sm">列印</a>
-                                </td>                          
-                                <td>{{$sale->lot_number}}</td>                            
+                                </td>
+                                <td>{{$sale->lot_number}}</td>
                                 <td>{{$sale->customer_name->shortName}}</td>
                                 <td>{{$sale->createDate}}</td>
                                 <td>{{$sale->expireDate}}</td>
@@ -142,14 +142,14 @@
                                     @if($sale->status == '1')
                                         {{-- @if($sale->status_exchange == 1 || $sale->status_exchange == 2)
                                             <span style="color:red">新訂單<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                                document.getElementById('search-exchange-form-{{$sale->id}}').submit();"> (換貨)</a></span>  
+                                                document.getElementById('search-exchange-form-{{$sale->id}}').submit();"> (換貨)</a></span>
                                                 <form id="search-exchange-form-{{$sale->id}}" action="{{ route('s_exchange.search_exchange') }}" method="post" style="display:none">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="sale_id" value="{{$sale->id}}">
-                                                </form> 
+                                                </form>
                                         @elseif($sale->status_return == 1 || $sale->status_return == 2)
                                             <span style="color:red">新訂單<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                                document.getElementById('search-form-{{$sale->id}}').submit();"> (退貨)</a></span>  
+                                                document.getElementById('search-form-{{$sale->id}}').submit();"> (退貨)</a></span>
                                                 <form id="search-form-{{$sale->id}}" action="{{ route('s_sales_return.search_return') }}" method="post" style="display:none">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="sale_id" value="{{$sale->id}}">
@@ -161,14 +161,14 @@
                                     @elseif($sale->status == '2')
                                         {{-- @if($sale->status_exchange == 1 || $sale->status_exchange == 2)
                                             <span style="color:#">新報價<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                                document.getElementById('search-exchange-form-{{$sale->id}}').submit();"> (換貨)</a></span>  
+                                                document.getElementById('search-exchange-form-{{$sale->id}}').submit();"> (換貨)</a></span>
                                                 <form id="search-exchange-form-{{$sale->id}}" action="{{ route('s_exchange.search_exchange') }}" method="post" style="display:none">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="sale_id" value="{{$sale->id}}">
-                                                </form> 
+                                                </form>
                                         @elseif($sale->status_return == 1 || $sale->status_return == 2)
                                             <span style="color:red">新報價<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                                document.getElementById('search-form-{{$sale->id}}').submit();"> (退貨)</a></span>  
+                                                document.getElementById('search-form-{{$sale->id}}').submit();"> (退貨)</a></span>
                                                 <form id="search-form-{{$sale->id}}" action="{{ route('s_sales_return.search_return') }}" method="post" style="display:none">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="sale_id" value="{{$sale->id}}">
@@ -180,14 +180,14 @@
                                     @elseif($sale->status == '3')
                                         @if($sale->status_exchange == 1 || $sale->status_exchange == 2)
                                             <span style="color:blue">已完成<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                                document.getElementById('search-exchange-form-{{$sale->id}}').submit();"> (換貨)</a></span>  
+                                                document.getElementById('search-exchange-form-{{$sale->id}}').submit();"> (換貨)</a></span>
                                                 <form id="search-exchange-form-{{$sale->id}}" action="{{ route('s_exchange.search_exchange') }}" method="post" style="display:none">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="sale_id" value="{{$sale->id}}">
-                                                </form> 
+                                                </form>
                                         @elseif($sale->status_return == 1 || $sale->status_return == 2)
                                             <span style="color:blue">已完成<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                                document.getElementById('search-form-{{$sale->id}}').submit();"> (退貨)</a></span>  
+                                                document.getElementById('search-form-{{$sale->id}}').submit();"> (退貨)</a></span>
                                                 <form id="search-form-{{$sale->id}}" action="{{ route('s_sales_return.search_return') }}" method="post" style="display:none">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="sale_id" value="{{$sale->id}}">
@@ -196,7 +196,7 @@
                                             <span style="color:blue">已完成</span>
                                         @endif
                                     @elseif($sale->status == '4')
-                                        
+
                                         <span style="color:#ACB5C3">取消</span>
 
                                     @endif
@@ -208,11 +208,11 @@
                                     @elseif($sale->status == 3 || $sale->status == 4)
                                         <a href="{{ route('sale.show', $sale->id) }}" class="btn purple btn-outline btn-sm">查看</a>
                                     @endif
-                                    
+
                                 </td>
                             </tr>
 
-                        @endforeach 
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -226,7 +226,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                
+
                 <span> &nbsp;&nbsp;Loading... </span>
             </div>
         </div>
@@ -248,20 +248,20 @@
 <script>
 function pdfsubmit()
 {
-           
+
             var chkArray = [];
-          
+
             $(".print_pdf:checked").each(function() {
                 chkArray.push($(this).val());
             });
-            
+
             /* we join the array separated by the comma */
             var selected;
             selected = chkArray.join(',');
             openInNewTab("/pdf/sale.php?id="+selected);
-            
-        
-    
+
+
+
 }
 
 function openInNewTab(url) {
