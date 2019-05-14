@@ -12,7 +12,7 @@
         <meta content="Preview page of Metronic Admin Theme #1 for " name="description" />
         <meta content="" name="author" />
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
         <link href="{{asset('assets/global/plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('assets/global/plugins/simple-line-icons/simple-line-icons.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('assets/global/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
@@ -35,7 +35,7 @@
         <link href="{{asset('assets/layouts/layout/css/themes/darkblue.css')}}" rel="stylesheet" type="text/css" id="style_color" />
         <link href="{{asset('assets/layouts/layout/css/custom.css')}}" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> 
+        <link rel="shortcut icon" href="favicon.ico" />
 
         <style>
         a{
@@ -68,14 +68,14 @@
         <!-- END LOGO -->
         <!-- BEGIN LOGIN -->
         <div class="content">
-            
+
             <div class="portlet box" >
-                  
+
                 <div class="portlet-body">
                     <h3> 登 入</h3>
 
-                    @include('includes.messages')          
-                    
+                    @include('includes.messages')
+
                     <div class="tabbable-line" >
                         <ul class="nav nav-tabs ">
                             <li class="active">
@@ -84,7 +84,7 @@
                            <!-- <li>
                                 <a href="#tab_15_2" data-toggle="tab" id="user_name"> 帳號 </a>
                             </li>-->
-                           
+
                         </ul>
                         <div class="tab-content" >
                             <div class="tab-pane active" id="tab_15_1">
@@ -93,8 +93,8 @@
                                     {{ csrf_field() }}
                                     <input type="hidden" name="setType" value="name">
                                     <input type="hidden" name="sendCode">
-                                    
-                                 
+
+
                                     <div class="form-group">
 
                                         <label class="control-label visible-ie8 visible-ie9">帳號</label>
@@ -102,27 +102,27 @@
                                     <div class="form-group">
                                         <label class="control-label visible-ie8 visible-ie9">密碼</label>
                                         <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="密碼" name="password" /> </div>
-                                
+
                                 </form>
-                                
+
                                 <!-- END LOGIN FORM -->
                             </div>
                             <div class="tab-pane" id="tab_15_2">
                                 <!-- BEGIN LOGIN FORM -->
-                               
 
-                                <form class="login-form" action="{{ route('login') }}" method="post" id="code_form"> 
+
+                                <form class="login-form" action="{{ route('login') }}" method="post" id="code_form">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="setType" value="code">
                                     <input type="hidden" name="sendCode">
-                                   
+
                                     <div class="form-group">
                                         <label class="control-label visible-ie8 visible-ie9">員工編號</label>
                                         <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="員工編號" name="usercode" /> </div>
                                     <div class="form-group">
                                         <label class="control-label visible-ie8 visible-ie9">密碼</label>
                                         <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="密碼" name="password" /> </div>
-                                
+
                                 </form>
                                 <!-- END LOGIN FORM -->
                             </div>
@@ -144,21 +144,21 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
-                        
 
 
-            
- 
+
+
+
 
         </div>
         {{--  <div class="copyright"> 2018 © . </div>  --}}
         <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
-<script src="../assets/global/plugins/excanvas.min.js"></script> 
-<script src="../assets/global/plugins/ie8.fix.min.js"></script> 
+<script src="../assets/global/plugins/excanvas.min.js"></script>
+<script src="../assets/global/plugins/ie8.fix.min.js"></script>
 <![endif]-->
         <!-- BEGIN CORE PLUGINS -->
         <script src="{{asset('assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
@@ -214,7 +214,7 @@
                 if(send_type == 'code'){
                     document.getElementById('name_form').submit();
                 } else if(send_type == 'name'){
-                    document.getElementById('name_form').submit();                    
+                    document.getElementById('name_form').submit();
                 }
             }
         </script>
