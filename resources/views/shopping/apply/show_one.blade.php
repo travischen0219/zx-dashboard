@@ -1,0 +1,367 @@
+@extends('layouts.app')
+
+@section('title','申請出庫')
+
+@section('css')
+<link href="{{asset('assets/global/plugins/jquery-ui/jquery-ui.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{asset('assets/apps/css/magnific-popup.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
+
+<style>
+    /* 初始label顏色 */
+    .form-group.form-md-line-input.form-md-floating-label .form-control ~ label {
+        color: #248ff1; }
+    /* help-block顏色 */
+    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .help-block, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .help-block {
+        color: #248ff1;}
+    /* focus後的label顏色 */
+    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label,
+    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label,
+    .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus {
+        color: #248ff1; }
+    /* focus後的底線顏色 */
+    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label:after,
+    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label:after,
+    .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
+        background: #248ff1; }
+
+    
+
+    .form-group.form-md-line-input .form-control::-moz-placeholder {
+        color: #248ff1;}
+    .form-group.form-md-line-input .form-control:-ms-input-placeholder {
+        color: #248ff1; }
+    .form-group.form-md-line-input .form-control::-webkit-input-placeholder {
+        color: #248ff1; }
+
+    .form-horizontal .form-group.form-md-line-input > label {
+        color: #248ff1; }
+
+    html input[readonly]{
+        cursor: not-allowed;
+    }
+
+</style>
+
+
+@endsection
+
+@section('page_header')
+<!-- BEGIN PAGE HEADER-->
+
+<!-- BEGIN PAGE BAR -->
+<div class="page-bar">
+
+    <!-- BEGIN THEME PANEL -->
+    @include('layouts.theme_panel')    
+    <!-- END THEME PANEL -->
+
+
+    <!-- BEGIN PAGE TITLE-->
+    <h1 class="page-title"> 申請出庫
+        <small></small>
+    </h1>
+    <!-- END PAGE TITLE-->
+    
+</div>
+<!-- END PAGE BAR -->
+
+<!-- END PAGE HEADER-->
+@endsection
+
+@section('content')
+
+<div class="row">
+
+    <div class="col-md-12 ">
+        <!-- BEGIN SAMPLE FORM PORTLET-->
+        <div class="portlet light">
+            @include('includes.messages')
+
+            <div class="portlet-body form">
+                                                            
+                    
+                    <div class="form-body">
+
+                        <div class="col-md-12" style="height:90px;">
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input" >
+                                    <input type="text" name="lot_number" class="form-control" id="lot_number" value="{{ $apply->lot_number }}" disabled>
+                                    <label for="lot_number" style="color:#248ff1;">批號</label>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
+                                客戶名稱 : 
+                                <button type="button" class="btn blue">{{ $apply->customer_name->code.' '.$apply->customer_name->shortName}}</button>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input" >
+                                    @if($apply->sale_no == '')
+                                        <input type="text" name="sale_no" class="form-control" id="sale_no" value="" disabled>  
+                                    @elseif($apply->sale_no != '')
+                                        <input type="text" name="sale_no" class="form-control" id="sale_no" value="S{{ $apply->sale_no }}" disabled>
+                                    @endif
+                                    <label for="sale_no" style="color:#248ff1;">銷貨單號</label>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
+                                狀態 : <span style="color:blue">已通過</span> 
+                            </div>
+
+
+                            
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input" >
+                                    <input type="text" name="applyDate" class="form-control" id="datepicker01" value="{{ $apply->applyDate }}" {{ $apply->status == 2 ? 'disabled' : ''}}>
+                                    <label for="datepicker01" style="color:#248ff1;">申請日期 (YYYY-MM-DD)</label>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input" >
+                                    <input type="text" name="expireDate" class="form-control" id="datepicker02" value="{{ $apply->expireDate }}" {{ $apply->status == 2 ? 'disabled' : ''}}>
+                                    <label for="datepicker02" style="color:#248ff1;">有效期限 (YYYY-MM-DD)</label>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input" >
+                                    <input type="text" name="receiveDate" class="form-control" id="datepicker03" value="{{ $apply->receiveDate }}" {{ $apply->status == 2 ? 'disabled' : ''}}>
+                                    <label for="datepicker03" style="color:#248ff1;">通過日期 (YYYY-MM-DD)</label>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
+                                申請出庫單號 : <span style="color:#000">A{{$apply->apply_no}}</span> 
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group form-md-line-input">
+                                    <textarea class="form-control" rows="3" name="memo" id="memo" {{ $apply->status == 2 ? 'disabled' : ''}}>{{ $apply->memo }}</textarea>
+                                    <label for="memo" style="color:#248ff1;font-size: 16px;">備註</label>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption font-dark" style="">
+                                        <span class="caption-subject"> 物料清單</span>
+                                    </div>
+                                    <div class="tools"> </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div style="margin-left:7px;margin-bottom: 10px;">
+                                                                            
+                                    </div>
+                                    
+                                    <div class="table-responsive">
+                                        <table id="materialTable" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="10%"> 操作 </th>
+                                                    <th width="30%"> 物料 </th>
+                                                    <th width="10%"> 單位 </th>
+                                                    <th width="10%"> 倉儲 </th>
+                                                    <th width="10%"> 出庫數量 </th>
+                                                    <th width="10%"> 單位售價 </th>
+                                                    <th width="10%"> 小計 </th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {!! $data !!}
+                                                
+                                            </tbody>
+                                        </table>
+                                        <hr>
+                                        <div class="text-right">總計：<span id="materialTotal">0</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END EXAMPLE TABLE PORTLET-->
+                        </div>
+
+                        {{-- file upload start --}}
+                        <div class="col-md-12">                                        
+                            <div style="border: #248ff1 solid 2px;width:100%;height: 400px;">
+                                <div class="col-md-12">
+                                    <p style="font-size:18px;margin-top:18px;margin-left:20px;color:#248ff1;">檔案</p>
+                                    <hr>
+                                </div>  
+                                @if($apply->file_1 >0 || $apply->file_2 >0 ||$apply->file_3 >0)                                
+                                    @if($apply->file_1 >0)
+                                        <div class="col-md-4">
+                                            <div class="thumbnail" style="width:180px;">
+                                                @if($apply->image_1->thumb_name == "file_image.jpg")
+                                                    <img src="{{asset('assets/apps/img/'.$apply->image_1->thumb_name)}}" alt="{{$apply->image_1->name}}">
+                                                @else
+                                                    <img src="{{asset('upload/'.$apply->image_1->thumb_name)}}" alt="{{$apply->image_1->name}}">
+                                                @endif
+                                                <div class="caption">
+                                                    <h4 class="image_name">{{$apply->image_1->name}}</h4>
+                                                    <p style="margin-top:6px;">
+                                                        @if($apply->image_1->thumb_name != "file_image.jpg")
+                                                            <a href="javascript:show_image('{{asset('upload/'.$apply->image_1->file_name)}}');" class="btn btn-primary btn-sm" role="button">預覽</a> 
+                                                        @endif
+                                                        <a href="{{ url('settings/file_download',$apply->image_1->id) }}" class="btn btn-default btn-sm" role="button" download>下載</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if($apply->file_2 >0)
+                                        <div class="col-md-4">
+                                            <div class="thumbnail" style="width:180px;">
+                                                @if($apply->image_2->thumb_name == "file_image.jpg")
+                                                    <img src="{{asset('assets/apps/img/'.$apply->image_2->thumb_name)}}" alt="{{$apply->image_2->name}}">
+                                                @else
+                                                    <img src="{{asset('upload/'.$apply->image_2->thumb_name)}}" alt="{{$apply->image_2->name}}">
+                                                @endif
+                                                <div class="caption">
+                                                    <h4 class="image_name">{{$apply->image_2->name}}</h4>
+                                                    <p style="margin-top:6px;">
+                                                        @if($apply->image_2->thumb_name != "file_image.jpg")
+                                                            <a href="javascript:show_image('{{asset('upload/'.$apply->image_2->file_name)}}');" class="btn btn-primary btn-sm" role="button">預覽</a> 
+                                                        @endif
+                                                        <a href="{{ url('settings/file_download',$apply->image_2->id) }}" class="btn btn-default btn-sm" role="button" download>下載</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if($apply->file_3 >0)
+                                        <div class="col-md-4">
+                                            <div class="thumbnail" style="width:180px;">
+                                                @if($apply->image_3->thumb_name == "file_image.jpg")
+                                                    <img src="{{asset('assets/apps/img/'.$apply->image_3->thumb_name)}}" alt="{{$apply->image_3->name}}">
+                                                @else
+                                                    <img src="{{asset('upload/'.$apply->image_3->thumb_name)}}" alt="{{$apply->image_3->name}}">
+                                                @endif
+                                                <div class="caption">
+                                                    <h4 class="image_name">{{$apply->image_3->name}}</h4>
+                                                    <p style="margin-top:6px;">
+                                                        @if($apply->image_3->thumb_name != "file_image.jpg")
+                                                            <a href="javascript:show_image('{{asset('upload/'.$apply->image_3->file_name)}}');" class="btn btn-primary btn-sm" role="button">預覽</a> 
+                                                        @endif
+                                                        <a href="{{ url('settings/file_download',$apply->image_3->id) }}" class="btn btn-default btn-sm" role="button" download>下載</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @else
+                                    <p style="margin-left:20px;font-size: 18px;">無上傳檔案</p>
+                                @endif
+
+                            </div>
+                        </div>
+                        {{-- file upload end --}}
+
+                        <div class="col-md-12" style="margin-top:10px;">
+                            <div class="well">
+                                <span>最後修改人員 : {{ $updated_user->fullname }} @if($updated_user->delete_flag != 0) <span style="color:red;">(該人員已刪除)</span> @endif</span><br>
+                                <span>最後修改時間 : {{ $apply->updated_at }}</span>
+                            </div>
+                        </div>
+
+                    
+                        <div class="col-md-12">        
+                            <div class="form-actions noborder">
+                                <a href="{{ route('apply_out_stock.index') }}" class="btn blue"><i class="fa fa-reply"></i> 返 回</a>   
+                            </div>
+                        </div>
+                    </div>
+                    
+
+            </div>
+        </div>
+        <!-- END SAMPLE FORM PORTLET-->
+    </div>
+</div>
+
+@endsection
+
+
+@section('scripts')
+<script src="{{asset('assets/global/plugins/jquery-ui/jquery-ui.js')}}" type="text/javascript"></script>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="{{asset('assets/global/scripts/datatable.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/global/plugins/datatables/datatables.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js')}}" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="{{asset('assets/pages/scripts/table-datatables-buttons.js')}}" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script src="{{asset('assets/apps/scripts/jquery.magnific-popup.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/pages/scripts/ui-sweetalert.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
+
+<script>
+
+$( function() {
+    $( "#datepicker01" ).datepicker();
+    $( "#datepicker01" ).datepicker('option', "dateFormat", "yy-mm-dd");
+    $( "#datepicker01" ).datepicker('option', 'firstDay', 1);
+    $( "#datepicker01" ).datepicker('setDate', "{{ $apply->applyDate }}");
+    
+    $( "#datepicker02" ).datepicker();
+    $( "#datepicker02" ).datepicker('option', "dateFormat", "yy-mm-dd");
+    $( "#datepicker02" ).datepicker('option', 'firstDay', 1);
+    $( "#datepicker02" ).datepicker('setDate', "{{ $apply->expireDate }}");
+    
+    $( "#datepicker03" ).datepicker();
+    $( "#datepicker03" ).datepicker('option', "dateFormat", "yy-mm-dd");
+    $( "#datepicker03" ).datepicker('option', 'firstDay', 1);
+    $( "#datepicker03" ).datepicker('setDate', "{{ $apply->receiveDate }}");    
+});
+
+
+function total() {
+    var total = 0;
+    $(".materialRow").each(function(index, el) {
+        
+        var subAmount = $(this).find(".materialAmount").val();
+        var subPrice = $(this).find(".materialPrice").val();
+
+        
+        total += subAmount * subPrice;
+        $(this).find(".materialPriceSubTotal_show").html(subAmount * subPrice);
+            
+    });
+    $("#materialTotal").html(total);
+}
+
+$(function() {
+    total();
+});
+
+
+
+function show_image(path) {
+    $.magnificPopup.open({
+        showCloseBtn : false, 
+        enableEscapeKey : false,
+        closeOnBgClick: true, 
+        fixedContentPos: false,
+        modal:false,
+        type:'image',
+        items:{src: path}
+    });
+}
+</script>
+@endsection

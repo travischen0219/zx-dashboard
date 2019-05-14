@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>基本設定</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link href="resources/css/jquery-ui-themes.css" type="text/css" rel="stylesheet"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/基本設定/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-1.7.1.min.js"></script>
+    <script src="resources/scripts/jquery-ui-1.8.10.custom.min.js"></script>
+    <script src="resources/scripts/prototypePre.js"></script>
+    <script src="data/document.js"></script>
+    <script src="resources/scripts/prototypePost.js"></script>
+    <script src="files/基本設定/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (Paragraph) -->
+      <div id="u0" class="ax_default paragraph">
+        <img id="u0_img" class="img " src="images/基本設定/u0.png"/>
+        <!-- Unnamed () -->
+        <div id="u1" class="text">
+          <p><span style="font-family:'ArialMT', 'Arial';"><br></span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">在每個 </span><span style="font-family:'ArialMT', 'Arial';">table&nbsp; </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">裡</span><span style="font-family:'ArialMT', 'Arial';"> </span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';"><br></span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">是否每個</span><span style="font-family:'ArialMT', 'Arial';">table </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">要有</span><span style="font-family:'ArialMT', 'Arial';"> </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">新增</span><span style="font-family:'ArialMT', 'Arial';">/</span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">修改/刪除</span><span style="font-family:'ArialMT', 'Arial';">&nbsp; </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">的日期時間和人員</span><span style="font-family:'ArialMT', 'Arial';">&nbsp; </span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';"><br></span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">在程式裡有寫入到資料庫</span><span style="font-family:'ArialMT', 'Arial';"> </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">的動作：</span><span style="font-family:'ArialMT', 'Arial';"></span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">1.如果是新增</span><span style="font-family:'ArialMT', 'Arial';">&nbsp;&nbsp; </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">寫入資料</span><span style="font-family:'ArialMT', 'Arial';"> created_at </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">,&nbsp; </span><span style="font-family:'ArialMT', 'Arial';">created_user&nbsp;&nbsp; , delete_flag = 0 (tinyint)</span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">2.如果是修改</span><span style="font-family:'ArialMT', 'Arial';">&nbsp; </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">寫入資料</span><span style="font-family:'ArialMT', 'Arial';"> updated_at , updated_user </span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">3.如是是刪除</span><span style="font-family:'ArialMT', 'Arial';">&nbsp; </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">寫入資料 </span><span style="font-family:'ArialMT', 'Arial';">delete_flag = 1&nbsp;&nbsp; delete_at&nbsp; </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">, </span><span style="font-family:'ArialMT', 'Arial';">&nbsp; delate_user&nbsp; </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">（主要目的是更改 flag 不直接上傳資料 ）</span><span style="font-family:'ArialMT', 'Arial';"></span></p><p><span style="font-family:'ArialMT', 'Arial';"><br></span></p><p><span style="font-family:'ArialMT', 'Arial';">created_at&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; updated_at&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; created_user&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; updated_user&nbsp;&nbsp; delete_flag&nbsp; &nbsp; delete_at&nbsp; &nbsp; delate_user</span></p><p><span style="font-family:'ArialMT', 'Arial';">2018-03-10 23:00:00&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2018-03-10 23:00:00&nbsp; &nbsp; &nbsp; &nbsp; A123456&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; A258476&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 0&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; none&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; none</span></p><p><span style="font-family:'ArialMT', 'Arial';"><br></span></p><p><span style="font-family:'ArialMT', 'Arial';"><br></span></p><p><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">在每個列表裡 select 增加&nbsp; </span><span style="font-family:'ArialMT', 'Arial';">delete_flag = 0 </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">判斷</span><span style="font-family:'ArialMT', 'Arial';">&nbsp; </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">（</span><span style="font-family:'ArialMT', 'Arial';"> </span><span style="font-family:'PingFangTC-Regular', 'PingFang TC';">已經刪除的資料就不要顯示 ）</span><span style="font-family:'ArialMT', 'Arial';"></span></p><p><span style="font-family:'ArialMT', 'Arial';"><br></span></p><p><span style="font-family:'ArialMT', 'Arial';"><br></span></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
