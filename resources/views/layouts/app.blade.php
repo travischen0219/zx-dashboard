@@ -42,7 +42,7 @@
         @yield('css')
     <!-- END HEAD -->
     </head>
-    
+
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
 
         <div class="page-wrapper">
@@ -72,13 +72,13 @@
                         <!-- END PAGE HEADER-->
 
                         @yield('content')
-                        
+
                     </div>
                     <!-- END CONTENT BODY -->
                 </div>
                 <!-- END CONTENT -->
 
-                
+
             </div>
             <!-- END CONTAINER -->
 
@@ -90,8 +90,8 @@
 
         <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
-<script src="../assets/global/plugins/excanvas.min.js"></script> 
-<script src="../assets/global/plugins/ie8.fix.min.js"></script> 
+<script src="../assets/global/plugins/excanvas.min.js"></script>
+<script src="../assets/global/plugins/ie8.fix.min.js"></script>
 <![endif]-->
         <!-- BEGIN CORE PLUGINS -->
         <script src="{{asset('assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
@@ -123,7 +123,7 @@
         <script src="{{asset('assets/global/plugins/flot/jquery.flot.categories.min.js')}}" type="text/javascript"></script>
         <script src="{{asset('assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js')}}" type="text/javascript"></script>
 
-        
+
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="{{asset('assets/global/scripts/app.min.js')}}" type="text/javascript"></script>
@@ -141,7 +141,7 @@
         @yield('scripts')
 
         <script>
-            
+
         </script>
     </body>
 
