@@ -1,16 +1,10 @@
 <?php
-header("Cache-control: private");
-$con = @mysqli_connect('localhost', 'root', 'acc7996acc', 'db_account');
-
-if (!$con) {
-    echo "Error: " . mysqli_connect_error();
-	exit();
-}
+require_once(__DIR__ . '/con.php');
 
 $_iid=$_REQUEST["id"];
 $_id=explode(",",$_REQUEST["id"]);
 
-require_once('chinese-unicode.php'); 
+require_once('chinese-unicode.php');
 require_once ('fpdi.php');
 
 // initiate FPDI210 � 297
@@ -89,7 +83,7 @@ for($key = $_inikey; $key <= $_keycheck_last; $key++)
 $j=$key+1;
 
 $sql = "SELECT * from materials WHERE id='".$_materials["material"][$key]."'";
-mysqli_query($con,"SET NAMES 'utf8'"); 
+mysqli_query($con,"SET NAMES 'utf8'");
 $query 	= mysqli_query($con, $sql);
 $row_m = mysqli_fetch_array($query);
 
@@ -100,7 +94,7 @@ $row_u = mysqli_fetch_array($query);
 if($_materials["material"][$key] > 0 )
 {
 		//�
-		
+
 
 		$pdf->SetFont('Big5','',12);
 		$pdf->SetXY(14, $yy);
@@ -130,7 +124,7 @@ if($_materials["material"][$key] > 0 )
 		$pdf->Write(0,(int)$_materials["materialAmount"][$key]);
 
 		//���
-		
+
 		//��
 		//$pdf->SetXY(159, $yy);
 		//$pdf->Write(0,$_materials["materialPrice"][$key]);

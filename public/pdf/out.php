@@ -1,19 +1,13 @@
 <?php
-header("Cache-control: private");
-$con = @mysqli_connect('localhost', 'root', 'acc7996acc', 'db_account');
-
-if (!$con) {
-    echo "Error: " . mysqli_connect_error();
-	exit();
-}
+require_once(__DIR__ . '/con.php');
 
 $_iid=$_REQUEST["id"];
 $_id=explode(",",$_REQUEST["id"]);
 
-require_once('chinese-unicode.php'); 
+require_once('chinese-unicode.php');
 require_once ('fpdi.php');
 
-// initiate FPDI210 × 297
+// initiate FPDI210 ï¿½ 297
 $pdf = new FPDI('P', 'mm', [ 210,297]);
 $pdf->AddBig5Font();
 
@@ -74,7 +68,7 @@ $pdf->useTemplate($tplIdx,0,0,210);
 $pdf->SetFont('Big5','',16);
 
 
-//‰¹
+//ï¿½ï¿½
 //$_nono=$_nono+1;
 
 
@@ -97,7 +91,7 @@ for($key = $_inikey; $key <= $_keycheck_last; $key++)
 $j=$key+1;
 
 $sql = "SELECT * from materials WHERE id='".$_materials["material"][$key]."'";
-mysqli_query($con,"SET NAMES 'utf8'"); 
+mysqli_query($con,"SET NAMES 'utf8'");
 $query 	= mysqli_query($con, $sql);
 $row_m = mysqli_fetch_array($query);
 
@@ -107,21 +101,21 @@ $row_u = mysqli_fetch_array($query);
 
 if($_materials["material"][$key] > 0 )
 {
-		//æ¬
+		//ï¿½
 		$pdf->SetFont('Big5','',12);
 		$pdf->SetXY(14, $yy);
 		//$pdf->Write(0,$j);
 //$materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialUnit'=>$materialUnit,'materialPrice'=>$materialPrice];
-		//è²¨åç·¨è$row_m["fullCode"].' '.
+		//è²¨ï¿½ç·¨ï¿½$row_m["fullCode"].' '.
 		$pdf->SetXY(24.5, $yy);
 		$pdf->Write(0,mb_convert_encoding($row_m["fullName"],"BIG5","auto"));
 
-		//èæ ¼
+		//ï¿½ï¿½æ ¼
 		//$pdf->SetXY(38, $yy);
 		//$pdf->Write(0,);
 
 $pdf->SetFont('Big5','',14);
-		//•¸
+		//ï¿½ï¿½
 		$pdf->SetXY(84, $yy);
 		$pdf->Write(0,mb_convert_encoding($row_m["size"],"BIG5","auto"));
 
@@ -132,13 +126,13 @@ $pdf->SetFont('Big5','',14);
 		$pdf->SetXY(150, $yy);
 		$pdf->Write(0,(int)$_materials["materialAmount"][$key]);
 
-		//–®ä½
-		
-		//–®
+		//ï¿½ï¿½ï¿½
+
+		//ï¿½ï¿½
 		//$pdf->SetXY(159, $yy);
 		//$pdf->Write(0,$_materials["materialPrice"][$key]);
 
-		//å°è
+		//å°ï¿½
 		//$pdf->SetXY(176, $yy);
 		//$pdf->Write(0,$_materials["materialPrice"][$key]*$_materials["materialAmount"][$key]);
 

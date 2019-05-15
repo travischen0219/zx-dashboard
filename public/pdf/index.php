@@ -1,11 +1,5 @@
 <?php
-header("Cache-control: private");
-$con = @mysqli_connect('localhost', 'root', '1ulru4', 'db_account');
-
-if (!$con) {
-    echo "Error: " . mysqli_connect_error();
-    exit();
-}
+require_once(__DIR__ . '/con.php');
 
 $_iid = $_REQUEST["id"];
 $_id = explode(",", $_REQUEST["id"]);

@@ -1,16 +1,10 @@
 <?php
-header("Cache-control: private");
-$con = @mysqli_connect('localhost', 'account', 'acc7996', 'db_account');
-
-if (!$con) {
-    echo "Error: " . mysqli_connect_error();
-	exit();
-}
+require_once(__DIR__ . '/con.php');
 
 $_iid=$_REQUEST["id"];
 $_id=explode(",",$_REQUEST["id"]);
 
-require_once('chinese-unicode.php'); 
+require_once('chinese-unicode.php');
 require_once ('fpdi.php');
 
 // initiate FPDI
@@ -76,7 +70,7 @@ $pdf->useTemplate($tplIdx,0,0,210);
 $pdf->SetFont('Big5','',16);
 
 
-//‰¹
+//ï¿½ï¿½
 //$_nono=$_nono+1;
 
 
@@ -99,7 +93,7 @@ $pdf->Write(0,substr($row["buyDate"],8,2));
 
 
 $sql = "SELECT * from suppliers WHERE id='".$row["supplier"]."'";
-mysqli_query($con,"SET NAMES 'utf8'"); 
+mysqli_query($con,"SET NAMES 'utf8'");
 $query 	= mysqli_query($con, $sql);
 $row_s = mysqli_fetch_array($query);
 
@@ -124,7 +118,7 @@ for($key = $_inikey; $key <= $_keycheck_last; $key++)
 $j=$key+1;
 
 $sql = "SELECT * from materials WHERE id='".$_materials["material"][$key]."'";
-mysqli_query($con,"SET NAMES 'utf8'"); 
+mysqli_query($con,"SET NAMES 'utf8'");
 $query 	= mysqli_query($con, $sql);
 $row_m = mysqli_fetch_array($query);
 
@@ -134,32 +128,32 @@ $row_u = mysqli_fetch_array($query);
 
 if($_materials["material"][$key] > 0 )
 {
-		//æ¬
+		//ï¿½
 		$pdf->SetFont('Big5','',14);
 		$pdf->SetXY(14, $yy);
 		$pdf->Write(0,$j);
 //$materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialUnit'=>$materialUnit,'materialPrice'=>$materialPrice];
-		//è²¨åç·¨è
+		//è²¨ï¿½ç·¨ï¿½
 		$pdf->SetXY(24, $yy);
 		$pdf->Write(0,$row_m["fullCode"]);
 
-		//èæ ¼
+		//ï¿½ï¿½æ ¼
 		$pdf->SetXY(50, $yy);
 		$pdf->Write(0,mb_convert_encoding($row_m["fullName"],"BIG5","auto"));
 
-		//•¸
+		//ï¿½ï¿½
 		$pdf->SetXY(139, $yy);
 		$pdf->Write(0,(int)$_materials["materialAmount"][$key]);
 
-		//–®ä½
+		//ï¿½ï¿½ï¿½
 		$pdf->SetXY(155, $yy);
 		$pdf->Write(0,mb_convert_encoding($row_u["name"],"BIG5","auto"));
 
-		//–®
+		//ï¿½ï¿½
 		$pdf->SetXY(168, $yy);
 		$pdf->Write(0,$_materials["materialPrice"][$key]);
 
-		//å°è
+		//å°ï¿½
 		$pdf->SetXY(185, $yy);
 		$pdf->Write(0,$_materials["materialPrice"][$key]*$_materials["materialAmount"][$key]);
 
@@ -183,7 +177,7 @@ if($second_view==1)
 
 $pdf->useTemplate($tplIdx,0,140,210);
 
-//‰¹
+//ï¿½ï¿½
 $_nono=$_nono+1;
 $_nono=$row["lot_number"];
 $pdf->SetXY(154, 168);
@@ -204,7 +198,7 @@ $pdf->Write(0,substr($row["buyDate"],8,2));
 
 
 $sql = "SELECT * from suppliers WHERE id='".$row["supplier"]."'";
-mysqli_query($con,"SET NAMES 'utf8'"); 
+mysqli_query($con,"SET NAMES 'utf8'");
 $query 	= mysqli_query($con, $sql);
 $row_s = mysqli_fetch_array($query);
 
@@ -220,9 +214,9 @@ $yy=194;
 //å¤šé›®
 for($key = $j; $key <= $_keycheck_last; $key++)
 {
-$j=$key+1;	
+$j=$key+1;
 $sql = "SELECT * from materials WHERE id='".$_materials["material"][$key]."'";
-mysqli_query($con,"SET NAMES 'utf8'"); 
+mysqli_query($con,"SET NAMES 'utf8'");
 $query 	= mysqli_query($con, $sql);
 $row_m = mysqli_fetch_array($query);
 
@@ -232,37 +226,37 @@ $row_u = mysqli_fetch_array($query);
 
 if($_materials["material"][$key] > 0 )
 {
-		//æ¬
+		//ï¿½
 		$pdf->SetFont('Big5','',14);
 		$pdf->SetXY(14, $yy);
 		$pdf->Write(0,$j);
 //$materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialUnit'=>$materialUnit,'materialPrice'=>$materialPrice];
-		//è²¨åç·¨è
+		//è²¨ï¿½ç·¨ï¿½
 		$pdf->SetXY(24, $yy);
 		$pdf->Write(0,$row_m["fullCode"]);
 
-		//èæ ¼
+		//ï¿½ï¿½æ ¼
 		$pdf->SetXY(50, $yy);
 		$pdf->Write(0,mb_convert_encoding($row_m["fullName"],"BIG5","auto"));
 
-		//•¸
+		//ï¿½ï¿½
 		$pdf->SetXY(139, $yy);
 		$pdf->Write(0,(int)$_materials["materialAmount"][$key]);
 
-		//–®ä½
+		//ï¿½ï¿½ï¿½
 		$pdf->SetXY(155, $yy);
 		$pdf->Write(0,mb_convert_encoding($row_u["name"],"BIG5","auto"));
 
-		//–®
+		//ï¿½ï¿½
 		$pdf->SetXY(168, $yy);
 		$pdf->Write(0,$_materials["materialPrice"][$key]);
 
-		//å°è
+		//å°ï¿½
 		$pdf->SetXY(185, $yy);
 		$pdf->Write(0,$_materials["materialPrice"][$key]*$_materials["materialAmount"][$key]);
 
 		$yy=$yy+8;
-}	
+}
 }
 
 }//end second view
