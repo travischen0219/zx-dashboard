@@ -3,6 +3,7 @@ require_once(__DIR__ . '/conn.php');
 
 $_iid = $_REQUEST["id"];
 $_id = explode(",", $_REQUEST["id"]);
+$j = 0;
 
 require_once 'chinese-unicode.php';
 require_once 'fpdi.php';
@@ -124,7 +125,7 @@ foreach ($_id as $_id_value) {
         for ($key = $_inikey; $key <= $_keycheck_last; $key++) {
             $j = $key + 1;
 
-            $sql = "SELECT * from materials WHERE id='" . $_materials["material"][$key] . "'";
+            $sql = "SELECT * from materials WHERE id='" . ($_materials["material"][$key] ?? 0) . "'";
             mysqli_query($con, "SET NAMES 'utf8'");
             $query = mysqli_query($con, $sql);
             $row_m = mysqli_fetch_array($query);
@@ -133,7 +134,7 @@ foreach ($_id as $_id_value) {
             $query = mysqli_query($con, $sql);
             $row_u = mysqli_fetch_array($query);
 
-            if ($_materials["material"][$key] > 0) {
+            if (isset($_materials["material"][$key]) && $_materials["material"][$key] > 0) {
                 //�
                 $pdf->SetFont('Big5', '', 14);
                 $pdf->SetXY(18, $yy);
