@@ -28,7 +28,7 @@
         color:#fff;
         background-color: #248ff1;
     }
-    #sample_3_filter input { 
+    #sample_3_filter input {
         width:300px !important;
     }
 
@@ -43,7 +43,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -52,7 +52,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -76,7 +76,7 @@
                                 <option value="1" {{$search_code == 1 ? 'selected' : ''}}>未付款</option>
                                 <option value="2" {{$search_code == 2 ? 'selected' : ''}}>已付款</option>
                                 <option value="3" {{$search_code == 3 ? 'selected' : ''}}>取消</option>
-                                
+
                             </select>
                         </div>
                     </div>
@@ -85,8 +85,8 @@
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="search_lot_number" id="search_lot_number">
                         </div>
-                    </div> 
-                    
+                    </div>
+
                     <div class="col-md-2">
                         <button type="submit" class="btn" style="background-color: #248ff1;color:#fff;font-size: 16px;">搜 尋</button>
                     </div>
@@ -94,7 +94,7 @@
             </div>
         </div>
     </form>
-    
+
     <div class="col-md-12">
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet light">
@@ -106,42 +106,50 @@
                 <div class="tools"> </div>
             </div>
 
-            
-                
+
+
             <div class="portlet-body">
                 <table class="table table-striped table-bordered table-hover" id="sample_3" >
                     <thead>
                         <tr>
+                            <th>供應商</th>
                             <th>會計單號</th>
                             <th>批號</th>
-                            <th>採購單號</th>                            
+                            <th>採購單號</th>
                             <th>開單日</th>
                             <th>付款日</th>
                             <th>應付金額</th>
+                            {{-- <th>明細</th> --}}
                             <th>狀態</th>
                             <th>操 作</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         @foreach($account_payables as $account_payable)
                             <tr>
+                                <td>{{$account_payable->supplier_name->shortName}}</td>
                                 <td>AP{{$account_payable->account_payable_no}}</td>
                                 <td>{{$account_payable->lot_number}}</td>
                                 @if($account_payable->buy_no == '0')
                                     <td></td>
                                 @elseif($account_payable->buy_no != '')
-                                    <td>P{{$account_payable->buy_no}}</td>                                                   
+                                    <td>P{{$account_payable->buy_no}}</td>
                                 @else
-                                    <td></td>                                                                 
+                                    <td></td>
                                 @endif
                                 <td>{{$account_payable->createDate}}</td>
                                 <td>{{$account_payable->payDate}}</td>
-                                <td>{{$account_payable->total}}</td>
+                                <td title="應付金額">$ {{$account_payable->total_pay}}</td>
+                                {{-- <td title="明細">
+                                    @foreach ($account_payable->materials_detail as $detail)
+                                        {{ $detail['id'] }}
+                                    @endforeach
+                                </td> --}}
                                 <td>
-                                    @if($account_payable->status == '1') <span style="color:red">未付款</span> 
-                                    @elseif($account_payable->status == '2') <span style="color:green">已付款</span> 
-                                    @elseif($account_payable->status == '3') <span style="color:blue">取消</span> 
+                                    @if($account_payable->status == '1') <span style="color:red">未付款</span>
+                                    @elseif($account_payable->status == '2') <span style="color:green">已付款</span>
+                                    @elseif($account_payable->status == '3') <span style="color:blue">取消</span>
                                     @endif
                                 </td>
                                 <td align="center" id="functions_btn">
