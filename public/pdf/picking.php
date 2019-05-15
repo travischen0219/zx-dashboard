@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/con.php');
+require_once(__DIR__ . '/conn.php');
 
 $_iid=$_REQUEST["mm"];
 $_id=explode(",",$_REQUEST["id"]);

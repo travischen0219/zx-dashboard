@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/con.php');
+require_once(__DIR__ . '/');
 
 $_id=explode(",",$_GET["id"]);
 
