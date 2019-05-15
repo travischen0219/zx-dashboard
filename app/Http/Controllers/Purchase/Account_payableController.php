@@ -317,7 +317,20 @@ class Account_payableController extends Controller
         $data['supplier'] = $supplier;
         $data['pays'] = Account_payable::getUnpayBySupplier($id);
 
-        return view('purchase.account_payable.print', $data);
+        $pdf = new \TCPDF();
+        $pdf->setTitle('真心蓮坊股份有限公司');
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+        $pdf->SetFont('cid0ct', '', 14);
+        $pdf->AddPage();
+        $pdf->writeHTML('<div style="text-align: center"><h1>真心蓮坊股份有限公司</h1></div>');
+        $pdf->writeHTML('<p>真心蓮坊股份有限公司</p>');
+        $pdf->writeHTML('<p style="color: red">真心蓮坊股份有限公司</p>');
+        $pdf->writeHTML('<p>真心蓮坊股份有限公司</p>');
+        $pdf->Ln(5);//换行符
+        $pdf->writeHTML('<p><a href="http://www.lanrenkaifa.com/" title="">真心蓮坊股份有限公司</a></p>');
+        $pdf->Output('t.pdf', 'I');//I输出、D下载
+        // return view('purchase.account_payable.print', $data);
         // $pdf = PDF::loadView('purchase.account_payable.print', $data);
         // return $pdf->stream();
     }

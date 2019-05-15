@@ -13,7 +13,8 @@
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.0",
         "setasign/fpdi-fpdf": "^2.0",
-        "setasign/fpdi-tcpdf": "^2.0"
+        "setasign/fpdi-tcpdf": "^2.0",
+        "tecnickcom/tcpdf": "^6.2"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
