@@ -4,41 +4,43 @@ namespace App\Http\Controllers\Purchase;
 
 use App\Model\User;
 use App\Model\Material;
+use App\Model\Supplier;
 use Illuminate\Http\Request;
 use App\Model\Account_payable;
 use App\Http\Controllers\Controller;
 
 class Account_payableController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $search_code = 'all';        
-        $account_payables = Account_payable::where('delete_flag','0')->get();
-        return view("purchase.account_payable.show",compact('account_payables','search_code'));
-    }
+        $search_supplier = $request->search_supplier ?? 'all';
+        $search_code = $request->search_code ?? 1;
+        $search_lot_number = $request->search_lot_number ?? '';
 
-    public function search(Request $request)
-    {
-        $search_code = $request->search_category;
-        if($request->search_lot_number){
-            if($search_code == 'all'){
-                $account_payables = Account_payable::where('delete_flag','0')->where('lot_number','like','%'.$request->search_lot_number.'%')->get();
-            } else {
-                $account_payables = Account_payable::where('delete_flag','0')->where('status',$search_code)->where('lot_number','like','%'.$request->search_lot_number.'%')->get();
-            }
-        } else {
-            if($search_code == 'all'){
-                $account_payables = Account_payable::where('delete_flag','0')->get();
-            } else {
-                $account_payables = Account_payable::where('delete_flag','0')->where('status',$search_code)->get();
-            }
+        $account_payables = Account_payable::where('account_payables.delete_flag','0')
+            ->join('suppliers', 'account_payables.supplier', '=', 'suppliers.id');
+
+        if ($search_supplier != 'all') {
+            // 過濾供應商
+            $account_payables = $account_payables->where('account_payables.supplier', $search_supplier);
         }
-        return view('purchase.account_payable.show',compact('account_payables','search_code'));
+
+        if ($search_code != 'all') {
+            // 過濾狀態
+            $account_payables = $account_payables->where('account_payables.status', $search_code);
+        }
+
+        if ($search_lot_number != '') {
+            // 過濾批號
+            $account_payables = $account_payables->where('account_payables.lot_number', $search_lot_number);
+        }
+
+        $account_payables = $account_payables->select('account_payables.*', 'suppliers.code', 'suppliers.shortName')->get();
+
+        // 獲取資料中所有供應商
+        $suppliers = Supplier::where('delete_flag','0')->get();
+
+        return view("purchase.account_payable.show", compact('account_payables', 'search_supplier', 'search_code', 'search_lot_number', 'suppliers'));
     }
 
     /**
@@ -87,7 +89,7 @@ class Account_payableController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'lot_number' => 'required',            
+            'lot_number' => 'required',
             'supplier' => 'required',
             'createDate' => 'required',
         ];
@@ -128,7 +130,7 @@ class Account_payableController extends Controller
                 $account_payable->createDate = $request->createDate;
                 $account_payable->payDate = $request->payDate;
                 $account_payable->account_payable_no = $request->account_payable_no;
-                $account_payable->total = $request->payable;    
+                $account_payable->total = $request->payable;
                 $account_payable->memo = $request->memo;
                 $account_payable->materials = serialize($materials);
                 $account_payable->status = $request->status;
@@ -171,15 +173,15 @@ class Account_payableController extends Controller
         $materialCount = 0;
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-        
+
             $material = Material::where('id',$materials['material'][$i])->first();
-            
+
 
                 $style = ' style="display:none"';
                 $readonly = ' readonly';
                 $disabled = ' disabled';
 
-            
+
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
                 <td>
@@ -191,7 +193,7 @@ class Account_payableController extends Controller
                 </td>
                 <td>
                     <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'"> 
+                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
                 </td>
                 <td>
                     <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="'.$materials['materialPrice'][$i].'" '.$readonly.'>
@@ -208,7 +210,7 @@ class Account_payableController extends Controller
             $created_user = User::where('id',$account_payable->created_user)->first();
         } else {
             $updated_user = User::where('id',$account_payable->created_user)->first();
-            $created_user = User::where('id',$account_payable->created_user)->first();            
+            $created_user = User::where('id',$account_payable->created_user)->first();
         }
 
         // $today = getdate();
@@ -243,7 +245,7 @@ class Account_payableController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            // 'lot_number' => 'required',            
+            // 'lot_number' => 'required',
             // 'supplier' => 'required',
             // 'createDate' => 'required',
         ];
@@ -253,11 +255,11 @@ class Account_payableController extends Controller
             // 'createDate.required' => '開單日期 必填',
         ];
         $this->validate($request, $rules, $messages);
-        
+
         try{
             $account_payable = Account_payable::find($id);
             if($account_payable->buy_no == ''){
-                $buy_no = null;            
+                $buy_no = null;
                 if($request->buy_no != ''){
                     $buy_no = substr($request->buy_no,1);
                     $account_payable->buy_no = $buy_no;
@@ -266,7 +268,7 @@ class Account_payableController extends Controller
             }
 
             $account_payable->payDate = $request->payDate;
-            $account_payable->total = $request->payable;    
+            $account_payable->total = $request->payable;
             $account_payable->memo = $request->memo;
             $account_payable->status = $request->status;
             $account_payable->updated_user = session('admin_user')->id;
@@ -294,7 +296,30 @@ class Account_payableController extends Controller
             $account_payable->save();
             return redirect()->route('account_payable.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('account_payable.index')->with('error','刪除失敗');            
+            return redirect()->route('account_payable.index')->with('error','刪除失敗');
         }
     }
+
+    /**
+     * 列印未付款資料
+     *
+     * @param  int  $id
+     */
+    public function print(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) exit();
+
+        $supplier = Supplier::find($id);
+        if (!$supplier) exit();
+
+        $data = [];
+        $data['supplier'] = $supplier;
+        $data['pays'] = Account_payable::getUnpayBySupplier($id);
+
+        return view('purchase.account_payable.print', $data);
+        // $pdf = PDF::loadView('purchase.account_payable.print', $data);
+        // return $pdf->stream();
+    }
+
 }

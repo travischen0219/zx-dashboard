@@ -12,7 +12,7 @@ var TableDatatablesButtons = function () {
                 "sLengthMenu": "每頁顯示 _MENU_ 筆",
                 "sInfoEmpty": "查無資料",
                 "sSearch": "搜尋:",
-                "sInfoFiltered": " - 從 _MAX_ 筆紀錄中過濾",                
+                "sInfoFiltered": " - 從 _MAX_ 筆紀錄中過濾",
                 "oPaginate": {
                     "sFirst": "第一筆",
                     "sPrevious": "上一筆",
@@ -20,7 +20,7 @@ var TableDatatablesButtons = function () {
                     "sLast": "最後一筆"
                 }
             },
-            
+
             "language": {
                 "aria": {
                     "sortAscending": ": activate to sort column ascending",
@@ -34,14 +34,14 @@ var TableDatatablesButtons = function () {
                 "search": "搜尋:",
                 "zeroRecords": "查無資料",
 
-                
+
             },
 
             // Or you can use remote translation file
             //"language": {
             //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
             //},
-            
+
 
             buttons: [
                 { extend: 'print', className: 'btn dark btn-outline' ,text: '列印'},
@@ -55,7 +55,7 @@ var TableDatatablesButtons = function () {
             // setup responsive extension: http://datatables.net/extensions/responsive/
             responsive: false,
 
-            //"ordering": false, disable column ordering 
+            //"ordering": false, disable column ordering
             //"paging": false, disable pagination
 
             // "columnDefs": [ {
@@ -65,7 +65,7 @@ var TableDatatablesButtons = function () {
             // }],
 
             "order": [[0, 'asc']],
-            
+
             "lengthMenu": [
                 [5, 10, 15, 20, 50, 100, -1],
                 [5, 10, 15, 20, 50, 100, "All"] // change per page values here
@@ -76,8 +76,8 @@ var TableDatatablesButtons = function () {
             "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
 
             // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
-            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js). 
-            // So when dropdowns used the scrollable div should be removed. 
+            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js).
+            // So when dropdowns used the scrollable div should be removed.
             //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
         });
     }
@@ -93,7 +93,7 @@ var TableDatatablesButtons = function () {
                 "sLengthMenu": "每頁顯示 _MENU_ 筆",
                 "sInfoEmpty": "查無資料",
                 "sSearch": "搜尋:",
-                "sInfoFiltered": " - 從 _MAX_ 筆紀錄中過濾",                                
+                "sInfoFiltered": " - 從 _MAX_ 筆紀錄中過濾",
                 "oPaginate": {
                     "sFirst": "第一筆",
                     "sPrevious": "上一筆",
@@ -101,7 +101,7 @@ var TableDatatablesButtons = function () {
                     "sLast": "最後一筆"
                 }
             },
-            
+
             "language": {
                 "aria": {
                     "sortAscending": ": activate to sort column ascending",
@@ -115,7 +115,7 @@ var TableDatatablesButtons = function () {
                 "search": "搜尋:",
                 "zeroRecords": "查無資料",
 
-                
+
             },
 
             // Or you can use remote translation file
@@ -148,19 +148,19 @@ var TableDatatablesButtons = function () {
             "order": [
                 [1, 'asc']
             ],
-            
+
             "lengthMenu": [
                 [5, 10, 15, 20, 50, 100, -1],
                 [5, 10, 15, 20, 50, 100, "All"] // change per page values here
             ],
             // set the initial value
             "pageLength": 15,
-            "pagingType": "full_numbers",            
+            "pagingType": "full_numbers",
             "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
 
             // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
-            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js). 
-            // So when dropdowns used the scrollable div should be removed. 
+            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js).
+            // So when dropdowns used the scrollable div should be removed.
             //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
         });
     }
@@ -175,7 +175,7 @@ var TableDatatablesButtons = function () {
                 "sLengthMenu": "每頁顯示 _MENU_ 筆",
                 "sInfoEmpty": "查無資料",
                 "sSearch": "搜尋:",
-                "sInfoFiltered": " - 從 _MAX_ 筆紀錄中過濾",                                
+                "sInfoFiltered": " - 從 _MAX_ 筆紀錄中過濾",
                 "oPaginate": {
                     "sFirst": "第一筆",
                     "sPrevious": "上一筆",
@@ -197,7 +197,7 @@ var TableDatatablesButtons = function () {
                 "zeroRecords": "查無資料",
             },
             buttons: [
-                { extend: 'print', className: 'btn dark btn-outline' ,text: '列印'},
+                // { extend: 'print', className: 'btn dark btn-outline' ,text: '列印'},
                 { extend: 'copy', className: 'btn red btn-outline' ,text: '複製'},
                 // { extend: 'pdf', className: 'btn yellow btn-outline' ,text: 'PDF 下載'},
                 { extend: 'excel', className: 'btn green btn-outline ' ,text: 'Excel 下載'},
@@ -208,7 +208,7 @@ var TableDatatablesButtons = function () {
             // setup responsive extension: http://datatables.net/extensions/responsive/
             responsive: false,
 
-            //"ordering": false, disable column ordering 
+            //"ordering": false, disable column ordering
             //"paging": false, disable pagination
 
             // "columnDefs": [ {
@@ -225,8 +225,8 @@ var TableDatatablesButtons = function () {
             "pagingType": "full_numbers",
             "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
             // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
-            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js). 
-            // So when dropdowns used the scrollable div should be removed. 
+            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js).
+            // So when dropdowns used the scrollable div should be removed.
             //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
         });
     }
@@ -241,7 +241,7 @@ var TableDatatablesButtons = function () {
                 "sLengthMenu": "每頁顯示 _MENU_ 筆",
                 "sInfoEmpty": "查無資料",
                 "sSearch": "搜尋:",
-                "sInfoFiltered": " - 從 _MAX_ 筆紀錄中過濾",                                
+                "sInfoFiltered": " - 從 _MAX_ 筆紀錄中過濾",
                 "oPaginate": {
                     "sFirst": "第一筆",
                     "sPrevious": "上一筆",
@@ -274,7 +274,7 @@ var TableDatatablesButtons = function () {
             // setup responsive extension: http://datatables.net/extensions/responsive/
             responsive: true,
 
-            //"ordering": false, disable column ordering 
+            //"ordering": false, disable column ordering
             //"paging": false, disable pagination
 
             "columnDefs": [ {
@@ -291,8 +291,8 @@ var TableDatatablesButtons = function () {
             "pagingType": "full_numbers",
             "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
             // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
-            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js). 
-            // So when dropdowns used the scrollable div should be removed. 
+            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js).
+            // So when dropdowns used the scrollable div should be removed.
             //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
         });
     }
@@ -334,13 +334,13 @@ var TableDatatablesButtons = function () {
             // setup responsive extension: http://datatables.net/extensions/responsive/
             responsive: true,
 
-            //"ordering": false, disable column ordering 
+            //"ordering": false, disable column ordering
             //"paging": false, disable pagination
 
             "order": [
                 [0, 'asc']
             ],
-            
+
             "lengthMenu": [
                 [5, 10, 15, 20, -1],
                 [5, 10, 15, 20, "All"] // change per page values here
@@ -351,8 +351,8 @@ var TableDatatablesButtons = function () {
             //"dom": "<'row' <'col-md-12'>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
 
             // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
-            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js). 
-            // So when dropdowns used the scrollable div should be removed. 
+            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js).
+            // So when dropdowns used the scrollable div should be removed.
             //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
         });
 
@@ -381,20 +381,20 @@ var TableDatatablesButtons = function () {
                 // execute some code after table records loaded
             },
             onError: function (grid) {
-                // execute some code on network or other general error  
+                // execute some code on network or other general error
             },
             onDataLoad: function(grid) {
                 // execute some code on ajax data load
             },
             loadingMessage: 'Loading...',
-            dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options 
+            dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options
 
                 // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
-                // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/scripts/datatable.js). 
-                // So when dropdowns used the scrollable div should be removed. 
-                
+                // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/scripts/datatable.js).
+                // So when dropdowns used the scrollable div should be removed.
+
                 //"dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>",
-                
+
                 "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
 
                 "lengthMenu": [
@@ -408,7 +408,7 @@ var TableDatatablesButtons = function () {
                 "order": [
                     [1, "asc"]
                 ],// set first column as a default sort by asc
-            
+
                 // Or you can use remote translation file
                 //"language": {
                 //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'

@@ -47,4 +47,14 @@ class Account_payable extends Model
         return $details;
     }
 
+    static public function getUnpayBySupplier($supplierID)
+    {
+        $data = Account_payable::where('account_payables.delete_flag', 0)
+            ->where('account_payables.status', 1)
+            ->where('account_payables.supplier', $supplierID)
+            ->get();
+
+        return $data;
+    }
+
 }
