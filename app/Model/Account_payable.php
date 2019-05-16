@@ -31,6 +31,20 @@ class Account_payable extends Model
         return number_format($total, 2);
     }
 
+    static public function getTotalPayBySerialData($searialData)
+    {
+        $total = 0;
+        $materials = unserialize($searialData);
+
+        $count = count($materials['material']);
+
+        for ($i = 0; $i < $count; $i++) {
+            $total += ($materials['materialAmount'][$i] * $materials['materialPrice'][$i]);
+        }
+
+        return $total;
+    }
+
     public function getMaterialsDetailAttribute()
     {
         $total = 0;
@@ -45,6 +59,15 @@ class Account_payable extends Model
         }
 
         return $details;
+    }
+
+    static public function getUnpays()
+    {
+        $data = Account_payable::where('account_payables.delete_flag', 0)
+            ->where('account_payables.status', 1)
+            ->get();
+
+        return $data;
     }
 
     static public function getUnpayBySupplier($supplierID)

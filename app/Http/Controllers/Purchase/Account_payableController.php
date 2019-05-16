@@ -303,36 +303,30 @@ class Account_payableController extends Controller
     /**
      * 列印未付款資料
      *
-     * @param  int  $id
      */
     public function print(Request $request)
     {
-        $id = $request->id ?? 0;
-        if ($id == 0) exit();
-
-        $supplier = Supplier::find($id);
-        if (!$supplier) exit();
-
         $data = [];
-        $data['supplier'] = $supplier;
-        $data['pays'] = Account_payable::getUnpayBySupplier($id);
+        $unpaysOrigin = Account_payable::getUnpays();
 
-        $pdf = new \TCPDF();
-        $pdf->setTitle('真心蓮坊股份有限公司');
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
-        $pdf->SetFont('cid0ct', '', 14);
-        $pdf->AddPage();
-        $pdf->writeHTML('<div style="text-align: center"><h1>真心蓮坊股份有限公司</h1></div>');
-        $pdf->writeHTML('<p>真心蓮坊股份有限公司</p>');
-        $pdf->writeHTML('<p style="color: red">真心蓮坊股份有限公司</p>');
-        $pdf->writeHTML('<p>真心蓮坊股份有限公司</p>');
-        $pdf->Ln(5);//换行符
-        $pdf->writeHTML('<p><a href="http://www.lanrenkaifa.com/" title="">真心蓮坊股份有限公司</a></p>');
-        $pdf->Output('t.pdf', 'I');//I输出、D下载
-        // return view('purchase.account_payable.print', $data);
-        // $pdf = PDF::loadView('purchase.account_payable.print', $data);
-        // return $pdf->stream();
+        $unpays = [];
+        foreach ($unpaysOrigin as $unpay) {
+            if (!isset($unpays[$unpay["supplier"]])) $unpays[$unpay["supplier"]] = [];
+
+            $unpay['totals'] = Account_payable::getTotalPayBySerialData($unpay['materials']);
+            array_push($unpays[$unpay["supplier"]], $unpay);
+        }
+        ksort($unpays);
+        $data["unpays"] = $unpays;
+
+        $suppliers = Supplier::allWithKey();
+        $data["suppliers"] = $suppliers;
+
+        $supplierKeys = array_keys($unpays);
+        sort($supplierKeys);
+        $data["supplierKeys"] = $supplierKeys;
+
+        return view('purchase.account_payable.print', $data);
     }
 
 }

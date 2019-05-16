@@ -130,9 +130,9 @@ Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->gro
 
     Route::post('get_warehouse_stock','SelectController@get_warehouse_stock')->name('get_warehouse_stock');
 
+    Route::get('account_payable/print','Account_payableController@print')->name('account_payable.print');
     Route::resource('account_payable', 'Account_payableController');
     Route::post('account_payable/search','Account_payableController@index')->name('account_payable.search');
-    Route::get('account_payable/print/{id}','Account_payableController@print')->name('account_payable.print');
 
     // 付款記錄
     Route::resource('payment_record', 'Payment_recordController');

@@ -220,17 +220,13 @@
         table.button('1').remove();
         table.button('0').remove();
 
-        @if ($search_supplier != 'all')
-            // 動態加入列印按鈕
-
-            table.button().add(0, {
-                action: function (e, dt, button, config) {
-                    window.open('/purchase/account_payable/print/{{ $search_supplier }}');
-                },
-                text: '列印 (' + $("#search_supplier option:selected").text() + ') 的未付款資料',
-                className: 'btn dark btn-outline'
-            });
-        @endif
+        table.button().add(0, {
+            action: function (e, dt, button, config) {
+                window.open('/purchase/account_payable/print');
+            },
+            text: '列印未付款資料',
+            className: 'btn dark btn-outline'
+        });
     });
 </script>
 @endsection
