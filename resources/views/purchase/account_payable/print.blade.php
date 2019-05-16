@@ -16,6 +16,9 @@
     .table-bordered td, .table-bordered th {
         border: 1px solid dimgray;
     }
+    .table + .table {
+        margin-top: 40px;
+    }
     </style>
     <nav class="navbar fixed-top navbar-dark bg-dark text-light no-print">
         <div id="header">
@@ -46,25 +49,27 @@
         @foreach ($unpays as $key => $unpay)
             <table class="table table-bordered" id="table-{{ $key }}">
                 <tr>
-                    <th rowspan="{{ count($unpays) }}" width="20%" class="align-middle text-center">
+                    <th rowspan="{{ count($unpays) }}" width="25%" class="align-middle text-center">
                         <div>{{ $suppliers[$key]['code'] }}</div>
                         <div>{{ $suppliers[$key]['shortName'] }}</div>
                     </th>
-                    <th width="40%">批號</th>
-                    <th width="40%" class="text-right">金額</th>
+                    <th width="25%">批號</th>
+                    <th width="25%">採購單號</th>
+                    <th width="25%" class="text-right">金額</th>
                 </tr>
 
                 @php($subTotal = 0)
                 @foreach ($unpay as $detail)
                     <tr>
                         <td>{{ $detail['lot_number'] }}</td>
+                        <td>P{{ $detail['buy_no'] }}</td>
                         <td class="text-right">${{ number_format($detail['totals'], 2) }}</td>
                     </tr>
                     @php($subTotal += $detail['totals'])
                 @endforeach
 
                 <tr>
-                    <td colspan="2" class="text-right">小計：${{ number_format($subTotal, 2) }}</td>
+                    <td colspan="3" class="text-right">小計：${{ number_format($subTotal, 2) }}</td>
                 </tr>
             </table>
         @endforeach
