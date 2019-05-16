@@ -28,6 +28,12 @@
 <!-- BEGIN DASHBOARD STATS 1-->
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/05/16</li>
+        <ul>
+            <li>[採購進貨 - 應收帳款] 增加供應商搜尋選項</li>
+            <li>[採購進貨 - 應收帳款] 修復金額顯示</li>
+            <li>[採購進貨 - 應收帳款] 增加列印未付款資料</li>
+        </ul>
         <li>2019/05/15</li>
         <ul>
             <li>修正採購單列印</li>
