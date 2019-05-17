@@ -20,8 +20,8 @@
                     </div>
                 </li>
                 <!-- END SIDEBAR TOGGLER BUTTON -->
-                
-                <li class="nav-item start 
+
+                <li class="nav-item start
                     @if(Request::is('dashboard*'))
                         active open
                     @endif
@@ -33,12 +33,12 @@
                             <span class="selected"></span>
                         @endif
                     </a>
-                    
+
                 </li>
                 <li class="heading">
                     {{--  <h3 class="uppercase">Features</h3>  --}}
                 </li>
-                <li class="nav-item 
+                <li class="nav-item
                     @if(Request::is('settings*'))
                         active open
                     @endif ">
@@ -52,12 +52,12 @@
                     </a>
                     <ul class="sub-menu">
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/staff*'))
                                 active open
                             @endif">
                             <a href="{{ route('staff.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/staff*'))
                                         style="color:#59deea;"
                                     @endif>員工資料</span>
@@ -67,12 +67,12 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/department*'))
                                 active open
                             @endif">
                             <a href="{{ route('department.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/department*'))
                                         style="color:#59deea;"
                                     @endif>部門設定</span>
@@ -82,12 +82,12 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/professional_title*'))
                                 active open
                             @endif">
                             <a href="{{ route('professional_title.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/professional_title*'))
                                         style="color:#59deea;"
                                     @endif>職稱設定</span>
@@ -104,12 +104,12 @@
                             </a>
                         </li> --}}
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/supplier*'))
                                 active open
                             @endif">
                             <a href="{{ route('supplier.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/supplier*'))
                                         style="color:#59deea;"
                                     @endif>供應商</span>
@@ -119,12 +119,12 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/manufacturer*'))
                                 active open
                             @endif">
                             <a href="{{ route('manufacturer.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/manufacturer*'))
                                         style="color:#59deea;"
                                     @endif>廠商資料</span>
@@ -134,7 +134,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/process_function*'))
                                 active open
                             @endif">
@@ -149,12 +149,12 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/materials*'))
                                 active open
                             @endif">
                             <a href="{{ route('materials.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/materials*'))
                                         style="color:#59deea;"
                                     @endif>物料管理</span>
@@ -164,12 +164,12 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/material_category*'))
                                 active open
                             @endif">
                             <a href="{{ route('material_category.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/material_category*'))
                                         style="color:#59deea;"
                                     @endif>物料分類設定</span>
@@ -178,12 +178,12 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/material_unit*'))
                                 active open
                             @endif">
                             <a href="{{ route('material_unit.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/material_unit*'))
                                         style="color:#59deea;"
                                     @endif>單位設定</span>
@@ -192,12 +192,12 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/material_module*'))
                                 active open
                             @endif">
                             <a href="{{ route('material_module.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/material_module*'))
                                         style="color:#59deea;"
                                     @endif>物料模組</span>
@@ -206,12 +206,12 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/customers*'))
                                 active open
                             @endif">
                             <a href="{{ route('customers.index') }}" class="nav-link ">
-                                <span class="title" 
+                                <span class="title"
                                     @if(Request::is('settings/customers*'))
                                         style="color:#59deea;"
                                     @endif>客戶資料</span>
@@ -221,7 +221,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/warehouses*'))
                                 active open
                             @endif">
@@ -236,7 +236,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('settings/warehouse_category*'))
                                 active open
                             @endif">
@@ -251,9 +251,9 @@
                             </a>
                         </li>
 
-                        
 
-                        {{-- <li class="nav-item  
+
+                        {{-- <li class="nav-item
                             @if(Request::is('settings/gallery*'))
                                 active open
                             @endif">
@@ -272,7 +272,7 @@
                 </li>
 
 
-                <li class="nav-item 
+                <li class="nav-item
                     @if(Request::is('purchase*'))
                         active open
                     @endif ">
@@ -286,7 +286,7 @@
                     </a>
 
                     <ul class="sub-menu">
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('purchase/inquiry*'))
                                 active open
                             @endif">
@@ -301,7 +301,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('purchase/buy*'))
                                 active open
                             @endif">
@@ -316,7 +316,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('purchase/ibuy_to_stock*'))
                                 active open
                             @endif">
@@ -331,7 +331,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('purchase/stock*'))
                                 active open
                             @endif">
@@ -345,8 +345,8 @@
                                 @endif
                             </a>
                         </li>
-                        
-                        <li class="nav-item  
+
+                        <li class="nav-item
                             @if(Request::is('purchase/account_payable*'))
                                 active open
                             @endif">
@@ -361,7 +361,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('purchase/payment_record*'))
                                 active open
                             @endif">
@@ -376,7 +376,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('purchase/p_sales_return*'))
                                 active open
                             @endif">
@@ -390,7 +390,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('purchase/p_exchange*'))
                                 active open
                             @endif">
@@ -404,21 +404,15 @@
                                 @endif
                             </a>
                         </li>
-                        
-                        <li class="nav-item  
+
+                        <li class="nav-item
                             @if(Request::is('purchase/monthly_report*'))
                                 active open
                             @endif">
-                            <a href="{{ route('monthly_report.index') }}" class="nav-link ">
-                                <span class="title"
-                                    @if(Request::is('purchase/monthly_report*'))
-                                        style="color:#59deea;"
-                                    @endif>月報表</span>
-                                @if(Request::is('purchase/monthly_report*'))
-                                    <span class="selected"></span>
-                                @endif
+                            <a href="{{ route('monthly_report.print') }}" class="nav-link" target="_blank">
+                                <span class="title">月報表</span>
                             </a>
-                        </li><li class="nav-item  
+                        </li><li class="nav-item
                             @if(Request::is('purchase/annual_report*'))
                                 active open
                             @endif">
@@ -435,7 +429,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item 
+                <li class="nav-item
                     @if(Request::is('shopping*'))
                         active open
                     @endif ">
@@ -449,7 +443,7 @@
                     </a>
 
                     <ul class="sub-menu">
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/sale*'))
                                 active open
                             @endif">
@@ -464,7 +458,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/apply_out_stock*'))
                                 active open
                             @endif">
@@ -479,7 +473,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/picking*'))
                                 active open
                             @endif">
@@ -494,7 +488,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/out_stock*'))
                                 active open
                             @endif">
@@ -508,7 +502,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/account_receivable*'))
                                 active open
                             @endif">
@@ -523,7 +517,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/receivable_record*'))
                                 active open
                             @endif">
@@ -538,7 +532,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/s_sales_return*'))
                                 active open
                             @endif">
@@ -552,7 +546,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/s_exchange*'))
                                 active open
                             @endif">
@@ -566,7 +560,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('shopping/prime_cost*'))
                                 active open
                             @endif">
@@ -583,7 +577,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item 
+                <li class="nav-item
                     @if(Request::is('stock*'))
                         active open
                     @endif ">
@@ -597,7 +591,7 @@
                     </a>
 
                     <ul class="sub-menu">
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('stock/inventory*'))
                                 active open
                             @endif">
@@ -611,7 +605,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('stock/adjustment*'))
                                 active open
                             @endif">
@@ -625,7 +619,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('stock/transfer_inventory*'))
                                 active open
                             @endif">
@@ -640,7 +634,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('stock/on_order_follow*'))
                                 active open
                             @endif">
@@ -655,7 +649,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('stock/semi_finished_schedule*'))
                                 active open
                             @endif">
@@ -670,7 +664,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item  
+                        <li class="nav-item
                             @if(Request::is('stock/residual_material_processing*'))
                                 active open
                             @endif">
@@ -686,9 +680,9 @@
                         </li>
 
 
-                        
-                        
-                        
+
+
+
                     </ul>
                 </li>
             </ul>

@@ -20,6 +20,11 @@ class P_exchangeController extends Controller
     {
         $search_code = 'all';
         $exchanges = P_exchange::where('delete_flag','0')->orderBy('updated_at','DESC')->get();
+
+        // foreach($exchanges as $exchange) {
+        //     dd($exchange->buy_name);
+        // }
+
         return view('purchase.p_exchange.show',compact('exchanges','search_code'));
     }
 
@@ -46,7 +51,7 @@ class P_exchangeController extends Controller
 
         $search_code = 'all';
         $exchanges = P_exchange::where('delete_flag','0')->where('buy_id',$request->buy_id)->orderBy('updated_at','DESC')->get();
-    
+
         return view('purchase.p_exchange.show',compact('exchanges','search_code'));
     }
     /**
@@ -58,18 +63,18 @@ class P_exchangeController extends Controller
     {
         if(substr($request->buy_no,'0',1) != "P"){
             if(substr($request->buy_no,'0',1) != "p"){
-                return redirect()->back()->with('error','採購單號必須為 P 開頭');     
-            }       
+                return redirect()->back()->with('error','採購單號必須為 P 開頭');
+            }
         }
         if(strlen($request->buy_no) != 12){
-            return redirect()->back()->with('error','採購單號長度有誤');            
+            return redirect()->back()->with('error','採購單號長度有誤');
         }
         $buy_no = substr($request->buy_no,'1');
         $buy = Buy::where('delete_flag','0')->where('buy_no',$buy_no)->first();
         if($buy){
-           
+
         } else {
-            return redirect()->back()->with('error','查無此單號');   
+            return redirect()->back()->with('error','查無此單號');
         }
 
         $materials = unserialize($buy->materials);
@@ -78,13 +83,13 @@ class P_exchangeController extends Controller
         $materialCount = 0;
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-        
+
             $material = Material::where('id',$materials['material'][$i])->first();
-            
+
             $style = ' style="display:none"';
             $readonly = ' readonly';
             $disabled = ' disabled';
-          
+
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
                 <td>
@@ -95,7 +100,7 @@ class P_exchangeController extends Controller
                     <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
                 </td>
                 <td>
-                    <span id="materialAmount_show'.$materialCount.'" class="materialAmount_show" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$materials['materialAmount'][$i].'</span>          
+                    <span id="materialAmount_show'.$materialCount.'" class="materialAmount_show" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$materials['materialAmount'][$i].'</span>
                 </td>
                 <td>
                     <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;">
@@ -133,7 +138,7 @@ class P_exchangeController extends Controller
                 $materialPrice[] = $request->materialPrice[$i];
             }
         }
-        
+
         $materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialPrice'=>$materialPrice];
 
         try{
@@ -157,7 +162,7 @@ class P_exchangeController extends Controller
 
             $buy->status_exchange = $request->status;
             $buy->save();
-            return redirect()->route('p_exchange.index')->with('message', '新增成功');            
+            return redirect()->route('p_exchange.index')->with('message', '新增成功');
         } catch(Exception $e) {
             return redirect()->route('p_exchange.index')->with('error', '新增失敗');
         }
@@ -191,17 +196,17 @@ class P_exchangeController extends Controller
         $materialCount = 0;
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-        
+
             $material = Material::where('id',$materials['material'][$i])->first();
-            
+
             $style = ' style="display:none"';
             if($exchange->status == 1){
-                $readonly = '';                
+                $readonly = '';
             } elseif($exchange->status == 2){
                 $readonly = ' readonly';
             }
             $disabled = ' disabled';
-          
+
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
                 <td>
@@ -255,13 +260,13 @@ class P_exchangeController extends Controller
                 $materialPrice[] = $request->materialPrice[$i];
             }
         }
-        
+
         $materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialPrice'=>$materialPrice];
 
         try{
             $exchange = P_exchange::find($id);
             $buy = Buy::find($exchange->buy_id);
-            
+
             $exchange->materials = serialize($materials);
             $exchange->exchangeDate = $request->exchangeDate;
             if($request->realExchangeDate){
@@ -274,7 +279,7 @@ class P_exchangeController extends Controller
 
             $buy->status_exchange = $request->status;
             $buy->save();
-            return redirect()->route('p_exchange.index')->with('message', '修改成功');            
+            return redirect()->route('p_exchange.index')->with('message', '修改成功');
         } catch(Exception $e) {
             return redirect()->route('p_exchange.index')->with('error', '修改失敗');
         }

@@ -29,6 +29,7 @@
                     <label class="btn btn-primary mr-1">
                         <input type="checkbox"
                             name="supplier"
+                            class="supplier"
                             id="supplier_{{ $supplierKey }}"
                             value="{{ $supplierKey }}"
                             checked
@@ -36,6 +37,9 @@
                         {{ $suppliers[$supplierKey]['shortName'] }}
                     </label>
                 @endforeach
+
+                {{-- <button class="btn btn-light btn-sm ml-5" onclick="selectAll();">全選</button>
+                <button class="btn btn-light btn-sm ml-2" onclick="selectNone();">全不選</button> --}}
             </div>
         </div>
         <button class="btn btn-success btn-lg float-right" onclick="self.print();">
@@ -91,6 +95,14 @@
 
             $("#table-" + obj.val()).hide();
         }
+    }
+
+    function selectAll() {
+        $(".supplier").prop('checked', true);
+    }
+
+    function selectNone() {
+        $(".supplier").prop('checked', false);
     }
     </script>
 @endsection

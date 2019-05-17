@@ -150,6 +150,8 @@ Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->gro
 
 
     // 月報表
+    Route::get('monthly_report/print', 'Monthly_reportController@print')->name('monthly_report.print');
+    Route::post('monthly_report/print', 'Monthly_reportController@print')->name('monthly_report.print');
     Route::resource('monthly_report', 'Monthly_reportController');
     // 年報表
     Route::resource('annual_report', 'Annual_reportController');

@@ -28,6 +28,10 @@
 <!-- BEGIN DASHBOARD STATS 1-->
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/05/17</li>
+        <ul>
+            <li>修復 [採購進貨 - 採購換貨 ] 無法執行的問題</li>
+        </ul>
         <li>2019/05/16</li>
         <ul>
             <li>[採購進貨 - 應收帳款] 增加供應商搜尋選項</li>
