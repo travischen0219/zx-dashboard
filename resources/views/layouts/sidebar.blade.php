@@ -405,25 +405,9 @@
                             </a>
                         </li>
 
-                        <li class="nav-item
-                            @if(Request::is('purchase/monthly_report*'))
-                                active open
-                            @endif">
-                            <a href="{{ route('monthly_report.print') }}" class="nav-link" target="_blank">
-                                <span class="title">月報表</span>
-                            </a>
-                        </li><li class="nav-item
-                            @if(Request::is('purchase/annual_report*'))
-                                active open
-                            @endif">
-                            <a href="{{ route('annual_report.index') }}" class="nav-link ">
-                                <span class="title"
-                                    @if(Request::is('purchase/annual_report*'))
-                                        style="color:#59deea;"
-                                    @endif>年報表</span>
-                                @if(Request::is('purchase/annual_report*'))
-                                    <span class="selected"></span>
-                                @endif
+                        <li class="nav-item">
+                            <a href="/print/buy" class="nav-link" target="_blank">
+                                <span class="title">報表</span>
                             </a>
                         </li>
                     </ul>

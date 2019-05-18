@@ -230,7 +230,6 @@ Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->gro
     Route::post('prime_cost/search','Prime_costController@search')->name('prime_cost.search');
 });
 
-
 Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(function(){
 
     Route::resource('inventory', 'InventoryController');
@@ -268,4 +267,9 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(fun
     Route::resource('residual_material_processing', 'Residual_material_processingController');
     Route::post('residual_material_processing/search','Residual_material_processingController@search')->name('residual_material_processing.search');
 
+});
+
+Route::middleware('admin.login')->prefix('print')->group(function(){
+    Route::get('buy','PrintController@buy');
+    Route::post('buy','PrintController@buy');
 });

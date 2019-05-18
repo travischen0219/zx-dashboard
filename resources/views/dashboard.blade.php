@@ -30,8 +30,12 @@
     <ul style="font-size: 24px;">
         <li>2019/05/18</li>
         <ul>
-            <li>[採購進貨 - 月報表] 可選輸出欄位</li>
-            <li>[採購進貨 - 月報表] 修正資料來源</li>
+            <li>[採購進貨 - 報表] 合併月報表及年報表</li>
+            <li>[採購進貨 - 報表] 可選輸出欄位</li>
+            <li>
+                [採購進貨 - 報表] 修正資料來源<br>
+                <img src="/images/dashboard/print.buy.png" width="800" style="margin: 10px 0;" />
+            </li>
         </ul>
 
         <li>2019/05/17</li>
