@@ -31,6 +31,10 @@
         <li>2019/05/19</li>
         <ul>
             <li>
+                [庫存盤點 - 盤點] 新增快速修正盤點差異數量：快速修正後，會自動加入誤差紀錄，以及修正物料跟倉庫內的數量<br>
+                <img src="/images/dashboard/quick_fix.png" style="max-width: 800px; margin: 10px 0;" />
+            </li>
+            <li>
                 [基本資料 - 物料模組] 新增批量修改數量<br>
                 <img src="/images/dashboard/module.batch.png" width="800" style="margin: 10px 0;" />
             </li>
