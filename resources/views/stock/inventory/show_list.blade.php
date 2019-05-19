@@ -9,6 +9,7 @@
 <link href="{{asset('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet" type="text/css" />
 <!-- END PAGE LEVEL PLUGINS -->
 <link href="{{asset('assets/apps/css/magnific-popup.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css" />
 
 <style>
     #sample_1 td{
@@ -26,35 +27,35 @@
         color:#fff;
         background-color: #248ff1;
     }
-    #sample_1_filter input { 
+    #sample_1_filter input {
         width:300px !important;
     }
     #popup{
         width:400px;
         height:160px;
-        display:block; 
+        display:block;
         background-color: white;
         margin:auto;
     }
     #popup p{
         padding-top:20px;
-        display:block; 
+        display:block;
         text-align:center;
     }
     #popup img{
-        display:block; 
+        display:block;
         margin:0 auto ;
         padding:0px 20px;
     }
     #pop_stock{
         width:85%;
         height:900px;
-        display:block; 
+        display:block;
         background-color: white;
         margin:auto;
     }
-    
-    
+
+
 </style>
 
 @endsection
@@ -66,11 +67,11 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
-                
+
 
 
 
@@ -79,7 +80,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -95,7 +96,7 @@
     <div class="col-md-12" style="margin-top:25px;">
 
     </div>
-    
+
     <div class="col-md-12">
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet light">
@@ -107,8 +108,8 @@
                 <div class="tools"> </div>
             </div>
 
-            
-                
+
+
             <div class="portlet-body">
                 <table class="table table-striped table-bordered table-hover" id="sample_1" >
                     <thead>
@@ -124,12 +125,12 @@
                             <th>異 常</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         @foreach($materials as $material)
                             @if(true)
                             <tr>
-                                <td>{{$material->warehouse_name->code}}</td>                                                                
+                                <td>{{$material->warehouse_name->code}}</td>
                                 <td>{{$material->material_name->fullCode}}</td>
                                 <td>
                                     @if($material->material_name->material_categories_code == '')
@@ -138,7 +139,7 @@
                                         [ {{$material->material_name->material_categories_code}} ] {{$material->material_name->material_category_name->name}}
                                     @endif
                                 </td>
-                                
+
                                 <td>{{$material->material_name->fullName}}</td>
                                 <td>
                                     @if($material->material_name->unit > 0 )
@@ -156,20 +157,33 @@
                                 </td>
                                 <td align="center">
                                     @if($material->physical_inventory == '')
-                                        <span style="color:red;">未盤點</span>                                                               
+                                        <span style="color:red;">未盤點</span>
                                     @elseif(($material->physical_inventory - $material->original_inventory) != 0)
-                                        <span style="color:red;">{{$material->physical_inventory - $material->original_inventory}}</span>
+                                        <span style="color:red;">
+                                            {{$material->physical_inventory - $material->original_inventory}}
+
+                                            @if ($material->quick_fix == 0)
+                                                <button type="button"
+                                                    class="btn btn-sm btn-warning"
+                                                    onclick="quickFix({{ $material->id }});"
+                                                    style="float: right;">
+                                                    <small style="float: right;">快速修正</small>
+                                                </button>
+                                            @else
+                                                <small class="text-success">已修正</small>
+                                            @endif
+                                        </span>
                                     @elseif(($material->physical_inventory - $material->original_inventory) == 0)
-                                        <span style="color:green;">正確</span>                                                                                                       
+                                        <span style="color:green;">正確</span>
                                     @endif
-                                </td>                                
+                                </td>
                             </tr>
                             @endif
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            
+
         </div>
         <!-- END EXAMPLE TABLE PORTLET-->
 
@@ -190,7 +204,7 @@
 <script src="{{asset('assets/pages/scripts/table-datatables-buttons.js')}}" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script src="{{asset('assets/apps/scripts/jquery.magnific-popup.js')}}" type="text/javascript"></script>
-
+<script src="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js')}}" type="text/javascript"></script>
 
 <script>
 $( document ).ready(function() {
@@ -198,6 +212,20 @@ $( document ).ready(function() {
 
 });
 
+function quickFix(id) {
+    swal({
+        title: "快速修正",
+        text: "將會依照差異數量自動填入誤差處理中，是否繼續？",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        closeOnConfirm: false
+    }, function () {
+        location.href = '/stock/inventory/quick_fix/{{ $inventory->id }}/' + id;
+    });
+}
 
 </script>
 @endsection

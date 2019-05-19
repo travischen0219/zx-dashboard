@@ -6,6 +6,7 @@ use App\Model\Stock;
 use App\Model\Material;
 use Illuminate\Http\Request;
 use App\Model\Material_warehouse;
+use App\Model\Warehouse;
 use App\Http\Controllers\Controller;
 
 class AdjustmentController extends Controller
@@ -47,7 +48,7 @@ class AdjustmentController extends Controller
      */
     public function create()
     {
-        return view('stock.adjustment.create');        
+        return view('stock.adjustment.create');
     }
 
     /**
@@ -59,13 +60,13 @@ class AdjustmentController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'lot_number' => 'required',                      
+            'lot_number' => 'required',
             // 'supplier' => 'required',
             'stock_date' => 'date_format:"Y-m-d"|required',
 
         ];
         $messages = [
-            'lot_number.required' => '批號 必填',                     
+            'lot_number.required' => '批號 必填',
             // 'supplier.required' => '尚未選擇 供應商',
             'stock_date.required' => '處理日期 必填',
             'stock_date.date_format' => '處理日期格式錯誤',
@@ -91,7 +92,7 @@ class AdjustmentController extends Controller
 
             try{
                 $total_materials = count($material);
-                for($i=0; $i < $total_materials; $i++){ 
+                for($i=0; $i < $total_materials; $i++){
 
                     $material_stock = Material::find($material[$i]);
                     $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$material[$i])->get();
@@ -130,13 +131,13 @@ class AdjustmentController extends Controller
                             $warehouse_end_quantity = $warehouse_start_quantity + $quantity;
                             $unit = $material_stock->material_unit_name->name;
                             $str = $warehouse_start_quantity.' '.$unit.' -> '.number_format($warehouse_end_quantity,2,'.','').' '.$unit;
-                            $find_warehouse_category = Warehouse::find($warehouse[$i]);  
-                            
+                            $find_warehouse_category = Warehouse::find($warehouse[$i]);
+
                             $material_warehouse_add = new Material_warehouse;
                             $material_warehouse_add->material_id = $material[$i];
                             $material_warehouse_add->warehouse_id = $warehouse[$i];
                             $material_warehouse_add->warehouse_category_id = $find_warehouse_category->category;
-                            $material_warehouse_add->stock = $quantity;                
+                            $material_warehouse_add->stock = $quantity;
                             $material_warehouse_add->created_user = session('admin_user')->id;
                             $material_warehouse_add->delete_flag = 0;
                             $material_warehouse_add->save();
@@ -147,13 +148,13 @@ class AdjustmentController extends Controller
                         $warehouse_end_quantity = $warehouse_start_quantity + $quantity;
                         $unit = $material_stock->material_unit_name->name;
                         $str = $warehouse_start_quantity.' '.$unit.' -> '.number_format($warehouse_end_quantity,2,'.','').' '.$unit;
-                        $find_warehouse_category = Warehouse::find($warehouse[$i]);                          
-                        
+                        $find_warehouse_category = Warehouse::find($warehouse[$i]);
+
                         $material_warehouse_add = new Material_warehouse;
                         $material_warehouse_add->material_id = $material[$i];
                         $material_warehouse_add->warehouse_id = $warehouse[$i];
                         $material_warehouse_add->warehouse_category_id = $find_warehouse_category->category;
-                        $material_warehouse_add->stock = $quantity;                
+                        $material_warehouse_add->stock = $quantity;
                         $material_warehouse_add->created_user = session('admin_user')->id;
                         $material_warehouse_add->delete_flag = 0;
                         $material_warehouse_add->save();
@@ -161,15 +162,15 @@ class AdjustmentController extends Controller
                         $material_stock->warehouse = $warehouse[$i];
                         $material_stock->warehouse_category = $find_warehouse_category->category;
                     }
-                    
+
                     $stock = new Stock;
-                    $stock->lot_number = $request->lot_number;        
+                    $stock->lot_number = $request->lot_number;
                     $stock->stock_option = 2;
-                    $stock->status = 0;            
-                    $stock->stock_no = $material_stock->stock_no + 1;                                                              
+                    $stock->status = 0;
+                    $stock->stock_no = $material_stock->stock_no + 1;
                     $stock->material = $material[$i];
                     $stock->warehouse = $warehouse[$i];
-                    $stock->total_start_quantity = $material_stock->stock;                                    
+                    $stock->total_start_quantity = $material_stock->stock;
                     $stock->start_quantity = $warehouse_start_quantity;
                     $stock->quantity = $quantity;
                     $stock->calculate_quantity = $str;
@@ -180,7 +181,7 @@ class AdjustmentController extends Controller
                     $stock->save();
 
                     $material_end_quantity = $material_start_quantity + $quantity;
-                    $material_stock->stock_no = $material_stock->stock_no + 1;                    
+                    $material_stock->stock_no = $material_stock->stock_no + 1;
                     $material_stock->stock = $material_end_quantity;
                     $material_stock->save();
                 }

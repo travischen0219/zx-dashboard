@@ -232,6 +232,7 @@ Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->gro
 
 Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(function(){
 
+    Route::get('inventory/quick_fix/{inventoryID}/{id}','InventoryController@quick_fix');
     Route::resource('inventory', 'InventoryController');
     Route::post('inventory/search','InventoryController@search')->name('inventory.search');
     Route::get('inventory/edit_list/{id}','InventoryController@edit_list');

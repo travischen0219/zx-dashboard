@@ -7,6 +7,7 @@ use App\Model\User;
 use App\Model\Material;
 use App\Model\Inventory;
 use App\Model\Material_unit;
+use App\Model\Stock;
 use Illuminate\Http\Request;
 use App\Model\Inventory_list;
 use App\Model\Material_warehouse;
@@ -62,10 +63,10 @@ class InventoryController extends Controller
         }
 
         if(Warehouse_category::where('delete_flag','0')->count() > 0){
-            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();  
-            return view('stock.inventory.create',compact('inventory_no','cates')); 
+            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
+            return view('stock.inventory.create',compact('inventory_no','cates'));
         } else {
-            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');                        
+            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');
         }
 
     }
@@ -81,12 +82,12 @@ class InventoryController extends Controller
 
 
         $rules = [
-            'lot_number' => 'required',   
+            'lot_number' => 'required',
             'inventory_sdate' => 'date_format:"Y-m-d"|required',
             // 'inventory_edate' => 'date_format:"Y-m-d"|required',
         ];
         $messages = [
-            'lot_number.required' => '批號 必填',  
+            'lot_number.required' => '批號 必填',
             'inventory_sdate.date_format' => '盤點開始日期限格式錯誤',
             'inventory_sdate.required' => '盤點開始日期 必填',
             // 'inventory_edate.date_format' => '盤點結束日期格式錯誤',
@@ -134,7 +135,7 @@ class InventoryController extends Controller
                     $inventory_list->lot_number = $request->lot_number;
                     $inventory_list->inventory_id = $inventory->id;
                     $inventory_list->material_id = $material->material_id;
-                    $inventory_list->warehouse_id = $material->warehouse_id;                    
+                    $inventory_list->warehouse_id = $material->warehouse_id;
                     $inventory_list->original_inventory = $material->stock;
                     $inventory_list->created_user = session('admin_user')->id;
                     $inventory_list->delete_flag = 0;
@@ -194,7 +195,7 @@ class InventoryController extends Controller
     public function show_list($id)
     {
         $inventory = Inventory::find($id);
-        $materials = Inventory_list::where('inventory_id',$id)->get();        
+        $materials = Inventory_list::where('inventory_id',$id)->get();
         return view('stock.inventory.show_list', compact('inventory','materials'));
     }
 
@@ -209,24 +210,24 @@ class InventoryController extends Controller
     {
         if($request->status == 2){
             if($request->inventory_edate == ''){
-                return redirect()->back()->with('error', '盤點結束日期 必填');            
+                return redirect()->back()->with('error', '盤點結束日期 必填');
             }
         }
-        
+
         $rules = [
-            // 'lot_number' => 'required',   
+            // 'lot_number' => 'required',
             // 'inventory_sdate' => 'date_format:"Y-m-d"|required',
             'inventory_edate' => 'date_format:"Y-m-d"|required',
         ];
         $messages = [
-            // 'lot_number.required' => '批號 必填',  
+            // 'lot_number.required' => '批號 必填',
             // 'inventory_sdate.date_format' => '盤點開始日期限格式錯誤',
-            'inventory_edate.required' => '盤點結束日期 必填',            
+            'inventory_edate.required' => '盤點結束日期 必填',
             'inventory_edate.date_format' => '盤點結束日期格式錯誤',
         ];
         $this->validate($request, $rules, $messages);
 
-        
+
             try{
                 $inquiry = Inventory::find($id);
                 // $inquiry->lot_number = $request->lot_number;
@@ -236,14 +237,14 @@ class InventoryController extends Controller
                 $inquiry->status = $request->status;
                 $inquiry->updated_user = session('admin_user')->id;
                 $inquiry->save();
-                
-                return redirect()->route('inventory.index')->with('message', '修改成功');                    
-               
+
+                return redirect()->route('inventory.index')->with('message', '修改成功');
+
             } catch(Exception $e) {
                 return redirect()->route('inventory.index')->with('error', '修改失敗');
             }
 
-        
+
     }
 
     /**
@@ -262,9 +263,66 @@ class InventoryController extends Controller
             $inquiry->save();
             return redirect()->route('inventory.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('inventory.index')->with('error','刪除失敗');            
-        } 
+            return redirect()->route('inventory.index')->with('error','刪除失敗');
+        }
     }
+
+    public function quick_fix(Request $request)
+    {
+        $inventoryID = $request->inventoryID ?? 0;
+        $id = $request->id ?? 0;
+
+        if ($inventoryID == 0 || $id == 0) exit();
+
+        // 盤點表
+        $inventory = Inventory::find($inventoryID);
+
+        // 盤點細目
+        $inventory_list = Inventory_list::find($id);
+        $inventory_list->quick_fix = 1;
+        $inventory_list->save();
+
+        // 物料
+        $material = Material::find($inventory_list->material_id);
+
+        // 物料單位
+        $material_unit = Material_unit::find($material->unit);
+        $unit = $material_unit->name;
+
+        // 物料倉庫
+        $material_warehouse = Material_warehouse::where('material_id', $inventory_list->material_id)
+            ->where('warehouse_id', $inventory_list->warehouse_id)->first();
+
+        // 建立一筆差異
+        $stock = new Stock;
+        $stock->lot_number = "{$inventory->inventory_no} {$inventory->lot_number} 快速修正";
+        $stock->stock_option = 2;
+        $stock->status = 0;
+        $stock->stock_no = $material->stock_no + 1;   // 序號重物料序號+1
+        $stock->material = $inventory_list->material_id;
+        $stock->warehouse = $inventory_list->warehouse_id;
+        $stock->total_start_quantity = $material->stock;
+        $stock->start_quantity = $material_warehouse->stock;
+        $stock->quantity = -$inventory_list->original_inventory;
+        $stock->calculate_quantity = "{$stock->total_start_quantity} $unit -> " . ($material->stock + $stock->quantity) . " $unit";
+        $stock->stock_date = date('Y-m-d');
+        $stock->memo = '';
+        $stock->created_user = session('admin_user')->id;
+        $stock->delete_flag = 0;
+        $stock->save();
+
+        // 存回物料
+        $material->stock = $material->stock - $inventory_list->original_inventory;
+        $material->stock_no = $material->stock_no + 1;
+        $material->save();
+
+        // 存回物料倉庫
+        $material_warehouse->stock = $material->stock - $inventory_list->original_inventory;
+        $material_warehouse->save();
+
+        return redirect('/stock/inventory/show_list/' . $inventoryID);
+    }
+
 }
 
 
