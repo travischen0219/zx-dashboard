@@ -28,6 +28,14 @@
 <!-- BEGIN DASHBOARD STATS 1-->
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/05/19</li>
+        <ul>
+            <li>
+                [基本資料 - 物料模組] 新增批量修改數量<br>
+                <img src="/images/dashboard/module.batch.png" width="800" style="margin: 10px 0;" />
+            </li>
+        </ul>
+
         <li>2019/05/18</li>
         <ul>
             <li>[採購進貨 - 報表] 合併月報表及年報表</li>

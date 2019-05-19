@@ -197,7 +197,7 @@ var TableDatatablesButtons = function () {
                 "zeroRecords": "查無資料",
             },
             buttons: [
-                // { extend: 'print', className: 'btn dark btn-outline' ,text: '列印'},
+                { extend: 'print', className: 'btn dark btn-outline' ,text: '列印'},
                 { extend: 'copy', className: 'btn red btn-outline' ,text: '複製'},
                 // { extend: 'pdf', className: 'btn yellow btn-outline' ,text: 'PDF 下載'},
                 { extend: 'excel', className: 'btn green btn-outline ' ,text: 'Excel 下載'},

@@ -216,6 +216,7 @@
 <script>
     $(function () {
         var table = $('#sample_3').DataTable();
+        table.button('3').remove();
         table.button('2').remove();
         table.button('1').remove();
         table.button('0').remove();
