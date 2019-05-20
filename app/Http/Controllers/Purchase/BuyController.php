@@ -115,7 +115,14 @@ class BuyController extends Controller
         }
 
         if (count($material) > 0) {
-            $materials = ['material' => $material, 'materialCalAmount' => $materialCalAmount, 'materialCalAmount2' => $materialCalAmount2, 'materialCalUnit' => $materialCalUnit, 'materialCalPrice' => $materialCalPrice, 'materialAmount' => $materialAmount, 'materialPrice' => $materialPrice];
+            $materials = ['material' => $material,
+                'materialCalAmount' => $materialCalAmount,
+                'materialCalAmount2' => $materialCalAmount2,
+                'materialCalUnit' => $materialCalUnit,
+                'materialCalPrice' => $materialCalPrice,
+                'materialAmount' => $materialAmount,
+                'materialPrice' => $materialPrice
+            ];
 
             try {
                 $buy = new Buy;
@@ -235,30 +242,31 @@ class BuyController extends Controller
                 </td>
 
                 <td>
-                    <input type="text" name="materialCalAmount2[]" id="materialCalAmount2' . $materialCount . '" class="materialCalAmount2" placeholder="0" style="width:100px; height: 30px; vertical-align: middle;" value="' . number_format($materials['materialCalAmount2'][$i], 2, '.', '') . '" ' . $readonly . '>
+                    <input type="text" name="materialCalAmount2[]" id="materialCalAmount2' . $materialCount . '" class="materialCalAmount2" placeholder="0" style="width:80px; height: 30px; vertical-align: middle;" value="' . number_format($materials['materialCalAmount2'][$i], 2, '.', '') . '" ' . $readonly . '>
                 </td>
                 <td>
                     ' . $select_hidden . '
-                    <select id="materialCalUnit' . $materialCount . '" name="materialCalUnit[]" class="materialcalUnit" style="width: 100px; line-height: 30px; vertical-align: middle;" ' . $disabled . '>
+                    <select id="materialCalUnit' . $materialCount . '" name="materialCalUnit[]" class="materialcalUnit" style="width: 80px; line-height: 30px; vertical-align: middle;" ' . $disabled . '>
                     ' . $select_str . '
                     </select>
                 </td>
                 <td>
-                    <input type="text" name="materialCalPrice[]" id="materialCalPrice' . $materialCount . '" class="materialCalPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="' . $materials['materialCalPrice'][$i] . '" ' . $readonly . '>
+                    <input type="text" name="materialCalPrice[]" id="materialCalPrice' . $materialCount . '" class="materialCalPrice" placeholder="0" style="width: 80px;height: 30px; vertical-align: middle;" value="' . $materials['materialCalPrice'][$i] . '" ' . $readonly . '>
                 </td>
 
 
                 <td>
-                    <input type="text" name="materialAmount[]" id="materialAmount' . $materialCount . '" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="' . $materialAmount . '" ' . $readonly . '>
+                    <input type="text" name="materialAmount[]" id="materialAmount' . $materialCount . '" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:80px; height: 30px; vertical-align: middle;" value="' . $materialAmount . '" ' . $readonly . '>
+                    / <span id="materialStock' . $materialCount . '">' . $material->stock . '</span>
                 </td>
                 <td>
-                    <input type="text" name="materialCalAmount[]" id="materialCalAmount' . $materialCount . '" class="materialCalAmount" placeholder="0" style="width:100px; height: 30px; vertical-align: middle;" value="' . number_format($materials['materialCalAmount'][$i], 2, '.', '') . '" ' . $readonly . '>
+                    <input type="text" name="materialCalAmount[]" id="materialCalAmount' . $materialCount . '" class="materialCalAmount" placeholder="0" style="width:80px; height: 30px; vertical-align: middle;" value="' . number_format($materials['materialCalAmount'][$i], 2, '.', '') . '" ' . $readonly . '>
                 </td>
                 <td>
                     <span id="materialUnit_show' . $materialCount . '" style="width: 100px; line-height: 30px; vertical-align: middle;">' . $material->material_unit_name->name . '</span>
                 </td>
                 <td>
-                    <input type="text" name="materialPrice[]" id="materialPrice' . $materialCount . '" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="' . $materialPrice . '" ' . $readonly . '>
+                    <input type="text" name="materialPrice[]" id="materialPrice' . $materialCount . '" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 80px;height: 30px; vertical-align: middle;" value="' . $materialPrice . '" ' . $readonly . '>
                 </td>
                 <td>
                     <span id="materialSubTotal' . $materialCount . '" class="materialSubTotal" style="line-height: 30px; vertical-align: middle;">0</span>
@@ -486,32 +494,33 @@ class BuyController extends Controller
         $data = '<tr id="materialRow' . $materialCount . '" class="materialRow">
             <td><a href="javascript:delMaterial(' . $materialCount . ');" class="btn red"><i class="fa fa-remove"></i></a></td>
             <td>
-                <button type="button" onclick="openSelectMaterial(' . $materialCount . ');" id="materialName' . $materialCount . '" name="materialName' . $materialCount . '" class="btn btn-default get_material_name" style="width: 100%; margin-right: 10px; overflow: hidden;"> 請選擇物料</button>
+                <button type="button" onclick="openSelectMaterial(' . $materialCount . ');" id="materialName' . $materialCount . '" name="materialName' . $materialCount . '" class="btn btn-default get_material_name" style="width: 80%; margin-right: 10px; overflow: hidden;"> 請選擇物料</button>
                 <input type="hidden" name="material[]" id="material' . $materialCount . '" class="select_material">
             </td>
             <td>
-                <input type="text" name="materialCalAmount2[]" id="materialCalAmount2' . $materialCount . '" class="materialCalAmount2" placeholder="0" style="width:100px; height: 30px; vertical-align: middle;">
+                <input type="text" name="materialCalAmount2[]" id="materialCalAmount2' . $materialCount . '" class="materialCalAmount2" placeholder="0" style="width:80px; height: 30px; vertical-align: middle;">
             </td>
             <td>
-                <select id="materialCalUnit' . $materialCount . '" name="materialCalUnit[]" class="materialCalUnit" style="width: 100px; line-height: 30px; vertical-align: middle;">
+                <select id="materialCalUnit' . $materialCount . '" name="materialCalUnit[]" class="materialCalUnit" style="width: 80px; line-height: 30px; vertical-align: middle;">
                 ' . $select_str . '
                 </select>
             </td>
             <td>
-                <input type="text" name="materialCalPrice[]" id="materialCalPrice' . $materialCount . '" class="materialCalPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;">
+                <input type="text" name="materialCalPrice[]" id="materialCalPrice' . $materialCount . '" class="materialCalPrice" placeholder="0" style="width: 80px;height: 30px; vertical-align: middle;">
             </td>
 
-            <td>
-                <input type="text" name="materialAmount[]" id="materialAmount' . $materialCount . '" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;">
+            <td nowrap>
+                <input type="text" name="materialAmount[]" id="materialAmount' . $materialCount . '" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:80px; height: 30px; vertical-align: middle;">
+                / <span id="materialStock' . $materialCount . '">0</span>
             </td>
             <td>
-            <input type="text" name="materialCalAmount[]" id="materialCalAmount' . $materialCount . '" class="materialCalAmount" placeholder="0" style="width:100px; height: 30px; vertical-align: middle;">
+            <input type="text" name="materialCalAmount[]" id="materialCalAmount' . $materialCount . '" class="materialCalAmount" placeholder="0" style="width:80px; height: 30px; vertical-align: middle;">
         </td>
             <td>
                 <span id="materialUnit_show' . $materialCount . '" style="width: 100px; line-height: 30px; vertical-align: middle;">無</span>
             </td>
             <td>
-                <input type="text" name="materialPrice[]" id="materialPrice' . $materialCount . '" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;">
+                <input type="text" name="materialPrice[]" id="materialPrice' . $materialCount . '" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 80px;height: 30px; vertical-align: middle;">
             </td>
             <td>
                 <span id="materialSubTotal' . $materialCount . '" class="materialSubTotal" style="line-height: 30px; vertical-align: middle;">0</span>

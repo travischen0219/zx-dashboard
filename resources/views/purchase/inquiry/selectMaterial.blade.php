@@ -58,7 +58,7 @@
             color:#fff;
             background-color: #248ff1;
         }
-        #sample_2_filter input { 
+        #sample_2_filter input {
             width:300px !important;
         }
 
@@ -72,7 +72,7 @@
             background: url("{{asset('assets/apps/img/loader_icon.gif')}}") 50% 50% no-repeat rgb(249,249,249);
             background-size:120px 120px;
         }
-        
+
     </style>
 </head>
 <body>
@@ -93,12 +93,12 @@
                                 <label class="col-md-3 control-label" style="color:#248ff1;font-size: 16px;line-height: 32px;text-align: center"> 篩選分類 :</label>
                                 <div class="col-md-9">
                                     <select class="form-control" style="font-size: 14px;" name="search_category" onchange="search();">
-    
+
                                         <option value="all" {{$search_code == 'all' ? 'selected' : ''}}>全部</option>
                                         @foreach($material_categories as $cate)
                                             <option value="{{$cate->code}}" {{ $search_code == $cate->code ? 'selected' : '' }}>[ {{$cate->code}} ] {{$cate->name}}</option>
                                         @endforeach
-                                        
+
                                     </select>
                                 </div>
                         </div>
@@ -111,7 +111,7 @@
                 </div>
             </form>
         </div>
-        
+
         <div class="col-md-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET-->
              <div class="portlet-title">
@@ -130,35 +130,37 @@
                     </div>
                     <div class="tools"> </div>
                 </div>
-    
-                
-                    
+
+
+
                 <div class="portlet-body">
                     <table class="table table-striped table-bordered table-hover" id="sample_2" >
                         <thead>
                             <tr>
-                                <th style="width:200px;">操 作</th>
+                                <th style="width: 100px;">操 作</th>
                                 <th>編 號</th>
                                 <th>分 類</th>
                                 <th>品 名</th>
                                 <th>單 位</th>
                                 <th>尺 寸</th>
                                 <th>顏 色</th>
+                                <th>庫 存</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             @foreach($materials as $material)
                                 @if(true)
                                 <tr>
                                     <td align="center" id="functions_btn">
-                                        <a href="javascript:;" class="btn blue btn-outline btn-sm" 
+                                        <a href="javascript:;" class="btn blue btn-outline btn-sm"
                                         onclick="parent.setMaterial('{{$material->fullCode}}','{{$material->fullName}}','{{$material->buy}}',
                                                                     '{{$material->unit}}','{{$material->cost}}','{{$material->price}}',
                                                                     '{{$material->id}}','{{$material->material_unit_name->name}}','{{$material->warehouse > 0 ? $material->warehouse_name->code : ''}}',
                                                                     '{{$material->warehouse > 0 ? $material->warehouse : ''}}',
                                                                     '{{$material->cal_unit}}',
-                                                                    '{{$material->cal_price > 0 ? $material->cal_price : 0}}');">選擇</a>    
+                                                                    '{{$material->cal_price > 0 ? $material->cal_price : 0}}',
+                                                                    '{{ $material->stock }}');">選擇</a>
                                     </td>
                                     <td>{{$material->fullCode}}</td>
                                     <td>
@@ -168,11 +170,12 @@
                                             [ {{$material->material_categories_code}} ] {{$material->material_category_name->name}}
                                         @endif
                                     </td>
-                                    
+
                                     <td>{{$material->fullName}}</td>
                                     <td>{{$material->material_unit_name->name}}</td>
                                     <td>{{$material->size}}</td>
                                     <td>{{$material->color}}</td>
+                                    <td>{{$material->stock}}</td>
                                 </tr>
                                 @endif
                             @endforeach
@@ -181,13 +184,13 @@
                 </div>
             </div>
             <!-- END EXAMPLE TABLE PORTLET-->
-    
+
         </div>
     </div>
 </div>
 
 
-    
+
 
 <!-- BEGIN CORE PLUGINS -->
 <script src="{{asset('assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>

@@ -25,7 +25,7 @@
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
         background: #248ff1; }
 
-    
+
 
     .form-group.form-md-line-input .form-control::-moz-placeholder {
         color: #248ff1;}
@@ -74,7 +74,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -83,7 +83,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -103,7 +103,7 @@
             <div class="portlet-body form">
                 <form role="form" action="{{ route('buy.update',$buy->id) }}" method="POST" id="buy_from">
                     {{ csrf_field() }}
-                    {{ method_field('PUT') }}                                                
+                    {{ method_field('PUT') }}
                     <div class="form-body">
 
                         <div class="col-md-12" style="height:90px;">
@@ -119,14 +119,14 @@
                                 </div>
                             </div>
                             <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
-                                供應商 : 
+                                供應商 :
                                 <button type="button" class="btn blue">{{ $buy->supplier_name->code.' '.$buy->supplier_name->shortName}}</button>
                             </div>
-                            
+
                             <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
-                                採購單號 : <span style="color:#000">P{{$buy->buy_no}}</span> 
+                                採購單號 : <span style="color:#000">P{{$buy->buy_no}}</span>
                             </div>
-                           
+
 
 
                         </div>
@@ -148,12 +148,12 @@
                                 </div>
                             @elseif($buy->status == 4)
                                 <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
-                                    採購狀態 : <span style="color:blue">採購轉入庫</span> 
+                                    採購狀態 : <span style="color:blue">採購轉入庫</span>
                                 </div>
                             @endif
 
                             <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
-                                加工廠商 : 
+                                加工廠商 :
                                 <button id="select_manufacturer" type="button" class="btn blue" onclick="selectManufacturer();">按此選擇</button>
                                 <input type="hidden" id="manufacturer" name="manufacturer">
                             </div>
@@ -190,7 +190,7 @@
                                     <label for="memo" style="color:#248ff1;font-size: 16px;">採購註解</label>
                                 </div>
                             </div>
-                            
+
                         </div>
 
 
@@ -207,12 +207,12 @@
                                     <div style="margin-left:7px;margin-bottom: 10px;">
                                         @if($buy->status == 1)
                                             <a href="javascript:addMaterial();" class="btn btn-primary"><i class="fa fa-plus"></i> 新增物料</a>
-                                            <a href="javascript:openMaterial_module();" class="btn btn-primary"><i class="fa fa-plus"></i> 選擇物料模組</a>                                                                               
+                                            <a href="javascript:openMaterial_module();" class="btn btn-primary"><i class="fa fa-plus"></i> 選擇物料模組</a>
                                         @else
 
-                                        @endif                                                                      
+                                        @endif
                                     </div>
-                                    
+
                                     <div class="table-responsive">
                                         <table id="materialTable" class="table">
                                             <thead>
@@ -232,7 +232,7 @@
                                             </thead>
                                             <tbody>
                                                 {!! $data !!}
-                                                
+
                                             </tbody>
                                         </table>
                                         <hr>
@@ -242,7 +242,7 @@
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->
                         </div>
-                    
+
                         <div class="col-md-12" style="margin-top:10px;">
                             <div class="well">
                                 <span>最後修改人員 : {{ $updated_user->fullname }} @if($updated_user->delete_flag != 0) <span style="color:red;">(該人員已刪除)</span> @endif</span><br>
@@ -252,11 +252,11 @@
 
                         <div class="col-md-12">
                             <div class="form-actions noborder">
-                                @if($buy->status == 1 || $buy->status == 2 || $buy->status == 3 || $buy->status == 11)  
+                                @if($buy->status == 1 || $buy->status == 2 || $buy->status == 3 || $buy->status == 11)
                                     <button type="button" class="btn" onclick="submit_btn();" style="color:#fff;background-color: #248ff1;"><i class="fa fa-check"></i> 存 檔</button>
                                     <a href="{{ route('buy.index') }}" class="btn red"><i class="fa fa-times"></i> 取 消</a>
                                 @elseif($buy->status == 4)
-                                    <a href="{{ route('buy.index') }}" class="btn" style="color:#fff;background-color: #248ff1;"><i class="fa fa-reply"></i> 返 回</a>                                    
+                                    <a href="{{ route('buy.index') }}" class="btn" style="color:#fff;background-color: #248ff1;"><i class="fa fa-reply"></i> 返 回</a>
                                 @endif
                             </div>
 
@@ -297,9 +297,9 @@
 
 function selectSupplier() {
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -316,9 +316,9 @@ function setSupplier(code,name,id){
 
 function selectManufacturer() {
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -343,12 +343,12 @@ $( function() {
     $( "#datepicker02" ).datepicker('option', "dateFormat", "yy-mm-dd");
     $( "#datepicker02" ).datepicker('option', 'firstDay', 1);
     $( "#datepicker02" ).datepicker('setDate', "{{ $buy->expectedReceiveDate }}");
-    
+
     $( "#datepicker03" ).datepicker();
     $( "#datepicker03" ).datepicker('option', "dateFormat", "yy-mm-dd");
     $( "#datepicker03" ).datepicker('option', 'firstDay', 1);
     $( "#datepicker03" ).datepicker('setDate', "{{ $buy->realReceiveDate }}");
-    
+
 });
 
 var materialCount = $("#materialCount").val();
@@ -358,7 +358,7 @@ var currentMaterial = 0;
 
 function addMaterial() {
     $.post(
-        "{{ route('selectMaterial_buy.addRow') }}", 
+        "{{ route('selectMaterial_buy.addRow') }}",
         {'_token':"{{csrf_token()}}",'materialCount': materialCount},
         function(response) {
             $("#materialTable").append(response);
@@ -378,9 +378,9 @@ function delMaterial(id) {
 function openSelectMaterial(id) {
     currentMaterial = id;
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -388,7 +388,7 @@ function openSelectMaterial(id) {
     });
 }
 
-function setMaterial(code,name,buy,unit,cost,price,id,unit_name,warehouse_name,warehouse_id,cal_unit,cal_price){
+function setMaterial(code,name,buy,unit,cost,price,id,unit_name,warehouse_name,warehouse_id,cal_unit,cal_price,stock){
     $.magnificPopup.close();
     var str = code+' '+name;
     if(cal_unit == ''){
@@ -398,22 +398,23 @@ function setMaterial(code,name,buy,unit,cost,price,id,unit_name,warehouse_name,w
     $('#material' + currentMaterial).val(id);
     $('#materialCalAmount' + currentMaterial).val(buy);
     $('#materialCalUnit' + currentMaterial).val(cal_unit);
-    $('#materialCalPrice' + currentMaterial).val(cal_price);    
+    $('#materialCalPrice' + currentMaterial).val(cal_price);
     $('#materialUnit_show' + currentMaterial).html(unit_name);
     $('#materialPrice' + currentMaterial).val(cost);
+    $('#materialStock' + currentMaterial).html(stock);
     // $('#materialUnit' + currentMaterial).children().each(function(){
     //     if ($(this).val()==unit){
     //             $(this).attr("selected", "true");
     //     }
     // });
-    total();    
+    total();
 }
 
 function openMaterial_module() {
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -424,7 +425,7 @@ function openMaterial_module() {
 function setMaterial_module(module_id){
     $.magnificPopup.close();
     $.post(
-        "{{ route('selectMaterialModule_buy.addModule') }}", 
+        "{{ route('selectMaterialModule_buy.addModule') }}",
         {'_token':"{{csrf_token()}}",'id': module_id,'materialCount': materialCount},
         function(response) {
 
@@ -440,7 +441,7 @@ function total() {
 
     $(".materialRow").each(function(index, el) {
         var subTotal = 0;
-        
+
         var materialcalUnit = $(this).find(".materialcalUnit").val();
         var materialCalAmount2 = $(this).find(".materialCalAmount2").val();
         var materialCalPrice = $(this).find(".materialCalPrice").val();
@@ -455,7 +456,7 @@ function total() {
 
         var subAmount = $(this).find(".materialAmount").val();
         var subPrice = $(this).find(".materialPrice").val();
-       
+
         if(isNaN(subAmount) || isNaN(subPrice)) {
             $(this).find(".materialSubTotal").html("請輸入數字");
         } else {
@@ -479,7 +480,7 @@ function round(value, precision) {
   } else {
     return Math.round(value);
   }
-} 
+}
 
 function submit_btn(){
     if($('#lot_number').val() == ''){
@@ -487,7 +488,7 @@ function submit_btn(){
         return;
     } else if($('#supplier').val() == ''){
         $('#error_supplier').click();
-        return;       
+        return;
     }
     // if($('#datepicker01').val() == ''){
     //     $('#error_buyDate').click();
@@ -538,7 +539,7 @@ function submit_btn(){
 
         if($(this).find(".materialAmount").val() == 0 || $(this).find(".materialAmount").val() == ''){
             check_stock_amount++;
-        } 
+        }
     });
     if(check_material == 0){
         $('#error_material').click();
@@ -567,7 +568,7 @@ function submit_btn(){
 
 
     $("#loader").fadeIn("slow");
-    
+
     $("#buy_from").submit();
 
 }

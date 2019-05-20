@@ -25,7 +25,7 @@
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
         background: #248ff1; }
 
-    
+
 
     .form-group.form-md-line-input .form-control::-moz-placeholder {
         color: #248ff1;}
@@ -59,7 +59,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -68,7 +68,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -99,7 +99,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
-                                供應商 : 
+                                供應商 :
                                 <button id="select_supplier" type="button" class="btn blue" onclick="selectSupplier();">按此選擇</button>
                                 <input type="hidden" id="supplier" name="supplier">
                             </div>
@@ -108,7 +108,7 @@
                             </div>
 
                             <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
-                                採購單號 : <span style="color:#000">P{{$buy_no}}</span> 
+                                採購單號 : <span style="color:#000">P{{$buy_no}}</span>
                                 <input type="hidden" name="buy_no" value="{{$buy_no}}">
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                                     <label for="memo" style="color:#248ff1;font-size: 16px;">採購註解</label>
                                 </div>
                             </div>
-                            
+
                         </div>
 
 
@@ -152,9 +152,9 @@
                                 <div class="portlet-body">
                                     <div style="margin-left:7px;margin-bottom: 10px;">
                                         <a href="javascript:addMaterial();" class="btn btn-primary"><i class="fa fa-plus"></i> 新增物料</a>
-                                        <a href="javascript:openMaterial_module();" class="btn btn-primary"><i class="fa fa-plus"></i> 選擇物料模組</a>                                                                              
+                                        <a href="javascript:openMaterial_module();" class="btn btn-primary"><i class="fa fa-plus"></i> 選擇物料模組</a>
                                     </div>
-                                    
+
                                     <div class="table-responsive">
                                         <table id="materialTable" class="table">
                                             <thead>
@@ -173,8 +173,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
-                                                
+
+
                                             </tbody>
                                         </table>
                                         <hr>
@@ -187,16 +187,16 @@
 
 
 
-                    
-                        <div class="col-md-12">        
+
+                        <div class="col-md-12">
                             <div class="form-actions noborder">
                                 <button type="button" class="btn" onclick="submit_btn();" style="color:#fff;background-color: #248ff1;"><i class="fa fa-check"></i> 存 檔</button>
-                                
+
                                 <a href="{{ route('buy.index') }}" class="btn red"><i class="fa fa-times"></i> 取 消</a>
                             </div>
                         </div>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
@@ -230,9 +230,9 @@
 
 function selectSupplier() {
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -265,7 +265,7 @@ var materialCount = 0;
 var currentMaterial = 0;
 function addMaterial() {
     $.post(
-        "{{ route('selectMaterial_buy.addRow') }}", 
+        "{{ route('selectMaterial_buy.addRow') }}",
         {'_token':"{{csrf_token()}}",'materialCount': materialCount},
         function(response) {
             $("#materialTable").append(response);
@@ -285,9 +285,9 @@ function delMaterial(id) {
 function openSelectMaterial(id) {
     currentMaterial = id;
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -296,8 +296,8 @@ function openSelectMaterial(id) {
 }
 
 
-function setMaterial(code,name,buy,unit,cost,price,id,unit_name,warehouse_name,warehouse_id,cal_unit,cal_price){
-    
+function setMaterial(code,name,buy,unit,cost,price,id,unit_name,warehouse_name,warehouse_id,cal_unit,cal_price,stock){
+
     $.magnificPopup.close();
     var str = code+' '+name;
     if(cal_unit == ''){
@@ -307,17 +307,18 @@ function setMaterial(code,name,buy,unit,cost,price,id,unit_name,warehouse_name,w
     $('#material' + currentMaterial).val(id);
     $('#materialCalAmount' + currentMaterial).val(buy);
     $('#materialCalUnit' + currentMaterial).val(cal_unit);
-    $('#materialCalPrice' + currentMaterial).val(cal_price);    
+    $('#materialCalPrice' + currentMaterial).val(cal_price);
     $('#materialUnit_show' + currentMaterial).html(unit_name);
     $('#materialPrice' + currentMaterial).val(cost);
-    total();    
+    $('#materialStock' + currentMaterial).html(stock);
+    total();
 }
 
 function openMaterial_module() {
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -328,7 +329,7 @@ function openMaterial_module() {
 function setMaterial_module(module_id){
     $.magnificPopup.close();
     $.post(
-        "{{ route('selectMaterialModule_buy.addModule') }}", 
+        "{{ route('selectMaterialModule_buy.addModule') }}",
         {'_token':"{{csrf_token()}}",'id': module_id,'materialCount': materialCount},
         function(response) {
 
@@ -343,13 +344,13 @@ function total() {
     var total = 0;
     $(".materialRow").each(function(index, el) {
         var subTotal = 0;
-        
+
         var materialCalUnit = $(this).find(".materialCalUnit").val();
         var materialCalAmount2 = $(this).find(".materialCalAmount2").val();
         var materialCalPrice = $(this).find(".materialCalPrice").val();
         var materialCalAmount = $(this).find(".materialCalAmount").val();
         if(materialCalUnit=="7"){
-            
+
             ssu = materialCalAmount2*materialCalPrice/materialCalAmount;
             ssu = round(ssu, 1);
             $(this).find(".materialPrice").val(ssu);
@@ -382,7 +383,7 @@ function round(value, precision) {
   } else {
     return Math.round(value);
   }
-} 
+}
 
 
 function submit_btn(){
@@ -391,7 +392,7 @@ function submit_btn(){
         return;
     } else if($('#supplier').val() == ''){
         $('#error_supplier').click();
-        return;       
+        return;
     } else if($('#datepicker01').val() == ''){
         $('#error_buyDate').click();
         return;
@@ -412,7 +413,7 @@ function submit_btn(){
             check_same_material++;
             same_material += $(this).find(".get_material_name").text()+"\r\n";
         }
-        material_array.push($(this).find(".select_material").val()); 
+        material_array.push($(this).find(".select_material").val());
     });
     if(check_material == 0){
         $('#error_material').click();
