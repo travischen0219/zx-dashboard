@@ -1,5 +1,6 @@
 <?php
-require_once(__DIR__ . '/');
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+require_once(__DIR__ . '/conn.php');
 
 $_id=explode(",",$_GET["id"]);
 
