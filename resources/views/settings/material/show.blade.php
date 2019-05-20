@@ -26,35 +26,37 @@
         color:#fff;
         background-color: #248ff1;
     }
-    #sample_1_filter input { 
+    #sample_1_filter input {
         width:300px !important;
     }
     #popup{
         width:400px;
         height:160px;
-        display:block; 
+        display:block;
         background-color: white;
         margin:auto;
     }
     #popup p{
         padding-top:20px;
-        display:block; 
+        display:block;
         text-align:center;
     }
     #popup img{
-        display:block; 
+        display:block;
         margin:0 auto ;
         padding:0px 20px;
     }
     #pop_stock{
         width:85%;
         height:900px;
-        display:block; 
+        display:block;
         background-color: white;
         margin:auto;
     }
-    
-    
+    .mfp-wrap {
+        z-index: 9998;
+    }
+
 </style>
 
 @endsection
@@ -66,7 +68,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -75,7 +77,7 @@
         <small>資料建立與編輯</small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -102,7 +104,7 @@
                                     @foreach($material_categories as $cate)
                                         <option value="{{$cate->code}}" {{ $search_code == $cate->code ? 'selected' : '' }}>[ {{$cate->code}} ] {{$cate->name}}</option>
                                     @endforeach
-                                  
+
                                 </select>
                             </div>
                     </div>
@@ -115,7 +117,7 @@
             </div>
         </form>
     </div>
-    
+
     <div class="col-md-12">
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet light">
@@ -130,8 +132,8 @@
                 <div class="tools"> </div>
             </div>
 
-            
-                
+
+
             <div class="portlet-body">
                 <table class="table table-striped table-bordered table-hover" id="sample_1" >
                     <thead>
@@ -147,12 +149,12 @@
                             <th>操 作</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         @foreach($materials as $material)
                             @if(true)
                             <tr>
-                                
+
                                 <td>{{$material->fullCode}}</td>
                                 <td>
                                     <a href="{{url('barcode_PDF/'.$material->id)}}" target="_blank" class="btn blue btn-outline btn-sm">列印</a>&nbsp;&nbsp;
@@ -165,7 +167,7 @@
                                         [ {{$material->material_categories_code}} ] {{$material->material_category_name->name}}
                                     @endif
                                 </td>
-                                
+
                                 <td><a href="{{ route('materials.show', $material->id) }}">{{$material->fullName}}</a></td>
                                 <td>
                                     @if($material->unit > 0 )
@@ -179,7 +181,7 @@
                                 @if($material->safe >0)
                                     <td>{{$material->safe}}</td>
                                 @else
-                                    <td><span style="color:red;">未設定</span></td> 
+                                    <td><span style="color:red;">未設定</span></td>
                                 @endif
 
                                 @if($material->safe >= $material->stock )
@@ -244,9 +246,9 @@
 <script>
 function barcode(title, code) {
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'ajax',
@@ -254,7 +256,7 @@ function barcode(title, code) {
         ajax: {
             settings: {
                 type: 'GET',
-                data: { 
+                data: {
                     title: title, code: code
                 }
             }
@@ -264,19 +266,16 @@ function barcode(title, code) {
 
 function show_stock(id) {
     $.magnificPopup.open({
-        showCloseBtn : true, 
+        showCloseBtn : true,
         enableEscapeKey : false,
-        closeOnBgClick: false, 
+        closeOnBgClick: false,
         fixedContentPos: true,
         modal:true,
         type:'ajax',
-        items:{src:"{{route('show_stock')}}"},
+        items:{src:"/settings/show_stock/" + id},
         ajax: {
             settings: {
-                type: 'GET',
-                data: { 
-                    id: id
-                }
+                type: 'GET'
             }
         }
     });
@@ -292,20 +291,20 @@ function search(){
 
 function pdfsubmit()
 {
-           
+
             var chkArray = [];
-          
+
             $(".print_pdf:checked").each(function() {
                 chkArray.push($(this).val());
             });
-            
+
             /* we join the array separated by the comma */
             var selected;
             selected = chkArray.join(',');
             var url = "{!!url('barcode_PDF')!!}"+"/"+selected;
             openInNewTab(url);
-        
-    
+
+
 }
 function openInNewTab(url) {
   var win = window.open(url, '_blank');

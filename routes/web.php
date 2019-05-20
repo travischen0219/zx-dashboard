@@ -66,6 +66,7 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::post('warehouse_category/update_orderby','Warehouse_categoryController@update_orderby')->name('warehouse_category.update.orderby');
     // 物料管理 秀出庫存列表
     Route::get('show_stock','SelectController@show_stock')->name('show_stock');
+    Route::get('show_stock/{id}','SelectController@show_stock')->name('show_stock.detail');
 
     Route::resource('gallery', 'GalleryController');
     Route::get('file_download/{id}', 'GalleryController@file_download');
