@@ -302,9 +302,9 @@ class InventoryController extends Controller
         $stock->material = $inventory_list->material_id;
         $stock->warehouse = $inventory_list->warehouse_id;
         $stock->total_start_quantity = $material->stock;
-        $stock->start_quantity = $material_warehouse->stock;
-        $stock->quantity = -$inventory_list->original_inventory;
-        $stock->calculate_quantity = "{$stock->total_start_quantity} $unit -> " . ($material->stock + $stock->quantity) . " $unit";
+        $stock->start_quantity = $inventory_list->original_inventory;
+        $stock->quantity = $inventory_list->physical_inventory - $inventory_list->original_inventory;
+        $stock->calculate_quantity = "{$stock->total_start_quantity} $unit -> " . ($material->stock + ($inventory_list->physical_inventory - $inventory_list->original_inventory)) . " $unit";
         $stock->stock_date = date('Y-m-d');
         $stock->memo = '';
         $stock->created_user = session('admin_user')->id;
@@ -312,12 +312,12 @@ class InventoryController extends Controller
         $stock->save();
 
         // 存回物料
-        $material->stock = $material->stock - $inventory_list->original_inventory;
+        $material->stock = $material->stock + ($inventory_list->physical_inventory - $inventory_list->original_inventory);
         $material->stock_no = $material->stock_no + 1;
         $material->save();
 
         // 存回物料倉庫
-        $material_warehouse->stock = $material->stock - $inventory_list->original_inventory;
+        $material_warehouse->stock = $inventory_list->physical_inventory;
         $material_warehouse->save();
 
         return redirect('/stock/inventory/show_list/' . $inventoryID);
