@@ -28,6 +28,14 @@
 <!-- BEGIN DASHBOARD STATS 1-->
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/05/20</li>
+        <ul>
+            <li>
+                [採購進貨 - 採購] 新增採購時可顯示目前庫存<br>
+                <img src="/images/dashboard/buy.stock.png" style="max-width: 400px; margin: 10px 0;" />
+            </li>
+        </ul>
+
         <li>2019/05/19</li>
         <ul>
             <li>
