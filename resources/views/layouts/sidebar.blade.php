@@ -1,5 +1,5 @@
 <!-- BEGIN SIDEBAR -->
-<div class="page-sidebar-wrapper">
+<div class="page-sidebar-wrapper" style="position: fixed; z-index: 500;">
         <!-- BEGIN SIDEBAR -->
         <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
         <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->

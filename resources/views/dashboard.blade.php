@@ -28,6 +28,14 @@
 <!-- BEGIN DASHBOARD STATS 1-->
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/05/21</li>
+        <ul>
+            <li>
+                [採購進貨 - 採購] 調整列印單張跟多張採購單版面<br>
+                <img src="/images/dashboard/buy.print.png" style="max-width: 400px; margin: 10px 0;" />
+            </li>
+        </ul>
+
         <li>2019/05/20</li>
         <ul>
             <li>[基本資料 - 物料管理] 修復庫存紀錄無法顯示的問題</li>
