@@ -117,7 +117,7 @@
                     <a href="{{ route('buy.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增採購</a>
                 </div>&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="caption font-dark" style="margin-left:5px">
-                    <span class="btn btn-primary" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆PDF列印</span>
+                    <span class="btn btn-primary" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆列印</span>
                     全選 <input type="checkbox" class="checkAll" id="checkAll"  value="1">
                 </div>
 
@@ -130,7 +130,7 @@
                     <thead>
                         <tr>
                             <th>單號</th>
-                            <th>PDF列印</th>
+                            <th>列印</th>
                             <th>批號</th>
                             <th>供應商</th>
                             <th>說明</th>
@@ -149,8 +149,8 @@
 
                                 <td>P{{$buy->buy_no}}</td>
                                 <td>
-                                    <a href="/print/buy_detail/{{ $buy->id }}">列印</a>
-                                    <a href="/pdf/?id={{$buy->id}}" target="_blank" class="btn blue btn-outline btn-sm">列印</a>&nbsp;&nbsp;
+                                    <a href="/print/buy_detail/{{ $buy->id }}" target="_blank" class="btn blue btn-outline btn-sm">列印</a>
+                                    {{-- <a href="/pdf/?id={{$buy->id}}" target="_blank" class="btn blue btn-outline btn-sm">列印</a>&nbsp;&nbsp; --}}
                                     <input type="checkbox" class="print_pdf" name="print_pdf"  value="{{$buy->id}}">
                                 </td>
                                 <td>{{$buy->lot_number}}</td>
@@ -322,7 +322,7 @@ function pdfsubmit()
             /* we join the array separated by the comma */
             var selected;
             selected = chkArray.join(',');
-            openInNewTab("/pdf/?id="+selected);
+            openInNewTab("/print/buy_details/" + selected);
 
 
 
