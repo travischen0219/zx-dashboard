@@ -31,6 +31,10 @@
         <li>2019/05/21</li>
         <ul>
             <li>
+                [基本資料 - 物料模組] 新增模組內容列印<br>
+                <img src="/images/dashboard/module.print.png" style="max-width: 400px; margin: 10px 0;" />
+            </li>
+            <li>
                 [採購進貨 - 採購] 調整列印單張跟多張採購單版面<br>
                 <img src="/images/dashboard/buy.print.png" style="max-width: 400px; margin: 10px 0;" />
             </li>

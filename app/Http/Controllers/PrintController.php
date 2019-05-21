@@ -7,6 +7,7 @@ use App\Model\Supplier;
 use App\Model\Buy;
 use App\Model\Material;
 use App\Model\Material_unit;
+use App\Model\Material_module;
 
 class PrintController extends Controller
 {
@@ -163,5 +164,44 @@ class PrintController extends Controller
         }
 
         return view('print.buy_detail', $data);
+    }
+
+    public function material_module(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) exit();
+
+        $module = Material_module::find($id);
+        if (!$module) exit();
+
+        $materials = unserialize($module->materials);
+        $module->count = count($materials['material']);
+
+        $array = [];
+        for($i = 0; $i < count($materials['material']); $i++) {
+            $material = Material::find($materials['material'][$i]);
+            $unit = Material_unit::find($material->unit);
+
+            $array[] = [
+                'id' => $material->id,
+                'code' => $material->fullCode,
+                'name' => $material->fullName,
+                'size' => $material->size,
+                'color' => $material->color,
+                'stock' => $material->stock,
+                'memo' => $material->memo,
+                'amount' => $materials['materialAmount'][$i],
+                'price' => (float) $materials['materialPrice'][$i],
+                'unit' =>  $unit->name
+            ];
+        }
+
+        $module->materials = $array;
+
+        $data = [];
+        $data = [];
+        $data['modules'][0]['module'] = $module;
+
+        return view('print.material_module', $data);
     }
 }

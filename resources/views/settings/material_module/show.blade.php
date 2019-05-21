@@ -28,7 +28,7 @@
         color:#fff;
         background-color: #248ff1;
     }
-    #sample_3_filter input { 
+    #sample_3_filter input {
         width:300px !important;
     }
 
@@ -43,7 +43,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -52,7 +52,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -67,14 +67,14 @@
         <div class="col-md-12" >
             <div class="form-body" style="border-bottom: 1px solid #eeeeee;padding-bottom: 50px;padding-top: 25px;">
                 <div class="form-group">
-                   
+
                      <div class="col-md-5">
                         <label class="col-md-3 control-label" style="color:#248ff1;font-size: 16px;line-height: 32px;text-align: center"> 代號 :</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="search_code" id="search_code">
                         </div>
-                    </div> 
-                    
+                    </div>
+
                     <div class="col-md-2">
                         <button type="submit" class="btn" style="background-color: #248ff1;color:#fff;font-size: 16px;">搜 尋</button>
                     </div>
@@ -82,7 +82,7 @@
             </div>
         </div>
     </form>
-    
+
     <div class="col-md-12">
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet light">
@@ -94,27 +94,31 @@
                 <div class="tools"> </div>
             </div>
 
-            
-                
+
+
             <div class="portlet-body">
                 <table class="table table-striped table-bordered table-hover" id="sample_3" >
                     <thead>
                         <tr>
+                            <th>列印</th>
                             <th>編號</th>
                             <th>名稱</th>
                             <th>產品說明</th>
                             <th>操 作</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         @foreach($modules as $material_module)
 
                             <tr>
+                                <td>
+                                    <a href="/print/material_module/{{ $material_module->id }}" target="_blank" class="btn blue btn-outline btn-sm">列印</a>
+                                </td>
                                 <td>{{$material_module->code}}</td>
-                                <td><a href="{{ route('material_module.show', $material_module->id) }}">{{$material_module->name}}</a></td>                                
+                                <td><a href="{{ route('material_module.show', $material_module->id) }}">{{$material_module->name}}</a></td>
                                 <td>{{$material_module->memo}}</td>
-                               
+
                                 <td align="center" id="functions_btn">
                                     {{-- <a href="{{ route('material_module.show', $material_module->id) }}" class="btn purple btn-outline btn-sm">查看</a>                                     --}}
                                     <a href="{{ route('material_module.edit', $material_module->id) }}" class="btn blue btn-outline btn-sm">修改</a>

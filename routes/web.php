@@ -283,4 +283,7 @@ Route::middleware('admin.login')->prefix('print')->group(function(){
     // 採購單報表 (多張)
     Route::get('buy_details/{ids}','PrintController@buy_details');
     Route::post('buy_details','PrintController@buy_details');
+
+    // 物料模組
+    Route::get('material_module/{id}','PrintController@material_module');
 });
