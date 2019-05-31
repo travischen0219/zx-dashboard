@@ -166,7 +166,7 @@
 
                                                         <div id="batchEdit" style="display: none; margin-top: 2px;">
                                                             <input type="text" name="batchAmount" id="batchAmount" size="5">
-                                                            <button type="button" onclick="batchAmountApply();">確定</button>
+                                                            <button type="button" onclick="batchAmountApply();">x 倍數</button>
                                                         </div>
                                                     </th>
                                                     <th width="10%" style="vertical-align: top;"> 單位 </th>
@@ -622,7 +622,12 @@
 
             return false;
         }
-        $(".materialAmount").val($("#batchAmount").val());
+
+        $(".materialAmount").each(function(index, element) {
+            $(this).val($(this).val() * $("#batchAmount").val());
+        });
+
+        // $(".materialAmount").val($(".materialAmount").val() * $("#batchAmount").val());
         $("#batchAmount").val('');
         $("#batchEdit").hide();
     }
