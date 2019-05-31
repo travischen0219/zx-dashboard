@@ -57,7 +57,7 @@ class SaleController extends Controller
                 $sale_no = $last_sale_no->sale_no + 1;
             }
         }
-        return view('shopping.sale.create',compact('sale_no'));        
+        return view('shopping.sale.create',compact('sale_no'));
     }
 
     /**
@@ -69,13 +69,13 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'lot_number' => 'required',             
+            'lot_number' => 'required',
             'customer' => 'required',
             'createDate' => 'date_format:"Y-m-d"|required',
             'expireDate' => 'date_format:"Y-m-d"|required',
         ];
         $messages = [
-            'lot_number.required' => '批號 必填',          
+            'lot_number.required' => '批號 必填',
             'customer.required' => '尚未選擇 客戶',
             'createDate.required' => '新增日期 必填',
             'expireDate.required' => '有效期限 必填',
@@ -106,7 +106,7 @@ class SaleController extends Controller
             $file_3=null;
             if($request->hasFile('upload_image_1')){
                 $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
-            } 
+            }
             if($request->hasFile('upload_image_2')){
                 $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
             }
@@ -155,13 +155,13 @@ class SaleController extends Controller
         $materialCount = 0;
         $data = '';
         $pic_data = '';
-        
+
         $style = ' style="display:none"';
         $readonly = ' readonly';
         $disabled = ' disabled';
 
         for($i = 0; $i < $total_materials; $i++){
-        
+
             if($materials['type'][$i] == 1){
                 $material = Material::where('id',$materials['material'][$i])->first();
                 $material_name = $material->fullCode.' '.$material->fullName;
@@ -173,11 +173,11 @@ class SaleController extends Controller
                         <button type="button" onclick="openSelectMaterial('.$materialCount.');" id="materialName'.$materialCount.'" name="materialName'.$materialCount.'" class="btn btn-default get_material_name" style="width: 100%; margin-right: 10px; overflow: hidden;" '.$disabled.'> '.$material_name.'</button>
                         <input type="hidden" name="material[]" id="material'.$materialCount.'" class="select_material" value="'.$materials['material'][$i].'">
                     </td>
-    
+
                     <td>
                         <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
                     </td>
-                
+
                     <td>
                         <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
                     </td>
@@ -190,9 +190,9 @@ class SaleController extends Controller
                     </td>
                 </tr>';
             } else {
-                $material = Material_module::where('id',$materials['material'][$i])->first();     
-                $material_name = $material->code.' '.$material->name;  
-                
+                $material = Material_module::where('id',$materials['material'][$i])->first();
+                $material_name = $material->code.' '.$material->name;
+
                 $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
 
                     <td></td>
@@ -200,11 +200,11 @@ class SaleController extends Controller
                         <button type="button" id="moduleName'.$materialCount.'" name="moduleName'.$materialCount.'" class="btn btn-default get_module_name" style="width: 100%; margin-right: 10px; overflow: hidden; color:blue;" '.$disabled.'> '.$material_name.'</button>
                         <input type="hidden" name="material[]" id="material'.$materialCount.'" class="select_module" value="'.$materials['material'][$i].'">
                     </td>
-    
+
                     <td>
                         <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
                     </td>
-                
+
                     <td>
                         <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">組</span>
                     </td>
@@ -224,13 +224,13 @@ class SaleController extends Controller
                         $src = asset('assets/apps/img/'.$material->image_1->thumb_name);
                     }else{
                         $src = asset('upload/'.$material->image_1->thumb_name);
-                        $src_upload = "'".asset('upload/'.$material->image_1->file_name)."'";  
+                        $src_upload = "'".asset('upload/'.$material->image_1->file_name)."'";
                         $pre_show = '<a href="javascript:show_image('.$src_upload.');" class="btn btn-primary btn-sm" role="button">預覽</a>';
                     }
                 }else{
                     $src = asset('assets/apps/img/no_image.png');
                 }
-                
+
                 $pic_data .= '<div class="col-md-3" id="picRow'.$materialCount.'" class="picRow">
                     <div class="thumbnail" style="width:180px;">
                         <img src="'.$src.'" alt="'.$material->image_1->name.'">
@@ -244,10 +244,10 @@ class SaleController extends Controller
                     </div>
                 </div>';
             }
-        
-            
-            
-            
+
+
+
+
             $materialCount++;
         }
 
@@ -301,11 +301,11 @@ class SaleController extends Controller
                         <button type="button" onclick="openSelectMaterial('.$materialCount.');" id="materialName'.$materialCount.'" name="materialName'.$materialCount.'" class="btn btn-default get_material_name" style="width: 100%; margin-right: 10px; overflow: hidden;" '.$disabled.'> '.$material_name.'</button>
                         <input type="hidden" name="material[]" id="material'.$materialCount.'" class="select_material" value="'.$materials['material'][$i].'">
                     </td>
-    
+
                     <td>
                         <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
                     </td>
-                
+
                     <td>
                         <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
                     </td>
@@ -318,9 +318,9 @@ class SaleController extends Controller
                     </td>
                 </tr>';
             } else {
-                $material = Material_module::where('id',$materials['material'][$i])->first();     
-                $material_name = $material->code.' '.$material->name;  
-                
+                $material = Material_module::where('id',$materials['material'][$i])->first();
+                $material_name = $material->code.' '.$material->name;
+
                 $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                     <input type="hidden" name="materialType[]" id="materialType'.$materialCount.'" class="materialType" value="'.$materials['type'][$i].'">
                     <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red"><i class="fa fa-remove"></i></a></td>
@@ -328,11 +328,11 @@ class SaleController extends Controller
                         <button type="button" id="moduleName'.$materialCount.'" name="moduleName'.$materialCount.'" class="btn btn-default get_module_name" style="width: 100%; margin-right: 10px; overflow: hidden; color:blue;" '.$disabled.'> '.$material_name.'</button>
                         <input type="hidden" name="material[]" id="material'.$materialCount.'" class="select_module" value="'.$materials['material'][$i].'">
                     </td>
-    
+
                     <td>
                         <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
                     </td>
-                
+
                     <td>
                         <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">組</span>
                     </td>
@@ -352,13 +352,13 @@ class SaleController extends Controller
                         $src = asset('assets/apps/img/'.$material->image_1->thumb_name);
                     }else{
                         $src = asset('upload/'.$material->image_1->thumb_name);
-                        $src_upload = "'".asset('upload/'.$material->image_1->file_name)."'";  
+                        $src_upload = "'".asset('upload/'.$material->image_1->file_name)."'";
                         $pre_show = '<a href="javascript:show_image('.$src_upload.');" class="btn btn-primary btn-sm" role="button">預覽</a>';
                     }
                 }else{
                     $src = asset('assets/apps/img/no_image.png');
                 }
-                
+
                 $pic_data .= '<div class="col-md-3" id="picRow'.$materialCount.'" class="picRow">
                     <div class="thumbnail" style="width:180px;">
                         <img src="'.$src.'" alt="'.$material->image_1->name.'">
@@ -372,10 +372,10 @@ class SaleController extends Controller
                     </div>
                 </div>';
             }
-        
-            
-            
-            
+
+
+
+
             $materialCount++;
         }
 
@@ -413,16 +413,16 @@ class SaleController extends Controller
     {
         if($request->status == 3){
             if($request->receiveDate == ''){
-                return redirect()->back()->with('error', '完成日期 必填');            
+                return redirect()->back()->with('error', '完成日期 必填');
             }
         }
         $rules = [
-            // 'lot_number' => 'required',                           
+            // 'lot_number' => 'required',
             // 'buyDate' => 'required',
             // 'expectedReceiveDate' => 'required',
         ];
         $messages = [
-            // 'lot_number.required' => '批號 必填',                      
+            // 'lot_number.required' => '批號 必填',
             // 'buyDate.required' => '採購日期 必填',
             // 'expectedReceiveDate.required' => '預計到貨日 必填',
         ];
@@ -454,7 +454,7 @@ class SaleController extends Controller
             if($request->hasFile('upload_image_1')){
                 $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
                 $check_1 = true;
-            } 
+            }
             if($request->hasFile('upload_image_2')){
                 $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
                 $check_2 = true;
@@ -463,10 +463,10 @@ class SaleController extends Controller
                 $file_3 = $this->file_process($request->name_3, $request->upload_image_3);
                 $check_3 = true;
             }
-            
+
             if($request->status == 1 || $request->status == 2 || $request->status == 4){
                 try{
-                    $sale = Sale::find($id);                        
+                    $sale = Sale::find($id);
                     $sale->materials = serialize($materials);
                     $sale->createDate = $request->createDate;
                     $sale->expireDate = $request->expireDate;
@@ -480,7 +480,7 @@ class SaleController extends Controller
                     }
                     if($check_3){
                         $sale->file_3 = $file_3;
-                    }   
+                    }
                     $sale->status = $request->status;
                     $sale->updated_user = session('admin_user')->id;
                     $sale->save();
@@ -491,7 +491,7 @@ class SaleController extends Controller
                 }
             } else if($request->status == 3){
                 try{
-                    $sale = Sale::find($id);                        
+                    $sale = Sale::find($id);
                     $sale->materials = serialize($materials);
                     $sale->createDate = $request->createDate;
                     $sale->expireDate = $request->expireDate;
@@ -505,7 +505,7 @@ class SaleController extends Controller
                     }
                     if($check_3){
                         $sale->file_3 = $file_3;
-                    }   
+                    }
                     $sale->status = $request->status;
                     $sale->updated_user = session('admin_user')->id;
                     $sale->save();
@@ -592,7 +592,7 @@ class SaleController extends Controller
             $sale->save();
             return redirect()->route('sale.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('sale.index')->with('error','刪除失敗');            
+            return redirect()->route('sale.index')->with('error','刪除失敗');
         }
     }
 
@@ -617,8 +617,8 @@ class SaleController extends Controller
 
             return redirect()->route('sale.edit',$sale->id)->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('sale.edit',$sale->id)->with('error','刪除失敗');            
-        } 
+            return redirect()->route('sale.edit',$sale->id)->with('error','刪除失敗');
+        }
 
     }
 
@@ -630,7 +630,7 @@ class SaleController extends Controller
         $src_image = imagecreatefromstring(file_get_contents(asset('upload/'.$origin_file_name)));
         $src_width = imagesx($src_image);
         $src_height = imagesy($src_image);
-        
+
         $tmp_image_width = 0;
         $tmp_image_height = 0;
         if ($src_width / $src_height >= $width / $height) {
@@ -640,17 +640,17 @@ class SaleController extends Controller
             $tmp_image_height = $height;
             $tmp_image_width = round($tmp_image_height * $src_width / $src_height);
         }
-        
+
         $tmpImage = imagecreatetruecolor($tmp_image_width, $tmp_image_height);
         imagecopyresampled($tmpImage, $src_image, 0, 0, 0, 0, $tmp_image_width, $tmp_image_height, $src_width, $src_height);
-        
+
         $final_image = imagecreatetruecolor($width, $height);
         $color = imagecolorallocate($final_image, 255, 255, 255);
         imagefill($final_image, 0, 0, $color);
-        
+
         $x = round(($width - $tmp_image_width) / 2);
         $y = round(($height - $tmp_image_height) / 2);
-        
+
         imagecopy($final_image, $tmpImage, $x, $y, 0, 0, $tmp_image_width, $tmp_image_height);
 
         if($img_type == '.jpeg' || $img_type == '.jpg'){
@@ -659,7 +659,7 @@ class SaleController extends Controller
         $func = "image".substr($img_type,1);
         $func($final_image,'upload/'.$tmp_file_name);
         if(isset($final_image)) {imagedestroy($final_image);}
-        
+
     }
     private function file_process($name, $file)
     {
@@ -672,7 +672,7 @@ class SaleController extends Controller
             $file->move('upload', $thumb_origin);
             $this->thumb_process($thumb_origin, $thumb_450, $fileType, 450, 450);
         } else {
-            $thumb_450 = "file_image.jpg";            
+            $thumb_450 = "file_image.jpg";
             $file->move('upload', $thumb_origin);
         }
         $img = new Gallery;
@@ -699,13 +699,13 @@ class SaleController extends Controller
                 <button type="button" onclick="openSelectMaterial('.$materialCount.');" id="materialName'.$materialCount.'" name="materialName'.$materialCount.'" class="btn btn-default get_material_name" style="width: 100%; margin-right: 10px; overflow: hidden;"> 請選擇物料</button>
                 <input type="hidden" name="material[]" id="material'.$materialCount.'" class="select_material">
             </td>
-            
+
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;">
             </td>
-           
+
             <td>
-                <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">無</span>              
+                <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">無</span>
             </td>
             <td>
                 <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" value="" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;">
@@ -732,20 +732,20 @@ class SaleController extends Controller
         $disabled = '';
         $style = '';
         $readonly = '';
-        
+
         $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
             <input type="hidden" name="materialType[]" id="materialType'.$materialCount.'" class="materialType" value="2">
-            
+
             <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
             <td>
                 <button type="button" id="moduleName'.$materialCount.'" name="moduleName'.$materialCount.'" class="btn btn-default get_module_name" style="width: 100%; margin-right: 10px; overflow: hidden;color:blue;" '.$disabled.'> '.$module->code.' '.$module->name.'</button>
                 <input type="hidden" name="material[]" id="material'.$materialCount.'" class="select_module" value="'.$module->id.'">
             </td>
-            
+
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" '.$readonly.'>
             </td>
-            
+
             <td>
                 <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">組</span>
             </td>
@@ -757,7 +757,7 @@ class SaleController extends Controller
                 <input type="hidden" name="materialPriceSubTotal[]" id="materialPriceSubTotal'.$materialCount.'" class="materialPriceSubTotal">
             </td>
         </tr>';
-        
+
         $pre_show = '';
         $src_upload = '';
         if($module->file_1 > 0){
@@ -765,25 +765,25 @@ class SaleController extends Controller
                 $src = asset('assets/apps/img/'.$module->image_1->thumb_name);
             }else{
                 $src = asset('upload/'.$module->image_1->thumb_name);
-                $src_upload = "'".asset('upload/'.$module->image_1->file_name)."'";  
+                $src_upload = "'".asset('upload/'.$module->image_1->file_name)."'";
                 $pre_show = '<a href="javascript:show_image('.$src_upload.');" class="btn btn-primary btn-sm" role="button">預覽</a>';
             }
+
+            $pic_data .= '<div class="col-md-3" id="picRow'.$materialCount.'" class="picRow">
+                <div class="thumbnail" style="width:180px;">
+                    <img src="'.$src.'" alt="'.$module->image_1->name.'">
+                    <div class="caption">
+                        <h4 class="image_name">'.$module->image_1->name.'</h4>
+                        <p style="margin-top:6px;">
+                            '.$pre_show.'
+                            <a href="'.url('settings/file_download',$module->image_1->id).'" class="btn btn-default btn-sm" role="button" download>下載</a>
+                        </p>
+                    </div>
+                </div>
+            </div>';
         }else{
             $src = asset('assets/apps/img/no_image.png');
         }
-        
-        $pic_data .= '<div class="col-md-3" id="picRow'.$materialCount.'" class="picRow">
-            <div class="thumbnail" style="width:180px;">
-                <img src="'.$src.'" alt="'.$module->image_1->name.'">
-                <div class="caption">
-                    <h4 class="image_name">'.$module->image_1->name.'</h4>
-                    <p style="margin-top:6px;">
-                        '.$pre_show.'
-                        <a href="'.url('settings/file_download',$module->image_1->id).'" class="btn btn-default btn-sm" role="button" download>下載</a>
-                    </p>
-                </div>
-            </div>
-        </div>';
 
         $materialCount++;
 

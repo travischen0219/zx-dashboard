@@ -595,7 +595,7 @@ class BuyController extends Controller
                     <span id="materialUnit_show' . $materialCount . '" style="width: 100px; line-height: 30px; vertical-align: middle;">' . $material->material_unit_name->name . '</span>
                 </td>
                 <td>
-                    11<input type="text" name="materialPrice[]" id="materialPrice' . $materialCount . '" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="' . $materials['cost'][$i] . '" ' . $readonly . '>
+                    <input type="text" name="materialPrice[]" id="materialPrice' . $materialCount . '" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="' . $material->cost . '" ' . $readonly . '>
                 </td>
                 <td>
                     <span id="materialSubTotal' . $materialCount . '" class="materialSubTotal" style="line-height: 30px; vertical-align: middle;">0</span>
