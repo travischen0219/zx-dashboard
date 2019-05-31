@@ -55,6 +55,7 @@
                     <tr>
                         <th class="text-center">序號</th>
                         <th class="text-center">品名</th>
+                        <th class="text-center">數量</th>
                         <th class="text-center">單位</th>
                         <th class="text-center">尺寸</th>
                         <th class="text-center">顏色</th>
@@ -67,11 +68,12 @@
                         <tr style="height: 50px;">
                             <td title="序號" class="text-center">{{ $index++ }}</td>
                             <td title="品名">{{ $material['code'] }} {{ $material['name'] }}</td>
+                            <td title="數量" class="text-right">{{ number_format($material['amount'], 2) }}</td>
                             <td title="單位">{{ $material['unit'] }}</td>
                             <td title="尺寸">{{ $material['size'] }}</td>
-                            <td title="顏色" class="text-right">{{ $material['color'] }}</td>
+                            <td title="顏色">{{ $material['color'] }}</td>
                             <td title="庫存" class="text-right">{{ number_format($material['stock'], 2) }}</td>
-                            <td title="備註" class="text-right">{{ nl2br($material['memo']) }}</td>
+                            <td title="備註">{{ nl2br($material['memo']) }}</td>
                         </tr>
                     @endforeach
 
