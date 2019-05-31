@@ -624,7 +624,7 @@
         }
 
         $(".materialAmount").each(function(index, element) {
-            $(this).val($(this).val() * $("#batchAmount").val());
+            $(this).val(($(this).val() * $("#batchAmount").val()).toFixed(2));
         });
 
         // $(".materialAmount").val($(".materialAmount").val() * $("#batchAmount").val());
