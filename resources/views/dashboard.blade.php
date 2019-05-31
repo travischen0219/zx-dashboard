@@ -28,6 +28,16 @@
 <!-- BEGIN DASHBOARD STATS 1-->
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/05/31</li>
+        <ul>
+            <li>
+                [基本資料 - 物料模組] 列印欄位新增數量
+            </li>
+            <li>
+                [基本資料 - 物料模組] 批量些改採用原數量x倍數處理
+            </li>
+        </ul>
+
         <li>2019/05/21</li>
         <ul>
             <li>
