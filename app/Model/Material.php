@@ -37,4 +37,20 @@ class Material extends Model
     {
         return $this->hasOne(Gallery::class, 'id', 'file_3');
     }
+
+    static public function allWithUnit($code)
+    {
+        $materials = Material::where('delete_flag','0')
+            ->where('status','1')
+            ->where('unit','<>','0');
+
+        if ($code != '') {
+            $materials = $materials->where('material_categories_code', $code);
+        }
+
+        $materials = $materials->orderBy('fullCode', 'asc')->get();
+
+        return $materials;
+    }
+
 }

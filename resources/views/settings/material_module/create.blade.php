@@ -26,7 +26,7 @@
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
         background: #248ff1; }
 
-    
+
 
     .form-group.form-md-line-input .form-control::-moz-placeholder {
         color: #248ff1;}
@@ -38,7 +38,20 @@
     .form-horizontal .form-group.form-md-line-input > label {
         color: #248ff1; }
 
-    
+    #materialTable td {
+        line-height: 2.44;
+    }
+    #materialTable input[type=text] {
+        width: 100px;
+    }
+    .btn-add {
+        margin-left: 10px;
+    }
+    .mfp-iframe-holder .mfp-content {
+        width: 85%;
+        height: 85%;
+        max-width: 100%;
+    }
 </style>
 
 
@@ -51,7 +64,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -60,7 +73,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -69,7 +82,7 @@
 
 @section('content')
 
-<div class="row">
+<div id="app" class="row">
 
     <div class="col-md-12 ">
         <!-- BEGIN SAMPLE FORM PORTLET-->
@@ -79,93 +92,124 @@
             <div class="portlet-body form">
                 <form role="form" action="{{ route('material_module.store') }}" method="POST" id="material_module_from" enctype="multipart/form-data">
                     {{ csrf_field() }}
+
+                    <div class="form-group">
+                        編號 : <span style="color:#000">自動產生</span>
+                    </div>
+
+                    <div class="form-group form-md-line-input form-md-floating-label">
+                        <input type="text" name="name" class="form-control" id="name" value="">
+                        <label for="name" style="color: #248ff1;">名稱</label>
+                        <span class="help-block"></span>
+                    </div>
+
+                    <div class="form-group form-md-line-input form-md-floating-label">
+                        <textarea class="form-control" rows="3" name="memo" id="memo"></textarea>
+                        <label for="memo" style="color:#248ff1;font-size: 16px;">產品說明</label>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4>
+                                物料清單
+                                <button type="button" @click="addRow" class="btn btn-primary btn-add">
+                                    <i class="fa fa-plus"></i> 新增物料
+                                </button>
+                            </h4>
+                            <hr>
+
+                            {{-- 物料清單2 --}}
+                            <table id="materialTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="70" nowrap>操作</th>
+                                        <th>物料</th>
+                                        <th width="150" nowrap>數量</th>
+                                        <th width="150" nowrap>單位</th>
+                                        <th width="150" nowrap>單位成本</th>
+                                        <th width="150" nowrap>成本小計</th>
+                                        <th width="150" nowrap>單位售價</th>
+                                        <th width="150" nowrap>售價小計</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr v-for="(item, index) in materialRows">
+                                        <td title="操作">
+                                            <button type="button" @click="deleteRow(index)"
+                                                class="btn red">
+                                                <i class="fa fa-remove"></i>
+                                            </button>
+                                        </td>
+                                        <td title="物料">
+                                            <input type="hidden" name="material[]" v-model="item.id">
+                                            <button type="button"
+                                                @click="listMaterial(index);"
+                                                class="btn btn-default btn-block">
+                                                @{{ item.id === 0 ? '請選擇物料' : item.code + ' ' + item.name }}
+                                            </button>
+                                        </td>
+                                        <td title="數量">
+                                            <input type="text"
+                                                class="form-control"
+                                                v-model="item.amount"
+                                                name="materialAmount[]"
+                                                placeholder="請輸入數字">
+                                        </td>
+                                        <td title="單位">@{{ item.unit }}</td>
+                                        <td title="單位成本">
+                                            <input type="text"
+                                                class="form-control"
+                                                v-model="item.cost"
+                                                name="materialCost[]"
+                                                placeholder="請輸入數字">
+                                        </td>
+                                        <td title="成本小計">
+                                            $@{{ item.amount * item.cost | number_format }}
+                                        </td>
+                                        <td title="單位售價">
+                                            <input type="text"
+                                                class="form-control"
+                                                v-model="item.price"
+                                                name="materialPrice[]"
+                                                placeholder="請輸入數字">
+                                        </td>
+                                        <td title="售價小計">
+                                            $@{{ item.amount * item.price | number_format }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <hr>
+
+                            <div class="text-right">
+                                共有 @{{ materialRows.length }} 種物料
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                成本總計：$@{{ total_cost | number_format }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                售價總計：$@{{ total_price | number_format }}
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-body">
-
-                        <div class="col-md-12" style="height:90px;">
-                            
-                            <div class="col-md-4">
-                                <div class="form-group form-md-line-input" >
-                                    <input type="text" name="name" class="form-control" id="name" value="">
-                                    <label for="name" style="color:#248ff1;">名稱</label>
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-3" style="font-size: 16px;color:#248ff1;line-height: 50px;">
-                                編號 : <span style="color:#000">自動產生</span> 
-                            </div>
-
-                        </div>
-
+                        {{-- file upload start --}}
                         <div class="col-md-12">
-                            <div class="col-md-12">
-                                <div class="form-group form-md-line-input">
-                                    <textarea class="form-control" rows="3" name="memo" id="memo"></textarea>
-                                    <label for="memo" style="color:#248ff1;font-size: 16px;">產品說明</label>
-                                </div>
-                            </div>
-                            
-                        </div>
-
-
-                        <div class="col-md-12">
-                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                            <div class="portlet light bordered">
-                                <div class="portlet-title">
-                                    <div class="caption font-dark" style="">
-                                        <span class="caption-subject"> 物料清單</span>
-                                    </div>
-                                    <div class="tools"> </div>
-                                </div>
-                                <div class="portlet-body">
-                                    <div style="margin-left:7px;margin-bottom: 10px;">
-                                        <a href="javascript:addMaterial();" class="btn btn-primary"><i class="fa fa-plus"></i> 新增物料</a>
-                                    </div>
-                                    
-                                    <div class="table-responsive">
-                                        <table id="materialTable" class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th width="10%"> 操作 </th>
-                                                    <th width="30%"> 物料 </th>
-                                                    <th width="10%"> 數量 </th>
-                                                    <th width="10%"> 單位 </th>
-                                                    <th width="10%"> 單位成本 </th>
-                                                    <th width="10%"> 成本小計 </th>
-                                                    <th width="10%"> 單位售價 </th>
-                                                    <th width="10%"> 售價小計 </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                
-                                                
-                                            </tbody>
-                                        </table>
-                                        <hr>
-                                        <div class="text-right">成本總計：<span id="materialTotal_cost">0</span> , 售價總計：<span id="materialTotal_price">0</span></div>
-                                        <input type="hidden" name="total_cost" id="total_cost">
-                                        <input type="hidden" name="total_price" id="total_price">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END EXAMPLE TABLE PORTLET-->
-                        </div>
-
-                        {{-- file upload start --}}                                                
-                        <div class="col-md-12">                                        
                             <div style="border: #248ff1 solid 2px;width:100%;height: 400px;">
                                 <div class="col-md-12">
                                     <p style="font-size:18px;margin-top:18px;margin-left:20px;color:#248ff1;">檔案上傳<span style="color:red;">【每一檔案上傳限制5M】</span></p>
                                     <hr>
-                                </div>                        
+                                </div>
                                 <div class="col-md-4">
-                                    <div class="col-md-6">                    
+                                    <div class="col-md-6">
                                         <div class="form-group form-md-line-input form-md-floating-label">
                                             <input type="text" name="name_1" class="form-control" id="name_1" value="{{ old('name_1') }}">
                                             <label for="name_1">名稱</label>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">                    
+                                    <div class="col-md-12">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                 <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -181,14 +225,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="col-md-6">                    
+                                    <div class="col-md-6">
                                         <div class="form-group form-md-line-input form-md-floating-label">
                                             <input type="text" name="name_2" class="form-control" id="name_2" value="{{ old('name_2') }}">
                                             <label for="name_2">名稱</label>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">                    
+                                    <div class="col-md-12">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                 <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -204,14 +248,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="col-md-6">                    
+                                    <div class="col-md-6">
                                         <div class="form-group form-md-line-input form-md-floating-label">
                                             <input type="text" name="name_3" class="form-control" id="name_3" value="{{ old('name_3') }}">
                                             <label for="name_3">名稱</label>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">                    
+                                    <div class="col-md-12">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                 <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -228,17 +272,16 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- file upload end --}} 
+                        {{-- file upload end --}}
 
-                    
-                        <div class="col-md-12">        
+                        <div class="col-md-12">
                             <div class="form-actions noborder">
                                 <button type="button" class="btn" onclick="submit_btn();" style="color:#fff;background-color: #248ff1;"><i class="fa fa-check"></i> 存 檔</button>
                                 <a href="{{ route('material_module.index') }}" class="btn red"><i class="fa fa-times"></i> 取 消</a>
                             </div>
                         </div>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
@@ -269,148 +312,142 @@
 <script src="{{asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
 
 <script>
-var materialCount = 0;
-var currentMaterial = 0;
-function addMaterial() {
-    $.post(
-        "{{ route('selectMaterial_module.addRow') }}", 
-        {'_token':"{{csrf_token()}}",'materialCount': materialCount},
-        function(response) {
-            $("#materialTable").append(response);
-            total();
-            materialCount++;
+var app = new Vue({
+    el: '#app',
+    data: {
+        currnetIndex: 0,
+        materialRow: { id: 0, name: '', amount: 0, cost: 0, price: 0 },
+        materialRows: [ ]
+    },
+    computed: {
+        total_cost: function() {
+            var total_cost = 0
+            this.materialRows.forEach(element => {
+                total_cost += parseFloat(element.cost) * parseFloat(element.amount)
+            })
+
+            return total_cost
+        },
+        total_price: function() {
+            var total_price = 0
+            this.materialRows.forEach(element => {
+                total_price += parseFloat(element.price) * parseFloat(element.amount)
+            })
+
+            return total_price
         }
-    );
-}
+    },
+    methods: {
+        addRow: function() {
+            this.materialRows.push(Object.assign({}, this.materialRow))
+        },
+        deleteRow: function(index) {
+            this.materialRows.splice(index, 1);
+        },
+        listMaterial(index) {
+            this.currnetIndex = index
 
-function delMaterial(id) {
-    $("#materialRow" + id).fadeOut('fast', function() {
-        $(this).remove();
-        total();
-    });
-}
-
-function openSelectMaterial(id) {
-    currentMaterial = id;
-    $.magnificPopup.open({
-        showCloseBtn : false, 
-        enableEscapeKey : false,
-        closeOnBgClick: true, 
-        fixedContentPos: false,
-        modal:false,
-        type:'iframe',
-        items:{src:"{{route('selectMaterial')}}"}
-    });
-}
-
-function setMaterial(code,name,buy,unit,cost,price,id,unit_name){
-    $.magnificPopup.close();
-    var str = code+' '+name;
-    $('#materialName' + currentMaterial).text(str);
-    $('#material' + currentMaterial).val(id);
-    $('#materialAmount' + currentMaterial).val(buy);
-    $('#materialUnit_show' + currentMaterial).html(unit_name);
-    $('#materialUnit' + currentMaterial).val(unit);
-    $('#materialCost' + currentMaterial).val(cost);
-    $('#materialPrice' + currentMaterial).val(price);
-
-    total();
-}
-
-function total() {
-    var total_cost = 0;
-    var total_price = 0;
-
-    $(".materialRow").each(function(index, el) {
-        var subTotal = 0;
-        var subAmount = $(this).find(".materialAmount").val();
-        var subCost = $(this).find(".materialCost").val();
-        var subPrice = $(this).find(".materialPrice").val();
-
-        if(isNaN(subAmount) || isNaN(subCost) || isNaN(subPrice)) {
-            $(this).find(".materialSubTotal_cost").html("請輸入數字");
-            $(this).find(".materialSubTotal_price").html("請輸入數字");
-        } else if(subAmount <= 0 || subCost <= 0 || subPrice <= 0){
-            $(this).find(".materialSubTotal_cost").html("不可為負數或零");
-            $(this).find(".materialSubTotal_price").html("不可為負數或零");
-        } else {
-            total_cost += subAmount * subCost;
-            $(this).find(".materialSubTotal_cost").html(subAmount * subCost);
-            total_price += subAmount * subPrice;
-            $(this).find(".materialSubTotal_price").html(subAmount * subPrice);
+            $.magnificPopup.open({
+                showCloseBtn : false,
+                closeOnBgClick: true,
+                fixedContentPos: false,
+                items: {
+                    src: "/selector/material",
+                    type: "iframe"
+                }
+            })
         }
-    });
+    },
+    created: function() {
+        this.addRow() // 新增一空列
+    }
+})
 
-    $("#materialTotal_cost").html(total_cost);
-    $("#materialTotal_price").html(total_price);
+var swalOption = {
+    title: "",
+    text: "",
+    type: "warning",
+    showCancelButton: false,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: '確定',
+    cancelButtonText: '取消',
+    closeOnConfirm: true
+};
 
-    $("#total_cost").val(total_cost);
-    $("#total_price").val(total_price);
-}
+$(function () {
 
-$(function() {
-    addMaterial();
-    total();
 });
 
+function applyMaterial(str) {
+    var material = JSON.parse(str);
+
+    material = {
+        id: material.id,
+        code: material.fullCode,
+        name: material.fullName,
+        amount: 0,
+        cost: material.cost ? parseFloat(material.cost) : 0,
+        price: material.price ? parseFloat(material.price) : 0
+    };
+
+    app.$set(app.materialRows, app.currnetIndex, material);
+    app.$forceUpdate();
+}
+
 function submit_btn(){
-    if($('#lot_number').val() == ''){
-        $('#error_lot').click();
-        return;
+    if ($('#name').val() == '') {
+        swalOption.title = '請輸入名稱';
+        swal(swalOption);
+        return false;
     }
 
-    var check_number = 0;
-    var check_negative = 0;
-    var check_material = 0;
-    var check_same_material = 0;
-    var material_array = [] ;
-    var same_material = '';
-    $(".materialRow").each(function(index, el) {
-        var subAmount = $(this).find(".materialAmount").val();
-        var subCost = $(this).find(".materialCost").val();
-        var subPrice = $(this).find(".materialPrice").val();
-        if(isNaN(subAmount) || isNaN(subCost) || isNaN(subPrice)) {
-            check_number++;
-        }
-        if(subAmount <= 0 || subCost <= 0 || subPrice <= 0){
-            check_negative++;
+    var existNaN = false;
+    var materialSum = 0;
+
+    var existMaterial = [];
+    var sameMaterial = [];
+
+    app.materialRows.forEach(function(element, index) {
+        // 檢查非數字
+        if(isNaN(element.amount) || isNaN(element.cost) || isNaN(element.price)) {
+            existNaN = true;
         }
 
-        if($(this).find(".select_material").val() != ''){
-            check_material++;
+        // 檢查物料數量
+        materialSum += element.id
+
+        // 檢查重複物料
+        if (existMaterial.includes(element.id)) {
+            sameMaterial.push(element.name)
+        } else {
+            existMaterial.push(element.id);
         }
-        if(material_array.indexOf($(this).find(".select_material").val()) >= 0){
-            check_same_material++;
-            same_material += $(this).find(".get_material_name").text()+"\r\n";
-        }
-        material_array.push($(this).find(".select_material").val()); 
     });
-    if(check_number > 0){
-        $('#error_number').click();
-        return;
-    }
-    if(check_negative > 0){
-//        $('#error_negative').click();
-//        return;
-    }
-    if(check_material == 0){
-        $('#error_material').click();
-        return;
-    }
-    if(check_same_material > 0){
-        swal({
-            title: "選擇的物料有重複",
-            text: same_material,
-            type: "warning",
-            showCancelButton: false,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: '確定',
-            cancelButtonText: '取消',
-            closeOnConfirm: true
-        });
-        return;
+
+    // 有非數字
+    if(existNaN){
+        swalOption.title = '數量、成本或售價必須為數字';
+        swal(swalOption);
+        return false;
     }
 
+    // 物料數量
+    if(materialSum == 0){
+        swalOption.title = '未選擇任何物料';
+        swal(swalOption);
+        return false;
+    }
+
+    // 有重複物料
+    if (sameMaterial.length > 0) {
+        swalOption.title = '選擇的物料有重複';
+        swalOption.text = sameMaterial.join('\n');
+        swal(swalOption);
+
+        return false;
+    }
+
+    // 驗證完成，保存
     $("#material_module_from").submit();
 }
 </script>

@@ -137,12 +137,17 @@
         <script src="{{asset('assets/layouts/global/scripts/quick-sidebar.min.js')}}" type="text/javascript"></script>
         <script src="{{asset('assets/layouts/global/scripts/quick-nav.min.js')}}" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script>
+        Vue.filter('number_format', function (value) {
+            return value.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        })
+
+        var number_format = Vue.filter('my-number_format')
+        </script>
 
         @yield('scripts')
 
-        <script>
-
-        </script>
     </body>
 
 </html>

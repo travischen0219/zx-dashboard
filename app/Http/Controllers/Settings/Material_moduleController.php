@@ -45,7 +45,7 @@ class Material_moduleController extends Controller
      */
     public function create()
     {
-        return view('settings.material_module.create'); 
+        return view('settings.material_module.create');
     }
 
     /**
@@ -78,7 +78,16 @@ class Material_moduleController extends Controller
             }
         }
 
-
+        // 另存一份 friendly data
+        $materials2 = [];
+        for($i = 0; $i < $total_materials; $i++) {
+            $materials2[] = [
+                'id' => $request->material[$i],
+                'amount' => $request->materialAmount[$i],
+                'cost' => $request->materialCost[$i],
+                'price' => $request->materialPrice[$i]
+            ];
+        }
 
         if(count($material) > 0){
             $materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialUnit'=>$materialUnit,'materialPrice'=>$materialPrice];
@@ -88,7 +97,7 @@ class Material_moduleController extends Controller
             $file_3=null;
             if($request->hasFile('upload_image_1')){
                 $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
-            } 
+            }
             if($request->hasFile('upload_image_2')){
                 $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
             }
@@ -100,11 +109,12 @@ class Material_moduleController extends Controller
                 $latest_code = Setting::where('set_key','material_module_code')->first();
                 $number = (int)$latest_code->set_value + 1;
                 $code_str = "M".str_pad($number, 6, '0',STR_PAD_LEFT);
-                
+
                 $material_module = new Material_module;
                 $material_module->code = $code_str;
                 $material_module->name = $request->name;
                 $material_module->materials = serialize($materials);
+                $material_module->materials2 = serialize($materials2);
                 $material_module->total_cost = $request->total_cost;
                 $material_module->total_price = $request->total_price;
                 $material_module->memo = $request->memo;
@@ -143,7 +153,7 @@ class Material_moduleController extends Controller
         $materialCount = 0;
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-      
+
             $material = Material::where('id',$materials['material'][$i])->first();
 
             $style = ' style="display:none"';
@@ -160,7 +170,7 @@ class Material_moduleController extends Controller
                 </td>
                 <td>
                     <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">       
+                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
                 </td>
                 <td>
                     <input type="text" name="materialCost[]" id="materialCost'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialCost" style="width: 100px;height: 30px; vertical-align: middle;" value="'.$material->cost.'" '.$disabled.'>
@@ -202,7 +212,7 @@ class Material_moduleController extends Controller
         $materialCount = 0;
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-      
+
             $material = Material::where('id',$materials['material'][$i])->first();
             $style = '';
             $disabled = '';
@@ -221,7 +231,7 @@ class Material_moduleController extends Controller
                 </td>
                 <td>
                     <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">       
+                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
                 </td>
 
                 <td>
@@ -237,7 +247,7 @@ class Material_moduleController extends Controller
                 <td>
                     <span id="materialSubTotal_price'.$materialCount.'" class="materialSubTotal_price" style="line-height: 30px; vertical-align: middle;">0</span>
                 </td>
-                
+
             </tr>';
             $materialCount++;
         }
@@ -274,7 +284,7 @@ class Material_moduleController extends Controller
      */
     public function update(Request $request, $id)
     {
-         
+
         $rules = [
             'name' => 'required'
         ];
@@ -297,6 +307,17 @@ class Material_moduleController extends Controller
             }
         }
 
+        // 另存一份 friendly data
+        $materials2 = [];
+        for($i = 0; $i < $total_materials; $i++) {
+            $materials2[] = [
+                'id' => $request->material[$i],
+                'amount' => $request->materialAmount[$i],
+                'cost' => $request->materialCost[$i],
+                'price' => $request->materialPrice[$i]
+            ];
+        }
+
         if(count($material) > 0){
             $materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialUnit'=>$materialUnit,'materialPrice'=>$materialPrice];
 
@@ -309,7 +330,7 @@ class Material_moduleController extends Controller
             if($request->hasFile('upload_image_1')){
                 $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
                 $check_1 = true;
-            } 
+            }
             if($request->hasFile('upload_image_2')){
                 $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
                 $check_2 = true;
@@ -321,8 +342,9 @@ class Material_moduleController extends Controller
 
             try{
                 $material_module = Material_module::find($id);
-                $material_module->name = $request->name;                
+                $material_module->name = $request->name;
                 $material_module->materials = serialize($materials);
+                $material_module->materials2 = serialize($materials2);
                 $material_module->total_cost = $request->total_cost;
                 $material_module->total_price = $request->total_price;
                 $material_module->memo = $request->memo;
@@ -334,13 +356,13 @@ class Material_moduleController extends Controller
                 }
                 if($check_3){
                     $material_module->file_3 = $file_3;
-                }     
+                }
                 $material_module->status = 1;
                 $material_module->updated_user = session('admin_user')->id;
                 $material_module->save();
 
-                return redirect()->route('material_module.index')->with('message', '修改成功');                    
-               
+                return redirect()->route('material_module.index')->with('message', '修改成功');
+
             } catch(Exception $e) {
                 return redirect()->route('material_module.index')->with('error', '修改失敗');
             }
@@ -389,8 +411,8 @@ class Material_moduleController extends Controller
             $material_module->save();
             return redirect()->route('material_module.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('material_module.index')->with('error','刪除失敗');            
-        } 
+            return redirect()->route('material_module.index')->with('error','刪除失敗');
+        }
     }
 
     public function delete_file($file_no,$material_module,$file_id)
@@ -414,8 +436,8 @@ class Material_moduleController extends Controller
 
             return redirect()->route('material_module.edit',$material_module->id)->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('material_module.edit',$material_module->id)->with('error','刪除失敗');            
-        } 
+            return redirect()->route('material_module.edit',$material_module->id)->with('error','刪除失敗');
+        }
 
     }
 
@@ -427,7 +449,7 @@ class Material_moduleController extends Controller
         $src_image = imagecreatefromstring(file_get_contents(asset('upload/'.$origin_file_name)));
         $src_width = imagesx($src_image);
         $src_height = imagesy($src_image);
-        
+
         $tmp_image_width = 0;
         $tmp_image_height = 0;
         if ($src_width / $src_height >= $width / $height) {
@@ -437,17 +459,17 @@ class Material_moduleController extends Controller
             $tmp_image_height = $height;
             $tmp_image_width = round($tmp_image_height * $src_width / $src_height);
         }
-        
+
         $tmpImage = imagecreatetruecolor($tmp_image_width, $tmp_image_height);
         imagecopyresampled($tmpImage, $src_image, 0, 0, 0, 0, $tmp_image_width, $tmp_image_height, $src_width, $src_height);
-        
+
         $final_image = imagecreatetruecolor($width, $height);
         $color = imagecolorallocate($final_image, 255, 255, 255);
         imagefill($final_image, 0, 0, $color);
-        
+
         $x = round(($width - $tmp_image_width) / 2);
         $y = round(($height - $tmp_image_height) / 2);
-        
+
         imagecopy($final_image, $tmpImage, $x, $y, 0, 0, $tmp_image_width, $tmp_image_height);
 
         if($img_type == '.jpeg' || $img_type == '.jpg'){
@@ -456,7 +478,7 @@ class Material_moduleController extends Controller
         $func = "image".substr($img_type,1);
         $func($final_image,'upload/'.$tmp_file_name);
         if(isset($final_image)) {imagedestroy($final_image);}
-        
+
     }
     private function file_process($name, $file)
     {
@@ -469,7 +491,7 @@ class Material_moduleController extends Controller
             $file->move('upload', $thumb_origin);
             $this->thumb_process($thumb_origin, $thumb_450, $fileType, 450, 450);
         } else {
-            $thumb_450 = "file_image.jpg";            
+            $thumb_450 = "file_image.jpg";
             $file->move('upload', $thumb_origin);
         }
         $img = new Gallery;

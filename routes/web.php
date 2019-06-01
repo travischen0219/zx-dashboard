@@ -287,3 +287,9 @@ Route::middleware('admin.login')->prefix('print')->group(function(){
     // 物料模組
     Route::get('material_module/{id}','PrintController@material_module');
 });
+
+Route::middleware('admin.login')->prefix('selector')->group(function(){
+    // 物料選擇器
+    Route::get('material','SelectorController@material');
+    Route::get('material/{code}','SelectorController@material');
+});
