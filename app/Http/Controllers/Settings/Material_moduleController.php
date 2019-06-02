@@ -45,7 +45,9 @@ class Material_moduleController extends Controller
      */
     public function create()
     {
-        return view('settings.material_module.create');
+        $data = [];
+        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+        return view('settings.material_module.create', $data);
     }
 
     /**
@@ -206,7 +208,11 @@ class Material_moduleController extends Controller
     public function edit($id)
     {
         $material_module = Material_module::find($id);
+
         $materials = unserialize($material_module->materials);
+
+        // New: materialRows
+        $materials2 = Material_module::encodeMaterials2($material_module->materials2);
 
         $total_materials = count($materials['material']);
         $materialCount = 0;
@@ -272,7 +278,9 @@ class Material_moduleController extends Controller
             $upload_check_3 = false;
         }
 
-        return view('settings.material_module.edit', compact('material_module','materials','data','materialCount','updated_user','upload_check_1','upload_check_2','upload_check_3'));
+        $units = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+
+        return view('settings.material_module.edit', compact('material_module','materials','materials2','data','materialCount','updated_user','upload_check_1','upload_check_2','upload_check_3','units'));
     }
 
     /**
