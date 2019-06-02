@@ -16,10 +16,14 @@
         <hr>
         <label>
             篩選分類：
-            <select name="category" id="category" class="form-control d-inline-block w-auto">
+            <select
+                name="category"
+                id="category"
+                class="form-control d-inline-block w-auto"
+                onchange="location.href='/selector/material/' + this.value">
                 <option value="">全部</option>
                 @foreach ($categories as $category)
-                    <option value="{{ $category->code }}">[{{ $category->code }}] {{ $category->name }}</option>
+                    <option value="{{ $category->code }}" {{ $code == $category->code ? 'selected': '' }}>[{{ $category->code }}] {{ $category->name }}</option>
                 @endforeach
             </select>
         </label>

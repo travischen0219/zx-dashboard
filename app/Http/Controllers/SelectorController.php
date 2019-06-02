@@ -13,6 +13,7 @@ class SelectorController extends Controller
     {
         $code = $request->code ?? '';
 
+        $data['code'] = $code;
         $data['categories'] = Material_category::allWithCode();
         $data['units'] = Material_unit::allWithKey();
         $data['materials'] = Material::allWithUnit($code);
