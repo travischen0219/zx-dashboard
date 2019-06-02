@@ -20,7 +20,7 @@
                 name="category"
                 id="category"
                 class="form-control d-inline-block w-auto"
-                onchange="location.href='/selector/material/' + this.value">
+                onchange="location.href='/selector/material/{{ $idx }}/' + this.value">
                 <option value="">全部</option>
                 @foreach ($categories as $category)
                     <option value="{{ $category->code }}" {{ $code == $category->code ? 'selected': '' }}>[{{ $category->code }}] {{ $category->name }}</option>
@@ -46,7 +46,7 @@
                     <tr>
                         <td title="操作" nowrap>
                             <button type="button"
-                                onclick="selectMaterial(JSON.stringify({{ json_encode($material, JSON_HEX_QUOT | JSON_HEX_TAG) }}));"
+                                onclick="selectMaterial(JSON.stringify({{ json_encode($material, JSON_HEX_QUOT | JSON_HEX_TAG) }}), {{ $idx }});"
                                 class="btn btn-outline-primary">選擇</button>
                         </td>
                         <td title="分類">
@@ -76,8 +76,8 @@
         });
     });
 
-    function selectMaterial(str) {
-        parent.applyMaterial(str);
+    function selectMaterial(str, idx) {
+        parent.applyMaterial(str, idx);
 
         parent.$.magnificPopup.close();
     }

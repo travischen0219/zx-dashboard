@@ -515,38 +515,6 @@ var app = new Vue({
     }
 })
 
-var swalOption = {
-    title: "",
-    text: "",
-    type: "warning",
-    showCancelButton: false,
-    confirmButtonColor: "#DD6B55",
-    confirmButtonText: '確定',
-    cancelButtonText: '取消',
-    closeOnConfirm: true
-};
-
-function batchEditAmount() {
-    $("#batchEdit").fadeToggle('fast');
-}
-
-function applyMaterial(str) {
-    var material = JSON.parse(str);
-
-    material = {
-        id: material.id,
-        code: material.fullCode,
-        name: material.fullName,
-        amount: 0,
-        unit: material.unit,
-        cost: material.cost ? parseFloat(material.cost) : 0,
-        price: material.price ? parseFloat(material.price) : 0
-    };
-
-    app.$set(app.materialRows, app.currnetIndex, material);
-    app.$forceUpdate();
-}
-
 function submit_btn() {
     if ($('#name').val() == '') {
         swalOption.title = '請輸入名稱';
@@ -554,51 +522,7 @@ function submit_btn() {
         return false;
     }
 
-    var existNaN = false;
-    var materialSum = 0;
-
-    var existMaterial = [];
-    var sameMaterial = [];
-
-    app.materialRows.forEach(function(element, index) {
-        // 檢查非數字
-        if(isNaN(element.amount) || isNaN(element.cost) || isNaN(element.price)) {
-            existNaN = true;
-        }
-
-        // 檢查物料數量
-        materialSum += element.id
-
-        // 檢查重複物料
-        if (existMaterial.includes(element.id)) {
-            sameMaterial.push(element.name)
-        } else {
-            existMaterial.push(parseInt(element.id));
-        }
-    });
-
-    // 有非數字
-    if(existNaN){
-        swalOption.title = '數量、成本或售價必須為數字';
-        swal(swalOption);
-        return false;
-    }
-
-    // 物料數量
-    if(materialSum == 0){
-        swalOption.title = '未選擇任何物料';
-        swal(swalOption);
-        return false;
-    }
-
-    // 有重複物料
-    if (sameMaterial.length > 0) {
-        swalOption.title = '選擇的物料有重複';
-        swalOption.text = sameMaterial.join('\n');
-        swal(swalOption);
-
-        return false;
-    }
+    return checkMaterials();
 
     $("#material_module_from").submit();
 }

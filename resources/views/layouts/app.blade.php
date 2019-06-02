@@ -137,13 +137,24 @@
         <script src="{{asset('assets/layouts/global/scripts/quick-sidebar.min.js')}}" type="text/javascript"></script>
         <script src="{{asset('assets/layouts/global/scripts/quick-nav.min.js')}}" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
-        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
         <script>
         Vue.filter('number_format', function (value) {
             return value.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         })
 
         var number_format = Vue.filter('my-number_format')
+
+        var swalOption = {
+            title: "",
+            text: "",
+            type: "warning",
+            showCancelButton: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: '確定',
+            cancelButtonText: '取消',
+            closeOnConfirm: true
+        };
         </script>
 
         @yield('scripts')

@@ -108,7 +108,11 @@
                         <label for="memo" style="color:#248ff1;font-size: 16px;">產品說明</label>
                     </div>
 
-                    @include('selector.material_table')
+                    {{-- @include('selector.material_table') --}}
+                    <material-table
+                        :rows="rows"
+                        :units="units">
+                    </material-table>
 
                     <div class="form-body">
                         {{-- file upload start --}}
@@ -228,37 +232,21 @@
 <script src="{{asset('assets/pages/scripts/ui-sweetalert.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
 
+{{-- 物料表格 --}}
+@include('vue.material_table')
+
 <script>
 var app = new Vue({
     el: '#app',
     data: {
-        currnetIndex: 0,
+        index: 0,
         units: {!! $units !!},
-        materialRow: { id: 0, name: '', amount: 0, cost: 0, price: 0 },
-        materialRows: []
-    },
-    computed: {
-        total_cost: function() {
-            var total_cost = 0
-            this.materialRows.forEach(element => {
-                total_cost += parseFloat(element.cost) * parseFloat(element.amount)
-            })
-
-            return total_cost
-        },
-        total_price: function() {
-            var total_price = 0
-            this.materialRows.forEach(element => {
-                total_price += parseFloat(element.price) * parseFloat(element.amount)
-            })
-
-            return total_price
-        }
+        rows: []
     },
     methods: {
-        addRow: function() {
-            this.materialRows.push(Object.assign({}, this.materialRow))
-        },
+        // addRow: function() {
+        //     this.materialRows.push(Object.assign({}, this.materialRow))
+        // },
         deleteRow: function(index) {
             this.materialRows.splice(index, 1);
         },
@@ -290,7 +278,7 @@ var app = new Vue({
                 return false;
             }
 
-            app.materialRows.forEach(element => {
+            app.rows.forEach(element => {
                 element.amount *= parseFloat($("#batchAmount").val())
                 element.amount = element.amount.toFixed(2)
             })
@@ -298,43 +286,8 @@ var app = new Vue({
             $("#batchAmount").val('');
             $("#batchEdit").hide();
         }
-    },
-    created: function() {
-        this.addRow() // 新增一空列
     }
 })
-
-var swalOption = {
-    title: "",
-    text: "",
-    type: "warning",
-    showCancelButton: false,
-    confirmButtonColor: "#DD6B55",
-    confirmButtonText: '確定',
-    cancelButtonText: '取消',
-    closeOnConfirm: true
-};
-
-$(function () {
-
-});
-
-function applyMaterial(str) {
-    var material = JSON.parse(str);
-
-    material = {
-        id: material.id,
-        code: material.fullCode,
-        name: material.fullName,
-        amount: 0,
-        unit: material.unit,
-        cost: material.cost ? parseFloat(material.cost) : 0,
-        price: material.price ? parseFloat(material.price) : 0
-    };
-
-    app.$set(app.materialRows, app.currnetIndex, material);
-    app.$forceUpdate();
-}
 
 function submit_btn(){
     if ($('#name').val() == '') {
@@ -343,51 +296,7 @@ function submit_btn(){
         return false;
     }
 
-    var existNaN = false;
-    var materialSum = 0;
-
-    var existMaterial = [];
-    var sameMaterial = [];
-
-    app.materialRows.forEach(function(element, index) {
-        // 檢查非數字
-        if(isNaN(element.amount) || isNaN(element.cost) || isNaN(element.price)) {
-            existNaN = true;
-        }
-
-        // 檢查物料數量
-        materialSum += element.id
-
-        // 檢查重複物料
-        if (existMaterial.includes(element.id)) {
-            sameMaterial.push(element.name)
-        } else {
-            existMaterial.push(element.id);
-        }
-    });
-
-    // 有非數字
-    if(existNaN){
-        swalOption.title = '數量、成本或售價必須為數字';
-        swal(swalOption);
-        return false;
-    }
-
-    // 物料數量
-    if(materialSum == 0){
-        swalOption.title = '未選擇任何物料';
-        swal(swalOption);
-        return false;
-    }
-
-    // 有重複物料
-    if (sameMaterial.length > 0) {
-        swalOption.title = '選擇的物料有重複';
-        swalOption.text = sameMaterial.join('\n');
-        swal(swalOption);
-
-        return false;
-    }
+    return checkMaterials();
 
     // 驗證完成，保存
     $("#material_module_from").submit();
