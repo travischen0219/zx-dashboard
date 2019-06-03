@@ -41,7 +41,6 @@
                             </button>
                             <input type="hidden" name="materialCalUnit[]" v-model="item.cal_unit" />
                             <input type="hidden" name="materialCalPrice[]" v-model="item.cal_price" />
-                            <input type="hidden" name="materialCalCost[]" v-model="item.cal_cost" />
                         </td>
                         <td title="物料">
                             <input type="hidden" name="material[]" v-model="item.id">
@@ -197,9 +196,9 @@ function applyMaterial(str, idx) {
         name: material.fullName,
         amount: 0,
         unit: material.unit,
-        cal_unit: material.cal_unit,
         cost: material.cost ? parseFloat(material.cost) : 0,
         price: material.price ? parseFloat(material.price) : 0,
+        cal_unit: material.cal_unit,
         cal_price: material.cal_price ? parseFloat(material.cal_price) : 0
     }
 

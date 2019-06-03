@@ -19,7 +19,7 @@ class Material_module extends Model
         return $this->hasOne(Gallery::class, 'id', 'file_3');
     }
 
-    static public function encodeMaterials($materials)
+    static public function encodeMaterials($materials, $php = false)
     {
         $data = [];
         $materials = unserialize($materials);
@@ -35,11 +35,14 @@ class Material_module extends Model
             $data[$i]['cost'] = $materials['materialCost'][$i] ?? 0;
             $data[$i]['price'] = $materials['materialPrice'][$i] ?? 0;
             $data[$i]['cal_unit'] = $materials['materialCalUnit'][$i] ?? 0;
-            $data[$i]['cal_cost'] = $materials['materialCalCost'][$i] ?? 0;
             $data[$i]['cal_price'] = $materials['materialCalPrice'][$i] ?? 0;
         }
 
-        $data = json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
-        return $data;
+        if ($php) {
+            return $data;
+        } else {
+            $data = json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return $data;
+        }
     }
 }

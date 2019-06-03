@@ -72,7 +72,6 @@ class Material_moduleController extends Controller
         $materialUnit = [];
         $materialCost = [];
         $materialPrice = [];
-        $materialCalCost = [];
         $materialCalPrice = [];
         $materialCalUnit = [];
 
@@ -83,7 +82,6 @@ class Material_moduleController extends Controller
                 $materialUnit[] = $request->materialUnit[$i];
                 $materialCost[] = $request->materialCost[$i];
                 $materialPrice[] = $request->materialPrice[$i];
-                $materialCalCost[] = $request->materialCalCost[$i];
                 $materialCalPrice[] = $request->materialCalPrice[$i];
                 $materialCalUnit[] = $request->materialCalUnit[$i];
             }
@@ -111,8 +109,7 @@ class Material_moduleController extends Controller
                 'materialPrice' => $materialPrice,
                 'materialCost' => $materialCost,
                 'materialCalUnit' => $materialCalUnit,
-                'materialCalPrice' => $materialCalPrice,
-                'materialCalCost' => $materialCalCost
+                'materialCalPrice' => $materialCalPrice
             ];
 
             $file_1=null;
@@ -327,7 +324,6 @@ class Material_moduleController extends Controller
         $materialUnit = [];
         $materialCost = [];
         $materialPrice = [];
-        $materialCalCost = [];
         $materialCalPrice = [];
         $materialCalUnit = [];
 
@@ -338,7 +334,6 @@ class Material_moduleController extends Controller
                 $materialUnit[] = $request->materialUnit[$i];
                 $materialCost[] = $request->materialCost[$i];
                 $materialPrice[] = $request->materialPrice[$i];
-                $materialCalCost[] = $request->materialCalCost[$i];
                 $materialCalPrice[] = $request->materialCalPrice[$i];
                 $materialCalUnit[] = $request->materialCalUnit[$i];
             }
@@ -366,8 +361,7 @@ class Material_moduleController extends Controller
                 'materialPrice' => $materialPrice,
                 'materialCost' => $materialCost,
                 'materialCalUnit' => $materialCalUnit,
-                'materialCalPrice' => $materialCalPrice,
-                'materialCalCost' => $materialCalCost
+                'materialCalPrice' => $materialCalPrice
             ];
 
             $file_1=null;
