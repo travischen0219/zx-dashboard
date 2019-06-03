@@ -41,6 +41,7 @@
                             </button>
                             <input type="hidden" name="materialCalUnit[]" v-model="item.cal_unit" />
                             <input type="hidden" name="materialCalPrice[]" v-model="item.cal_price" />
+                            <input type="hidden" name="materialCalCost[]" v-model="item.cal_cost" />
                         </td>
                         <td title="物料">
                             <input type="hidden" name="material[]" v-model="item.id">
@@ -58,7 +59,7 @@
                                 placeholder="請輸入數字"
                                 style="width: 100px;">
                         </td>
-                        <td title="單位">
+                        <td title="單位" style="vertical-align: middle;">
                             @{{ item.unit ? units[item.unit].name : '' }}
                             <input type="hidden" name="materialUnit[]" v-model="item.unit" />
                         </td>
@@ -70,7 +71,7 @@
                                 placeholder="請輸入數字"
                                 style="width: 100px;">
                         </td>
-                        <td title="成本小計">
+                        <td title="成本小計" style="vertical-align: middle;">
                             $@{{ item.amount * item.cost | number_format }}
                         </td>
                         <td title="單位售價">
@@ -81,7 +82,7 @@
                                 placeholder="請輸入數字"
                                 style="width: 100px;">
                         </td>
-                        <td title="售價小計">
+                        <td title="售價小計" style="vertical-align: middle;">
                             $@{{ item.amount * item.price | number_format }}
                         </td>
                     </tr>

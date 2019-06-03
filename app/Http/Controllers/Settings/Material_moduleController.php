@@ -70,29 +70,38 @@ class Material_moduleController extends Controller
         $material = [];
         $materialAmount = [];
         $materialUnit = [];
+        $materialCost = [];
         $materialPrice = [];
+        $materialCalCost = [];
+        $materialCalPrice = [];
+        $materialCalUnit = [];
+
         for($i=0; $i < $total_materials; $i++){
             if($request->material[$i]){
                 $material[] = $request->material[$i];
                 $materialAmount[] = $request->materialAmount[$i];
                 $materialUnit[] = $request->materialUnit[$i];
+                $materialCost[] = $request->materialCost[$i];
                 $materialPrice[] = $request->materialPrice[$i];
+                $materialCalCost[] = $request->materialCalCost[$i];
+                $materialCalPrice[] = $request->materialCalPrice[$i];
+                $materialCalUnit[] = $request->materialCalUnit[$i];
             }
         }
 
         // 另存一份 friendly data
-        $materials2 = [];
-        for($i = 0; $i < $total_materials; $i++) {
-            $materials2[] = [
-                'id' => $request->material[$i],
-                'amount' => $request->materialAmount[$i],
-                'unit' => $request->materialUnit[$i],
-                'cost' => $request->materialCost[$i],
-                'price' => $request->materialPrice[$i],
-                'cal_cost' => $request->materialCalCost[$i],
-                'cal_price' => $request->materialCalPrice[$i]
-            ];
-        }
+        // $materials2 = [];
+        // for($i = 0; $i < $total_materials; $i++) {
+        //     $materials2[] = [
+        //         'id' => $request->material[$i],
+        //         'amount' => $request->materialAmount[$i],
+        //         'unit' => $request->materialUnit[$i],
+        //         'cost' => $request->materialCost[$i],
+        //         'price' => $request->materialPrice[$i],
+        //         'cal_cost' => $request->materialCalCost[$i],
+        //         'cal_price' => $request->materialCalPrice[$i]
+        //     ];
+        // }
 
         if(count($material) > 0){
             $materials = [
@@ -100,7 +109,10 @@ class Material_moduleController extends Controller
                 'materialAmount' => $materialAmount,
                 'materialUnit' => $materialUnit,
                 'materialPrice' => $materialPrice,
-                'data' => $materials2
+                'materialCost' => $materialCost,
+                'materialCalUnit' => $materialCalUnit,
+                'materialCalPrice' => $materialCalPrice,
+                'materialCalCost' => $materialCalCost
             ];
 
             $file_1=null;
@@ -220,7 +232,7 @@ class Material_moduleController extends Controller
         $materials = unserialize($material_module->materials);
 
         // New: materialRows
-        $materials2 = Material_module::encodeMaterials2($materials['data']);
+        $materials2 = Material_module::encodeMaterials($material_module->materials);
 
         $total_materials = count($materials['material']);
         $materialCount = 0;
@@ -313,29 +325,38 @@ class Material_moduleController extends Controller
         $material = [];
         $materialAmount = [];
         $materialUnit = [];
+        $materialCost = [];
         $materialPrice = [];
+        $materialCalCost = [];
+        $materialCalPrice = [];
+        $materialCalUnit = [];
+
         for($i=0; $i < $total_materials; $i++){
             if($request->material[$i]){
                 $material[] = $request->material[$i];
                 $materialAmount[] = $request->materialAmount[$i];
                 $materialUnit[] = $request->materialUnit[$i];
+                $materialCost[] = $request->materialCost[$i];
                 $materialPrice[] = $request->materialPrice[$i];
+                $materialCalCost[] = $request->materialCalCost[$i];
+                $materialCalPrice[] = $request->materialCalPrice[$i];
+                $materialCalUnit[] = $request->materialCalUnit[$i];
             }
         }
 
         // 另存一份 friendly data
-        $materials2 = [];
-        for($i = 0; $i < $total_materials; $i++) {
-            $materials2[] = [
-                'id' => $request->material[$i],
-                'amount' => $request->materialAmount[$i],
-                'unit' => $request->materialUnit[$i],
-                'cost' => $request->materialCost[$i],
-                'price' => $request->materialPrice[$i],
-                'cal_cost' => $request->materialCalCost[$i],
-                'cal_price' => $request->materialCalPrice[$i]
-            ];
-        }
+        // $materials2 = [];
+        // for($i = 0; $i < $total_materials; $i++) {
+        //     $materials2[] = [
+        //         'id' => $request->material[$i],
+        //         'amount' => $request->materialAmount[$i],
+        //         'unit' => $request->materialUnit[$i],
+        //         'cost' => $request->materialCost[$i],
+        //         'price' => $request->materialPrice[$i],
+        //         'cal_cost' => $request->materialCalCost[$i],
+        //         'cal_price' => $request->materialCalPrice[$i]
+        //     ];
+        // }
 
         if(count($material) > 0){
             $materials = [
@@ -343,7 +364,10 @@ class Material_moduleController extends Controller
                 'materialAmount' => $materialAmount,
                 'materialUnit' => $materialUnit,
                 'materialPrice' => $materialPrice,
-                'data' => $materials2
+                'materialCost' => $materialCost,
+                'materialCalUnit' => $materialCalUnit,
+                'materialCalPrice' => $materialCalPrice,
+                'materialCalCost' => $materialCalCost
             ];
 
             $file_1=null;
