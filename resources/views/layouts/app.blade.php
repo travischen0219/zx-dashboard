@@ -140,7 +140,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
         <script>
         Vue.filter('number_format', function (value) {
-            return value.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            value = Math.round(value * 100) / 100
+            return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         })
 
         var number_format = Vue.filter('my-number_format')

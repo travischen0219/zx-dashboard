@@ -111,7 +111,8 @@
                     {{-- @include('selector.material_table') --}}
                     <material-table
                         :rows="rows"
-                        :units="units">
+                        :units="units"
+                        ref="materialTable">
                     </material-table>
 
                     <div class="form-body">
@@ -239,53 +240,8 @@
 var app = new Vue({
     el: '#app',
     data: {
-        index: 0,
         units: {!! $units !!},
         rows: []
-    },
-    methods: {
-        // addRow: function() {
-        //     this.materialRows.push(Object.assign({}, this.materialRow))
-        // },
-        deleteRow: function(index) {
-            this.materialRows.splice(index, 1);
-        },
-        listMaterial(index) {
-            this.currnetIndex = index
-
-            $.magnificPopup.open({
-                showCloseBtn : false,
-                closeOnBgClick: true,
-                fixedContentPos: false,
-                items: {
-                    src: "/selector/material",
-                    type: "iframe"
-                }
-            })
-        },
-        batchAmountApply() {
-            if (isNaN($("#batchAmount").val())) {
-                swal({
-                    title: "倍數請輸入數字",
-                    type: "warning",
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: '確定',
-                    closeOnConfirm: true
-                }, function () {
-                    $("#batchAmount").val('');
-                });
-
-                return false;
-            }
-
-            app.rows.forEach(element => {
-                element.amount *= parseFloat($("#batchAmount").val())
-                element.amount = element.amount.toFixed(2)
-            })
-
-            $("#batchAmount").val('');
-            $("#batchEdit").hide();
-        }
     }
 })
 
@@ -296,10 +252,9 @@ function submit_btn(){
         return false;
     }
 
-    return checkMaterials();
-
-    // 驗證完成，保存
-    $("#material_module_from").submit();
+    if (checkMaterials()) {
+        $("#material_module_from").submit();
+    }
 }
 </script>
 @endsection

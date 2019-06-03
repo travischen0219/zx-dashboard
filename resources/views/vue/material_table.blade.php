@@ -9,12 +9,12 @@
             </h4>
             <hr>
 
-            <table id="materialTable" class="table">
+            <table id="" class="table">
                 <thead>
                     <tr>
                         <th width="1" style="white-space: nowrap">操作</th>
-                        <th>物料</th>
-                        <th width="1" style="white-space: nowrap">
+                        <th width="400">物料</th>
+                        <th style="white-space: nowrap">
                             數量
                             <a href="javascript: batchEditAmount();">
                                 <small>批量修改</small>
@@ -24,11 +24,11 @@
                                 <button type="button" @click="batchAmountApply">x 倍數</button>
                             </div>
                         </th>
-                        <th width="1" style="white-space: nowrap">單位</th>
-                        <th width="1" style="white-space: nowrap">單位成本</th>
-                        <th width="1" style="white-space: nowrap">成本小計</th>
-                        <th width="1" style="white-space: nowrap">單位售價</th>
-                        <th width="1" style="white-space: nowrap">售價小計</th>
+                        <th style="white-space: nowrap">單位</th>
+                        <th style="white-space: nowrap">單位成本</th>
+                        <th style="white-space: nowrap">成本小計</th>
+                        <th style="white-space: nowrap">單位售價</th>
+                        <th style="white-space: nowrap">售價小計</th>
                     </tr>
                 </thead>
 
@@ -39,6 +39,8 @@
                                 class="btn red">
                                 <i class="fa fa-remove"></i>
                             </button>
+                            <input type="hidden" name="materialCalUnit[]" v-model="item.cal_unit" />
+                            <input type="hidden" name="materialCalPrice[]" v-model="item.cal_price" />
                         </td>
                         <td title="物料">
                             <input type="hidden" name="material[]" v-model="item.id">
@@ -53,15 +55,20 @@
                                 class="form-control"
                                 v-model="item.amount"
                                 name="materialAmount[]"
-                                placeholder="請輸入數字">
+                                placeholder="請輸入數字"
+                                style="width: 100px;">
                         </td>
-                        <td title="單位">@{{ item.unit ? units[item.unit].name : '' }}</td>
+                        <td title="單位">
+                            @{{ item.unit ? units[item.unit].name : '' }}
+                            <input type="hidden" name="materialUnit[]" v-model="item.unit" />
+                        </td>
                         <td title="單位成本">
                             <input type="text"
                                 class="form-control"
                                 v-model="item.cost"
                                 name="materialCost[]"
-                                placeholder="請輸入數字">
+                                placeholder="請輸入數字"
+                                style="width: 100px;">
                         </td>
                         <td title="成本小計">
                             $@{{ item.amount * item.cost | number_format }}
@@ -71,7 +78,8 @@
                                 class="form-control"
                                 v-model="item.price"
                                 name="materialPrice[]"
-                                placeholder="請輸入數字">
+                                placeholder="請輸入數字"
+                                style="width: 100px;">
                         </td>
                         <td title="售價小計">
                             $@{{ item.amount * item.price | number_format }}
@@ -165,15 +173,20 @@ Vue.component('material-table', {
 
             app.rows.forEach(element => {
                 element.amount *= parseFloat($("#batchAmount").val())
-                element.amount = element.amount.toFixed(2)
+                element.amount = Math.round(element.amount * 100) / 100
             })
 
             $("#batchAmount").val('');
             $("#batchEdit").hide();
         }
+    },
+
+    mounted: function () {
+        if (this.rows.length == 0) this.addRow()
     }
 });
 
+// 選取套用物料
 function applyMaterial(str, idx) {
     var material = JSON.parse(str)
 
@@ -183,14 +196,45 @@ function applyMaterial(str, idx) {
         name: material.fullName,
         amount: 0,
         unit: material.unit,
+        cal_unit: material.cal_unit,
         cost: material.cost ? parseFloat(material.cost) : 0,
-        price: material.price ? parseFloat(material.price) : 0
+        price: material.price ? parseFloat(material.price) : 0,
+        cal_price: material.cal_price ? parseFloat(material.cal_price) : 0
     }
 
     app.$set(app.rows, idx, material)
 }
 
+// 顯示 / 隱藏 批量修改
 function batchEditAmount() {
-    $("#batchEdit").fadeToggle('fast');
+    $("#batchEdit").fadeToggle('fast', function() {
+        $("#batchAmount").focus()
+    })
+}
+
+function checkMaterials() {
+    var existMaterial = [];
+    var sameMaterial = [];
+
+    app.rows.forEach(function(element, index) {
+        if (parseInt(element.id) != 0) {
+            if (existMaterial.includes(element.id)) {
+                sameMaterial.push(element.name)
+            } else {
+                existMaterial.push(parseInt(element.id))
+            }
+        }
+    })
+
+    // 有重複物料
+    if (sameMaterial.length > 0) {
+        swalOption.title = '選擇的物料有重複';
+        swalOption.text = sameMaterial.join('\n');
+        swal(swalOption);
+
+        return false
+    } else {
+        return true
+    }
 }
 </script>

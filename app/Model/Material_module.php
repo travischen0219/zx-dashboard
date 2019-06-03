@@ -21,8 +21,6 @@ class Material_module extends Model
 
     static public function encodeMaterials2($materials2)
     {
-        $materials2 = unserialize($materials2);
-
         foreach($materials2 as $key => $material2) {
             $material = Material::find($material2['id']);
             $materials2[$key]['code'] = $material->fullCode;

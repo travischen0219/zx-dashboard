@@ -86,13 +86,22 @@ class Material_moduleController extends Controller
             $materials2[] = [
                 'id' => $request->material[$i],
                 'amount' => $request->materialAmount[$i],
+                'unit' => $request->materialUnit[$i],
                 'cost' => $request->materialCost[$i],
-                'price' => $request->materialPrice[$i]
+                'price' => $request->materialPrice[$i],
+                'cal_cost' => $request->materialCalCost[$i],
+                'cal_price' => $request->materialCalPrice[$i]
             ];
         }
 
         if(count($material) > 0){
-            $materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialUnit'=>$materialUnit,'materialPrice'=>$materialPrice];
+            $materials = [
+                'material' => $material,
+                'materialAmount' => $materialAmount,
+                'materialUnit' => $materialUnit,
+                'materialPrice' => $materialPrice,
+                'data' => $materials2
+            ];
 
             $file_1=null;
             $file_2=null;
@@ -116,7 +125,6 @@ class Material_moduleController extends Controller
                 $material_module->code = $code_str;
                 $material_module->name = $request->name;
                 $material_module->materials = serialize($materials);
-                $material_module->materials2 = serialize($materials2);
                 $material_module->total_cost = $request->total_cost;
                 $material_module->total_price = $request->total_price;
                 $material_module->memo = $request->memo;
@@ -212,7 +220,7 @@ class Material_moduleController extends Controller
         $materials = unserialize($material_module->materials);
 
         // New: materialRows
-        $materials2 = Material_module::encodeMaterials2($material_module->materials2);
+        $materials2 = Material_module::encodeMaterials2($materials['data']);
 
         $total_materials = count($materials['material']);
         $materialCount = 0;
@@ -321,13 +329,22 @@ class Material_moduleController extends Controller
             $materials2[] = [
                 'id' => $request->material[$i],
                 'amount' => $request->materialAmount[$i],
+                'unit' => $request->materialUnit[$i],
                 'cost' => $request->materialCost[$i],
-                'price' => $request->materialPrice[$i]
+                'price' => $request->materialPrice[$i],
+                'cal_cost' => $request->materialCalCost[$i],
+                'cal_price' => $request->materialCalPrice[$i]
             ];
         }
 
         if(count($material) > 0){
-            $materials = ['material'=>$material, 'materialAmount'=>$materialAmount,'materialUnit'=>$materialUnit,'materialPrice'=>$materialPrice];
+            $materials = [
+                'material' => $material,
+                'materialAmount' => $materialAmount,
+                'materialUnit' => $materialUnit,
+                'materialPrice' => $materialPrice,
+                'data' => $materials2
+            ];
 
             $file_1=null;
             $file_2=null;
@@ -352,7 +369,6 @@ class Material_moduleController extends Controller
                 $material_module = Material_module::find($id);
                 $material_module->name = $request->name;
                 $material_module->materials = serialize($materials);
-                $material_module->materials2 = serialize($materials2);
                 $material_module->total_cost = $request->total_cost;
                 $material_module->total_price = $request->total_price;
                 $material_module->memo = $request->memo;

@@ -117,7 +117,11 @@
                         <label for="memo" style="color:#248ff1;font-size: 16px;">產品說明</label>
                     </div>
 
-                    @include('selector.material_table')
+                    <material-table
+                        :rows="rows"
+                        :units="units"
+                        ref="materialTable">
+                    </material-table>
 
                     <div class="form-body">
                         {{--
@@ -442,76 +446,15 @@
 <script src="{{asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript">
 </script>
 
+{{-- 物料表格 --}}
+@include('vue.material_table')
+
 <script>
 var app = new Vue({
     el: '#app',
     data: {
-        currnetIndex: 0,
         units: {!! $units !!},
-        materialRow: { id: 0, name: '', amount: 0, cost: 0, price: 0 },
-        materialRows: {!! $materials2 !!}
-    },
-    computed: {
-        total_cost: function() {
-            var total_cost = 0
-            this.materialRows.forEach(element => {
-                total_cost += parseFloat(element.cost) * parseFloat(element.amount)
-            })
-
-            return total_cost
-        },
-        total_price: function() {
-            var total_price = 0
-            this.materialRows.forEach(element => {
-                total_price += parseFloat(element.price) * parseFloat(element.amount)
-            })
-
-            return total_price
-        }
-    },
-    methods: {
-        addRow: function() {
-            this.materialRows.push(Object.assign({}, this.materialRow))
-        },
-        deleteRow: function(index) {
-            this.materialRows.splice(index, 1);
-        },
-        listMaterial(index) {
-            this.currnetIndex = index
-
-            $.magnificPopup.open({
-                showCloseBtn : false,
-                closeOnBgClick: true,
-                fixedContentPos: false,
-                items: {
-                    src: "/selector/material",
-                    type: "iframe"
-                }
-            })
-        },
-        batchAmountApply() {
-            if (isNaN($("#batchAmount").val())) {
-                swal({
-                    title: "倍數請輸入數字",
-                    type: "warning",
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: '確定',
-                    closeOnConfirm: true
-                }, function () {
-                    $("#batchAmount").val('');
-                });
-
-                return false;
-            }
-
-            app.materialRows.forEach(element => {
-                element.amount *= parseFloat($("#batchAmount").val())
-                element.amount = element.amount.toFixed(2)
-            })
-
-            $("#batchAmount").val('');
-            $("#batchEdit").hide();
-        }
+        rows: {!! $materials2 !!}
     }
 })
 
@@ -522,9 +465,9 @@ function submit_btn() {
         return false;
     }
 
-    return checkMaterials();
-
-    $("#material_module_from").submit();
+    if (checkMaterials()) {
+        $("#material_module_from").submit();
+    }
 }
 </script>
 @endsection
