@@ -17,7 +17,7 @@
         font-size: 16px;
         vertical-align:middle;
     }
-    #sample_1_filter input { 
+    #sample_1_filter input {
         width:300px !important;
     }
     #functions_btn{
@@ -38,7 +38,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -47,7 +47,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -84,12 +84,12 @@
                             <th>操 作</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         @foreach($users as $user)
                             @if(true)
                             <tr>
-                                
+
                                 <td>{{$user->staff_code}}</td>
                                 <td>{{$user->fullname}}</td>
                                 <td>
