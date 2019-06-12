@@ -1,11 +1,11 @@
 <div id="sidebar">
-    <a href="javascript: void(0);">
+    <a id="sidebar-brand" href="javascript: void(0);">
         <span id="sidebar-name" class="mr-1">真心蓮坊進銷存</span>
         <i class="fas fa-bars"></i>
     </a>
 
     <ul>
-        <li {{ Request::is('dashboard*') ? 'active' : '' }}">
+        <li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
             <a href="{{ route('dashboard') }}">
                 <i class="fas fa-home"></i>
                 <span>首頁</span>
@@ -19,9 +19,9 @@
 
             <ul>
                 @foreach (App\Model\Sidebar::settings() as $item)
-                    <li>
-                        <a href="{{ route($item['route']) }}">{{ $item['title'] }}</a>
-                    </li>
+                <li>
+                    <a href="{{ route($item['route']) }}">{{ $item['title'] }}</a>
+                </li>
                 @endforeach
             </ul>
         </li>
@@ -44,4 +44,9 @@
             </a>
         </li>
     </ul>
+
+    <div id="sidebar-account">
+        {{ session()->has('admin_user') ? session('admin_user')->fullname : '查無登入者' }}
+        <div><a href="{{ route('logout') }}">登出</a></div>
+    </div>
 </div>
