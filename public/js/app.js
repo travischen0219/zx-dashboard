@@ -36902,15 +36902,11 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/assets/js/bootstrap.js"); // window.Vue = require('vue');
-// $('#sidebar > ul > li').hover(
-//     function() {
-//         $('#sidebar > ul > li ul').hide()
-//         $(this).find('ul').show()
-//     },
-//     function() {
-//         $(this).find('ul').hide()
-//     }
-// )
+
+
+$('#sidebar-brand').click(function () {
+  $('#sidebar').toggleClass('collapse');
+});
 
 /***/ }),
 

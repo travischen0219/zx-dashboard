@@ -16498,6 +16498,7 @@ readers do not read off random characters that represent icons */
   position: fixed;
   left: 0;
   top: 0;
+  transition: 0.3s;
 }
 
 #sidebar a {
@@ -16544,7 +16545,7 @@ readers do not read off random characters that represent icons */
   text-align: center;
   padding: 15px;
   padding-top: 25px;
-  width: 195px;
+  width: 100%;
   height: 90px;
 }
 
@@ -16642,6 +16643,31 @@ readers do not read off random characters that represent icons */
   width: 0px;
   left: -20px;
   top: 35px;
+}
+
+#sidebar.collapse {
+  width: 60px;
+}
+
+#sidebar.collapse .extend {
+  display: none;
+}
+
+#sidebar.collapse > ul > li.active::before {
+  display: none;
+}
+
+#sidebar.collapse > ul > li > a {
+  height: 50px;
+  padding-top: 15px;
+}
+
+#sidebar.collapse > ul > li ul {
+  left: 60px;
+}
+
+#sidebar.collapse > ul > li ul li:first-child::before {
+  top: 12px;
 }
 
 #content {

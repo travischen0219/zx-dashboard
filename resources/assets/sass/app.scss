@@ -19,6 +19,7 @@
     position: fixed;
     left: 0;
     top: 0;
+    transition: .3s;
 
     a {
         text-decoration: none;
@@ -66,7 +67,7 @@
                 text-align: center;
                 padding: 15px;
                 padding-top: 25px;
-                width: 195px;
+                width: 100%;
                 height: 90px;
                 // border-bottom: 1px solid #2b3b55;
             }
@@ -166,6 +167,38 @@
                     width: 0px;
                     left: -20px;
                     top: 35px;
+                }
+            }
+        }
+    }
+
+    &.collapse {
+        width: 60px;
+
+        .extend {
+            display: none;
+        }
+
+        >ul {
+            >li {
+                &.active {
+                    &::before {
+                        display: none;
+                    }
+                }
+                >a {
+                    height: 50px;
+                    padding-top: 15px;
+                }
+
+                ul {
+                    left: 60px;
+
+                    li {
+                        &:first-child::before {
+                            top: 12px;
+                        }
+                    }
                 }
             }
         }
