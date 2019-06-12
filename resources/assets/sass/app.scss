@@ -10,6 +10,8 @@
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 
+@import '~datatables.net-bs4/css/dataTables.bootstrap4.min.css';
+
 #sidebar {
     width: 195px;
     background-color: #26344B;
@@ -20,6 +22,7 @@
     left: 0;
     top: 0;
     transition: .3s;
+    z-index: 6000;
 
     a {
         text-decoration: none;
@@ -148,7 +151,7 @@
                 padding-left: 20px;
                 margin: 5px;
 
-                &:hover {
+                &:hover, &.active {
                     color: #18cdc4;
                     background-color: #26344B;
                 }
@@ -166,7 +169,7 @@
                     height: 0px;
                     width: 0px;
                     left: -20px;
-                    top: 35px;
+                    top: 30px;
                 }
             }
         }

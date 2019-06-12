@@ -11,7 +11,7 @@
                 <span class="extend">首頁</span>
             </a>
         </li>
-        <li {{ Request::is('settings*') ? 'active' : '' }}">
+        <li class="{{ Request::is('settings*') ? 'active' : '' }}">
             <a href="#">
                 <i class="fas fa-cog"></i>
                 <span class="extend">基本資料</span>
@@ -19,19 +19,21 @@
 
             <ul>
                 @foreach (App\Model\Sidebar::settings() as $item)
-                <li>
-                    <a href="{{ route($item['route']) }}">{{ $item['title'] }}</a>
-                </li>
+                    <li>
+                        <a href="{{ route($item['route']) }}" class="{{ Request::is($item['request']) ? 'active' : '' }}">
+                            {{ $item['title'] }}
+                        </a>
+                    </li>
                 @endforeach
             </ul>
         </li>
-        <li {{ Request::is('purchase*') ? 'active' : '' }}">
+        <li class="{{ Request::is('purchase*') ? 'active' : '' }}">
             <a href="#">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="extend">採購進貨</span>
             </a>
         </li>
-        <li {{ Request::is('shopping*') ? 'active' : '' }}">
+        <li class="{{ Request::is('shopping*') ? 'active' : '' }}">
             <a href="#">
                 <i class="fas fa-dolly-flatbed"></i>
                 <span class="extend">銷貨出貨</span>
