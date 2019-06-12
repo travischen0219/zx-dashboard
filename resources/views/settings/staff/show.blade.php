@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('b4.app')
 
 @section('title','員工資料')
 
