@@ -273,8 +273,8 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(fun
 
 Route::middleware('admin.login')->prefix('print')->group(function(){
     // 採購總報表
-    Route::get('buy','PrintController@buy');
-    Route::post('buy','PrintController@buy');
+    Route::get('buy','PrintController@buy')->name('print.buy');
+    Route::post('buy','PrintController@buy')->name('print.buy');
 
     // 採購單報表
     Route::get('buy_detail/{id}','PrintController@buy_detail');

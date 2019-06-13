@@ -88,4 +88,170 @@ class Sidebar
 
         return $data;
     }
+
+    static public function purchases()
+    {
+        $data =[];
+
+        $data[] = [
+            'route' => 'inquiry.index',
+            'request' => 'purchase/inquiry*',
+            'title' => '詢價'
+        ];
+
+        $data[] = [
+            'route' => 'buy.index',
+            'request' => 'purchase/buy*',
+            'title' => '採購'
+        ];
+
+        $data[] = [
+            'route' => 'ibuy_to_stock.index',
+            'request' => 'purchase/ibuy_to_stock*',
+            'title' => '採購轉入庫中'
+        ];
+
+        $data[] = [
+            'route' => 'stock.index',
+            'request' => 'purchase/stock*',
+            'title' => '入庫'
+        ];
+
+        $data[] = [
+            'route' => 'account_payable.index',
+            'request' => 'purchase/account_payable*',
+            'title' => '應付帳款管理'
+        ];
+
+        $data[] = [
+            'route' => 'payment_record.index',
+            'request' => 'purchase/payment_record*',
+            'title' => '付款記錄'
+        ];
+
+        $data[] = [
+            'route' => 'p_sales_return.index',
+            'request' => 'purchase/p_sales_return*',
+            'title' => '採購退貨'
+        ];
+
+        $data[] = [
+            'route' => 'p_exchange.index',
+            'request' => 'purchase/p_exchange*',
+            'title' => '採購換貨'
+        ];
+
+        $data[] = [
+            'route' => 'print.buy',
+            'request' => '/print/buy*',
+            'title' => '報表',
+            'target' => '_blank'
+        ];
+
+        return $data;
+    }
+
+    static public function shoppings()
+    {
+        $data =[];
+
+        $data[] = [
+            'route' => 'sale.index',
+            'request' => 'shopping/sale*',
+            'title' => '銷貨'
+        ];
+
+        $data[] = [
+            'route' => 'apply_out_stock.index',
+            'request' => 'shopping/apply_out_stock*',
+            'title' => '申請出庫'
+        ];
+
+        $data[] = [
+            'route' => 'picking.index',
+            'request' => 'shopping/picking*',
+            'title' => '集貨撿貨'
+        ];
+
+        $data[] = [
+            'route' => 'out_stock.index',
+            'request' => 'shopping/out_stock*',
+            'title' => '出庫'
+        ];
+
+        $data[] = [
+            'route' => 'account_receivable.index',
+            'request' => 'shopping/account_receivable*',
+            'title' => '應收帳款管理'
+        ];
+
+        $data[] = [
+            'route' => 'receivable_record.index',
+            'request' => 'shopping/receivable_record*',
+            'title' => '收款記錄'
+        ];
+
+        $data[] = [
+            'route' => 's_sales_return.index',
+            'request' => 'shopping/s_sales_return*',
+            'title' => '銷貨退貨'
+        ];
+
+        $data[] = [
+            'route' => 's_exchange.index',
+            'request' => 'shopping/s_exchange*',
+            'title' => '銷貨換貨'
+        ];
+
+        $data[] = [
+            'route' => 'prime_cost.index',
+            'request' => 'shopping/prime_cost*',
+            'title' => '成本利潤估算'
+        ];
+
+        return $data;
+    }
+
+    static public function stocks()
+    {
+        $data =[];
+
+        $data[] = [
+            'route' => 'inventory.index',
+            'request' => 'stock/inventory*',
+            'title' => '盤點'
+        ];
+
+        $data[] = [
+            'route' => 'adjustment.index',
+            'request' => 'stock/adjustment*',
+            'title' => '誤差處理'
+        ];
+
+        $data[] = [
+            'route' => 'transfer_inventory.index',
+            'request' => 'stock/transfer_inventory*',
+            'title' => '調撥'
+        ];
+
+        $data[] = [
+            'route' => 'on_order_follow.index',
+            'request' => 'stock/on_order_follow*',
+            'title' => '在途量追蹤'
+        ];
+
+        $data[] = [
+            'route' => 'semi_finished_schedule.index',
+            'request' => 'stock/semi_finished_schedule*',
+            'title' => '半成品進度追蹤'
+        ];
+
+        $data[] = [
+            'route' => 'residual_material_processing.index',
+            'request' => 'stock/residual_material_processing*',
+            'title' => '餘料處理'
+        ];
+
+        return $data;
+    }
 }

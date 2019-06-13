@@ -32,18 +32,52 @@
                 <i class="fas fa-shopping-cart"></i>
                 <span class="extend">採購進貨</span>
             </a>
+
+            <ul>
+                @foreach (App\Model\Sidebar::purchases() as $item)
+                    <li>
+                        <a href="{{ route($item['route']) }}"
+                            target="{{ $item['target'] ?? '_self' }}"
+                            class="{{ Request::is($item['request']) ? 'active' : '' }}">
+                            {{ $item['title'] }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
         </li>
         <li class="{{ Request::is('shopping*') ? 'active' : '' }}">
             <a href="#">
                 <i class="fas fa-dolly-flatbed"></i>
                 <span class="extend">銷貨出貨</span>
             </a>
+            <ul>
+                @foreach (App\Model\Sidebar::shoppings() as $item)
+                    <li>
+                        <a href="{{ route($item['route']) }}"
+                            target="{{ $item['target'] ?? '_self' }}"
+                            class="{{ Request::is($item['request']) ? 'active' : '' }}">
+                            {{ $item['title'] }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
         </li>
         <li {{ Request::is('stock*') ? 'active' : '' }}">
             <a href="#">
                 <i class="fas fa-cube"></i>
                 <span class="extend">庫存盤點</span>
             </a>
+            <ul>
+                @foreach (App\Model\Sidebar::stocks() as $item)
+                    <li>
+                        <a href="{{ route($item['route']) }}"
+                            target="{{ $item['target'] ?? '_self' }}"
+                            class="{{ Request::is($item['request']) ? 'active' : '' }}">
+                            {{ $item['title'] }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
         </li>
     </ul>
 
