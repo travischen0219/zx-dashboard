@@ -1,33 +1,22 @@
 @extends('b4.app')
 
 @section('title','員工資料')
-@section('page-header','基本資料 - 員工資料')
+
+@section('page-header')
+    <i class="fas fa-users active-color"></i> 基本資料 - 員工資料
+@endsection
 
 @section('content')
 
-<div class="row">
-    <div class="col-md-12">
-        <!-- BEGIN EXAMPLE TABLE PORTLET-->
-        <div class="portlet light">
-            <div class="portlet-title">
-                @include('includes.messages')
-                <div class="caption font-dark">
-                    <a href="{{ route('staff.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增人員</a>
-                </div>
-                <div class="tools"> </div>
-            </div>
-            <div class="portlet-body">
+    <a href="{{ route('staff.create') }}"
+        class="btn btn-primary mb-3">
+        <i class="fas fa-user-plus"></i>
+        新增人員
+    </a>
 
-            </div>
-        </div>
-        <!-- END EXAMPLE TABLE PORTLET-->
-
-    </div>
-</div>
-
-    <table class="table table-striped table-bordered table-hover" id="data" >
+    <table class="table table-striped table-bordered table-hover" id="data">
         <thead>
-            <tr>
+            <tr class="bg-success text-white">
                 <th>編 號</th>
                 <th>姓 名</th>
                 <th>部 門</th>
@@ -68,8 +57,14 @@
                             <span style="color:red">關閉</span>
                             @endif
                     </td>
-                    <td  align="center" id="functions_btn"><a href="{{ route('staff.edit', $user->id) }}" class="btn blue btn-outline btn-sm">修改</a>
-                        <a href="javascript:;" class="btn red btn-outline btn-sm" onclick="
+                    <td align="center">
+                        <a href="{{ route('staff.edit', $user->id) }}"
+                            class="btn btn-outline-primary btn-sm">
+                            修改
+                        </a>
+                        <a href="javascript: void(0);"
+                            class="btn red btn-outline-danger btn-sm"
+                            onclick="
                             if(confirm('確定要刪除嗎 ?')){
                                 event.preventDefault();
                                 document.getElementById('delete-form-{{$user->id}}').submit();
@@ -92,11 +87,7 @@
 @section('script')
     <script>
     $(function () {
-        $('#data').DataTable({
-            "language": {
-                "url": '/json/datatable.zh-tw.json'
-            }
-        })
+        var table = $('#data').DataTable(dtOptions)
     })
     </script>
 @endsection

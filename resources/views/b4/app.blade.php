@@ -18,6 +18,25 @@
     </div>
 
     <script src="/js/app.js"></script>
+    <script>
+    const dtOptions = {
+        dom: `
+            <"float-left mt-1"l>
+            <"float-right align-middle mb-2 ml-2"B>
+            <"float-right mt-1"f>
+            rt
+            <"float-left"i>
+            <"float-right"p>
+            <"clearfix">
+        `,
+        'language': {
+            "url": '/json/datatable.zh-tw.json'
+        },
+        'buttons': [
+            { extend: 'colvis', text: '欄位篩選' }
+        ]
+    }
+    </script>
     @yield('script')
 </body>
 </html>

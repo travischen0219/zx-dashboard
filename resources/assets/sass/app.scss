@@ -11,6 +11,13 @@
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 
 @import '~datatables.net-bs4/css/dataTables.bootstrap4.min.css';
+@import '~datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css';
+
+// @import '../../../public/assets/global/css/components.css';
+
+.active-color {
+    color: #18cdc4;
+}
 
 #sidebar {
     width: 195px;
@@ -151,7 +158,8 @@
                 padding-left: 20px;
                 margin: 5px;
 
-                &:hover, &.active {
+                &:hover,
+                &.active {
                     color: #18cdc4;
                     background-color: #26344B;
                 }
@@ -189,6 +197,7 @@
                         display: none;
                     }
                 }
+
                 >a {
                     height: 50px;
                     padding-top: 15px;
@@ -211,4 +220,53 @@
 #content {
     margin-left: 200px;
     width: auto;
+}
+
+/* 初始label顏色 */
+.form-group.form-md-line-input.form-md-floating-label .form-control~label {
+    color: #43a546;
+}
+
+/* help-block顏色 */
+.form-group.form-md-line-input .form-control.edited:not([readonly])~.help-block,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~.help-block {
+    color: #43a546;
+}
+
+/* focus後的label顏色 */
+.form-group.form-md-line-input .form-control.edited:not([readonly])~label,
+.form-group.form-md-line-input .form-control.edited:not([readonly])~.form-control-focus,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~label,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~.form-control-focus {
+    color: #43a546;
+}
+
+/* focus後的底線顏色 */
+.form-group.form-md-line-input .form-control.edited:not([readonly])~label:after,
+.form-group.form-md-line-input .form-control.edited:not([readonly])~.form-control-focus:after,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~label:after,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~.form-control-focus:after {
+    background: #43a546;
+}
+
+.form-group.form-md-line-input .form-control::-moz-placeholder {
+    color: #43a546;
+}
+
+.form-group.form-md-line-input .form-control:-ms-input-placeholder {
+    color: #43a546;
+}
+
+.form-group.form-md-line-input .form-control::-webkit-input-placeholder {
+    color: #43a546;
+}
+
+.form-horizontal .form-group.form-md-line-input>label {
+
+    color: #43a546;
+}
+
+button[type=submit] {
+    color: #fff;
+    background-color: #43a546;
 }
