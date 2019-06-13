@@ -21,13 +21,13 @@ class Sidebar
         ];
 
         $data[] = [
-            'route' => 'supplier.index',
+            'route' => 'professional_title.index',
             'request' => 'settings/professional_title*',
             'title' => '職稱設定'
         ];
 
         $data[] = [
-            'route' => 'department.index',
+            'route' => 'supplier.index',
             'request' => 'settings/supplier*',
             'title' => '供應商'
         ];
