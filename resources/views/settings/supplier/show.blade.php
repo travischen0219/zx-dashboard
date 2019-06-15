@@ -84,9 +84,9 @@
                             }">刪除</a>
                         <a href='
                             @if($supplier->code != '' && $supplier->fullName != '')
-                                javascript: barcode("{{$supplier->fullName}}", "{{$supplier->code}}");' class="btn green btn-outline-dark btn-sm">條碼</a>
+                                javascript: barcode("{{$supplier->fullName}}", "{{$supplier->code}}");' class="btn green btn-outline-success btn-sm">條碼</a>
                             @else
-                                javascript:;' class="btn green btn-outline-dark btn-sm" disabled>條碼</a>
+                                javascript:;' class="btn green btn-outline-success btn-sm" disabled>條碼</a>
                             @endif
                         <form id="delete-form-{{$supplier->id}}" action="{{ route('supplier.destroy', $supplier->id) }}" method="post" style="display:none">
                             {{ csrf_field() }}
