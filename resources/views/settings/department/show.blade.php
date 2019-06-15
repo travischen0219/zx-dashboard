@@ -1,8 +1,8 @@
 @extends('b4.app')
 
-@section('title','部門資料')
+@section('title','部門設定')
 @section('page-header')
-    <i class="fas fa-building active-color"></i> 基本資料 - 部門資料
+    <i class="fas fa-building active-color"></i> 基本資料 - 部門設定
     <small class="text-muted">建立與編輯 (可直接拖曳序號做排序)</small>
 @endsection
 
