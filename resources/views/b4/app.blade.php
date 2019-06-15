@@ -17,7 +17,7 @@
         @yield('content')
     </div>
 
-    <script src="/js/app.js"></script>
+    <script src="/js/app.js?1"></script>
     <script>
     const dtOptions = {
         dom: `
