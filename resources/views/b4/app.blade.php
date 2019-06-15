@@ -36,6 +36,15 @@
             { extend: 'colvis', text: '欄位篩選' }
         ]
     }
+
+    const swalOption = {
+        title: "",
+        text: "",
+        type: "",
+        showCancelButton: false,
+        confirmButtonText: '確定',
+        closeOnConfirm: true
+    }
     </script>
     @yield('script')
 </body>

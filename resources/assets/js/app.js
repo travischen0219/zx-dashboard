@@ -1,12 +1,14 @@
 
 require('./bootstrap')
 
-import dt from 'datatables.net'
-import 'datatables.net-bs4'
-import 'datatables.net-buttons'
+// import dt from 'datatables.net'
+import dt from 'datatables.net-bs4'
 import 'datatables.net-buttons-bs4'
 import 'datatables.net-buttons/js/buttons.colVis.min.js'
-import 'datatables.net-buttons/js/buttons.print.min.js'
+import 'datatables.net-rowreorder-bs4'
+
+import swal from 'sweetalert2';
+window.swal = swal
 
 // window.Vue = require('vue');
 
