@@ -36,6 +36,6 @@
         "sweetalert2": "^8.12.1",
         "vue": "^2.6.10",
         "vue-template-compiler": "^2.6.10",
-        "webpack": "^4.33.0"
+        "webpack": "^4.34.0"
     }
 }
