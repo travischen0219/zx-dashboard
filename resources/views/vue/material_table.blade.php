@@ -213,8 +213,8 @@ function batchEditAmount() {
 }
 
 function checkMaterials() {
-    var existMaterial = [];
-    var sameMaterial = [];
+    var existMaterial = []
+    var sameMaterial = []
 
     app.rows.forEach(function(element, index) {
         if (parseInt(element.id) != 0) {
@@ -228,9 +228,9 @@ function checkMaterials() {
 
     // 有重複物料
     if (sameMaterial.length > 0) {
-        swalOption.title = '選擇的物料有重複';
-        swalOption.text = sameMaterial.join('\n');
-        swal(swalOption);
+        swalOption.title = '選擇的物料有重複'
+        swalOption.text = sameMaterial.join('\n')
+        swal(swalOption)
 
         return false
     } else {
