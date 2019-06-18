@@ -47,15 +47,15 @@
     <form role="form" action="{{ route('materials.search') }}" method="POST" id="search_from">
         {{ csrf_field() }}
         <div class="form-group">
-                <label class="control-label"> 篩選分類 :</label>
-                <select class="form-control d-inline-block w-auto" onchange="search();">
+            <label class="control-label"> 篩選分類 :</label>
+            <select class="form-control d-inline-block w-auto" name="search_category" onchange="search();">
 
-                    <option value="all" {{$search_code == 'all' ? 'selected' : ''}}>全部</option>
-                    @foreach($material_categories as $cate)
-                        <option value="{{$cate->code}}" {{ $search_code == $cate->code ? 'selected' : '' }}>[ {{$cate->code}} ] {{$cate->name}}</option>
-                    @endforeach
+                <option value="all" {{$search_code == 'all' ? 'selected' : ''}}>全部</option>
+                @foreach($material_categories as $cate)
+                    <option value="{{$cate->code}}" {{ $search_code == $cate->code ? 'selected' : '' }}>[ {{$cate->code}} ] {{$cate->name}}</option>
+                @endforeach
 
-                </select>
+            </select>
         </div>
     </form>
 
