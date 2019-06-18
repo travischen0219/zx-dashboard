@@ -33,7 +33,7 @@
                         <td cateid_{{$key}}="orderby_tb_{{$cate->id}}" id="td_id_{{$key}}">{{$cate->orderby}}</td>
                         <td>{{$cate->code}}</td>
                         <td>{{$cate->name}}</td>
-                        <td>{{$cate->cal == 1 ? '有' : '無'}}</td>
+                        <td>{{$cate->cal == 1 ? '有' : ''}}</td>
 
                         <td align="center">
                             <a href="{{ route('material_category.edit', $cate->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
