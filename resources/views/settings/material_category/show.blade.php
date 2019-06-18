@@ -1,6 +1,10 @@
-@extends('layouts.app')
+@extends('b4.app')
 
 @section('title','物料分類')
+@section('page-header')
+    <i class="fas fa-industry active-color"></i> 基本資料 - 物料分類
+@endsection
+
 
 @section('css')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -44,7 +48,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -53,7 +57,7 @@
         <small>建立與編輯 (可直接拖曳序號做排序)</small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -68,7 +72,7 @@
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet light">
             <div class="portlet-title">
-                @include('includes.messages')            
+                @include('includes.messages')
                 <div class="caption font-dark col-md-12">
                     <a href="{{ route('material_category.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增分類</a>
                     <a href="javascript:;" id="save_recoder" class="btn"><i class="fa fa-check"></i> 儲存排序變更</a>
@@ -79,12 +83,12 @@
                 <form id="this_form">
                     {{ csrf_field() }}
                     <input type="hidden" name="count_cates" value="{{count($material_categories)}}">
-                    
+
                     <table class="table table-striped table-checkable table-bordered table-hover" id="sample_1">
                         <thead>
                             <tr>
                                 <th>序 號 (可拖曳排序)</th>
-                                <th>代 號</th>                                
+                                <th>代 號</th>
                                 <th>名 稱</th>
                                 <th>操 作</th>
                             </tr>
@@ -99,7 +103,7 @@
                                     <td align="center">
                                         <a href="{{ route('material_category.edit', $cate->id) }}" class="btn blue btn-outline btn-sm">修改</a>
 
-                                        <a href="javascript:;" class="btn red btn-outline btn-sm" 
+                                        <a href="javascript:;" class="btn red btn-outline btn-sm"
                                             onclick="if(confirm('確定要刪除嗎 ?')){
                                                         event.preventDefault();
                                                         document.getElementById('delete-form-{{$cate->id}}').submit();
@@ -124,7 +128,7 @@
             </div>
         </div>
         <!-- END EXAMPLE TABLE PORTLET-->
-        
+
         <button id="success_alert" class="btn btn-primary mt-sweetalert" data-title="存檔成功" data-message="" data-allow-outside-click="true" data-confirm-button-class="btn-primary" style="display: none"></button>
         <button id="error_1_alert" class="btn btn-primary mt-sweetalert" data-title="尚無資料需要排序" data-message="" data-allow-outside-click="true" data-confirm-button-class="btn-primary" style="display: none"></button>
     </div>
@@ -162,8 +166,8 @@
         for (i = 0; i < cates_length; i++) {
             var id = $(".recoder_tr_"+i+" td").attr('cateid_'+i).substr(11);
             var orderby = $("#td_id_"+i).html();
-            data_id.push(id); 
-            data_orderby.push(orderby); 
+            data_id.push(id);
+            data_orderby.push(orderby);
         }
 
         $.post(
