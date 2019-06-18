@@ -124,8 +124,8 @@
                     </td>
                     <td align="center" id="functions_btn">
                         {{-- <a href="{{ route('materials.show', $material->id) }}" class="btn purple btn-outline btn-sm">查看</a> --}}
-                        <a href="{{ route('materials.edit', $material->id) }}" class="btn blue btn-outline btn-sm">修改</a>
-                        <a href="javascript:;" class="btn red btn-outline btn-sm" onclick="
+                        <a href="{{ route('materials.edit', $material->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
+                        <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
                             if(confirm('確定要刪除嗎 ?')){
                                 event.preventDefault();
                                 document.getElementById('delete-form-{{$material->id}}').submit();
@@ -134,7 +134,7 @@
                             }">刪除</a>
                         <a href='
                             @if($material->fullCode != '' && $material->fullName != '')
-                                javascript: barcode("{{$material->fullName}}", "{{$material->fullCode}}");' class="btn green btn-outline btn-sm">條碼</a>
+                                javascript: barcode("{{$material->fullName}}", "{{$material->fullCode}}");' class="btn green btn-outline-success btn-sm">條碼</a>
                             @else
                                 javascript:;' class="btn green btn-outline btn-sm" disabled>條碼</a>
                             @endif
