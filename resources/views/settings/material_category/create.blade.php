@@ -36,7 +36,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -45,7 +45,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -74,7 +74,15 @@
                             <label for="form_control_2"><span style="color:red;">*</span>分類名稱</label>
                             <span class="help-block"></span>
                         </div>
-                        
+                        <div class="form-group">
+                            <label class="text-primary">計價欄位：</label>
+                            <label>
+                                <input type="radio" name="cal" id="form_control_3" value="1" {{ old('cal') == 1 ? 'checked' : '' }}> 有
+                            </label>
+                            <label style="margin-left: 10px;">
+                                <input type="radio" name="cal" id="form_control_4" value="0" {{ old('cal') != 1 ? 'checked' : '' }}> 無
+                            </label>
+                        </div>
                     </div>
                     <div class="form-actions noborder">
                         <button type="submit" class="btn"><i class="fa fa-check"></i> 存 檔</button>
@@ -84,8 +92,8 @@
             </div>
         </div>
         <!-- END SAMPLE FORM PORTLET-->
-    
-    
+
+
     </div>
 </div>
 
