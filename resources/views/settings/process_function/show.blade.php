@@ -12,11 +12,11 @@
     <a href="{{ route('process_function.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增加工方式</a>
     <a href="javascript:;" id="save_recoder" class="btn btn-success"><i class="fa fa-check"></i> 儲存排序變更</a>
 
-    <form id="this_form">
+    <form id="this_form" style="width: 600px;">
         {{ csrf_field() }}
         <input type="hidden" name="count_units" value="{{count($process_functions)}}">
 
-        <table class="table table-striped table-checkable table-bordered table-hover" id="data" width="600">
+        <table class="table table-striped table-checkable table-bordered table-hover" id="data">
             <thead>
                 <tr class="bg-success text-white">
                     <th>序 號 (可拖曳排序)</th>
@@ -92,7 +92,6 @@
     $(function () {
         dtOptions.paging = false
         dtOptions.info = false
-        dtOptions.searching = false
         dtOptions.buttons = []
 
         dtOptions.rowReorder = { selector: 'tr' }
