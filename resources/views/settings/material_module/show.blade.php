@@ -52,7 +52,7 @@
 
                 <tr>
                     <td>
-                        <a href="/print/material_module/{{ $material_module->id }}" target="_blank" class="btn blue btn-outline btn-sm">列印</a>
+                        <a href="/print/material_module/{{ $material_module->id }}" target="_blank" class="btn blue btn-outline-primary btn-sm">列印</a>
                     </td>
                     <td>{{$material_module->code}}</td>
                     <td><a href="{{ route('material_module.show', $material_module->id) }}">{{$material_module->name}}</a></td>

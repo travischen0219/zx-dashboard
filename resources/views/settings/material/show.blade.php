@@ -7,8 +7,6 @@
 @endsection
 
 @section('css')
-<link href="{{asset('assets/apps/css/magnific-popup.css')}}" rel="stylesheet" type="text/css" />
-
 <style>
     #popup{
         width:400px;
@@ -152,8 +150,6 @@
 @endsection
 
 @section('script')
-<script src="{{asset('assets/apps/scripts/jquery.magnific-popup.js')}}" type="text/javascript"></script>
-
 <script>
 function barcode(title, code) {
     $.magnificPopup.open({

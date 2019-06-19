@@ -18,20 +18,30 @@ class CustomerController extends Controller
     public function index()
     {
         $search_code = 'all';
-        $customers = Customer::where('delete_flag','0')->get();
-        return view('settings.customer.show',compact('customers','search_code'));
+
+        $categories = Customer::categories();
+        $customers = Customer::where('delete_flag', '0')->get();
+        return view(
+            'settings.customer.show',
+            compact('customers', 'search_code', 'categories')
+        );
     }
 
     public function search(Request $request)
     {
         $search_code = $request->search_category;
+        $categories = Customer::categories();
 
-        if($search_code == 'all'){
-            $customers = Customer::where('delete_flag','0')->get();
+        if ($search_code == 'all') {
+            $customers = Customer::where('delete_flag', '0')->get();
         } else {
-            $customers = Customer::where('delete_flag','0')->where('category',$search_code)->get();
+            $customers = Customer::where('delete_flag', '0')
+                ->where('category', $search_code)->get();
         }
-        return view('settings.customer.show',compact('customers','search_code'));
+        return view(
+            'settings.customer.show',
+            compact('customers', 'search_code', 'categories')
+        );
     }
 
     /**
@@ -104,7 +114,7 @@ class CustomerController extends Controller
             $latest_code->set_value = $number;
             $latest_code->save();
             return redirect()->route('customers.index')->with('message','新增成功');
- 
+
         } catch (Exception $e) {
             return redirect()->route('customers.index')->with('error','新增失敗');
         }
@@ -193,7 +203,7 @@ class CustomerController extends Controller
             $customer->contactPerson3 = $request->contactPerson3;
             $customer->memo = $request->memo;
             $customer->status = $request->status;
-            $customer->updated_user = session('admin_user')->id;      
+            $customer->updated_user = session('admin_user')->id;
             $customer->save();
             return redirect()->route('customers.index')->with('message','修改成功');
         } catch (Exception $e) {
@@ -218,7 +228,7 @@ class CustomerController extends Controller
             $customer->save();
             return redirect()->route('customers.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('customers.index')->with('error','刪除失敗');            
-        } 
+            return redirect()->route('customers.index')->with('error','刪除失敗');
+        }
     }
 }

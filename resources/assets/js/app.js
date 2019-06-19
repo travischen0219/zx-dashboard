@@ -6,6 +6,7 @@ import dt from 'datatables.net-bs4'
 import 'datatables.net-buttons-bs4'
 import 'datatables.net-buttons/js/buttons.colVis.min.js'
 import 'datatables.net-rowreorder-bs4'
+import 'magnific-popup'
 
 import swal from 'sweetalert2';
 window.swal = swal
