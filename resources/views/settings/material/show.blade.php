@@ -7,36 +7,35 @@
 @endsection
 
 @section('css')
-<style>
-    #popup{
-        width:400px;
-        height:160px;
-        display:block;
-        background-color: white;
-        margin:auto;
-    }
-    #popup p{
-        padding-top:20px;
-        display:block;
-        text-align:center;
-    }
-    #popup img{
-        display:block;
-        margin:0 auto ;
-        padding:0px 20px;
-    }
-    #pop_stock{
-        width:85%;
-        height:900px;
-        display:block;
-        background-color: white;
-        margin:auto;
-    }
-    .mfp-wrap {
-        z-index: 9998;
-    }
-</style>
-
+    <style>
+        #popup{
+            width:400px;
+            height:160px;
+            display:block;
+            background-color: white;
+            margin:auto;
+        }
+        #popup p{
+            padding-top:20px;
+            display:block;
+            text-align:center;
+        }
+        #popup img{
+            display:block;
+            margin:0 auto ;
+            padding:0px 20px;
+        }
+        #pop_stock{
+            width:85%;
+            height:900px;
+            display:block;
+            background-color: white;
+            margin:auto;
+        }
+        .mfp-wrap {
+            z-index: 9998;
+        }
+    </style>
 @endsection
 
 
@@ -66,13 +65,11 @@
     <table class="table table-striped table-bordered table-hover" id="data">
         <thead>
             <tr class="bg-primary text-white">
-                <th>編 號</th>
                 <th>列 印</th>
                 <th>分 類</th>
                 <th>品 名</th>
                 <th>單 位</th>
                 <th>尺 寸</th>
-                <th>安全量</th>
                 <th>庫 存</th>
                 <th>操 作</th>
             </tr>
@@ -81,10 +78,9 @@
         <tbody>
             @foreach($materials as $material)
                 <tr>
-                    <td>{{$material->fullCode}}</td>
                     <td>
-                        <a href="{{url('barcode_PDF/'.$material->id)}}" target="_blank" class="btn blue btn-outline-primary btn-sm">列印</a>&nbsp;&nbsp;
                         <input type="checkbox" class="print_pdf" name="print_pdf"  value="{{$material->id}}">
+                        <a href="{{url('barcode_PDF/'.$material->id)}}" target="_blank" class="btn blue btn-outline-primary btn-sm">列印</a>&nbsp;&nbsp;
                     </td>
                     <td>
                         @if($material->material_categories_code == '')
@@ -93,8 +89,11 @@
                             [ {{$material->material_categories_code}} ] {{$material->material_category_name->name}}
                         @endif
                     </td>
-
-                    <td><a href="{{ route('materials.show', $material->id) }}">{{$material->fullName}}</a></td>
+                    <td>
+                        {{$material->fullCode}}
+                        <br>
+                        <a href="{{ route('materials.show', $material->id) }}">{{$material->fullName}}</a>
+                    </td>
                     <td>
                         @if($material->unit > 0 )
                             {{$material->material_unit_name->name}}
@@ -104,12 +103,6 @@
                     </td>
                     <td>{{$material->size}}</td>
 
-                    @if($material->safe >0)
-                        <td>{{$material->safe}}</td>
-                    @else
-                        <td><span style="color:red;">未設定</span></td>
-                    @endif
-
                     @if($material->safe >= $material->stock )
                         <td style="">
                         <font color="red">{{$material->stock}}</font>
@@ -117,7 +110,7 @@
                         <td >
                         {{$material->stock}}
                     @endif
-
+                        <br>
                         <a href="javascript: show_stock('{{ $material->id }}');" class="btn blue btn-outline-primary btn-sm pull-right">庫存紀錄</a>
                     </td>
                     <td align="center" id="functions_btn">
