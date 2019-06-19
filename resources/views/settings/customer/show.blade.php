@@ -1,6 +1,6 @@
 @extends('b4.app')
 
-@section('title','客戶')
+@section('title','客戶資料')
 @section('page-header')
     <i class="fas fa-user-tie active-color"></i> 基本資料 - 客戶資料
 @endsection
