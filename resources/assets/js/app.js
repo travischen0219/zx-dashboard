@@ -15,4 +15,5 @@ window.swal = swal
 
 $('#sidebar-brand').click(function () {
     $('#sidebar').toggleClass('collapse')
+    $('#content').toggleClass('full')
 })

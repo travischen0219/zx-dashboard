@@ -220,6 +220,10 @@
 #content {
     margin-left: 200px;
     width: auto;
+
+    &.full {
+        margin-left: 65px;
+    }
 }
 
 /* 初始label顏色 */

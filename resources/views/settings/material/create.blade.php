@@ -25,7 +25,7 @@
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
         background: #248ff1; }
 
-    
+
 
     .form-group.form-md-line-input .form-control::-moz-placeholder {
       color: #248ff1;}
@@ -35,7 +35,7 @@
       color: #248ff1; }
 
     .form-horizontal .form-group.form-md-line-input > label {
-    
+
     color: #248ff1;
     }
 
@@ -104,7 +104,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -113,7 +113,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -151,11 +151,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">                       
+                            <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span ><span style="color:red;">*</span>物料編號 : </span>
                                 </div>
-                                
+
                                 <div class="col-md-2">
                                     <div class="form-group form-md-line-input form-md-floating-label">
                                         <input type="text" name="code_1" maxlength="3" class="form-control" id="code_1" onkeyup="showFullCode();" onchange="showFullCode();" value="{{ old('code_1') }}">
@@ -189,7 +189,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">                        
+                            <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span >完整編號 : </span>
                                 </div>
@@ -197,12 +197,12 @@
                                     <span id="fullCode"></span>
                                 </div>
                             </div>
-                            
-                            <div class="col-md-12">       
+
+                            <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span ><span style="color:red;">*</span>品名 : </span>
-                                </div>  
-                                         
+                                </div>
+
                                 <div class="col-md-8">
                                     <div class="form-group form-md-line-input form-md-floating-label">
                                         <input type="text" name="fullName" class="form-control" id="form_control_1" value="{{ old('fullName') }}">
@@ -215,7 +215,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span >單位 : </span>
-                                </div>   
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-md-line-input">
                                         <select class="form-control" id="unit" name="unit">
@@ -227,10 +227,10 @@
                                         <label for="unit" style="color:#248ff1;"></label>
                                     </div>
                                 </div>
-                                
+
                             </div>
 
-                            
+
 
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
@@ -255,7 +255,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span >計價單位 : </span>
-                                </div>   
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-md-line-input">
                                         <select class="form-control" id="cal_unit" name="cal_unit">
@@ -275,11 +275,11 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span ></span>
-                                </div>   
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-md-line-input form-md-floating-label">
                                         <input type="text" name="size" class="form-control" id="form_control_4" value="{{ old('size') }}">
@@ -299,7 +299,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span ></span>
-                                </div>   
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-md-line-input form-md-floating-label">
                                         <input type="text" name="buy" class="form-control" id="form_control_6" value="{{ old('buy') }}">
@@ -320,8 +320,8 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span >倉儲位置 : </span>
-                                </div>  
-                                            
+                                </div>
+
                                 <div class="col-md-8">
                                     <div class="info-box hover-zoom-effect" >
                                         <div class="icon bg-cyan">
@@ -338,9 +338,9 @@
                                             <div class="number col-blue-grey">
                                                 <a href='javascript: openSelectWarehouse();'>
                                                     <div class="title col-orange" id="warehouse_show_1">
-                                                            (需指定後才能進行庫存操作) 
+                                                            (需指定後才能進行庫存操作)
                                                     </div>
-                                                    <div><span id="warehouse_show_2"> 請點我選擇</span> 
+                                                    <div><span id="warehouse_show_2"> 請點我選擇</span>
                                                         @if(false)
                                                             <span style="color:red;"> (關閉)</span>
                                                         @endif
@@ -356,7 +356,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span ></span>
-                                </div> 
+                                </div>
                                 <div class="col-md-8">
                                     <div class="form-group form-md-line-input">
                                         <textarea class="form-control" rows="3" name="memo" id="memo">{{ old('memo') }}</textarea>
@@ -364,12 +364,12 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-12">
                                 <div class="form-group form-md-line-input">
                                     <div class="col-md-2 table_title">
                                         <span >啟用狀態:</span>
-                                    </div> 
+                                    </div>
                                     <div class="col-md-8">
                                         <div class="md-radio-inline" style="margin-top:25px;">
                                             <div class="md-radio has-info">
@@ -394,25 +394,25 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
-                        
-                        {{-- file upload start --}}                                                
-                        <div class="col-md-12">                                        
+
+                        {{-- file upload start --}}
+                        <div class="col-md-12">
                             <div style="border: #248ff1 solid 2px;width:100%;height: 400px;">
                                 <div class="col-md-12">
                                     <p style="font-size:18px;margin-top:18px;margin-left:20px;color:#248ff1;">檔案上傳<span style="color:red;">【每一檔案上傳限制5M】</span></p>
                                     <hr>
-                                </div>                        
+                                </div>
                                 <div class="col-md-4">
-                                    <div class="col-md-6">                    
+                                    <div class="col-md-6">
                                         <div class="form-group form-md-line-input form-md-floating-label">
                                             <input type="text" name="name_1" class="form-control" id="name_1" value="{{ old('name_1') }}">
                                             <label for="name_1">名稱</label>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">                    
+                                    <div class="col-md-12">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                 <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -428,14 +428,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="col-md-6">                    
+                                    <div class="col-md-6">
                                         <div class="form-group form-md-line-input form-md-floating-label">
                                             <input type="text" name="name_2" class="form-control" id="name_2" value="{{ old('name_2') }}">
                                             <label for="name_2">名稱</label>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">                    
+                                    <div class="col-md-12">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                 <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -451,14 +451,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="col-md-6">                    
+                                    <div class="col-md-6">
                                         <div class="form-group form-md-line-input form-md-floating-label">
                                             <input type="text" name="name_3" class="form-control" id="name_3" value="{{ old('name_3') }}">
                                             <label for="name_3">名稱</label>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">                    
+                                    <div class="col-md-12">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                 <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -475,10 +475,10 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- file upload end --}}                        
+                        {{-- file upload end --}}
 
-                        <div class="col-md-12">    
-                            <hr>                
+                        <div class="col-md-12">
+                            <hr>
                             <div class="form-actions noborder">
                                 <button type="submit" class="btn"><i class="fa fa-check"></i> 存 檔</button>
                                 <a href="{{ route('materials.index') }}" class="btn red"><i class="fa fa-times"></i> 取 消</a>
@@ -488,12 +488,12 @@
                     </div>
                     <input type="hidden" name="fullCode" id="fullCode_input">
                 </form>
-                
+
             </div>
         </div>
         <!-- END SAMPLE FORM PORTLET-->
     </div>
-    
+
 </div>
 
 
@@ -514,7 +514,7 @@ if($('#code_2').val() == '' || $('#code_2').val() == 'undefiend' || $('#material
 function showFullCode() {
 
     if($('#code_2').val() == '' || $('#code_2').val() == 'undefiend' || $('#material_category').val() == ''){
-        $('#fullCode').html('資料尚未完整');   
+        $('#fullCode').html('資料尚未完整');
     } else {
         var material_category = $('#material_category').val();
         var code_1 = $('#code_1').val();
@@ -532,15 +532,15 @@ function showFullCode() {
         $('#fullCode').html(str);
         $('#fullCode_input').val(str);
 
-        
+
     }
 }
 
 function openSelectWarehouse() {
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -558,7 +558,7 @@ function setWarehouse(id,fullName,code,category){
 function delete_warehouse(){
     $('#warehouse_show_1').html('(需指定後才能進行庫存操作)');
     $('#warehouse_show_2').html('請點我選擇');
-    $('#warehouse_id').val('');    
+    $('#warehouse_id').val('');
 }
 
 </script>
