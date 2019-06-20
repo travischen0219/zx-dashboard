@@ -68,7 +68,6 @@
                 <th>列 印</th>
                 <th>分 類</th>
                 <th>品 名</th>
-                <th>單 位</th>
                 <th>尺 寸</th>
                 <th>庫 存</th>
                 <th>操 作</th>
@@ -80,7 +79,7 @@
                 <tr>
                     <td>
                         <input type="checkbox" class="print_pdf" name="print_pdf"  value="{{$material->id}}">
-                        <a href="{{url('barcode_PDF/'.$material->id)}}" target="_blank" class="btn blue btn-outline-primary btn-sm">列印</a>&nbsp;&nbsp;
+                        <a href="{{url('barcode_PDF/'.$material->id)}}" target="_blank" class="btn blue btn-outline-primary btn-sm">列印</a>
                     </td>
                     <td>
                         @if($material->material_categories_code == '')
@@ -90,31 +89,26 @@
                         @endif
                     </td>
                     <td>
-                        {{$material->fullCode}}
+                        {{ $material->fullCode }}
                         <br>
                         <a href="{{ route('materials.show', $material->id) }}">{{$material->fullName}}</a>
                     </td>
-                    <td>
-                        @if($material->unit > 0 )
-                            {{$material->material_unit_name->name}}
-                        @else
-                            <span style="color:red;">未指派</span>
-                        @endif
-                    </td>
-                    <td>{{$material->size}}</td>
+                    <td>{{ $material->size }}</td>
 
-                    @if($material->safe >= $material->stock )
-                        <td style="">
-                        <font color="red">{{$material->stock}}</font>
-                    @else
-                        <td >
-                        {{$material->stock}}
-                    @endif
-                        <br>
-                        <a href="javascript: show_stock('{{ $material->id }}');" class="btn blue btn-outline-primary btn-sm pull-right">庫存紀錄</a>
+                    <td>
+                        <span style="color: {{ $material->safe >= $material->stock ? 'red' : 'inherit' }}">
+                            {{$material->stock}}
+                        </span>
+
+                        @if($material->unit > 0 )
+                            {{ $material->material_unit_name->name }}
+                        @else
+                            <span style="color: red;">無單位</span>
+                        @endif
+
+                        <a href="javascript: show_stock('{{ $material->id }}');" class="btn blue btn-outline-primary btn-sm float-right">庫存紀錄</a>
                     </td>
                     <td align="center" id="functions_btn">
-                        {{-- <a href="{{ route('materials.show', $material->id) }}" class="btn purple btn-outline btn-sm">查看</a> --}}
                         <a href="{{ route('materials.edit', $material->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
                         <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
                             if(confirm('確定要刪除嗎 ?')){

@@ -226,6 +226,15 @@
     }
 }
 
+#data {
+    thead {
+        tr {
+            background-color: #007bff !important;
+            color: #fff !important;
+        }
+    }
+}
+
 /* 初始label顏色 */
 .form-group.form-md-line-input.form-md-floating-label .form-control~label {
     color: #43a546;
