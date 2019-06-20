@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <select class="form-control" id="material_category" name="material_category" onchange="showFullCode();">
+                                        <select class="form-control" id="material_category" name="material_category" onchange="getCal($(this).val()); showFullCode();">
                                             <option value="" {{ old('material_category') == '' ? 'selected' : '' }}>請選擇</option>
                                             @foreach($material_categories as $cate)
                                                 <option value="{{$cate->code}}" {{ old('material_category') == $cate->code ? 'selected' : '' }}>[ {{$cate->code}} ] {{$cate->name}} </option>
@@ -252,7 +252,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">
+                            <div id="cal-column" class="well col-md-12" style="display: none;">
+                                <div class="col-md-12 text-danger">有指定計價欄位的分類才會出現</div>
                                 <div class="col-md-2 table_title">
                                     <span >計價單位 : </span>
                                 </div>
@@ -561,5 +562,18 @@ function delete_warehouse(){
     $('#warehouse_id').val('');
 }
 
+var categories = {!! JSON_ENCODE($material_categories, JSON_HEX_QUOT | JSON_HEX_TAG) !!};
+
+function getCal(v) {
+    if (v != '' && categories[v].cal == '1') {
+        $('#cal-column').show();
+    } else {
+        $('#cal-column').hide();
+    }
+}
+
+$(function() {
+    getCal($('#material_category').val());
+})
 </script>
 @endsection

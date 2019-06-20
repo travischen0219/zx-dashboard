@@ -10,6 +10,7 @@ use App\Model\Material_unit;
 use Illuminate\Http\Request;
 use App\Model\Material_category;
 use App\Model\Material_warehouse;
+use App\Model\Helper;
 use App\Model\Warehouse_category;
 use App\Http\Controllers\Controller;
 
@@ -61,6 +62,8 @@ class MaterialController extends Controller
     public function create()
     {
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
+        $material_categories = Helper::arrayAppendKey($material_categories, 'code');
+        // return $material_categories;
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
         return view('settings.material.create',compact('material_categories','material_units'));
     }
@@ -186,6 +189,7 @@ class MaterialController extends Controller
     {
         $material = Material::find($id);
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
+        $material_categories = Helper::arrayAppendKey($material_categories, 'code');
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
         if($material->warehouse > 0){
             $warehouse = Warehouse::where('id',$material->warehouse)->first();
