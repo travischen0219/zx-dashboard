@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') | 真心蓮坊進銷存系統</title>
-    <link rel="stylesheet" href="/css/app.css?2">
+    <link rel="stylesheet" href="/css/app.css?{{ env('APP_VERSION') }}">
     @yield('css')
 </head>
 <body>
@@ -17,7 +17,7 @@
         @yield('content')
     </div>
 
-    <script src="/js/app.js?2"></script>
+    <script src="/js/app.js?{{ env('APP_VERSION') }}"></script>
     <script>
     const dtOptions = {
         dom: `

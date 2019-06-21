@@ -1,4 +1,4 @@
-@extends('layouts.selector')
+@extends('b4.selector')
 
 @section('title','選擇物料')
 
