@@ -43,6 +43,9 @@
             </thead>
             <tbody>
                 @foreach ($materials as $material)
+                    @php
+                        $material->cal = $categories[$material->material_categories_code]->cal;
+                    @endphp
                     <tr>
                         <td title="操作" nowrap>
                             <button type="button"

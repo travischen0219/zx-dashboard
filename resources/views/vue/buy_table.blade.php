@@ -1,8 +1,8 @@
-<script type="text/x-template" id="material-table">
+<script type="text/x-template" id="buy-table">
     <div class="panel panel-default">
         <div class="panel-body">
             <h4>
-                模組物料清單
+                採購物料清單
                 <button type="button" @click="addRow" class="btn btn-primary btn-add">
                     <i class="fa fa-plus"></i> 新增物料
                 </button>
@@ -14,7 +14,17 @@
                     <tr>
                         <th width="1" style="white-space: nowrap">操作</th>
                         <th width="400">物料</th>
-                        <th style="white-space: nowrap">
+                        <th style="white-space: nowrap">計價數量</th>
+                        <th style="white-space: nowrap">計價單位</th>
+                        <th style="white-space: nowrap">計價價格</th>
+                        <th style="white-space: nowrap">入庫數量</th>
+                        <th style="white-space: nowrap">採購數量</th>
+                        <th style="white-space: nowrap">單位</th>
+                        <th style="white-space: nowrap">單位成本</th>
+                        <th style="white-space: nowrap">小計</th>
+
+
+                        {{-- <th style="white-space: nowrap">
                             數量
                             <a href="javascript: batchEditAmount();">
                                 <small>批量修改</small>
@@ -29,7 +39,7 @@
                         <th style="white-space: nowrap">單位成本</th>
                         <th style="white-space: nowrap">成本小計</th>
                         <th style="white-space: nowrap">單位售價</th>
-                        <th style="white-space: nowrap">售價小計</th>
+                        <th style="white-space: nowrap">售價小計</th> --}}
                     </tr>
                 </thead>
 
@@ -105,8 +115,8 @@
 </script>
 
 <script>
-Vue.component('material-table', {
-    template: '#material-table',
+Vue.component('buy-table', {
+    template: '#buy-table',
 
     data: function () {
         return {
