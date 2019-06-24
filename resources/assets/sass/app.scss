@@ -1,14 +1,285 @@
-
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
-
 // Variables
 @import "variables";
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+
+@import '~datatables.net-bs4/css/dataTables.bootstrap4.min.css';
+@import '~datatables.net-rowreorder-bs4/css/rowReorder.bootstrap4.min.css';
+// @import '~datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css';
+@import '~magnific-popup/dist/magnific-popup.css';
+
+.active-color {
+    color: #18cdc4;
+}
+
+#sidebar {
+    width: 195px;
+    background-color: #26344B;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: .3s;
+    z-index: 6000;
+
+    a {
+        text-decoration: none;
+        color: #e4e9f2;
+        display: block;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    >#sidebar-brand {
+        background-color: #17C4BB;
+        padding: 20px 15px;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        text-decoration: none;
+    }
+
+    >#sidebar-account {
+        background-color: #000;
+        padding: 15px;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        text-decoration: none;
+        margin-top: auto;
+    }
+
+    // 第一層選單
+    >ul {
+        >li {
+            position: relative;
+            z-index: 100;
+
+            &:first-child {
+                margin-top: 15px;
+                // border-top: 1px solid #2b3b55;
+            }
+
+            >a {
+                text-align: center;
+                padding: 15px;
+                padding-top: 25px;
+                width: 100%;
+                height: 90px;
+                // border-bottom: 1px solid #2b3b55;
+            }
+
+            i {
+                font-size: 24px;
+                display: block;
+            }
+
+            span {
+                font-size: 13px;
+                margin-top: 5px;
+                display: block;
+            }
+
+            &.active {
+                background-color: #1f2b3d;
+
+                i {
+                    color: #18cdc4;
+                }
+
+                span {
+                    color: #fff;
+                }
+
+                &::before {
+                    position: absolute;
+                    content: '';
+                    border-color: transparent #fff transparent transparent;
+                    border-style: solid;
+                    border-width: 10px;
+                    height: 0px;
+                    width: 0px;
+                    right: 0px;
+                    top: 35px;
+                }
+            }
+
+            &:hover {
+                background-color: #212d41;
+
+                i {
+                    color: #fff;
+                }
+
+                span {
+                    color: #fff;
+                }
+
+                // 滑過顯示第二層選單
+                ul {
+                    display: block;
+                }
+            }
+        }
+
+        // 第二層選單
+        ul {
+            position: absolute;
+            left: 195px;
+            top: 0;
+            width: 195px;
+            z-index: 5000;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            background-color: #1c2637;
+            box-shadow: 5px 5px rgba(48, 48, 48, 0.2);
+            color: #fff;
+            display: none;
+            z-index: 200;
+
+            a {
+                color: #fff;
+                display: block;
+                padding: 5px;
+                padding-left: 20px;
+                margin: 5px;
+
+                &:hover,
+                &.active {
+                    color: #18cdc4;
+                    background-color: #26344B;
+                }
+            }
+
+            li {
+                position: relative;
+
+                &:first-child::before {
+                    position: absolute;
+                    content: '';
+                    border-color: transparent #1c2637 transparent transparent;
+                    border-style: solid;
+                    border-width: 10px;
+                    height: 0px;
+                    width: 0px;
+                    left: -20px;
+                    top: 30px;
+                }
+            }
+        }
+    }
+
+    &.collapse {
+        width: 60px;
+
+        .extend {
+            display: none;
+        }
+
+        >ul {
+            >li {
+                &.active {
+                    &::before {
+                        display: none;
+                    }
+                }
+
+                >a {
+                    height: 50px;
+                    padding-top: 15px;
+                }
+
+                ul {
+                    left: 60px;
+
+                    li {
+                        &:first-child::before {
+                            top: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#content {
+    margin-left: 200px;
+    width: auto;
+
+    &.full {
+        margin-left: 65px;
+    }
+}
+
+#data {
+    thead {
+        tr {
+            background-color: #007bff !important;
+            color: #fff !important;
+        }
+    }
+}
+
+/* 初始label顏色 */
+.form-group.form-md-line-input.form-md-floating-label .form-control~label {
+    color: #43a546;
+}
+
+/* help-block顏色 */
+.form-group.form-md-line-input .form-control.edited:not([readonly])~.help-block,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~.help-block {
+    color: #43a546;
+}
+
+/* focus後的label顏色 */
+.form-group.form-md-line-input .form-control.edited:not([readonly])~label,
+.form-group.form-md-line-input .form-control.edited:not([readonly])~.form-control-focus,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~label,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~.form-control-focus {
+    color: #43a546;
+}
+
+/* focus後的底線顏色 */
+.form-group.form-md-line-input .form-control.edited:not([readonly])~label:after,
+.form-group.form-md-line-input .form-control.edited:not([readonly])~.form-control-focus:after,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~label:after,
+.form-group.form-md-line-input .form-control:focus:not([readonly])~.form-control-focus:after {
+    background: #43a546;
+}
+
+.form-group.form-md-line-input .form-control::-moz-placeholder {
+    color: #43a546;
+}
+
+.form-group.form-md-line-input .form-control:-ms-input-placeholder {
+    color: #43a546;
+}
+
+.form-group.form-md-line-input .form-control::-webkit-input-placeholder {
+    color: #43a546;
+}
+
+.form-horizontal .form-group.form-md-line-input>label {
+
+    color: #43a546;
+}
+
+button[type=submit] {
+    color: #fff;
+    background-color: #43a546;
 }

@@ -10,6 +10,7 @@ use App\Model\Material_unit;
 use Illuminate\Http\Request;
 use App\Model\Material_category;
 use App\Model\Material_warehouse;
+use App\Model\Helper;
 use App\Model\Warehouse_category;
 use App\Http\Controllers\Controller;
 
@@ -29,24 +30,28 @@ class MaterialController extends Controller
                 $materials = Material::where('delete_flag','0')->orderBy('fullCode', 'ASC')->get();
                 return view('settings.material.show',compact('material_categories', 'materials','search_code'));
             } else {
-                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');            
+                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');
             }
         } else {
-            return redirect()->route('material_unit.index')->with('error', '尚無 單位 資料，請先建立');           
+            return redirect()->route('material_unit.index')->with('error', '尚無 單位 資料，請先建立');
         }
     }
 
     public function search(Request $request)
     {
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
-        
+
         $search_code = $request->search_category;
-        if($search_code == 'all'){
-            $materials = Material::where('delete_flag','0')->orderBy('fullCode', 'ASC')->get();
+        if ($search_code == 'all') {
+            $materials = Material::where('delete_flag', '0')
+                ->orderBy('fullCode', 'ASC')->get();
         } else {
-            $materials = Material::where('delete_flag','0')->where('material_categories_code',$search_code)->orderBy('fullCode', 'ASC')->get();
+            $materials = Material::where('delete_flag', '0')
+                ->where('material_categories_code', $search_code)
+                ->orderBy('fullCode', 'ASC')->get();
         }
-        return view('settings.material.show',compact('material_categories', 'materials', 'search_code'));
+
+        return view('settings.material.show', compact('material_categories', 'materials', 'search_code'));
     }
 
     /**
@@ -57,10 +62,12 @@ class MaterialController extends Controller
     public function create()
     {
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
+        $material_categories = Helper::arrayAppendKey($material_categories, 'code');
+        // return $material_categories;
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
-        return view('settings.material.create',compact('material_categories','material_units'));     
+        return view('settings.material.create',compact('material_categories','material_units'));
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -71,13 +78,13 @@ class MaterialController extends Controller
     {
         $rules = [
             'fullName' => 'required|string',
-            'fullCode' => 'required|string|unique:materials',            
+            'fullCode' => 'required|string|unique:materials',
         ];
 
         $messages = [
             'fullName.required' => '品名 必填',
             'fullCode.required' => '物料編號 不完整',
-            'fullCode.unique' => '物料編號已存在，不可重複',                      
+            'fullCode.unique' => '物料編號已存在，不可重複',
         ];
         $this->validate($request, $rules, $messages);
 
@@ -86,7 +93,7 @@ class MaterialController extends Controller
         $file_3=null;
         if($request->hasFile('upload_image_1')){
             $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
-        } 
+        }
         if($request->hasFile('upload_image_2')){
             $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
         }
@@ -115,9 +122,9 @@ class MaterialController extends Controller
             if($request->warehouse_id > 0){
                 $material->warehouse = $request->warehouse_id;
                 $find_warehouse = Warehouse::find($request->warehouse_id);
-                $material->warehouse_category = $find_warehouse->category;            
+                $material->warehouse_category = $find_warehouse->category;
             }
-            
+
             $material->memo = $request->memo;
             $material->file_1 = $file_1;
             $material->file_2 = $file_2;
@@ -130,17 +137,17 @@ class MaterialController extends Controller
             $material->save();
 
             if($request->warehouse_id > 0){
-            
+
                 $warehouse = new Material_warehouse;
                 $warehouse->material_id = $material->id;
                 $warehouse->warehouse_id = $request->warehouse_id;
                 $warehouse->warehouse_category_id = $material->warehouse_category;
-                $warehouse->stock = 0;                
+                $warehouse->stock = 0;
                 $warehouse->created_user = session('admin_user')->id;
                 $warehouse->delete_flag = 0;
                 $warehouse->save();
             }
-            
+
 
             return redirect()->route('materials.index')->with('message','新增成功');
         } catch (Exception $e) {
@@ -169,7 +176,7 @@ class MaterialController extends Controller
         } else {
             $updated_user = User::where('id',$material->created_user)->first();
         }
-        return view('settings.material.show_one',compact('material', 'material_categories','material_units', 'updated_user', 'warehouse')); 
+        return view('settings.material.show_one',compact('material', 'material_categories','material_units', 'updated_user', 'warehouse'));
     }
 
     /**
@@ -182,6 +189,7 @@ class MaterialController extends Controller
     {
         $material = Material::find($id);
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
+        $material_categories = Helper::arrayAppendKey($material_categories, 'code');
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
         if($material->warehouse > 0){
             $warehouse = Warehouse::where('id',$material->warehouse)->first();
@@ -208,7 +216,7 @@ class MaterialController extends Controller
             $upload_check_3 = false;
         }
 
-        return view('settings.material.edit',compact('material', 'material_categories','material_units', 'updated_user', 'warehouse','upload_check_1','upload_check_2','upload_check_3')); 
+        return view('settings.material.edit',compact('material', 'material_categories','material_units', 'updated_user', 'warehouse','upload_check_1','upload_check_2','upload_check_3'));
     }
 
     /**
@@ -237,9 +245,9 @@ class MaterialController extends Controller
         ];
 
         $messages = [
-                    
+
             'fullName.required' => '品名 必填',
-           
+
         ];
         $this->validate($request, $rules, $messages);
 
@@ -252,7 +260,7 @@ class MaterialController extends Controller
         if($request->hasFile('upload_image_1')){
             $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
             $check_1 = true;
-        } 
+        }
         if($request->hasFile('upload_image_2')){
             $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
             $check_2 = true;
@@ -268,7 +276,7 @@ class MaterialController extends Controller
             $material->fullName = $request->fullName;
             $material->material_categories_code = $request->material_category;
             $material->unit = $request->unit;
-            $material->cost = $request->cost;            
+            $material->cost = $request->cost;
             $material->price = $request->price;
             $material->cal_unit = $request->cal_unit;
             $material->cal_price = $request->cal_price;
@@ -276,16 +284,16 @@ class MaterialController extends Controller
             $material->color = $request->color;
             $material->buy = $request->buy;
             $material->safe = $request->safe;
-            
+
             if($request->warehouse_id > 0 ){
                 if($material->warehouse != $request->warehouse_id){
                     $material->warehouse = $request->warehouse_id;
                     $this_warehouse = Warehouse::find($request->warehouse_id);
-                    $material->warehouse_category = $this_warehouse->category;  
+                    $material->warehouse_category = $this_warehouse->category;
 
                     $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$id)->get();
 
-                    $check_has_warehouse = 0;                    
+                    $check_has_warehouse = 0;
                     if($material_warehouses->count() > 0){
                         // 有倉儲
                         // 判斷是否建立過倉儲
@@ -300,25 +308,25 @@ class MaterialController extends Controller
                             $material_warehouse_add->material_id = $id;
                             $material_warehouse_add->warehouse_id = $request->warehouse_id;
                             $material_warehouse_add->warehouse_category_id = $this_warehouse->category;
-                            $material_warehouse_add->stock = 0;                
+                            $material_warehouse_add->stock = 0;
                             $material_warehouse_add->created_user = session('admin_user')->id;
                             $material_warehouse_add->delete_flag = 0;
                             $material_warehouse_add->save();
                         }
                     } else {
-                        // 若無預設倉儲                       
+                        // 若無預設倉儲
                         $material_warehouse_add = new Material_warehouse;
                         $material_warehouse_add->material_id = $id;
                         $material_warehouse_add->warehouse_id = $request->warehouse_id;
                         $material_warehouse_add->warehouse_category_id = $this_warehouse->category;
-                        $material_warehouse_add->stock = 0;                
+                        $material_warehouse_add->stock = 0;
                         $material_warehouse_add->created_user = session('admin_user')->id;
                         $material_warehouse_add->delete_flag = 0;
                         $material_warehouse_add->save();
                     }
                 }
             }
-            
+
             $material->memo = $request->memo;
             if($check_1){
                 $material->file_1 = $file_1;
@@ -328,10 +336,10 @@ class MaterialController extends Controller
             }
             if($check_3){
                 $material->file_3 = $file_3;
-            }            
+            }
             $material->safe = $request->safe;
             $material->status = $request->status;
-            $material->updated_user = session('admin_user')->id;       
+            $material->updated_user = session('admin_user')->id;
             $material->save();
             return redirect()->route('materials.index')->with('message','修改成功');
         } catch (Exception $e) {
@@ -379,8 +387,8 @@ class MaterialController extends Controller
             $material->save();
             return redirect()->route('materials.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('materials.index')->with('error','刪除失敗');            
-        } 
+            return redirect()->route('materials.index')->with('error','刪除失敗');
+        }
     }
 
     public function delete_file($file_no,$material,$file_id)
@@ -404,8 +412,8 @@ class MaterialController extends Controller
 
             return redirect()->route('materials.edit',$material->id)->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('materials.edit',$material->id)->with('error','刪除失敗');            
-        } 
+            return redirect()->route('materials.edit',$material->id)->with('error','刪除失敗');
+        }
 
     }
 
@@ -417,7 +425,7 @@ class MaterialController extends Controller
         $src_image = imagecreatefromstring(file_get_contents(asset('upload/'.$origin_file_name)));
         $src_width = imagesx($src_image);
         $src_height = imagesy($src_image);
-        
+
         $tmp_image_width = 0;
         $tmp_image_height = 0;
         if ($src_width / $src_height >= $width / $height) {
@@ -427,17 +435,17 @@ class MaterialController extends Controller
             $tmp_image_height = $height;
             $tmp_image_width = round($tmp_image_height * $src_width / $src_height);
         }
-        
+
         $tmpImage = imagecreatetruecolor($tmp_image_width, $tmp_image_height);
         imagecopyresampled($tmpImage, $src_image, 0, 0, 0, 0, $tmp_image_width, $tmp_image_height, $src_width, $src_height);
-        
+
         $final_image = imagecreatetruecolor($width, $height);
         $color = imagecolorallocate($final_image, 255, 255, 255);
         imagefill($final_image, 0, 0, $color);
-        
+
         $x = round(($width - $tmp_image_width) / 2);
         $y = round(($height - $tmp_image_height) / 2);
-        
+
         imagecopy($final_image, $tmpImage, $x, $y, 0, 0, $tmp_image_width, $tmp_image_height);
 
         if($img_type == '.jpeg' || $img_type == '.jpg'){
@@ -446,7 +454,7 @@ class MaterialController extends Controller
         $func = "image".substr($img_type,1);
         $func($final_image,'upload/'.$tmp_file_name);
         if(isset($final_image)) {imagedestroy($final_image);}
-        
+
     }
     private function file_process($name, $file)
     {
@@ -459,7 +467,7 @@ class MaterialController extends Controller
             $file->move('upload', $thumb_origin);
             $this->thumb_process($thumb_origin, $thumb_450, $fileType, 450, 450);
         } else {
-            $thumb_450 = "file_image.jpg";            
+            $thumb_450 = "file_image.jpg";
             $file->move('upload', $thumb_origin);
         }
         $img = new Gallery;

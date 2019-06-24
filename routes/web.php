@@ -271,19 +271,29 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(fun
 
 });
 
-Route::middleware('admin.login')->prefix('print')->group(function(){
-    // 採購總報表
-    Route::get('buy','PrintController@buy');
-    Route::post('buy','PrintController@buy');
+Route::middleware('admin.login')->prefix('print')->group(
+    function () {
+        // 採購總報表
+        Route::get('buy', 'PrintController@buy')->name('print.buy');
+        Route::post('buy', 'PrintController@buy')->name('print.buy');
 
-    // 採購單報表
-    Route::get('buy_detail/{id}','PrintController@buy_detail');
-    Route::post('buy_detail','PrintController@buy_detail');
+        // 採購單報表
+        Route::get('buy_detail/{id}', 'PrintController@buy_detail');
+        Route::post('buy_detail', 'PrintController@buy_detail');
 
-    // 採購單報表 (多張)
-    Route::get('buy_details/{ids}','PrintController@buy_details');
-    Route::post('buy_details','PrintController@buy_details');
+        // 採購單報表 (多張)
+        Route::get('buy_details/{ids}', 'PrintController@buy_details');
+        Route::post('buy_details', 'PrintController@buy_details');
 
-    // 物料模組
-    Route::get('material_module/{id}','PrintController@material_module');
-});
+        // 物料模組
+        Route::get('material_module/{id}', 'PrintController@material_module');
+    }
+);
+
+Route::middleware('admin.login')->prefix('selector')->group(
+    function () {
+        // 物料選擇器
+        Route::get('material/{idx}', 'SelectorController@material');
+        Route::get('material/{idx}/{code}', 'SelectorController@material');
+    }
+);

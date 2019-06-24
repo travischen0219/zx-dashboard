@@ -1,22 +1,19 @@
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+require('./bootstrap')
 
-require('./bootstrap');
+// import dt from 'datatables.net'
+import dt from 'datatables.net-bs4'
+import 'datatables.net-buttons-bs4'
+import 'datatables.net-buttons/js/buttons.colVis.min.js'
+import 'datatables.net-rowreorder-bs4'
+import 'magnific-popup'
 
-window.Vue = require('vue');
+import swal from 'sweetalert2';
+window.swal = swal
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+// window.Vue = require('vue');
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
-const app = new Vue({
-    el: '#app'
-});
+$('#sidebar-brand').click(function () {
+    $('#sidebar').toggleClass('collapse')
+    $('#content').toggleClass('full')
+})

@@ -36,7 +36,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -45,7 +45,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -66,10 +66,10 @@
 
                         <div class="form-group form-md-line-input form-md-floating-label">
                             <input type="text" name="name" class="form-control" id="form_control_1" value="{{ old('name') }}">
-                            <label for="form_control_1"><span style="color:red;">*</span>分類名稱</label>
+                            <label for="form_control_1"><span style="color:red;">*</span>單位名稱</label>
                             <span class="help-block"></span>
                         </div>
-                        
+
                     </div>
                     <div class="form-actions noborder">
                         <button type="submit" class="btn"><i class="fa fa-check"></i> 存 檔</button>
@@ -79,8 +79,8 @@
             </div>
         </div>
         <!-- END SAMPLE FORM PORTLET-->
-    
-    
+
+
     </div>
 </div>
 

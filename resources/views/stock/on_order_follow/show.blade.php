@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','採購')
+@section('title','在途量追蹤')
 
 @section('css')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -19,7 +19,7 @@
     }
     #sample_3 th{
         font-size: 16px;
-        vertical-align:middle; 
+        vertical-align:middle;
     }
     #functions_btn{
         text-align: center;
@@ -28,7 +28,7 @@
         color:#fff;
         background-color: #248ff1;
     }
-    #sample_3_filter input { 
+    #sample_3_filter input {
         width:300px !important;
     }
 
@@ -43,16 +43,16 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
     <!-- BEGIN PAGE TITLE-->
-    <h1 class="page-title"> 採購
+    <h1 class="page-title"> 在途量追蹤
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -85,8 +85,8 @@
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="search_lot_number" id="search_lot_number">
                         </div>
-                    </div> 
-                    
+                    </div>
+
                     <div class="col-md-2">
                         <button type="submit" class="btn" style="background-color: #248ff1;color:#fff;font-size: 16px;">搜 尋</button>
                     </div>
@@ -94,7 +94,7 @@
             </div>
         </div>
     </form>
-    
+
     <div class="col-md-12">
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet light">
@@ -106,12 +106,12 @@
                 <div class="caption font-dark" style="margin-left:5px">
                     <span class="btn btn-primary" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆PDF列印</span>
                 </div>
-                
+
                 <div class="tools"> </div>
             </div>
 
-            
-                
+
+
             <div class="portlet-body">
                 <table class="table table-striped table-bordered table-hover" id="sample_3" >
                     <thead>
@@ -128,31 +128,31 @@
                             <th>操 作</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         @foreach($buys as $buy)
 
                             <tr>
-                                
+
                                 <td>P{{$buy->buy_no}}</td>
                                 <td><a href="/pdf/onfollow.php?id={{$buy->id}}" target="_blank" class="btn blue btn-outline btn-sm">列印</a>&nbsp;&nbsp;
                                     <input type="checkbox" class="print_pdf" name="print_pdf"  value="{{$buy->id}}">
                                 </td>
-                                <td>{{$buy->lot_number}}</td>                              
+                                <td>{{$buy->lot_number}}</td>
                                 <td>{{$buy->supplier_name->shortName}}</td>
                                 <td>{{$buy->memo}}</td>
                                 <td>{{$buy->buyDate}}</td>
                                 <td>{{$buy->expectedReceiveDate}}</td>
                                 <td>{{$buy->realReceiveDate}}</td>
                                 <td>
-                                    @if($buy->status == '1') 
-                                        <span style="color:red">未採購</span> 
-                                    @elseif($buy->status == '2') 
+                                    @if($buy->status == '1')
+                                        <span style="color:red">未採購</span>
+                                    @elseif($buy->status == '2')
                                         <span style="color:blue">已採購</span>
-                                    @elseif($buy->status == '3') 
-                                        <span style="color:purple">已到貨</span> 
-                                    @elseif($buy->status == '4') 
-                                        <span style="color:green">已轉到入庫</span>  
+                                    @elseif($buy->status == '3')
+                                        <span style="color:purple">已到貨</span>
+                                    @elseif($buy->status == '4')
+                                        <span style="color:green">已轉到入庫</span>
                                     @endif
                                 </td>
                                 <td align="center" id="functions_btn">
@@ -202,20 +202,20 @@
 <script>
 function pdfsubmit()
 {
-           
+
             var chkArray = [];
-          
+
             $(".print_pdf:checked").each(function() {
                 chkArray.push($(this).val());
             });
-            
+
             /* we join the array separated by the comma */
             var selected;
             selected = chkArray.join(',');
             openInNewTab("/pdf/onfollow.php?id="+selected);
-            
-        
-    
+
+
+
 }
 
 function openInNewTab(url) {

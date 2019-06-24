@@ -1,6 +1,6 @@
 
 <style>
-    #sample_4_filter input { 
+    #sample_4_filter input {
         width:300px !important;
     }
     .dataTables_extended_wrapper .table.dataTable{
@@ -16,12 +16,12 @@
             <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption font-dark">
-                        <a href="javascript:parent.close_show_stock();" class="btn red" id="close_show">關閉視窗</a>
+                        <a href="javascript:parent.close_show_stock();" class="btn btn-danger red" id="close_show">關閉視窗</a>
                         {{ $title }} 庫存紀錄
                     </div>
                     <div class="tools"> </div>
                 </div>
-    
+
                 <div class="portlet-body">
                     <table class="table table-striped table-bordered" id="sample_4" >
                         <thead>
@@ -35,10 +35,10 @@
                                 <th width="15%">記錄人員</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             @foreach($stocks as $stock)
-    
+
                                 <tr>
                                     <td>{{ $stock->stock_no }}</td>
                                     <td>{{ $stock->stock_date }}</td>
@@ -46,7 +46,7 @@
                                         @if($stock->stock_option == 1)
                                             <span style="color:green;">入庫</span>
                                         @elseif($stock->stock_option == 2)
-                                            <span style="color:red;">誤差處理</span> 
+                                            <span style="color:red;">誤差處理</span>
                                         @elseif($stock->stock_option == 3)
                                             <span style="color:blue;">起始庫存</span>
                                         @elseif($stock->stock_option == 4)
@@ -67,14 +67,14 @@
 
                                     @if($stock->stock_option == 1 || $stock->stock_option == 2 || $stock->stock_option == 3 || $stock->stock_option == 4 || $stock->stock_option == 5)
                                         <td align="center"
-                                            @if($stock->quantity < 0) 
+                                            @if($stock->quantity < 0)
                                                 style="color:white;background-color: red;"> {{ $stock->quantity }}
                                             @else
                                                 style="color:white;background-color: green;"> {{ $stock->quantity }}
                                             @endif
                                         </td>
                                     @elseif($stock->stock_option == 11)
-                                        <td align="center" style="color:white;background-color: red;"> 
+                                        <td align="center" style="color:white;background-color: red;">
                                             -{{ $stock->quantity }}
                                         </td>
                                     @elseif($stock->stock_option == 21)
@@ -90,7 +90,7 @@
                                             @if(number_format($stock->total_start_quantity + $stock->quantity,2,'.','') < 0)
                                                 <span style="color:red;">{{ number_format($stock->start_quantity + $stock->quantity,2,'.','') }}</span>
                                             @else
-                                                <span>{{ number_format($stock->total_start_quantity + $stock->quantity,2,'.','') }}</span>  
+                                                <span>{{ number_format($stock->total_start_quantity + $stock->quantity,2,'.','') }}</span>
                                             @endif
                                         </td>
                                     @elseif($stock->stock_option == 11)
@@ -98,7 +98,7 @@
                                             @if(number_format($stock->total_start_quantity - $stock->quantity,2,'.','') < 0)
                                                 <span style="color:red;">{{ number_format($stock->total_start_quantity - $stock->quantity,2,'.','') }}</span>
                                             @else
-                                                <span>{{ number_format($stock->total_start_quantity - $stock->quantity,2,'.','') }}</span>  
+                                                <span>{{ number_format($stock->total_start_quantity - $stock->quantity,2,'.','') }}</span>
                                             @endif
                                         </td>
                                     @elseif($stock->stock_option == 21)
@@ -106,32 +106,32 @@
                                             @if(number_format($stock->total_start_quantity - $stock->quantity,2,'.','') < 0)
                                                 <span style="color:red;">{{ number_format($stock->start_quantity - $stock->quantity,2,'.','') }}</span>
                                             @else
-                                                <span>{{ number_format($stock->total_start_quantity - $stock->quantity,2,'.','') }}</span>  
+                                                <span>{{ number_format($stock->total_start_quantity - $stock->quantity,2,'.','') }}</span>
                                             @endif
                                         </td>
                                     @elseif($stock->stock_option == 22)
                                         <td align="center">
-                                            <span>{{ number_format($stock->total_start_quantity,2,'.','') }}</span>  
+                                            <span>{{ number_format($stock->total_start_quantity,2,'.','') }}</span>
                                         </td>
                                     @elseif($stock->stock_option == 31)
                                         <td align="center">
                                             @if(number_format($stock->total_start_quantity - $stock->quantity,2,'.','') < 0)
                                                 <span style="color:red;">{{ number_format($stock->start_quantity - $stock->quantity,2,'.','') }}</span>
                                             @else
-                                                <span>{{ number_format($stock->total_start_quantity - $stock->quantity,2,'.','') }}</span>  
+                                                <span>{{ number_format($stock->total_start_quantity - $stock->quantity,2,'.','') }}</span>
                                             @endif
                                         </td>
                                     @endif
                                     <td align="center">{{ $stock->user_name->fullname }}</td>
                                 </tr>
-    
+
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
             <!-- END EXAMPLE TABLE PORTLET-->
-    
+
         </div>
     </div>
 </div>

@@ -58,7 +58,7 @@ class InquiryController extends Controller
                 $inquiry_no = $last_inquiry_no->inquiry_no + 1;
             }
         }
-        return view('purchase.inquiry.create',compact('inquiry_no')); 
+        return view('purchase.inquiry.create',compact('inquiry_no'));
     }
 
     /**
@@ -70,13 +70,13 @@ class InquiryController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'lot_number' => 'required',          
+            'lot_number' => 'required',
             'supplier' => 'required',
             'askDate' => 'date_format:"Y-m-d"|required',
             'expireDate' => 'date_format:"Y-m-d"|required',
         ];
         $messages = [
-            'lot_number.required' => '批號 必填',         
+            'lot_number.required' => '批號 必填',
             'supplier.required' => '尚未選擇 供應商',
             'askDate.required' => '詢價日期 必填',
             'expireDate.required' => '有效期限 必填',
@@ -146,12 +146,13 @@ class InquiryController extends Controller
     {
         $inquiry = Inquiry::find($id);
         $materials = unserialize($inquiry->materials);
+        $materials2 = Material_module::encodeMaterials($inquiry->materials, true);
 
         $total_materials = count($materials['material']);
         $materialCount = 0;
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-      
+
             $material = Material::where('id',$materials['material'][$i])->first();
 
 
@@ -169,7 +170,7 @@ class InquiryController extends Controller
                 $select_str .= '> '.$unit->name.'</option>';
             }
 
-            
+
 
             $style = '';
             $disabled = '';
@@ -189,7 +190,7 @@ class InquiryController extends Controller
                 <td>
                     <select id="materialUnit'.$materialCount.'" name="materialUnit[]" class="materialUnit" style="width: 100px; line-height: 30px; vertical-align: middle;" '.$disabled.'>
                     '.$select_str.'
-                    </select>       
+                    </select>
                 </td>
                 <td>
                     <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="'.$materials['materialCalPrice'][$i].'" '.$disabled.'>
@@ -220,7 +221,7 @@ class InquiryController extends Controller
     {
         if($request->status == 2){
             if($request->dealDate == ''){
-                return redirect()->back()->with('error', '成交日期 必填');            
+                return redirect()->back()->with('error', '成交日期 必填');
             }
         }
         $rules = [
@@ -244,7 +245,7 @@ class InquiryController extends Controller
         $materialCalPrice = [];
         $materialAmount = [];
         $materialPrice = [];
-        
+
         for($i=0; $i < $total_materials; $i++){
             if($request->material[$i]){
                 $material[] = $request->material[$i];
@@ -254,7 +255,7 @@ class InquiryController extends Controller
 
                 $materialAmount[] = 0;
                 $materialPrice[] = 0;
-                
+
             }
         }
 
@@ -263,7 +264,7 @@ class InquiryController extends Controller
 
             try{
                 $inquiry = Inquiry::find($id);
-                $inquiry->lot_number = $request->lot_number;                
+                $inquiry->lot_number = $request->lot_number;
                 $inquiry->materials = serialize($materials);
                 $inquiry->askDate = $request->askDate;
                 $inquiry->expireDate = $request->expireDate;
@@ -283,17 +284,17 @@ class InquiryController extends Controller
                     }
                     $buy = new Buy;
                     $buy->buy_no = $buy_no;
-                    $buy->lot_number = $request->lot_number; 
+                    $buy->lot_number = $request->lot_number;
                     $buy->supplier = $inquiry->supplier;
                     $buy->materials = serialize($materials);
                     $buy->status = 1;
                     $buy->created_user = session('admin_user')->id;
                     $buy->delete_flag = 0;
                     $buy->save();
-    
+
                     return redirect()->route('inquiry.index')->with('message', '修改成功 並已建立採購單 : P'.$buy_no);
                 } else {
-                    return redirect()->route('inquiry.index')->with('message', '修改成功');                    
+                    return redirect()->route('inquiry.index')->with('message', '修改成功');
                 }
             } catch(Exception $e) {
                 return redirect()->route('inquiry.index')->with('error', '修改失敗');
@@ -320,8 +321,8 @@ class InquiryController extends Controller
             $inquiry->save();
             return redirect()->route('inquiry.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('inquiry.index')->with('error','刪除失敗');            
-        } 
+            return redirect()->route('inquiry.index')->with('error','刪除失敗');
+        }
     }
 
 
@@ -336,7 +337,7 @@ class InquiryController extends Controller
             $select_str .= '<option value="'.$unit->id.'" > '.$unit->name.'</option>';
         }
 
-        
+
 
         $data = '<tr id="materialRow'.$materialCount.'" class="materialRow">
             <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red"><i class="fa fa-remove"></i></a></td>
@@ -350,7 +351,7 @@ class InquiryController extends Controller
             <td>
                 <select id="materialUnit'.$materialCount.'" name="materialUnit[]" class="materialUnit" style="width: 100px; line-height: 30px; vertical-align: middle;">
                 '.$select_str.'
-                </select>                
+                </select>
             </td>
             <td>
                 <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;">
@@ -368,7 +369,7 @@ class InquiryController extends Controller
         $id = $request->id;
         $materialCount = $request->materialCount;
         $modules = Material_module::find($id);
-        $materials = unserialize($modules->materials); 
+        $materials = unserialize($modules->materials);
         $total_materials = count($materials['material']);
         $materialCount = $materialCount+1;
         $return = [];
@@ -393,7 +394,7 @@ class InquiryController extends Controller
                 }
                 $select_str .= '> '.$unit->name.'</option>';
             }
-            
+
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
                 <td>
@@ -406,7 +407,7 @@ class InquiryController extends Controller
                 <td>
                     <select id="materialUnit'.$materialCount.'" name="materialUnit[]" class="materialUnit" style="width: 100px; line-height: 30px; vertical-align: middle;">
                     '.$select_str.'
-                    </select> 
+                    </select>
                 </td>
                 <td>
                     <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="'.$material->cal_price.'" '.$readonly.'>
