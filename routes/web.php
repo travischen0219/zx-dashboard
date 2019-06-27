@@ -297,3 +297,10 @@ Route::middleware('admin.login')->prefix('selector')->group(
         Route::get('material/{idx}/{code}', 'SelectorController@material');
     }
 );
+
+// 批號管理
+Route::middleware('admin.login')->group(
+    function () {
+        Route::resource('/lot', 'LotController');
+    }
+);

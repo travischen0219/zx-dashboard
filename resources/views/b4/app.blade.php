@@ -18,6 +18,7 @@
     </div>
 
     <script src="/js/app.js?{{ env('APP_VERSION') }}"></script>
+    <script src="{{ asset('assets/global/plugins/jquery-ui/datepicker-zh-TW.js') }}" type="text/javascript"></script>
     <script>
     const dtOptions = {
         dom: `

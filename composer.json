@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^5.8.0",
         "laravel/tinker": "^1.0",
+        "laravelcollective/html": "^5.8",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.0",
         "setasign/fpdi-fpdf": "^2.0",

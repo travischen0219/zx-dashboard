@@ -26,6 +26,8 @@
         "eslint-plugin-vue": "^5.2.2",
         "is-buffer": "^2.0.3",
         "jquery": "^3.4.1",
+        "jquery-ui": "^1.12.1",
+        "jquery-ui-dist": "^1.12.1",
         "laravel-mix": "^4.0.16",
         "lodash": "^4.17.11",
         "magnific-popup": "^1.1.0",

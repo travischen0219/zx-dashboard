@@ -14,6 +14,7 @@
 @import '~datatables.net-rowreorder-bs4/css/rowReorder.bootstrap4.min.css';
 // @import '~datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css';
 @import '~magnific-popup/dist/magnific-popup.css';
+@import '~jquery-ui/themes/base/all.css';
 
 .active-color {
     color: #18cdc4;
@@ -234,6 +235,19 @@
         }
     }
 }
+
+.form {
+    label {
+        width: 100px;
+        text-align: right;
+    }
+
+    input[type=text], textarea {
+        display: inline-block;
+        width: auto;
+    }
+}
+
 
 /* 初始label顏色 */
 .form-group.form-md-line-input.form-md-floating-label .form-control~label {
