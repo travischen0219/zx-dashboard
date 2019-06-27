@@ -2,7 +2,7 @@
 
 @section('title', '批號管理')
 @section('page-header')
-    <i class="fas fa-puzzle-piece active-color mr-1"></i>基本資料 - 批號建立
+    <i class="fas fa-tasks active-color mr-1"></i>基本資料 - 批號建立
 @endsection
 
 @section('css')
