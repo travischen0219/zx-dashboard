@@ -1,19 +1,13 @@
 <div class="form-group">
-    {!! Form::label('code', '批號：') !!}
-
-    {!! Form::text('code', $lot->code, [
-        'class' => 'form-control',
-        'placeholder' => '請輸入批號'
-    ]) !!}
+    <label for="code">批號：</label>
+    <input type="text" name="code" id="code" value="{{ $lot->code }}"
+        class="form-control" placeholder="請輸入批號">
 </div>
 
 <div class="form-group">
-    {!! Form::label('name', '案件名稱：') !!}
-
-    {!! Form::text('name', $lot->name, [
-        'class' => 'form-control',
-        'placeholder' => '請輸入案件名稱'
-    ]) !!}
+    <label for="code">案件名稱：</label>
+    <input type="text" name="name" id="name" value="{{ $lot->name }}"
+        class="form-control" placeholder="請輸入案件名稱">
 </div>
 
 <div class="form-group">

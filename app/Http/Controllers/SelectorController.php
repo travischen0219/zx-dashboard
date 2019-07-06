@@ -22,4 +22,15 @@ class SelectorController extends Controller
 
         return view('selector.material', $data);
     }
+
+    // 選擇客戶
+    public function customer(Request $request)
+    {
+        $category = $request->category ?? '';
+
+        $data['categories'] = Customer::categories();
+        $data['customers'] = Customer::all();
+
+        return view('selector.customer', $data);
+    }
 }
