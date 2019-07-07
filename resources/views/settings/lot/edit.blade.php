@@ -5,6 +5,19 @@
     <i class="fas fa-puzzle-piece active-color mr-1"></i>基本資料 - 批號編輯
 @endsection
 
+@section('css')
+    <style>
+        .mfp-wrap {
+            z-index: 8000;
+        }
+        .mfp-iframe-holder .mfp-content {
+            width: 85%;
+            height: 85%;
+            max-width: 100%;
+        }
+    </style>
+@endsection
+
 @section('content')
 
     {!! Form::open([
