@@ -9,6 +9,7 @@
     "type": "project",
     "require": {
         "php": "^7.2",
+        "caouecs/laravel-lang": "~4.0",
         "codeitnowin/barcode": "^3.0",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^5.8.0",

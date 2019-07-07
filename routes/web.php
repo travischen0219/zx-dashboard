@@ -295,12 +295,16 @@ Route::middleware('admin.login')->prefix('selector')->group(
         // 物料選擇器
         Route::get('material/{idx}', 'SelectorController@material');
         Route::get('material/{idx}/{code}', 'SelectorController@material');
+
+        // 客戶選擇器
+        Route::get('customer', 'SelectorController@customer');
+        Route::get('customer/{category}', 'SelectorController@customer');
     }
 );
 
 // 批號管理
-Route::middleware('admin.login')->group(
+Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->group(
     function () {
-        Route::resource('/lot', 'LotController');
+        Route::resource('lot', 'LotController');
     }
 );

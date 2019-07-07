@@ -42,7 +42,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="form-actions">
+                    <div class="form-actions text-center">
                         <a href="javascript: void(0);" class="btn btn-default uppercase"
                             style="background-color:#36c6d3;color:white;font-size: 16px;" onclick="sendForm();">登 入</a>
                     </div>

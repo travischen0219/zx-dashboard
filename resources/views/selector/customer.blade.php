@@ -1,6 +1,7 @@
 @extends('b4.selector')
 
-@section('title','選擇物料')
+@section('title','選擇客戶')
+
 
 @section('content')
     <style>
@@ -10,8 +11,7 @@
     </style>
     <div class="container-fluid">
         <h2>
-            選擇物料
-            <small class="text-danger">尚未指定 單位 之物料不顯示</small>
+            選擇客戶
         </h2>
         <hr>
         <label>
@@ -20,10 +20,10 @@
                 name="category"
                 id="category"
                 class="form-control d-inline-block w-auto"
-                onchange="location.href='/selector/material/{{ $idx }}/' + this.value">
+                onchange="location.href='/selector/customer/' + this.value">
                 <option value="">全部</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->code }}" {{ $code == $category->code ? 'selected': '' }}>[{{ $category->code }}] {{ $category->name }}</option>
+                @foreach ($categories as $key => $value)
+                    <option value="{{ $key }}" {{ $key == $category ? 'selected': '' }}>{{ $value }}</option>
                 @endforeach
             </select>
         </label>
@@ -31,37 +31,29 @@
         <table id="data" class="table table-bordered table-striped table-hover mt-3">
             <thead>
                 <tr class="bg-primary text-white">
-                    <th nowrap>操作</th>
-                    <th nowrap>分類</th>
-                    <th nowrap>編號</th>
-                    <th nowrap>品名</th>
-                    <th nowrap>單位</th>
-                    <th nowrap>尺寸</th>
-                    <th nowrap>顏色</th>
-                    <th nowrap>庫存</th>
+                    <th>操 作</th>
+                    <th>編 號</th>
+                    <th>分 類</th>
+                    <th>全 名</th>
+                    <th>電 話</th>
+                    <th>地 址</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($materials as $material)
-                    @php
-                        $material->cal = $categories[$material->material_categories_code]->cal;
-                    @endphp
+                @foreach ($customers as $customer)
                     <tr>
                         <td title="操作" nowrap>
                             <button type="button"
-                                onclick="selectMaterial(JSON.stringify({{ json_encode($material, JSON_HEX_QUOT | JSON_HEX_TAG) }}), {{ $idx }});"
+                                onclick="selectCustomer(JSON.stringify({{ json_encode($customer, JSON_HEX_QUOT | JSON_HEX_TAG) }}));"
                                 class="btn btn-outline-primary">選擇</button>
                         </td>
+                        <td title="編號">{{ $customer->code }}</td>
                         <td title="分類">
-                            [{{ $material->material_categories_code }}]
-                            {{ $categories[$material->material_categories_code]->name }}
+                            {{ $categories[$customer->category] ?? '' }}
                         </td>
-                        <td title="編號">{{ $material->fullCode }}</td>
-                        <td title="品名">{{ $material->fullName }}</td>
-                        <td title="單位" align="center">{{ $units[$material->unit]->name }}</td>
-                        <td title="尺寸">{{ $material->size }}</td>
-                        <td title="顏色">{{ $material->color }}</td>
-                        <td title="庫存" align="right">{{ number_format($material->stock, 2) }}</td>
+                        <td title="全名">{{ $customer->fullName }}</td>
+                        <td title="電話">{{ $customer->tel }}</td>
+                        <td title="地址">{{ $customer->address }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -79,9 +71,8 @@
         });
     });
 
-    function selectMaterial(str, idx) {
-        parent.applyMaterial(str, idx);
-
+    function selectCustomer(str) {
+        parent.applyCustomer(str);
         parent.$.magnificPopup.close();
     }
     </script>

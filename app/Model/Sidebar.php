@@ -75,6 +75,12 @@ class Sidebar
         ];
 
         $data[] = [
+            'route' => 'lot.index',
+            'request' => 'settings/lot*',
+            'title' => '批號管理'
+        ];
+
+        $data[] = [
             'route' => 'warehouses.index',
             'request' => 'settings/warehouses*',
             'title' => '倉儲資料'

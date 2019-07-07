@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Model\Material_category;
 use App\Model\Material_unit;
 use App\Model\Material;
+use App\Model\Customer;
 
 class SelectorController extends Controller
 {
@@ -28,8 +29,16 @@ class SelectorController extends Controller
     {
         $category = $request->category ?? '';
 
+        $data['category'] = $category;
         $data['categories'] = Customer::categories();
-        $data['customers'] = Customer::all();
+
+        if ($category == '') {
+            $customers = Customer::where('delete_flag', '0')->get();
+        } else {
+            $customers = Customer::where('delete_flag', '0')
+                ->where('category', $category)->get();
+        }
+        $data['customers'] = $customers;
 
         return view('selector.customer', $data);
     }

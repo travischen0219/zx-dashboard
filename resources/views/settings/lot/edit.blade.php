@@ -1,0 +1,30 @@
+@extends('b4.app')
+
+@section('title', '批號管理')
+@section('page-header')
+    <i class="fas fa-puzzle-piece active-color mr-1"></i>基本資料 - 批號編輯
+@endsection
+
+@section('content')
+
+    {!! Form::open([
+        'url' => route('lot.update', $lot->id),
+        'method' => 'PUT',
+        'class' => 'form'
+    ]) !!}
+
+        @include('settings.lot._form')
+
+        <div class="form-group">
+            <label></label>
+
+            <button type="submit" class="btn btn-primary">修改批號</button>
+            <button type="button" onclick="location.href='{{ route('lot.index') }}'" class="btn btn-link ml-3">取消</button>
+        </div>
+
+    {!! Form::close() !!}
+@endsection
+
+@section('script')
+    @include('settings.lot._script')
+@endsection

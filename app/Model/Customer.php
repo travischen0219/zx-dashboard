@@ -18,4 +18,16 @@ class Customer extends Model
 
         return $data;
     }
+
+    static public function allWithKey()
+    {
+        $customers = Customer::all();
+
+        $data = [];
+        foreach ($customers as $customer) {
+            $data[$customer['id']] = $customer;
+        }
+
+        return $data;
+    }
 }

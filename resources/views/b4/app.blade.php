@@ -35,7 +35,8 @@
         },
         'buttons': [
             { extend: 'colvis', text: '欄位篩選' }
-        ]
+        ],
+        'order': []
     }
 
     const swalOption = {
