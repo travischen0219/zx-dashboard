@@ -60,14 +60,14 @@
                                 <span class="title"
                                     @if(Request::is('settings/staff*'))
                                         style="color:#59deea;"
-                                    @endif>員工資料</span>
+                                    @endif>公司資料</span>
                                 @if(Request::is('settings/staff*'))
                                     <span class="selected"></span>
                                 @endif
                             </a>
                         </li>
 
-                        <li class="nav-item
+                        {{-- <li class="nav-item
                             @if(Request::is('settings/department*'))
                                 active open
                             @endif">
@@ -95,7 +95,7 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
                         {{-- <li class="nav-item  ">
                             <a href="#" class="nav-link ">

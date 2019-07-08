@@ -308,3 +308,11 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
         Route::resource('lot', 'LotController');
     }
 );
+
+// 進貨管理
+Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(
+    function () {
+        Route::get('in/{status}', 'InController@index')->where('status', '[0-9]+');
+        Route::resource('in', 'InController');
+    }
+);

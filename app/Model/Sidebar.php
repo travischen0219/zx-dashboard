@@ -11,20 +11,26 @@ class Sidebar
         $data[] = [
             'route' => 'staff.index',
             'request' => 'settings/staff*',
-            'title' => '員工資料'
+            'title' => '公司資料'
         ];
 
-        $data[] = [
-            'route' => 'department.index',
-            'request' => 'settings/department*',
-            'title' => '部門設定'
-        ];
+        // $data[] = [
+        //     'route' => 'staff.index',
+        //     'request' => 'settings/staff*',
+        //     'title' => '員工資料'
+        // ];
 
-        $data[] = [
-            'route' => 'professional_title.index',
-            'request' => 'settings/professional_title*',
-            'title' => '職稱設定'
-        ];
+        // $data[] = [
+        //     'route' => 'department.index',
+        //     'request' => 'settings/department*',
+        //     'title' => '部門設定'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'professional_title.index',
+        //     'request' => 'settings/professional_title*',
+        //     'title' => '職稱設定'
+        // ];
 
         $data[] = [
             'route' => 'supplier.index',
@@ -80,17 +86,17 @@ class Sidebar
             'title' => '批號管理'
         ];
 
-        $data[] = [
-            'route' => 'warehouses.index',
-            'request' => 'settings/warehouses*',
-            'title' => '倉儲資料'
-        ];
+        // $data[] = [
+        //     'route' => 'warehouses.index',
+        //     'request' => 'settings/warehouses*',
+        //     'title' => '倉儲資料'
+        // ];
 
-        $data[] = [
-            'route' => 'warehouse_category.index',
-            'request' => 'settings/warehouse_category*',
-            'title' => '倉儲分類設定'
-        ];
+        // $data[] = [
+        //     'route' => 'warehouse_category.index',
+        //     'request' => 'settings/warehouse_category*',
+        //     'title' => '倉儲分類設定'
+        // ];
 
         return $data;
     }
@@ -109,6 +115,12 @@ class Sidebar
             'route' => 'buy.index',
             'request' => 'purchase/buy*',
             'title' => '採購'
+        ];
+
+        $data[] = [
+            'route' => 'in.index',
+            'request' => 'purchase/in*',
+            'title' => '採購 New'
         ];
 
         $data[] = [

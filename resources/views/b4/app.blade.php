@@ -13,7 +13,7 @@
     @include('b4.sidebar')
 
     <div id="content" class="container-fluid">
-        <div class="h3 pb-2 mt-4 mb-5 border-bottom">@yield('page-header')</div>
+        <div id="page-header" class="h3 pb-2 mt-4 mb-5 border-bottom">@yield('page-header')</div>
         @yield('content')
     </div>
 

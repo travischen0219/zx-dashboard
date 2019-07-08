@@ -8,7 +8,7 @@
 
 @section('css')
     <style>
-    #memo {
+    .memo {
         white-space: nowrap;
         width: 100px;
         overflow: hidden;
@@ -51,7 +51,7 @@
                     </td>
                     <td>{{ $lot->status }}</td>
                     <td>{!! $lot->is_finished == 1 ? '<span class="text-success">已完工</span>' : '進行中' !!}</td>
-                    <td><div id="memo" title="{{ $lot->memo }}">{{ $lot->memo }}</div></td>
+                    <td><div class="memo" title="{{ $lot->memo }}">{{ $lot->memo }}</div></td>
                     <td align="center">
                         <button type="button" onclick="location.href='{{ route('lot.edit', $lot->id) }}';" class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-pen"></i> 修改
