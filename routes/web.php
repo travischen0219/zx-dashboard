@@ -296,9 +296,19 @@ Route::middleware('admin.login')->prefix('selector')->group(
         Route::get('material/{idx}', 'SelectorController@material');
         Route::get('material/{idx}/{code}', 'SelectorController@material');
 
+        // 物料模組選擇器
+        Route::get('material_module/', 'SelectorController@material_module');
+
         // 客戶選擇器
         Route::get('customer', 'SelectorController@customer');
         Route::get('customer/{category}', 'SelectorController@customer');
+
+        // 供應商選擇器
+        Route::get('supplier', 'SelectorController@supplier');
+        Route::get('supplier/{category}', 'SelectorController@supplier');
+
+        // 批號選擇器
+        Route::get('lot', 'SelectorController@lot');
     }
 );
 

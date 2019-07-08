@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Purchase;
 
 use App\Model\In;
 use App\Model\Lot;
+use App\Model\Material_unit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -42,6 +43,9 @@ class InController extends Controller
 
         $data['in'] = new In;
         $data['statuses'] = In::statuses();
+        $data['lots'] = Lot::allWithKey();
+        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+
 
         return view('purchase.in.create', $data);
     }

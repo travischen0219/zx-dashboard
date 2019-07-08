@@ -12,7 +12,7 @@ import 'jquery-ui/ui/widgets/datepicker.js'
 import swal from 'sweetalert2';
 window.swal = swal
 
-// window.Vue = require('vue');
+window.Vue = require('vue');
 
 $('#sidebar-brand').click(function () {
     $('#sidebar').toggleClass('collapse')

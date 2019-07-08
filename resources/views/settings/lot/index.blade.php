@@ -43,7 +43,7 @@
                 <tr>
                     <td>{{ $lot->code }}</td>
                     <td>{{ $lot->name}}</td>
-                    <td>{{ $customers[$lot->customer_id]->shortName }}</td>
+                    <td>{{ $lot->customer_id ? $customers[$lot->customer_id]->shortName : '' }}</td>
                     <td>
                         開始：{{ $lot->start_date }}
                         <br>

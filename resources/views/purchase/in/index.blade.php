@@ -70,7 +70,7 @@
                         <a href="/print/in/{{ $in->id }}" target="_blank"
                             class="btn blue btn-outline-primary btn-sm">列印</a>
                     </td>
-                    <td>P{{ $in->in_no }}</td>
+                    <td>P{{ $in->code }}</td>
                     <td>{{ $in->lot->code }}<br>{{ $in->lot->name }}</td>
                     <td>{{ $in->supplier->shortName }}</td>
                     <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>

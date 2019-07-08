@@ -44,9 +44,16 @@
         text: "",
         type: "",
         showCancelButton: false,
-        confirmButtonText: '確定',
-        closeOnConfirm: true
+        confirmButtonText: '確定'
     }
+
+    Vue.filter('number_format', function (value) {
+        if (isNaN(value)) return 0
+        value = Math.round(value * 100) / 100
+        return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    })
+
+    var number_format = Vue.filter('my-number_format')
     </script>
     @yield('script')
 </body>

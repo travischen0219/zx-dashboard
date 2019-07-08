@@ -3,9 +3,12 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Material_module extends Model
 {
+    use SoftDeletes;
+
     public function image_1()
     {
         return $this->hasOne(Gallery::class, 'id', 'file_1');
