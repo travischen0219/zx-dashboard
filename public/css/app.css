@@ -18355,6 +18355,23 @@ readers do not read off random characters that represent icons */
   width: auto;
 }
 
+.d-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file-preview {
+  position: relative;
+}
+
+.file-delete {
+  color: red;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
 .active-color {
   color: #18cdc4;
 }

@@ -19,7 +19,7 @@
 </div>
 
 <div class="form-group">
-    <label for="code"><span class="text-danger">*</span> 案件名稱：</label>
+    <label for="name"><span class="text-danger">*</span> 案件名稱：</label>
     <input type="text" name="name" id="name" value="{{ old('name') ?? $lot->name }}"
         class="form-control" placeholder="請輸入案件名稱" />
 </div>

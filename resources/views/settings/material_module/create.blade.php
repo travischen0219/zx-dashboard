@@ -1,260 +1,41 @@
-@extends('layouts.app')
+@extends('b4.app')
 
-@section('title','新增物料模組')
-
-@section('css')
-<link href="{{asset('assets/global/plugins/jquery-ui/jquery-ui.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{asset('assets/apps/css/magnific-popup.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
-
-<style>
-    /* 初始label顏色 */
-    .form-group.form-md-line-input.form-md-floating-label .form-control ~ label {
-        color: #248ff1; }
-    /* help-block顏色 */
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .help-block, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .help-block {
-        color: #248ff1;}
-    /* focus後的label顏色 */
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label,
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus {
-        color: #248ff1; }
-    /* focus後的底線顏色 */
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
-        background: #248ff1; }
-
-
-
-    .form-group.form-md-line-input .form-control::-moz-placeholder {
-        color: #248ff1;}
-    .form-group.form-md-line-input .form-control:-ms-input-placeholder {
-        color: #248ff1; }
-    .form-group.form-md-line-input .form-control::-webkit-input-placeholder {
-        color: #248ff1; }
-
-    .form-horizontal .form-group.form-md-line-input > label {
-        color: #248ff1; }
-
-    #materialTable td {
-        line-height: 2.44;
-    }
-    #materialTable input[type=text] {
-        width: 100px;
-    }
-    .btn-add {
-        margin-left: 10px;
-    }
-    .mfp-iframe-holder .mfp-content {
-        width: 85%;
-        height: 85%;
-        max-width: 100%;
-    }
-</style>
-
-
+@section('title', '物料模組')
+@section('page-header')
+    <i class="fab fa-buromobelexperte active-color"></i> 基本資料 - 新增物料模組
 @endsection
 
-@section('page_header')
-<!-- BEGIN PAGE HEADER-->
-
-<!-- BEGIN PAGE BAR -->
-<div class="page-bar">
-
-    <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')
-    <!-- END THEME PANEL -->
-
-
-    <!-- BEGIN PAGE TITLE-->
-    <h1 class="page-title"> 新增物料模組
-        <small></small>
-    </h1>
-    <!-- END PAGE TITLE-->
-
-</div>
-<!-- END PAGE BAR -->
-
-<!-- END PAGE HEADER-->
+@section('css')
+    <style>
+        .mfp-wrap {
+            z-index: 8000;
+        }
+        .mfp-iframe-holder .mfp-content {
+            width: 85%;
+            height: 85%;
+            max-width: 100%;
+        }
+    </style>
 @endsection
 
 @section('content')
+    {!! Form::open([
+        'url' => route('material_module.store'),
+        'class' => 'form',
+        'id' => 'app',
+        'files' => true
+    ]) !!}
+        @include('settings.material_module._form')
 
-<div id="app" class="row">
+        <div class="form-group mt-3">
+            <label></label>
 
-    <div class="col-md-12 ">
-        <!-- BEGIN SAMPLE FORM PORTLET-->
-        <div class="portlet light">
-            @include('includes.messages')
-
-            <div class="portlet-body form">
-                <form role="form" action="{{ route('material_module.store') }}" method="POST" id="material_module_from" enctype="multipart/form-data">
-                    {{ csrf_field() }}
-
-                    <div class="form-group">
-                        編號 : <span style="color:#000">自動產生</span>
-                    </div>
-
-                    <div class="form-group form-md-line-input form-md-floating-label">
-                        <input type="text" name="name" class="form-control" id="name" value="">
-                        <label for="name" style="color: #248ff1;">名稱</label>
-                        <span class="help-block"></span>
-                    </div>
-
-                    <div class="form-group form-md-line-input form-md-floating-label">
-                        <textarea class="form-control" rows="3" name="memo" id="memo"></textarea>
-                        <label for="memo" style="color:#248ff1;font-size: 16px;">產品說明</label>
-                    </div>
-
-                    {{-- @include('selector.material_table') --}}
-                    <material-table
-                        :rows="rows"
-                        :units="units"
-                        ref="materialTable">
-                    </material-table>
-
-                    <div class="form-body">
-                        {{-- file upload start --}}
-                        <div class="col-md-12">
-                            <div style="border: #248ff1 solid 2px;width:100%;height: 400px;">
-                                <div class="col-md-12">
-                                    <p style="font-size:18px;margin-top:18px;margin-left:20px;color:#248ff1;">檔案上傳<span style="color:red;">【每一檔案上傳限制5M】</span></p>
-                                    <hr>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-6">
-                                        <div class="form-group form-md-line-input form-md-floating-label">
-                                            <input type="text" name="name_1" class="form-control" id="name_1" value="{{ old('name_1') }}">
-                                            <label for="name_1">名稱</label>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
-                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                            <div>
-                                                <span class="btn blue btn-file">
-                                                    <span class="fileinput-new" style=""> 選擇檔案(主圖) </span>
-                                                    <span class="fileinput-exists"> 更改 </span>
-                                                    <input type="file" name="upload_image_1"> </span>
-                                                <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> 移除 </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-6">
-                                        <div class="form-group form-md-line-input form-md-floating-label">
-                                            <input type="text" name="name_2" class="form-control" id="name_2" value="{{ old('name_2') }}">
-                                            <label for="name_2">名稱</label>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
-                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                            <div>
-                                                <span class="btn blue btn-file">
-                                                    <span class="fileinput-new" style=""> 選擇檔案 </span>
-                                                    <span class="fileinput-exists"> 更改 </span>
-                                                    <input type="file" name="upload_image_2"> </span>
-                                                <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> 移除 </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-6">
-                                        <div class="form-group form-md-line-input form-md-floating-label">
-                                            <input type="text" name="name_3" class="form-control" id="name_3" value="{{ old('name_3') }}">
-                                            <label for="name_3">名稱</label>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
-                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                            <div>
-                                                <span class="btn blue btn-file">
-                                                    <span class="fileinput-new" style=""> 選擇檔案 </span>
-                                                    <span class="fileinput-exists"> 更改 </span>
-                                                    <input type="file" name="upload_image_3"> </span>
-                                                <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> 移除 </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- file upload end --}}
-
-                        <div class="col-md-12">
-                            <div class="form-actions noborder">
-                                <button type="button" class="btn" onclick="submit_btn();" style="color:#fff;background-color: #248ff1;"><i class="fa fa-check"></i> 存 檔</button>
-                                <a href="{{ route('material_module.index') }}" class="btn red"><i class="fa fa-times"></i> 取 消</a>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
+            <button type="submit" class="btn btn-primary">新增物料模組</button>
+            <button type="button" onclick="location.href='{{ route('material_module.index') }}'" class="btn btn-link ml-3">取消</button>
         </div>
-        <!-- END SAMPLE FORM PORTLET-->
-    </div>
-</div>
-
-<button id="error_lot" class="btn btn-danger mt-sweetalert" data-title="批號 必填" data-message="" data-allow-outside-click="true" data-confirm-button-class="btn-danger" style="display: none;"></button>
-<button id="error_number" class="btn btn-danger mt-sweetalert" data-title="數量、成本或售價必須為數字" data-message="" data-allow-outside-click="true" data-confirm-button-class="btn-danger" style="display: none;"></button>
-<button id="error_negative" class="btn btn-danger mt-sweetalert" data-title="數量、成本或售價不能為負數或零" data-message="" data-allow-outside-click="true" data-confirm-button-class="btn-danger" style="display: none;"></button>
-<button id="error_material" class="btn btn-danger mt-sweetalert" data-title="未選擇任何物料" data-message="" data-allow-outside-click="true" data-confirm-button-class="btn-danger" style="display: none;"></button>
+    {!! Form::close() !!}
 @endsection
 
-
-@section('scripts')
-<script src="{{asset('assets/global/plugins/jquery-ui/jquery-ui.js')}}" type="text/javascript"></script>
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="{{asset('assets/global/scripts/datatable.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/global/plugins/datatables/datatables.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js')}}" type="text/javascript"></script>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="{{asset('assets/pages/scripts/table-datatables-buttons.js')}}" type="text/javascript"></script>
-<!-- END PAGE LEVEL SCRIPTS -->
-<script src="{{asset('assets/apps/scripts/jquery.magnific-popup.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/pages/scripts/ui-sweetalert.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
-
-{{-- 物料表格 --}}
-@include('vue.material_table')
-
-<script>
-var app = new Vue({
-    el: '#app',
-    data: {
-        units: {!! $units !!},
-        rows: []
-    }
-})
-
-function submit_btn(){
-    if ($('#name').val() == '') {
-        swalOption.title = '請輸入名稱';
-        swal(swalOption);
-        return false;
-    }
-
-    if (checkMaterials()) {
-        $("#material_module_from").submit();
-    }
-}
-</script>
+@section('script')
+    @include('settings.material_module._script')
 @endsection

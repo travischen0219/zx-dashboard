@@ -24,15 +24,6 @@
 @endsection
 
 @section('content')
-    {{-- <form role="form" class="form-inline mb-3" action="{{ route('material_module.search') }}" method="POST">
-        {{ csrf_field() }}
-        <div class="form-group">
-            <label class="search-label control-label"> 代號 :</label>
-            <input type="text" class="form-control" name="search_code" id="search_code">
-            <button type="submit" class="btn btn-primary btn-search" style="">搜 尋</button>
-        </div>
-    </form> --}}
-
     @include('includes.messages')
     <a href="{{ route('material_module.create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> 新增物料模組</a>
 
