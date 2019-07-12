@@ -29,4 +29,8 @@
 </material-table>
 
 {{-- 附件清單 --}}
-@include('b4.file')
+{{-- @include('b4.file') --}}
+<file-table
+    :files="files"
+    ref="fileTable">
+</file-table>

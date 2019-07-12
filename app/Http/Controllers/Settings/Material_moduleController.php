@@ -38,7 +38,7 @@ class Material_moduleController extends Controller
 
         $data['material_module'] = new Material_module;
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
-        $data['files'] = [null, null, null];
+        $data['files'] = json_encode([(object)[], (object)[], (object)[]], JSON_HEX_QUOT | JSON_HEX_TAG);
 
         return view('settings.material_module.create', $data);
     }
