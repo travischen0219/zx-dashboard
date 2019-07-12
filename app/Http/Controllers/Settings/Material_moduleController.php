@@ -37,8 +37,9 @@ class Material_moduleController extends Controller
         $data = [];
 
         $data['material_module'] = new Material_module;
-        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
-        $data['files'] = json_encode([(object)[], (object)[], (object)[]], JSON_HEX_QUOT | JSON_HEX_TAG);
+        $data['materials'] = json_encode([]);
+        $data['units'] = Material_unit::allJson();
+        $data['files'] = StorageFile::allJson([]);
 
         return view('settings.material_module.create', $data);
     }
@@ -54,65 +55,7 @@ class Material_moduleController extends Controller
         // 先不驗證
         // $validated = $request->validated();
 
-        // 打包物料模組 (不存單位、不存是否有計價)
-        $materials = [];
-
-        if (isset($request->material)) {
-            for($i = 0; $i < count($request->material); $i++) {
-                $materials[] = [
-                    'id' => $request->material[$i],
-                    'amount' => $request->material_amount[$i],
-                    'cost' => $request->material_cost[$i],
-                    'price' => $request->material_price[$i],
-
-                    // 計價分類才有
-                    'cal_amount' => $request->material_cal_amount[$i],
-                    'cal_price' => $request->material_cal_price[$i],
-                    'buy_amount' => $request->material_buy_amount[$i]
-                ];
-            }
-        }
-
-        // 處理檔案清單
-        $files = [0, 0, 0];
-        if ($request->hasFile('file_file')) {
-            for ($i = 0; $i <= 2; $i++) {
-                if (isset($request->file_file[$i])) {
-                    $files[$i] = StorageFile::upload($request->file_file[$i], $request->file_title[$i]);
-                }
-            }
-        }
-
-        // 新增一筆
-        $material_module = new Material_module;
-
-        $latest_code = Setting::where('set_key','material_module_code')->first();
-        $number = (int)$latest_code->set_value + 1;
-        $code = "M" . str_pad($number, 6, '0',STR_PAD_LEFT);
-        $material_module->code = $code;
-
-        $material_module->name = $request->name ?? " ($code) 未命名的模組";
-        $material_module->memo = $request->memo;
-
-        $material_module->materials = serialize($materials);
-
-        $material_module->file_1 = $files[0];
-        $material_module->file_2 = $files[1];
-        $material_module->file_3 = $files[2];
-
-        $material_module->total_cost = $request->total_cost;
-        $material_module->total_price = $request->total_price;
-
-        $material_module->status = 1;
-        $material_module->created_user = session('admin_user')->id;
-        $material_module->delete_flag = 0;
-
-        $material_module->save();
-
-        // 更新最新 code
-        $latest_code->set_value = $number;
-        $latest_code->save();
-
+        $this->save(0, $request);
         return redirect()->route('material_module.index')->with('message', '新增成功');
     }
 
@@ -125,79 +68,17 @@ class Material_moduleController extends Controller
     public function edit($id)
     {
         $material_module = Material_module::find($id);
+        $data['material_module'] = $material_module;
 
-        $materials = unserialize($material_module->materials);
+        $data['materials'] = Material_module::appendMaterials($material_module->materials);
+        $data['units'] = Material_unit::allJson();
+        $data['files'] = StorageFile::allJson([
+            $material_module->file1,
+            $material_module->file2,
+            $material_module->file3
+        ]);
 
-        // New: materialRows
-        $materials2 = Material_module::encodeMaterials($material_module->materials);
-
-        $total_materials = count($materials['material']);
-        $materialCount = 0;
-        $data = '';
-        for($i = 0; $i < $total_materials; $i++){
-
-            $material = Material::where('id',$materials['material'][$i])->first();
-            $style = '';
-            $disabled = '';
-            if($material_module->status != 1){
-                $style = ' style="display:none"';
-                $disabled = ' disabled';
-            }
-            $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
-                <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
-                <td>
-                    <button type="button" onclick="openSelectMaterial('.$materialCount.');" id="materialName'.$materialCount.'" name="materialName'.$materialCount.'" class="btn btn-default" style="width: 100%; margin-right: 10px; overflow: hidden;" '.$disabled.'> '.$material->fullCode.' '.$material->fullName.'</button>
-                    <input type="hidden" name="material[]" id="material'.$materialCount.'" class="select_material" value="'.$materials['material'][$i].'">
-                </td>
-                <td>
-                    <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$disabled.'>
-                </td>
-                <td>
-                    <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
-                </td>
-
-                <td>
-                    <input type="text" name="materialCost[]" id="materialCost'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialCost" style="width: 100px;height: 30px; vertical-align: middle;" value="'.$material->cost.'" '.$disabled.'>
-                </td>
-                <td>
-                    <span id="materialSubTotal_cost'.$materialCount.'" class="materialSubTotal_cost" style="line-height: 30px; vertical-align: middle;">0</span>
-                </td>
-
-                <td>
-                    <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialPrice" style="width: 100px;height: 30px; vertical-align: middle;" value="'.$material->price.'" '.$disabled.'>
-                </td>
-                <td>
-                    <span id="materialSubTotal_price'.$materialCount.'" class="materialSubTotal_price" style="line-height: 30px; vertical-align: middle;">0</span>
-                </td>
-
-            </tr>';
-            $materialCount++;
-        }
-
-        if($material_module->updated_user > 0){
-            $updated_user = User::where('id',$material_module->updated_user)->first();
-        } else {
-            $updated_user = User::where('id',$material_module->created_user)->first();
-        }
-
-        $upload_check_1 = true;
-        $upload_check_2 = true;
-        $upload_check_3 = true;
-
-        if($material_module->file_1 > 0){
-            $upload_check_1 = false;
-        }
-        if($material_module->file_2 > 0){
-            $upload_check_2 = false;
-        }
-        if($material_module->file_3 > 0){
-            $upload_check_3 = false;
-        }
-
-        $units = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
-
-        return view('settings.material_module.edit', compact('material_module','materials','materials2','data','materialCount','updated_user','upload_check_1','upload_check_2','upload_check_3','units'));
+        return view('settings.material_module.edit', $data);
     }
 
     /**
@@ -209,109 +90,9 @@ class Material_moduleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->save($id, $request);
 
-        $rules = [
-            'name' => 'required'
-        ];
-        $messages = [
-            'name.required' => '名稱 必填'
-        ];
-        $this->validate($request, $rules, $messages);
-
-        $total_materials = count($request->material);
-        $material = [];
-        $materialAmount = [];
-        $materialUnit = [];
-        $materialCost = [];
-        $materialPrice = [];
-        $materialCalPrice = [];
-        $materialCalUnit = [];
-
-        for($i=0; $i < $total_materials; $i++){
-            if($request->material[$i]){
-                $material[] = $request->material[$i];
-                $materialAmount[] = $request->materialAmount[$i];
-                $materialUnit[] = $request->materialUnit[$i];
-                $materialCost[] = $request->materialCost[$i];
-                $materialPrice[] = $request->materialPrice[$i];
-                $materialCalPrice[] = $request->materialCalPrice[$i];
-                $materialCalUnit[] = $request->materialCalUnit[$i];
-            }
-        }
-
-        // 另存一份 friendly data
-        // $materials2 = [];
-        // for($i = 0; $i < $total_materials; $i++) {
-        //     $materials2[] = [
-        //         'id' => $request->material[$i],
-        //         'amount' => $request->materialAmount[$i],
-        //         'unit' => $request->materialUnit[$i],
-        //         'cost' => $request->materialCost[$i],
-        //         'price' => $request->materialPrice[$i],
-        //         'cal_cost' => $request->materialCalCost[$i],
-        //         'cal_price' => $request->materialCalPrice[$i]
-        //     ];
-        // }
-
-        if(count($material) > 0){
-            $materials = [
-                'material' => $material,
-                'materialAmount' => $materialAmount,
-                'materialUnit' => $materialUnit,
-                'materialPrice' => $materialPrice,
-                'materialCost' => $materialCost,
-                'materialCalUnit' => $materialCalUnit,
-                'materialCalPrice' => $materialCalPrice
-            ];
-
-            $file_1=null;
-            $file_2=null;
-            $file_3=null;
-            $check_1 = false;
-            $check_2 = false;
-            $check_3 = false;
-            if($request->hasFile('upload_image_1')){
-                $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
-                $check_1 = true;
-            }
-            if($request->hasFile('upload_image_2')){
-                $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
-                $check_2 = true;
-            }
-            if($request->hasFile('upload_image_3')){
-                $file_3 = $this->file_process($request->name_3, $request->upload_image_3);
-                $check_3 = true;
-            }
-
-            try{
-                $material_module = Material_module::find($id);
-                $material_module->name = $request->name;
-                $material_module->materials = serialize($materials);
-                $material_module->total_cost = $request->total_cost;
-                $material_module->total_price = $request->total_price;
-                $material_module->memo = $request->memo;
-                if($check_1){
-                    $material_module->file_1 = $file_1;
-                }
-                if($check_2){
-                    $material_module->file_2 = $file_2;
-                }
-                if($check_3){
-                    $material_module->file_3 = $file_3;
-                }
-                $material_module->status = 1;
-                $material_module->updated_user = session('admin_user')->id;
-                $material_module->save();
-
-                return redirect()->route('material_module.index')->with('message', '修改成功');
-
-            } catch(Exception $e) {
-                return redirect()->route('material_module.index')->with('error', '修改失敗');
-            }
-
-        } else {
-            return redirect()->back()->with('error', '未選擇任何物料');
-        }
+        return redirect()->route('material_module.index')->with('message', '修改成功');
     }
 
     /**
@@ -354,5 +135,77 @@ class Material_moduleController extends Controller
         } catch (Exception $e) {
             return redirect()->route('material_module.index')->with('error','刪除失敗');
         }
+    }
+
+    public function save($id, $request)
+    {
+        // 新增或修改
+        if ($id == 0) {
+            $material_module = new Material_module;
+
+            $latest_code = Setting::where('set_key','material_module_code')->first();
+            $number = (int)$latest_code->set_value + 1;
+            $code = "M" . str_pad($number, 6, '0',STR_PAD_LEFT);
+            $material_module->code = $code;
+
+            // 更新最新 code
+            $latest_code->set_value = $number;
+            $latest_code->save();
+        } else {
+            $material_module = Material_module::find($id);
+        }
+
+        // 打包物料模組 (不存單位、不存是否有計價)
+        $materials = [];
+        if (isset($request->material)) {
+            for($i = 0; $i < count($request->material); $i++) {
+                $materials[] = [
+                    'id' => $request->material[$i],
+                    'amount' => $request->material_amount[$i],
+                    'cost' => $request->material_cost[$i],
+                    'price' => $request->material_price[$i],
+
+                    // 計價分類才有
+                    'cal_amount' => $request->material_cal_amount[$i] ?? 0,
+                    'cal_price' => $request->material_cal_price[$i] ?? 0,
+                    'buy_amount' => $request->material_buy_amount[$i] ?? 0
+                ];
+            }
+        }
+        $material_module->materials = serialize($materials);
+
+        // 處理檔案清單
+        $files = [0, 0, 0];
+        for ($i = 0; $i <= 2; $i++) {
+            if(isset($request->file_will_delete[$i])) {
+                // 刪除檔案
+                $file = StorageFile::find($material_module->file_1);
+                Storage::delete('public/files/' . $file->file_name);
+                Storage::delete('public/thunmbs/' . $file->file_name);
+                $file->delete();
+            } elseif ($request->hasFile('file_file')) {
+                // 覆蓋檔案
+                for ($i = 0; $i <= 2; $i++) {
+                    if (isset($request->file_file[$i])) {
+                        $files[$i] = StorageFile::upload($request->file_file[$i], $request->file_title[$i]);
+                    }
+                }
+            }
+        }
+        $material_module->file_1 = $files[0];
+        $material_module->file_2 = $files[1];
+        $material_module->file_3 = $files[2];
+
+        $material_module->name = $request->name ?? " ($code) 未命名的模組";
+        $material_module->memo = $request->memo;
+
+        $material_module->total_cost = $request->total_cost;
+        $material_module->total_price = $request->total_price;
+
+        $material_module->status = 1;
+        $material_module->created_user = session('admin_user')->id;
+        $material_module->delete_flag = 0;
+
+        $material_module->save();
     }
 }

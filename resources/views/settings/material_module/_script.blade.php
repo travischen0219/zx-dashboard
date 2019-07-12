@@ -9,7 +9,7 @@ var app = new Vue({
     el: '#app',
     data: {
         units: {!! $units !!},
-        rows: [],
+        materials: {!! $materials !!},
         files: {!! $files !!}
     }
 })

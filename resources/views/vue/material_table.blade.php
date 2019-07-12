@@ -3,7 +3,7 @@
         <div class="card-body">
             <h4>
                 物料清單
-                <button type="button" @click="listMaterial(rows.length)" class="btn btn-primary ml-2">
+                <button type="button" @click="listMaterial(materials.length)" class="btn btn-primary ml-2">
                     <i class="fa fa-plus"></i> 新增物料
                 </button>
                 <button type="button" v-if="module" @click="listMaterialModule" class="btn btn-primary">
@@ -32,7 +32,7 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="(item, idx) in rows">
+                    <tr v-for="(item, idx) in materials">
                         <td title="操作">
                             <button type="button" @click="deleteRow(idx)"
                                 class="btn btn-danger">
@@ -114,7 +114,7 @@
             <hr>
 
             <div class="text-right">
-                共有 @{{ rows.length }} 種物料
+                共有 @{{ materials.length }} 種物料
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 成本總計：$@{{ total_cost | number_format }}
                 <input type="hidden" name="material_total_cost" v-model="total_cost">
@@ -138,14 +138,14 @@ Vue.component('material-table', {
 
     props: {
         units: Object,
-        rows: Array,
+        materials: Array,
         module: true
     },
 
     computed: {
         total_cost: function() {
             var total_cost = 0
-            this.rows.forEach(element => {
+            this.materials.forEach(element => {
                 total_cost += parseFloat(element.cost) * parseFloat(element.amount)
             })
 
@@ -153,7 +153,7 @@ Vue.component('material-table', {
         },
         total_price: function() {
             var total_price = 0
-            this.rows.forEach(element => {
+            this.materials.forEach(element => {
                 total_price += parseFloat(element.price) * parseFloat(element.amount)
             })
 
@@ -163,7 +163,7 @@ Vue.component('material-table', {
 
     methods: {
         deleteRow: function(idx) {
-            this.rows.splice(idx, 1);
+            this.materials.splice(idx, 1);
         },
         listMaterial(idx) {
             $.magnificPopup.open({
@@ -203,7 +203,7 @@ Vue.component('material-table', {
                 return false;
             }
 
-            app.rows.forEach(element => {
+            app.materials.forEach(element => {
                 element.amount *= parseFloat($("#batchAmount").val())
                 element.amount = Math.round(element.amount * 100) / 100
             })
@@ -241,7 +241,7 @@ function applyMaterial(str, idx) {
     }
 
     // 檢查是否重複
-    app.rows.forEach(function(row, i) {
+    app.materials.forEach(function(row, i) {
         if (material.id == row.id && i != idx) {
             duplicate = true
         }
@@ -252,7 +252,7 @@ function applyMaterial(str, idx) {
         swalOption.title = '物料已經存在'
         swal.fire(swalOption)
     } else {
-        app.$set(app.rows, idx, material)
+        app.$set(app.materials, idx, material)
     }
 }
 
@@ -284,7 +284,7 @@ function applyMaterialModule(str) {
 
 
     // 檢查是否重複
-    app.rows.forEach(function(row, i) {
+    app.materials.forEach(function(row, i) {
         if (material.id == row.id && i != idx) {
             duplicate = true
         }
@@ -295,7 +295,7 @@ function applyMaterialModule(str) {
         swalOption.title = '物料已經存在'
         swal.fire(swalOption)
     } else {
-        app.$set(app.rows, idx, material)
+        app.$set(app.materials, idx, material)
     }
 }
 
@@ -310,7 +310,7 @@ function checkMaterials() {
     var existMaterial = []
     var sameMaterial = []
 
-    app.rows.forEach(function(element, index) {
+    app.materials.forEach(function(element, index) {
         if (parseInt(element.id) != 0) {
             if (existMaterial.includes(element.id)) {
                 sameMaterial.push(element.name)

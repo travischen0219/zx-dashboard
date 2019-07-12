@@ -25,14 +25,14 @@
         'id' => 'app',
         'files' => true
     ]) !!}
-        @include('settings.material_module._form')
+    @include('settings.material_module._form')
 
-        <div class="form-group mt-3">
-            <label></label>
+    <div class="form-group mt-3">
+        <label></label>
 
-            <button type="submit" class="btn btn-primary">新增物料模組</button>
-            <button type="button" onclick="location.href='{{ route('material_module.index') }}'" class="btn btn-link ml-3">取消</button>
-        </div>
+        <button type="submit" class="btn btn-primary">新增物料模組</button>
+        <button type="button" onclick="location.href='{{ route('material_module.index') }}'" class="btn btn-link ml-3">取消</button>
+    </div>
     {!! Form::close() !!}
 @endsection
 

@@ -22,6 +22,20 @@ class Material_module extends Model
         return $this->hasOne(Gallery::class, 'id', 'file_3');
     }
 
+    public function file1()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_1');
+    }
+    public function file2()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_2');
+    }
+    public function file3()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_3');
+    }
+
+    // 停用
     static public function encodeMaterials($materials, $php = false)
     {
         $data = [];
@@ -39,6 +53,43 @@ class Material_module extends Model
             $data[$i]['price'] = $materials['materialPrice'][$i] ?? 0;
             $data[$i]['cal_unit'] = $materials['materialCalUnit'][$i] ?? 0;
             $data[$i]['cal_price'] = $materials['materialCalPrice'][$i] ?? 0;
+        }
+
+        if ($php) {
+            return $data;
+        } else {
+            $data = json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return $data;
+        }
+    }
+
+    // 使用
+    static public function appendMaterials($materials, $php = false)
+    {
+        $data = [];
+        $materials = unserialize($materials);
+
+        $i = 0;
+        foreach($materials as $material) {
+            $m = Material::find($material['id']);
+
+            $data[$i]['id'] = $material['id'] ?? 0;
+            $data[$i]['code'] = $m->fullCode;
+            $data[$i]['name'] = $m->fullName;
+            $data[$i]['cal'] = $m->material_category_name->cal;
+
+            $data[$i]['unit'] = $m->unit;
+            $data[$i]['cal_unit'] = $m->cal_unit;
+
+            $data[$i]['amount'] = $material['amount'] ?? 0;
+            $data[$i]['cost'] = $material['cost'] ?? 0;
+            $data[$i]['price'] = $material['price'] ?? 0;
+
+            $data[$i]['cal_amount'] = $material['cal_amount'] ?? 0;
+            $data[$i]['cal_price'] = $material['cal_price'] ?? 0;
+            $data[$i]['buy_amount'] = $material['buy_amount'] ?? 0;
+
+            $i++;
         }
 
         if ($php) {

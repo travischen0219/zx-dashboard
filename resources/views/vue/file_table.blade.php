@@ -16,9 +16,22 @@
                     <div class="alert alert-secondary mt-3 d-center file-preview" role="alert" style="min-height: 120px;">
                         <template v-if="previews[idx]">
                             <img
-                                v-if="previews[idx].image"
                                 v-bind:src="previews[idx].data"
                                 @click="previewImage(idx)"
+                                class="mw-100"
+                                style="max-height: 100px;" />
+
+                            <a href="javascript: void(0)"
+                                @click="handleFileDelete(idx)"
+                                class="file-delete text-danger">
+                                <i class="fas fa-trash-alt"></i> 刪除
+                            </a>
+                        </template>
+
+                        <template v-else-if="files[idx].file_name">
+                            <img
+                                v-bind:src="'/storage/thumbs/' + files[idx].file_name"
+                                @click="previewImageFromFile(idx)"
                                 class="mw-100"
                                 style="max-height: 100px;" />
 
@@ -40,6 +53,7 @@
                         accept="image/*"
                         @change="handleFileUpload(idx)"
                         style="width: 200px;" />
+                    <input type="hidden" name="file_will_delete[]" v-model="item.file_will_delete" />
                 </div>
             </div>
         </div>
@@ -90,6 +104,10 @@ Vue.component('file-table', {
 
             var w = window.open("")
             w.document.write(image.outerHTML)
+        },
+
+        previewImageFromFile(idx) {
+            window.open("/storage/files" + this.files[idx].file_name)
         }
     }
 })

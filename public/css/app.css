@@ -18355,6 +18355,10 @@ readers do not read off random characters that represent icons */
   width: auto;
 }
 
+* {
+  font-family: "Microsoft JhengHei";
+}
+
 .d-center {
   display: flex;
   justify-content: center;

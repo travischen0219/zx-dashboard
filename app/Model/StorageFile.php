@@ -29,4 +29,13 @@ class StorageFile extends Model
 
         return $file->id;
     }
+
+    static public function allJson($files)
+    {
+        return json_encode([
+            $files[0] ?? (object)[],
+            $files[1] ?? (object)[],
+            $files[2] ?? (object)[]
+        ], JSON_HEX_QUOT | JSON_HEX_TAG);
+    }
 }
