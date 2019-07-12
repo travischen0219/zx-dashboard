@@ -106,25 +106,31 @@ class Material_moduleController extends Controller
         try{
             $material_module = Material_module::find($id);
 
-            if($material_module->file_1 > 0){
+            if($material_module->file_1 > 0) {
                 $file = StorageFile::find($material_module->file_1);
-                Storage::delete('public/files/' . $file->file_name);
-                Storage::delete('public/thunmbs/' . $file->file_name);
-                $file->delete();
+                if ($file) {
+                    Storage::delete('public/files/' . $file->file_name);
+                    Storage::delete('public/thunmbs/' . $file->file_name);
+                    $file->delete();
+                }
             }
 
-            if($material_module->file_2 > 0){
+            if($material_module->file_2 > 0) {
                 $file = StorageFile::find($material_module->file_2);
-                Storage::delete('files/' . $file->file_name);
-                Storage::delete('thunmbs/' . $file->file_name);
-                $file->delete();
+                if ($file) {
+                    Storage::delete('public/files/' . $file->file_name);
+                    Storage::delete('public/thunmbs/' . $file->file_name);
+                    $file->delete();
+                }
             }
 
-            if($material_module->file_3 > 0){
+            if($material_module->file_3 > 0) {
                 $file = StorageFile::find($material_module->file_3);
-                Storage::delete('files/' . $file->file_name);
-                Storage::delete('thunmbs/' . $file->file_name);
-                $file->delete();
+                if ($file) {
+                    Storage::delete('public/files/' . $file->file_name);
+                    Storage::delete('public/thunmbs/' . $file->file_name);
+                    $file->delete();
+                }
             }
 
             $material_module->delete_flag = 1;
@@ -180,9 +186,12 @@ class Material_moduleController extends Controller
             if(isset($request->file_will_delete[$i])) {
                 // 刪除檔案
                 $file = StorageFile::find($material_module->file_1);
-                Storage::delete('public/files/' . $file->file_name);
-                Storage::delete('public/thunmbs/' . $file->file_name);
-                $file->delete();
+
+                if ($file) {
+                    Storage::delete('public/files/' . $file->file_name);
+                    Storage::delete('public/thunmbs/' . $file->file_name);
+                    $file->delete();
+                }
             } elseif ($request->hasFile('file_file')) {
                 // 覆蓋檔案
                 for ($i = 0; $i <= 2; $i++) {

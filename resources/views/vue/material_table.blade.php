@@ -19,7 +19,7 @@
                         <th style="white-space: nowrap">
                             數量
                             <a href="javascript: batchEditAmount();">
-                                <small>入庫批量修改</small>
+                                <small>倉庫批量修改</small>
                             </a>
                             <div id="batchEdit" style="margin-top: 2px; display: none;">
                                 <input type="text" name="batchAmount" id="batchAmount" size="5" style="width: 50px;">
@@ -48,7 +48,7 @@
                             </button>
                         </td>
                         <td title="數量">
-                            入庫：<input type="text"
+                            倉庫：<input type="text"
                                 class="form-control"
                                 v-model="item.amount"
                                 name="material_amount[]"
@@ -78,7 +78,7 @@
                             </template>
                         </td>
                         <td title="單位成本">
-                            入庫：<input type="text"
+                            倉庫：<input type="text"
                                 class="form-control"
                                 v-model="item.cost"
                                 name="material_cost[]"
