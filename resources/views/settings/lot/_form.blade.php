@@ -28,9 +28,9 @@
     <label for="customer_id"><span class="text-danger">*</span> 客戶：</label>
     <button type="button" id="btn_customer_id" class="btn btn-primary" onclick="listCustomers()">
         @if (old('customer_id') !== null)
-            {{ $customers[old('customer_id')]->fullName }}
+            {{ $customers[old('customer_id')]->code }} {{ $customers[old('customer_id')]->fullName }}
         @elseif (isset($customers[$lot->customer_id]))
-            {{ $customers[$lot->customer_id]->fullName }}
+            {{ $customers[$lot->customer_id]->code }} {{ $customers[$lot->customer_id]->fullName }}
         @else
             按此選擇客戶
         @endif

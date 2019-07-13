@@ -21,6 +21,6 @@ function applyCustomer(str) {
     var customer = JSON.parse(str)
 
     $('#customer_id').val(customer.id)
-    $('#btn_customer_id').html(customer.fullName)
+    $('#btn_customer_id').html(customer.code + ' ' + customer.fullName)
 }
 </script>
