@@ -1,7 +1,9 @@
 <script type="text/x-template" id="file-table">
     <div class="card card-default mt-3">
         <div class="card-body">
-            <h4>圖片附件</h4>
+            <h4>
+                圖片附件 <small class="text-danger">有圖片才會保存名稱</small>
+            </h4>
 
             <hr>
 
@@ -49,7 +51,7 @@
 
                     <input type="file"
                         ref="file"
-                        name="file_file[]"
+                        :name="'file_file_' + idx"
                         accept="image/*"
                         @change="handleFileUpload(idx)"
                         style="width: 200px;" />

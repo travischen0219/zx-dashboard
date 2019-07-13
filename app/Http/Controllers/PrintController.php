@@ -175,12 +175,11 @@ class PrintController extends Controller
         if (!$module) exit();
 
         $materials = unserialize($module->materials);
-        $materials2 = Material_module::encodeMaterials($module->materials, true);
 
         $array = [];
-        foreach ($materials2 as $material) {
+        foreach ($materials as $material) {
             $m = Material::find($material['id']);
-            $unit = Material_unit::find($material['unit']);
+            $unit = Material_unit::find($m->unit);
 
             $array[] = [
                 'id' => $material['id'],
@@ -197,29 +196,6 @@ class PrintController extends Controller
         }
 
         $module->materials = $array;
-
-        // $module->count = count($materials['material']);
-
-        // $array = [];
-        // for($i = 0; $i < count($materials['material']); $i++) {
-        //     $material = Material::find($materials['material'][$i]);
-        //     $unit = Material_unit::find($material->unit);
-
-        //     $array[] = [
-        //         'id' => $material->id,
-        //         'code' => $material->fullCode,
-        //         'name' => $material->fullName,
-        //         'size' => $material->size,
-        //         'color' => $material->color,
-        //         'stock' => $material->stock,
-        //         'memo' => $material->memo,
-        //         'amount' => $materials['materialAmount'][$i],
-        //         'price' => (float) $materials['materialPrice'][$i],
-        //         'unit' =>  $unit->name
-        //     ];
-        // }
-
-        // $module->materials = $array;
 
         // 單筆列印
         $data = [];

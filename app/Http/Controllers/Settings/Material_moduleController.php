@@ -159,6 +159,8 @@ class Material_moduleController extends Controller
             $latest_code->save();
         } else {
             $material_module = Material_module::find($id);
+
+            $code = $material_module->code;
         }
 
         // 打包物料模組 (不存單位、不存是否有計價)
@@ -181,31 +183,31 @@ class Material_moduleController extends Controller
         $material_module->materials = serialize($materials);
 
         // 處理檔案清單
-        $files = [0, 0, 0];
         for ($i = 0; $i <= 2; $i++) {
-            if(isset($request->file_will_delete[$i])) {
+            $col = 'file_' . ($i + 1);
+            $file_input = 'file_file_' . $i;
+            if(isset($request->file_will_delete[$i]) && $request->file_will_delete[$i] == 1) {
                 // 刪除檔案
-                $file = StorageFile::find($material_module->file_1);
+                $file = StorageFile::find($material_module->$col);
 
                 if ($file) {
                     Storage::delete('public/files/' . $file->file_name);
                     Storage::delete('public/thunmbs/' . $file->file_name);
                     $file->delete();
                 }
-            } elseif ($request->hasFile('file_file')) {
+            } elseif ($request->hasFile($file_input)) {
                 // 覆蓋檔案
-                for ($i = 0; $i <= 2; $i++) {
-                    if (isset($request->file_file[$i])) {
-                        $files[$i] = StorageFile::upload($request->file_file[$i], $request->file_title[$i]);
-                    }
+                $file_id = StorageFile::upload($request->$file_input, $request->file_title[$i]);
+                $material_module->$col = $file_id;
+            } else {
+                // 儲存檔案標題
+                if ($material_module->$col) {
+                    StorageFile::updateTitle($material_module->$col, $request->file_title[$i]);
                 }
             }
         }
-        $material_module->file_1 = $files[0];
-        $material_module->file_2 = $files[1];
-        $material_module->file_3 = $files[2];
 
-        $material_module->name = $request->name ?? " ($code) 未命名的模組";
+        $material_module->name = $request->name ?? "$code - 未命名的模組";
         $material_module->memo = $request->memo;
 
         $material_module->total_cost = $request->total_cost;
@@ -216,5 +218,7 @@ class Material_moduleController extends Controller
         $material_module->delete_flag = 0;
 
         $material_module->save();
+
+        return $material_module;
     }
 }

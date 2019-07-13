@@ -38,4 +38,14 @@ class StorageFile extends Model
             $files[2] ?? (object)[]
         ], JSON_HEX_QUOT | JSON_HEX_TAG);
     }
+
+    static public function updateTitle($id, $title)
+    {
+        $file = StorageFile::find($id);
+
+        if ($file) {
+            $file->title = $title ?? '';
+            $file->save();
+        }
+    }
 }
