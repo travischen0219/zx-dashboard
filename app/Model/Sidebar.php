@@ -41,7 +41,7 @@ class Sidebar
         $data[] = [
             'route' => 'manufacturer.index',
             'request' => 'settings/manufacturer*',
-            'title' => '廠商資料'
+            'title' => '加工廠商'
         ];
 
         $data[] = [
@@ -105,11 +105,11 @@ class Sidebar
     {
         $data =[];
 
-        $data[] = [
-            'route' => 'inquiry.index',
-            'request' => 'purchase/inquiry*',
-            'title' => '詢價'
-        ];
+        // $data[] = [
+        //     'route' => 'inquiry.index',
+        //     'request' => 'purchase/inquiry*',
+        //     'title' => '詢價'
+        // ];
 
         $data[] = [
             'route' => 'buy.index',

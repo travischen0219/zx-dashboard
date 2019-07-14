@@ -268,52 +268,91 @@
     }
 }
 
+// 步驟條
+.steps {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
 
-// /* 初始label顏色 */
-// .form-group.form-md-line-input.form-md-floating-label .form-control~label {
-//     color: #43a546;
-// }
+.steps li {
+    box-sizing: border-box;
+    padding: 5px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    cursor: pointer;
+}
 
-// /* help-block顏色 */
-// .form-group.form-md-line-input .form-control.edited:not([readonly])~.help-block,
-// .form-group.form-md-line-input .form-control:focus:not([readonly])~.help-block {
-//     color: #43a546;
-// }
+.steps li.active {
+    background-color: crimson !important;
+}
 
-// /* focus後的label顏色 */
-// .form-group.form-md-line-input .form-control.edited:not([readonly])~label,
-// .form-group.form-md-line-input .form-control.edited:not([readonly])~.form-control-focus,
-// .form-group.form-md-line-input .form-control:focus:not([readonly])~label,
-// .form-group.form-md-line-input .form-control:focus:not([readonly])~.form-control-focus {
-//     color: #43a546;
-// }
+.steps > li + li {
+    margin-left: 80px;
+}
 
-// /* focus後的底線顏色 */
-// .form-group.form-md-line-input .form-control.edited:not([readonly])~label:after,
-// .form-group.form-md-line-input .form-control.edited:not([readonly])~.form-control-focus:after,
-// .form-group.form-md-line-input .form-control:focus:not([readonly])~label:after,
-// .form-group.form-md-line-input .form-control:focus:not([readonly])~.form-control-focus:after {
-//     background: #43a546;
-// }
+.steps > li::before {
+    content: '';
+    height: 2px;
+    background-color: gray;
+    width: 80px;
+    position: absolute;
+    left: -80px;
+}
 
-// .form-group.form-md-line-input .form-control::-moz-placeholder {
-//     color: #43a546;
-// }
+.steps-slave {
+    flex-direction: row;
+    margin-left: 40px;
+    position: relative;
+}
 
-// .form-group.form-md-line-input .form-control:-ms-input-placeholder {
-//     color: #43a546;
-// }
+.steps-slave::before {
+    content: '';
+    height: auto;
+    background-color: gray;
+    width: 2px;
+    position: absolute;
+    left: 0px;
+    top: 40px;
+    bottom: 40px;
+}
 
-// .form-group.form-md-line-input .form-control::-webkit-input-placeholder {
-//     color: #43a546;
-// }
+.steps-slave > li {
+    position: relative;
+}
 
-// .form-horizontal .form-group.form-md-line-input>label {
+.steps-slave > li span {
+    position: absolute;
+    left: 0px;
+    top: 85px;
+}
 
-//     color: #43a546;
-// }
+.steps-slave > li::before {
+    content: '';
+    height: 2px;
+    background-color: gray;
+    width: 40px;
+    position: absolute;
+    left: -40px;
+}
 
-// button[type=submit] {
-//     color: #fff;
-//     background-color: #43a546;
-// }
+.steps-slave li + li {
+    margin-top: 20px;
+}
+
+.steps > li:first-child::before {
+    content: unset;
+}
+
+.steps > li:last-child {
+    background-color: transparent;
+}

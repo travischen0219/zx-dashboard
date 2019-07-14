@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Purchase;
 
 use App\Model\In;
 use App\Model\Lot;
+use App\Model\Supplier;
+use App\Model\Manufacturer;
+
 use App\Model\Material_unit;
+use App\Model\Material_module;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -41,11 +46,17 @@ class InController extends Controller
     {
         $data = [];
 
-        $data['in'] = new In;
+        $in = new In;
+        $in->status = 10;
+
+        $data['in'] = $in;
         $data['statuses'] = In::statuses();
         $data['lots'] = Lot::allWithKey();
-        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+        $data['suppliers'] = Supplier::allWithKey();
+        $data['manufacturers'] = Manufacturer::allWithKey();
 
+        $data['materials'] = json_encode([]);
+        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         return view('purchase.in.create', $data);
     }
@@ -58,7 +69,8 @@ class InController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->save(0, $request);
+        return redirect()->route('in.index')->with('message', '新增成功');
     }
 
     /**
@@ -80,7 +92,18 @@ class InController extends Controller
      */
     public function edit(In $in)
     {
-        //
+        $data = [];
+
+        $data['in'] = $in;
+        $data['statuses'] = In::statuses();
+        $data['lots'] = Lot::allWithKey();
+        $data['suppliers'] = Supplier::allWithKey();
+        $data['manufacturers'] = Manufacturer::allWithKey();
+
+        $data['materials'] = Material_module::appendMaterials($in->materials);
+        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+
+        return view('purchase.in.edit', $data);
     }
 
     /**
@@ -92,7 +115,8 @@ class InController extends Controller
      */
     public function update(Request $request, In $in)
     {
-        //
+        $this->save($in->id, $request);
+        return redirect()->route('in.index')->with('message', '修改成功');
     }
 
     /**
@@ -104,5 +128,43 @@ class InController extends Controller
     public function destroy(In $in)
     {
         //
+    }
+
+    public function save($id, $request)
+    {
+        // 新增或修改
+        if ($id == 0) {
+            $in = new In;
+
+            $code = date("Ymd") . "001";
+            $last_code = In::orderBy('code', 'DESC')->first();
+            if ($last_code) {
+                if ($last_code->code >= $code) {
+                    $code = $last_code->code + 1;
+                }
+            }
+            $in->code = $code;
+        } else {
+            $in = In::find($id);
+            $code = $in->code;
+        }
+
+        // 打包物料模組
+        $in->materials = Material_module::packMaterials($request);
+
+        $in->lot_id = $request->lot_id ?? 0;
+        $in->supplier_id = $request->supplier_id ?? 0;
+        $in->manufacturer_id = $request->manufacturer_id ?? 0;
+        $in->buy_date = $request->buy_date;
+        $in->should_arrive_date = $request->should_arrive_date;
+        $in->arrive_date = $request->arrive_date;
+        $in->memo = $request->memo;
+
+        $in->status = $request->status;
+        $in->created_user = session('admin_user')->id;
+
+        $in->save();
+
+        return $in;
     }
 }

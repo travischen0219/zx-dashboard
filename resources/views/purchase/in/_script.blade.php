@@ -1,12 +1,22 @@
 {{-- 物料表格 --}}
-@include('vue.in_material_table')
+@include('vue.material_table')
 
 <script>
+$(function () {
+    $('.steps li').on('click', function(e) {
+        e.stopPropagation()
+        $('.steps li').not(this).removeClass('active')
+        $(this).addClass('active')
+
+        $('#status').val($(this).data('status'))
+    })
+})
+
 var app = new Vue({
     el: '#app',
     data: {
         units: {!! $units !!},
-        rows: []
+        materials: {!! $materials !!}
     }
 })
 
@@ -40,6 +50,18 @@ function listSuppliers() {
     })
 }
 
+function listManufacturers() {
+    $.magnificPopup.open({
+        showCloseBtn : false,
+        closeOnBgClick: true,
+        fixedContentPos: false,
+        items: {
+            src: "/selector/manufacturer/1",
+            type: "iframe"
+        }
+    })
+}
+
 function applyLot(str) {
     var lot = JSON.parse(str)
 
@@ -52,5 +74,12 @@ function applySupplier(str) {
 
     $('#supplier_id').val(supplier.id)
     $('#btn_supplier_id').html(supplier.code + ' ' + supplier.fullName)
+}
+
+function applyManufacturer(str) {
+    var manufacturer = JSON.parse(str)
+
+    $('#manufacturer_id').val(manufacturer.id)
+    $('#btn_manufacturer_id').html(manufacturer.code + ' ' + manufacturer.fullName)
 }
 </script>

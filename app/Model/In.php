@@ -31,4 +31,9 @@ class In extends Model
     {
         return $this->hasOne(Supplier::class, 'id', 'supplier_id');
     }
+
+    public function manufacturer()
+    {
+        return $this->hasOne(Manufacturer::class, 'id', 'manufacturer_id');
+    }
 }

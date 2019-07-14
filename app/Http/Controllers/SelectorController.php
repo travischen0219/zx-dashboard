@@ -10,6 +10,7 @@ use App\Model\Material_module;
 use App\Model\Customer;
 use App\Model\Lot;
 use App\Model\Supplier;
+use App\Model\Manufacturer;
 
 class SelectorController extends Controller
 {
@@ -76,6 +77,25 @@ class SelectorController extends Controller
         $data['suppliers'] = $suppliers;
 
         return view('selector.supplier', $data);
+    }
+
+    // 選擇加工廠商
+    public function manufacturer(Request $request)
+    {
+        $category = $request->category ?? '';
+
+        $data['category'] = $category;
+        $data['categories'] = Manufacturer::categories();
+
+        if ($category == '') {
+            $manufacturers = Manufacturer::where('delete_flag', '0')->get();
+        } else {
+            $manufacturers = Manufacturer::where('delete_flag', '0')
+                ->where('category', $category)->get();
+        }
+        $data['manufacturers'] = $manufacturers;
+
+        return view('selector.manufacturer', $data);
     }
 
     // 選擇批號

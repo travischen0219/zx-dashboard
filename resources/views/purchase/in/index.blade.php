@@ -28,6 +28,10 @@
 @endsection
 
 @section('content')
+    @php
+        $na = '<span class="text-muted">未選</span>';
+    @endphp
+
     <div id="loader"></div>
 
     <div class="form-group">
@@ -42,6 +46,8 @@
 
     <hr>
 
+    @include('includes.messages')
+
     <a href="{{ route('in.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增採購</a>
     <span class="btn btn-primary mr-2" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆列印</span>
     全選 <input type="checkbox" class="checkAll" id="checkAll" value="1">
@@ -54,11 +60,11 @@
                 <th>列印</th>
                 <th>單號</th>
                 <th>批號</th>
-                <th>供應商</th>
-                <th>說明</th>
+                <th>廠商</th>
                 <th>日期</th>
                 <th>狀態</th>
-                <th>操 作</th>
+                <th>說明</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody>
@@ -71,27 +77,38 @@
                             class="btn blue btn-outline-primary btn-sm">列印</a>
                     </td>
                     <td>P{{ $in->code }}</td>
-                    <td>{{ $in->lot->code }}<br>{{ $in->lot->name }}</td>
-                    <td>{{ $in->supplier->shortName }}</td>
-                    <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>
                     <td>
-                        <div>採購日期：{{ $in->buy_date }}</div>
-                        <div>預計到貨：{{ $in->should_arrive_date }}</div>
-                        <div>實際到貨：{{ $in->arrive_date }}</div>
+                        {!! $in->lot ? $in->lot->code . '<br>' . $in->lot->name : $na !!}
                     </td>
-                    <td>{{ $statuses[$in->status] }}</td>
+                    <td>
+                        <div>供應商：{!! $in->supplier ? $in->supplier->shortName : $na !!}</div>
+                        <div>加工廠商：{!! $in->manufacturer ? $in->manufacturer->shortName : $na !!}</div>
+                    </td>
+                    <td>
+                        <div>採購日期：{!! $in->buy_date ?? $na !!}</div>
+                        <div>預計到貨：{!! $in->should_arrive_date ?? $na !!}</div>
+                        <div>實際到貨：{!! $in->arrive_date ?? $na !!}</div>
+                    </td>
+                    <td>{{ $statuses[$in->status] ?? '' }}</td>
+                    <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>
                     <td align="center">
-                        <button type="button" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-pen"></i> 修改
-                        </button>
-                        <button type="button" onclick="deleteIn({{ $in->id }});" class="btn btn-outline-danger btn-sm">
-                            <i class="fas fa-trash-alt"></i> 刪除
-                        </button>
+                        @if ($in->status == 30 || $in->status == 40)
+                            <button type="button" onclick="location.href='{{ route('in.show', $in->id) }}';" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-eye"></i> 查看
+                            </button>
+                        @else
+                            <button type="button" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-pen"></i> 修改
+                            </button>
+                            <button type="button" onclick="deleteIn({{ $in->id }});" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> 刪除
+                            </button>
 
-                        <form id="delete-form-{{ $in->id }}" action="{{ route('in.destroy', $in->id) }}" method="post">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
+                            <form id="delete-form-{{ $in->id }}" action="{{ route('in.destroy', $in->id) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        @endif
                     </td>
                 </tr>
 

@@ -2,7 +2,7 @@
 
 @section('title', '採購進貨 - 新增採購')
 @section('page-header')
-    <i class="fas fa-tasks active-color mr-1"></i>採購進貨 - 新增採購
+    <i class="fas fa-shopping-cart active-color mr-1"></i>採購進貨 - 新增採購
 @endsection
 
 @section('css')

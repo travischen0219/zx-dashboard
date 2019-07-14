@@ -307,6 +307,10 @@ Route::middleware('admin.login')->prefix('selector')->group(
         Route::get('supplier', 'SelectorController@supplier');
         Route::get('supplier/{category}', 'SelectorController@supplier');
 
+        // 加工廠商選擇器
+        Route::get('manufacturer', 'SelectorController@manufacturer');
+        Route::get('manufacturer/{category}', 'SelectorController@manufacturer');
+
         // 批號選擇器
         Route::get('lot', 'SelectorController@lot');
     }

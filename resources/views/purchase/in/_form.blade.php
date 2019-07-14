@@ -20,10 +20,10 @@
 <div class="form-group">
     <label for="lot_id"><span class="text-danger">*</span> 批號：</label>
     <button type="button" id="btn_lot_id" class="btn btn-primary" onclick="listLots()">
-        @if (old('lot_id') !== null)
-            {{ $lots[old('lot_id')]->fullName }}
+        @if (old('lot_id'))
+            {{ $lots[old('lot_id')]->code }} {{ $lots[old('lot_id')]->name }}
         @elseif (isset($lots[$in->lot_id]))
-            {{ $lots[$in->lot_id]->fullName }}
+            {{ $lots[$in->lot_id]->code }} {{ $lots[$in->lot_id]->name }}
         @else
             按此選擇批號
         @endif
@@ -33,16 +33,29 @@
 
     <label for="supplier_id"><span class="text-danger">*</span> 供應商：</label>
     <button type="button" id="btn_supplier_id" class="btn btn-primary" onclick="listSuppliers()">
-        @if (old('supplier_id') !== null)
-            {{ $suppliers[old('supplier_id')]->fullName }}
+        @if (old('supplier_id'))
+            {{ $suppliers[old('supplier_id')]->code }} {{ $suppliers[old('supplier_id')]->shortName }}
         @elseif (isset($suppliers[$in->supplier_id]))
-            {{ $suppliers[$in->supplier_id]->fullName }}
+            {{ $suppliers[$in->supplier_id]->code }} {{ $suppliers[$in->supplier_id]->shortName }}
         @else
             按此選擇供應商
         @endif
     </button>
 
     <input type="hidden" name="supplier_id" id="supplier_id" value="{{ old('supplier_id') ?? $in->supplier_id }}">
+
+    <label for="manufacturer_id">加工廠商：</label>
+    <button type="button" id="btn_manufacturer_id" class="btn btn-primary" onclick="listManufacturers()">
+        @if (old('manufacturer_id'))
+            {{ $manufacturers[old('manufacturer_id')]->code }} {{ $manufacturers[old('manufacturer_id')]->shortName }}
+        @elseif (isset($manufacturers[$in->manufacturer_id]))
+            {{ $manufacturers[$in->manufacturer_id]->code }} {{ $manufacturers[$in->manufacturer_id]->shortName }}
+        @else
+            按此選擇加工廠商
+        @endif
+    </button>
+
+    <input type="hidden" name="manufacturer_id" id="manufacturer_id" value="{{ old('manufacturer_id') ?? $in->manufacturer_id }}">
 </div>
 
 <div class="form-group">
@@ -60,6 +73,40 @@
 </div>
 
 <div class="form-group">
+    <label for="status">狀態：</label>
+    <div class="d-inline-block pl-2">
+        <ul class="steps" style="margin: 60px 0;">
+            @php
+                $status = old('status') ?? $in->status;
+            @endphp
+            <li data-status="50" class="{{ $status == 50 ? 'active' : '' }}">{{ $statuses[50] }}</li>
+            <li data-status="10" class="{{ $status == 10 ? 'active' : '' }}">{{ $statuses[10] }}</li>
+            <li data-status="20" class="{{ $status == 20 ? 'active' : '' }}">{{ $statuses[20] }}</li>
+            <li>
+                <ul class="steps-slave">
+                    <li data-status="40" class="{{ $status == 40 ? 'active' : '' }}">
+                        {{ $statuses[40] }}
+                    </li>
+                    <li data-status="30" class="{{ $status == 30 ? 'active' : '' }}">
+                        {{ $statuses[30] }}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <input type="hidden" name="status" id="status" value="{{ old('status') ?? $in->status }}">
+</div>
+
+<div class="form-group">
+    <label for="status" class="align-top">狀態說明：</label>
+    <div class="d-inline-block text-primary">
+        狀態選擇轉入庫或轉加工之後，採購單將 [ <span class="text-danger">無法再編輯</span> ]
+        <br>轉入庫 [ <span class="text-danger">會</span> ] 修改庫存數，轉加工 [ <span class="text-danger">不會</span> ] 修改庫存數
+    </div>
+</div>
+
+<div class="form-group">
     <label for="memo" class="align-top">備註：</label>
 
     <textarea name="memo" id="memo"
@@ -69,7 +116,8 @@
 </div>
 
 <material-table
-    :rows="rows"
+    :materials="materials"
     :units="units"
+    :module="true"
     ref="materialTable">
 </material-table>
