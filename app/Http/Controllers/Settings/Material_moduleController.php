@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use App\Model\Material_module;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MaterialModuleRequest;
-use Illuminate\Support\Facades\Storage;
 
 class Material_moduleController extends Controller
 {
@@ -163,49 +162,11 @@ class Material_moduleController extends Controller
             $code = $material_module->code;
         }
 
-        // 打包物料模組 (不存單位、不存是否有計價)
-        $materials = [];
-        if (isset($request->material)) {
-            for($i = 0; $i < count($request->material); $i++) {
-                $materials[] = [
-                    'id' => $request->material[$i],
-                    'amount' => $request->material_amount[$i],
-                    'cost' => $request->material_cost[$i],
-                    'price' => $request->material_price[$i],
-
-                    // 計價分類才有
-                    'cal_amount' => $request->material_cal_amount[$i] ?? 0,
-                    'cal_price' => $request->material_cal_price[$i] ?? 0,
-                    'buy_amount' => $request->material_buy_amount[$i] ?? 0
-                ];
-            }
-        }
-        $material_module->materials = serialize($materials);
+        // 打包物料模組
+        $material_module->materials =  Material_module::packMaterials($request);
 
         // 處理檔案清單
-        for ($i = 0; $i <= 2; $i++) {
-            $col = 'file_' . ($i + 1);
-            $file_input = 'file_file_' . $i;
-            if(isset($request->file_will_delete[$i]) && $request->file_will_delete[$i] == 1) {
-                // 刪除檔案
-                $file = StorageFile::find($material_module->$col);
-
-                if ($file) {
-                    Storage::delete('public/files/' . $file->file_name);
-                    Storage::delete('public/thunmbs/' . $file->file_name);
-                    $file->delete();
-                }
-            } elseif ($request->hasFile($file_input)) {
-                // 覆蓋檔案
-                $file_id = StorageFile::upload($request->$file_input, $request->file_title[$i]);
-                $material_module->$col = $file_id;
-            } else {
-                // 儲存檔案標題
-                if ($material_module->$col) {
-                    StorageFile::updateTitle($material_module->$col, $request->file_title[$i]);
-                }
-            }
-        }
+        StorageFile::packFiles($request, $material_module);
 
         $material_module->name = $request->name ?? "$code - 未命名的模組";
         $material_module->memo = $request->memo;

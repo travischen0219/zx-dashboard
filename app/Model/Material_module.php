@@ -99,4 +99,29 @@ class Material_module extends Model
             return $data;
         }
     }
+
+    // 打包物料清單
+    static public function packMaterials($request)
+    {
+        // 打包物料模組 (不存單位、不存是否有計價)
+        $materials = [];
+        if (isset($request->material)) {
+            for($i = 0; $i < count($request->material); $i++) {
+                $materials[] = [
+                    'id' => $request->material[$i],
+                    'amount' => $request->material_amount[$i],
+                    'cost' => $request->material_cost[$i],
+                    'price' => $request->material_price[$i],
+
+                    // 計價分類才有
+                    'cal_amount' => $request->material_cal_amount[$i] ?? 0,
+                    'cal_price' => $request->material_cal_price[$i] ?? 0,
+                    'buy_amount' => $request->material_buy_amount[$i] ?? 0
+                ];
+            }
+        }
+
+        return serialize($materials);
+    }
+
 }
