@@ -54,6 +54,7 @@
                         :name="'file_file_' + idx"
                         accept="image/*"
                         @change="handleFileUpload(idx)"
+                        class="form-control-file"
                         style="width: 200px;" />
                     <input type="hidden" name="file_will_delete[]" v-model="item.file_will_delete" />
                 </div>

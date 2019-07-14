@@ -55,36 +55,18 @@
 
     var number_format = Vue.filter('my-number_format')
 
-    // 圖片及時預覽
-    // function handleFileUpload(obj, idx) {
-    //     let file = obj.files[0]
+    $(function () {
+        $('form').submit(function () {
+            $.busyLoadFull("show", {
+                textPosition: "bottom",
+                textMargin: "20px",
+                background: "rgba(0, 0, 0, 0.70)",
+                text: '資料送出中，請勿關閉或離開...'
+            });
 
-    //     if (file) {
-    //         var reader = new FileReader()
-
-    //         reader.onload = function(e) {
-    //             $('#file_image_' + idx).attr('src', e.target.result)
-    //             $('#file_preview_' + idx).show()
-    //             $('#file_none_' + idx).hide()
-    //         }
-
-    //         reader.readAsDataURL(file)
-    //     } else {
-    //         $('#file_preview_' + idx).hide()
-    //         $('#file_none_' + idx).show()
-    //     }
-    // }
-
-    // 圖片排定刪除
-    // function handleFileDelete(idx) {
-    //     if (confirm('確定要刪除嗎？')) {
-    //         $('#file_image_' + idx).attr('src', '')
-    //         $('#file_preview_' + idx).hide()
-    //         $('#file_none_' + idx).show()
-    //         $('#file_file_' + idx).val('')
-    //         $('#file_will_delete_' + idx).val(1)
-    //     }
-    // }
+            return true
+        })
+    })
     </script>
     @yield('script')
 </body>

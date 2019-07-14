@@ -87,3 +87,7 @@
 <div class="clearfix"></div>
 
 @endsection
+
+@section('script')
+
+@endsection
