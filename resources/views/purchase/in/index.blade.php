@@ -36,7 +36,7 @@
 
     <div class="form-group">
         <label class="control-label">狀態：</label>
-        <select class="form-control d-inline-block w-auto" name="status" onchange="location.href='/purchase/in/' + this.value">
+        <select class="form-control d-inline-block w-auto" name="status" onchange="location.href='/purchase/in/search/' + this.value">
             <option value="">全部</option>
             @foreach ($statuses as $key => $value)
                 <option value="{{ $key }}" {{ $key == $status ? 'selected' : ''}}>{{ $value }}</option>
@@ -93,7 +93,7 @@
                     <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>
                     <td align="center">
                         @if ($in->status == 30 || $in->status == 40)
-                            <button type="button" onclick="location.href='{{ route('in.show', $in->id) }}';" class="btn btn-outline-success btn-sm">
+                            <button type="button" onclick="location.href='/purchase/in/{{ $in->id }}';" class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-eye"></i> 查看
                             </button>
                         @else

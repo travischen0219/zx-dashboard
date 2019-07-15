@@ -70,7 +70,7 @@ class InController extends Controller
     public function store(Request $request)
     {
         $this->save(0, $request);
-        return redirect()->route('in.index')->with('message', '新增成功');
+        return redirect($request->referrer)->with('message', '修改成功');
     }
 
     /**
@@ -81,7 +81,16 @@ class InController extends Controller
      */
     public function show(In $in)
     {
-        //
+        $data['in'] = $in;
+        $data['statuses'] = In::statuses();
+        $data['lots'] = Lot::allWithKey();
+        $data['suppliers'] = Supplier::allWithKey();
+        $data['manufacturers'] = Manufacturer::allWithKey();
+
+        $data['materials'] = Material_module::appendMaterials($in->materials);
+        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+
+        return view('purchase.in.show', $data);
     }
 
     /**
@@ -116,7 +125,7 @@ class InController extends Controller
     public function update(Request $request, In $in)
     {
         $this->save($in->id, $request);
-        return redirect()->route('in.index')->with('message', '修改成功');
+        return redirect($request->referrer)->with('message', '修改成功');
     }
 
     /**

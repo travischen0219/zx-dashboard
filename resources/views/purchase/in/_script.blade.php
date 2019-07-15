@@ -1,5 +1,6 @@
 {{-- 物料表格 --}}
 @include('vue.material_table')
+@include('vue.material_view')
 
 <script>
 $(function () {

@@ -115,6 +115,8 @@
         class="form-control">{{ old('memo') ?? $in->memo }}</textarea>
 </div>
 
+<input type="hidden" name="referrer" value="{{ URL::previous() }}">
+
 <material-table
     :materials="materials"
     :units="units"

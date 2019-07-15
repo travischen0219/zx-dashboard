@@ -326,7 +326,9 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
 // 進貨管理
 Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(
     function () {
-        Route::get('in/{status}', 'InController@index')->where('status', '[0-9]+');
+        Route::get('in/search', 'InController@index');
+        Route::get('in/search/{status}', 'InController@index')->where('status', '[0-9]+');
+        // Route::get('in/view/{id}', 'InController@view')->where('id', '[0-9]+');
         Route::resource('in', 'InController');
     }
 );
