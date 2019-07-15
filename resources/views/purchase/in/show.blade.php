@@ -58,8 +58,7 @@
                     ref="materialView">
                 </material-view>
 
-                <div class="form-group mt-3">
-                    <label> </label>
+                <div class="form-group mt-3 text-center">
                     <button type="button"
                         onclick="location.href='{{ url()->previous() }}'"
                         class="btn btn-primary">

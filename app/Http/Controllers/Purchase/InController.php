@@ -6,6 +6,7 @@ use App\Model\In;
 use App\Model\Lot;
 use App\Model\Supplier;
 use App\Model\Manufacturer;
+use App\Model\Pay;
 
 use App\Model\Material_unit;
 use App\Model\Material_module;
@@ -54,6 +55,7 @@ class InController extends Controller
         $data['lots'] = Lot::allWithKey();
         $data['suppliers'] = Supplier::allWithKey();
         $data['manufacturers'] = Manufacturer::allWithKey();
+        $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         $data['materials'] = json_encode([]);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
@@ -86,6 +88,7 @@ class InController extends Controller
         $data['lots'] = Lot::allWithKey();
         $data['suppliers'] = Supplier::allWithKey();
         $data['manufacturers'] = Manufacturer::allWithKey();
+        $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         $data['materials'] = Material_module::appendMaterials($in->materials);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
@@ -111,6 +114,10 @@ class InController extends Controller
 
         $data['materials'] = Material_module::appendMaterials($in->materials);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+
+        $data['pays'] = Pay::appendPays($in->pays);
+
+        $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         return view('purchase.in.edit', $data);
     }
@@ -160,6 +167,9 @@ class InController extends Controller
 
         // 打包物料模組
         $in->materials = Material_module::packMaterials($request);
+
+        // 打包付款資料
+        $in->pays = In::packPays($request);
 
         $in->lot_id = $request->lot_id ?? 0;
         $in->supplier_id = $request->supplier_id ?? 0;

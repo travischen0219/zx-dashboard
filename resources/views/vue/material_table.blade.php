@@ -116,6 +116,9 @@
             <div class="text-right">
                 共有 @{{ materials.length }} 種物料
                 &nbsp;&nbsp;&nbsp;&nbsp;
+                計價總計：$@{{ total_cal | number_format }}
+                <input type="hidden" name="material_total_cost" v-model="total_cost">
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 成本總計：$@{{ total_cost | number_format }}
                 <input type="hidden" name="material_total_cost" v-model="total_cost">
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -143,11 +146,21 @@ Vue.component('material-table', {
     },
 
     computed: {
+        total_cal: function() {
+            var total_cal = 0
+            this.materials.forEach(element => {
+                total_cal += parseFloat(element.cal_price) * parseFloat(element.cal_amount)
+            })
+
+            return total_cal
+        },
         total_cost: function() {
             var total_cost = 0
             this.materials.forEach(element => {
                 total_cost += parseFloat(element.cost) * parseFloat(element.amount)
             })
+
+            this.$emit('update:total_cost', total_cost);
 
             return total_cost
         },

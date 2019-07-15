@@ -1,6 +1,7 @@
 {{-- 物料表格 --}}
 @include('vue.material_table')
 @include('vue.material_view')
+@include('vue.pay_table')
 
 <script>
 $(function () {
@@ -17,7 +18,10 @@ var app = new Vue({
     el: '#app',
     data: {
         units: {!! $units !!},
-        materials: {!! $materials !!}
+        materials: {!! $materials !!},
+        invoice_types: {!! $invoice_types !!},
+        total_cost: 0,
+        pays: {!! $pays !!}
     }
 })
 

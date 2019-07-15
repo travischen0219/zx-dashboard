@@ -21,7 +21,7 @@
 @section('content')
     {!! Form::open([
         'url' => route('in.store'),
-        'class' => 'form',
+        'class' => 'form mb-5',
         'id' => 'app'
     ]) !!}
         @include('purchase.in._form')

@@ -121,5 +121,13 @@
     :materials="materials"
     :units="units"
     :module="true"
+    :total_cost.sync="total_cost"
     ref="materialTable">
 </material-table>
+
+<pay-table
+    :pays="pays"
+    :invoice_types="invoice_types"
+    :total_cost="total_cost"
+    ref="payTable">
+</pay-table>

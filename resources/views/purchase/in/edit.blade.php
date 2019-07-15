@@ -22,7 +22,7 @@
     {!! Form::open([
         'url' => route('in.update', $in->id),
         'method' => 'PUT',
-        'class' => 'form',
+        'class' => 'form mb-5',
         'id' => 'app'
     ]) !!}
         @include('purchase.in._form')
