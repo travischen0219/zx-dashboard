@@ -43,9 +43,9 @@ class Pay
         $pays = unserialize($pays);
 
         $i = 0;
-        foreach($pays as $pay) {
+        foreach((array) $pays as $pay) {
             $data[$i]['pay_date'] = $pay['pay_date'];
-            $data[$i]['pay_money'] = $pay['pay_date'];
+            $data[$i]['pay_money'] = $pay['pay_money'];
             $data[$i]['pay_invoice_type'] = $pay['pay_invoice_type'];
             $data[$i]['pay_invoice_no'] = $pay['pay_invoice_no'];
             $data[$i]['pay_memo'] = $pay['pay_memo'];
@@ -59,5 +59,20 @@ class Pay
             $data = json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             return $data;
         }
+    }
+
+    // 付款總金額
+    static public function getTotalPay($pays)
+    {
+        $data = [];
+        $pays = unserialize($pays);
+
+        $total_pay = 0;
+        foreach((array) $pays as $pay) {
+            $pay_money = $pay['pay_money'] ?? 0;
+            $total_pay += $pay_money;
+        }
+
+        return $total_pay;
     }
 }

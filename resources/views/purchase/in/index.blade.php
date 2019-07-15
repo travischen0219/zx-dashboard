@@ -63,6 +63,7 @@
                 <th>廠商</th>
                 <th>日期</th>
                 <th>狀態</th>
+                <th>付款</th>
                 <th>說明</th>
                 <th>操作</th>
             </tr>
@@ -90,9 +91,25 @@
                         <div>實際到貨：{!! $in->arrive_date ?? $na !!}</div>
                     </td>
                     <td>{{ $statuses[$in->status] ?? '' }}</td>
+                    <td>
+                        @php
+                            $tr_total_cost = App\Model\Material_module::getTotalCost($in->materials) ?? 0;
+                            $tr_total_pay = App\Model\Pay::getTotalPay($in->pays) ?? 0;
+                        @endphp
+                        應付：${{ number_format($tr_total_cost) }}
+                        <br>
+                        實付：${{ number_format($tr_total_pay) }}
+                        <br>
+                        @if ($tr_total_cost - $tr_total_pay <= 0)
+                            剩餘：<span class="text-success">付清</span>
+                        @else
+                            剩餘：<span class="text-danger">${{ number_format($tr_total_cost - $tr_total_pay) }}</span>
+                        @endif
+                    </td>
                     <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>
                     <td align="center">
-                        @if ($in->status == 30 || $in->status == 40)
+                        {{-- @if ($in->status == 30 || $in->status == 40) --}}
+                        @if (false)
                             <button type="button" onclick="location.href='/purchase/in/{{ $in->id }}';" class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-eye"></i> 查看
                             </button>
@@ -104,9 +121,10 @@
                                 <i class="fas fa-trash-alt"></i> 刪除
                             </button>
 
-                            <form id="delete-form-{{ $in->id }}" action="{{ route('in.destroy', $in->id) }}" method="post">
+                            <form id="delete-form-{{ $in->id }}" action="{{ route('in.destroy', $in) }}" method="post">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
+                                <input type="hidden" name="referrer" value="{{ URL::current() }}">
                             </form>
                         @endif
                     </td>
@@ -115,186 +133,6 @@
             @endforeach
         </tbody>
     </table>
-
-    {{-- <table class="table table-striped table-bordered table-hover" id="data">
-        <thead>
-            <tr>
-                <th>列印</th>
-                <th>單號</th>
-                <th>批號</th>
-                <th>供應商</th>
-                <th>說明</th>
-                <th>採購日期</th>
-                <th>預計到貨日</th>
-                <th>實際到貨日</th>
-                <th>狀態</th>
-                <th>操 作</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach($buys as $buy)
-
-            <tr>
-                <td>
-                    <input type="checkbox" class="print_pdf" name="print_pdf" value="{{$buy->id}}">
-                    <a href="/print/buy_detail/{{ $buy->id }}" target="_blank"
-                        class="btn blue btn-outline-primary btn-sm">列印</a>
-                </td>
-                <td>P{{$buy->buy_no}}</td>
-                <td>{{$buy->lot_number}}</td>
-                <td>{{$buy->supplier_name->shortName}}</td>
-                <td>{{$buy->memo}}</td>
-                <td>{{$buy->buyDate}}</td>
-                <td>{{$buy->expectedReceiveDate}}</td>
-                <td>{{$buy->realReceiveDate}}</td>
-                <td>
-                    @if($buy->status == '1')
-                    @if($buy->status_return == 1 || $buy->status_return == 2)
-                    <span style="color:red">未採購<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                    document.getElementById('search-form-{{$buy->id}}').submit();">
-                            (退貨)</a></span>
-                    <form id="search-form-{{$buy->id}}" action="{{ route('p_sales_return.search_return') }}"
-                        method="post" style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @elseif($buy->status_exchange == 1 || $buy->status_exchange == 2)
-                    <span style="color:red">未採購<a href="javascript:;" style="color:red;"
-                            onclick="event.preventDefault();
-                                    document.getElementById('search-exchange-form-{{$buy->id}}').submit();"> (換貨)</a></span>
-                    <form id="search-exchange-form-{{$buy->id}}"
-                        action="{{ route('p_exchange.search_exchange') }}" method="post"
-                        style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @else
-                    <span style="color:red">未採購</span>
-                    @endif
-
-                    @elseif($buy->status == '2')
-                    @if($buy->status_exchange == 1 || $buy->status_exchange == 2)
-                    <span style="color:blue">已採購<a href="javascript:;" style="color:red;"
-                            onclick="event.preventDefault();
-                                    document.getElementById('search-exchange-form-{{$buy->id}}').submit();"> (換貨)</a></span>
-                    <form id="search-exchange-form-{{$buy->id}}"
-                        action="{{ route('p_exchange.search_exchange') }}" method="post"
-                        style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @elseif($buy->status_return == 1 || $buy->status_return == 2)
-                    <span style="color:blue">已採購<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                    document.getElementById('search-form-{{$buy->id}}').submit();">
-                            (退貨)</a></span>
-                    <form id="search-form-{{$buy->id}}" action="{{ route('p_sales_return.search_return') }}"
-                        method="post" style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @else
-                    <span style="color:blue">已採購</span>
-                    @endif
-
-                    @elseif($buy->status == '3')
-                    @if($buy->status_exchange == 1 || $buy->status_exchange == 2)
-                    <span style="color:purple">已到貨<a href="javascript:;" style="color:red;"
-                            onclick="event.preventDefault();
-                                    document.getElementById('search-exchange-form-{{$buy->id}}').submit();"> (換貨)</a></span>
-                    <form id="search-exchange-form-{{$buy->id}}"
-                        action="{{ route('p_exchange.search_exchange') }}" method="post"
-                        style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @elseif($buy->status_return == 1 || $buy->status_return == 2)
-                    <span style="color:purple">已到貨<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                    document.getElementById('search-form-{{$buy->id}}').submit();">
-                            (退貨)</a></span>
-                    <form id="search-form-{{$buy->id}}" action="{{ route('p_sales_return.search_return') }}"
-                        method="post" style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @else
-                    <span style="color:purple">已到貨</span>
-                    @endif
-
-                    @elseif($buy->status == '11')
-                    @if($buy->status_exchange == 1 || $buy->status_exchange == 2)
-                    <span style="color:#248ff1">轉半成品<a href="javascript:;" style="color:red;"
-                            onclick="event.preventDefault();
-                                    document.getElementById('search-exchange-form-{{$buy->id}}').submit();"> (換貨)</a></span>
-                    <form id="search-exchange-form-{{$buy->id}}"
-                        action="{{ route('p_exchange.search_exchange') }}" method="post"
-                        style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @elseif($buy->status_return == 1 || $buy->status_return == 2)
-                    <span style="color:#248ff1">轉半成品<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                    document.getElementById('search-form-{{$buy->id}}').submit();">
-                            (退貨)</a></span>
-                    <form id="search-form-{{$buy->id}}" action="{{ route('p_sales_return.search_return') }}"
-                        method="post" style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @else
-                    <span style="color: #248ff1">轉半成品</span>
-                    @endif
-
-                    @elseif($buy->status == '4')
-
-                    @if($buy->status_exchange == 1 || $buy->status_exchange == 2)
-                    <span style="color:green">已轉到入庫<a href="javascript:;" style="color:red;"
-                            onclick="event.preventDefault();
-                                    document.getElementById('search-exchange-form-{{$buy->id}}').submit();"> (換貨)</a></span>
-                    <form id="search-exchange-form-{{$buy->id}}"
-                        action="{{ route('p_exchange.search_exchange') }}" method="post"
-                        style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @elseif($buy->status_return == 1 || $buy->status_return == 2)
-                    <span style="color:green">已轉到入庫<a href="javascript:;" style="color:red;" onclick="event.preventDefault();
-                                    document.getElementById('search-form-{{$buy->id}}').submit();">
-                            (退貨)</a></span>
-                    <form id="search-form-{{$buy->id}}" action="{{ route('p_sales_return.search_return') }}"
-                        method="post" style="display:none">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="buy_id" value="{{$buy->id}}">
-                    </form>
-                    @else
-                    <span style="color:green">已轉到入庫</span>
-                    @endif
-                    @endif
-                </td>
-                <td align="center" id="functions_btn">
-                    @if($buy->status == 1 || $buy->status == 2 || $buy->status == 3 || $buy->status == 11)
-                    <a href="{{ route('buy.edit', $buy->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
-                    <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
-                                if(confirm('確定要刪除嗎 ?')){
-                                    event.preventDefault();
-                                    document.getElementById('delete-form-{{$buy->id}}').submit();
-                                } else {
-                                    event.preventDefault();
-                                }">刪除</a>
-                    <form id="delete-form-{{$buy->id}}" action="{{ route('buy.destroy', $buy->id) }}"
-                        method="post" style="display:none">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                    </form>
-                    @elseif($buy->status == 4)
-                    <a href="{{ route('buy.edit', $buy->id) }}" class="btn purple btn-outline-success btn-sm">查看</a>
-                    @endif
-                </td>
-            </tr>
-
-            @endforeach
-        </tbody>
-    </table> --}}
 
     <br><br>
 @endsection
@@ -323,7 +161,7 @@
         win.focus();
     }
 
-    function deleteLot(id) {
+    function deleteIn(id) {
         if(confirm('確定要刪除嗎 ?')){
             $('#delete-form-' + id).submit()
         }

@@ -124,4 +124,20 @@ class Material_module extends Model
         return serialize($materials);
     }
 
+    // 物料總成本
+    static public function getTotalCost($materials)
+    {
+        $data = [];
+        $materials = unserialize($materials);
+
+        $total_cost = 0;
+        foreach($materials as $material) {
+            $amount = $material['amount'] ?? 0;
+            $cost = $material['cost'] ?? 0;
+            $total_cost += ($amount * $cost);
+        }
+
+        return $total_cost;
+    }
+
 }

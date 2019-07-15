@@ -20,7 +20,7 @@ var app = new Vue({
         units: {!! $units !!},
         materials: {!! $materials !!},
         invoice_types: {!! $invoice_types !!},
-        total_cost: 0,
+        total_cost: {!! $total_cost !!},
         pays: {!! $pays !!}
     }
 })

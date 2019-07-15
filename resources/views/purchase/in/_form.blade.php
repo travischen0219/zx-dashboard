@@ -74,34 +74,37 @@
 
 <div class="form-group">
     <label for="status">狀態：</label>
-    <div class="d-inline-block pl-2">
-        <ul class="steps" style="margin: 60px 0;">
-            @php
-                $status = old('status') ?? $in->status;
-            @endphp
-            <li data-status="50" class="{{ $status == 50 ? 'active' : '' }}">{{ $statuses[50] }}</li>
-            <li data-status="10" class="{{ $status == 10 ? 'active' : '' }}">{{ $statuses[10] }}</li>
-            <li data-status="20" class="{{ $status == 20 ? 'active' : '' }}">{{ $statuses[20] }}</li>
-            <li>
-                <ul class="steps-slave">
-                    <li data-status="40" class="{{ $status == 40 ? 'active' : '' }}">
-                        {{ $statuses[40] }}
-                    </li>
-                    <li data-status="30" class="{{ $status == 30 ? 'active' : '' }}">
-                        {{ $statuses[30] }}
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-
+    @if ($in->status == 30 || $in->status == 40)
+        <span class="text-primary">{{ $statuses[$in->status] }}</span>
+    @else
+        <div class="d-inline-block pl-2">
+            <ul class="steps" style="margin: 60px 0;">
+                @php
+                    $status = old('status') ?? $in->status;
+                @endphp
+                <li data-status="50" class="{{ $status == 50 ? 'active' : '' }}">{{ $statuses[50] }}</li>
+                <li data-status="10" class="{{ $status == 10 ? 'active' : '' }}">{{ $statuses[10] }}</li>
+                <li data-status="20" class="{{ $status == 20 ? 'active' : '' }}">{{ $statuses[20] }}</li>
+                <li>
+                    <ul class="steps-slave">
+                        <li data-status="40" class="{{ $status == 40 ? 'active' : '' }}">
+                            {{ $statuses[40] }}
+                        </li>
+                        <li data-status="30" class="{{ $status == 30 ? 'active' : '' }}">
+                            {{ $statuses[30] }}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    @endif
     <input type="hidden" name="status" id="status" value="{{ old('status') ?? $in->status }}">
 </div>
 
 <div class="form-group">
     <label for="status" class="align-top">狀態說明：</label>
     <div class="d-inline-block text-primary">
-        狀態選擇轉入庫或轉加工之後，採購單將 [ <span class="text-danger">無法再編輯</span> ]
+        轉入庫或轉加工之後，狀態跟物料清單將 [ <span class="text-danger">無法再編輯</span> ]
         <br>轉入庫 [ <span class="text-danger">會</span> ] 修改庫存數，轉加工 [ <span class="text-danger">不會</span> ] 修改庫存數
     </div>
 </div>
@@ -117,13 +120,22 @@
 
 <input type="hidden" name="referrer" value="{{ URL::previous() }}">
 
-<material-table
-    :materials="materials"
-    :units="units"
-    :module="true"
-    :total_cost.sync="total_cost"
-    ref="materialTable">
-</material-table>
+@if ($in->status == 30 || $in->status == 40)
+    <material-view
+        :materials="materials"
+        :units="units"
+        :module="true"
+        ref="materialView">
+    </material-view>
+@else
+    <material-table
+        :materials="materials"
+        :units="units"
+        :module="true"
+        :total_cost.sync="total_cost"
+        ref="materialTable">
+    </material-table>
+@endif
 
 <pay-table
     :pays="pays"

@@ -119,7 +119,7 @@
                 計價總計：$@{{ total_cal | number_format }}
                 <input type="hidden" name="material_total_cost" v-model="total_cost">
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                成本總計：$@{{ total_cost | number_format }}
+                成本總計 (應付)：$@{{ total_cost | number_format }}
                 <input type="hidden" name="material_total_cost" v-model="total_cost">
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 售價總計：$@{{ total_price | number_format }}

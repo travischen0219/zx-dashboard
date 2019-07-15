@@ -57,8 +57,10 @@ class InController extends Controller
         $data['manufacturers'] = Manufacturer::allWithKey();
         $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
+        $data['pays'] = json_encode([]);
         $data['materials'] = json_encode([]);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+        $data['total_cost'] = 0;
 
         return view('purchase.in.create', $data);
     }
@@ -92,6 +94,8 @@ class InController extends Controller
 
         $data['materials'] = Material_module::appendMaterials($in->materials);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+        $data['pays'] = Pay::appendPays($in->pays);
+        $data['total_cost'] = Material_module::getTotalCost($in->materials);
 
         return view('purchase.in.show', $data);
     }
@@ -116,6 +120,7 @@ class InController extends Controller
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         $data['pays'] = Pay::appendPays($in->pays);
+        $data['total_cost'] = Material_module::getTotalCost($in->materials);
 
         $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
@@ -141,9 +146,13 @@ class InController extends Controller
      * @param  \App\Model\In  $in
      * @return \Illuminate\Http\Response
      */
-    public function destroy(In $in)
+    public function destroy(In $in, Request $request)
     {
-        //
+        $in->deleted_user = session('admin_user')->id;
+        $in->save();
+        $in->delete();
+
+        return redirect($request->referrer)->with('message', '刪除成功');
     }
 
     public function save($id, $request)
@@ -166,10 +175,14 @@ class InController extends Controller
         }
 
         // 打包物料模組
-        $in->materials = Material_module::packMaterials($request);
+        if ($in->status == 30 || $in->status == 40) {
+            // 不更新物料模組
+        } else {
+            $in->materials = Material_module::packMaterials($request);
+        }
 
         // 打包付款資料
-        $in->pays = In::packPays($request);
+        $in->pays = Pay::packPays($request);
 
         $in->lot_id = $request->lot_id ?? 0;
         $in->supplier_id = $request->supplier_id ?? 0;

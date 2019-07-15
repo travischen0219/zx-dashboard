@@ -66,7 +66,7 @@
             <div class="text-right">
                 共有 @{{ materials.length }} 種物料
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                成本總計：$@{{ total_cost | number_format }}
+                成本總計 (應付)：$@{{ total_cost | number_format }}
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 售價總計：$@{{ total_price | number_format }}
             </div>
