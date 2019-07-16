@@ -78,19 +78,19 @@
         <span class="text-primary">{{ $statuses[$in->status] }}</span>
     @else
         <div class="d-inline-block pl-2">
-            <ul class="steps" style="margin: 60px 0;">
+            <ul class="steps" style="margin: 30px 0;">
                 @php
                     $status = old('status') ?? $in->status;
                 @endphp
-                <li data-status="50" class="{{ $status == 50 ? 'active' : '' }}">{{ $statuses[50] }}</li>
-                <li data-status="10" class="{{ $status == 10 ? 'active' : '' }}">{{ $statuses[10] }}</li>
-                <li data-status="20" class="{{ $status == 20 ? 'active' : '' }}">{{ $statuses[20] }}</li>
+                <li data-status="50" class="btn {{ $status == 50 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[50] }}</li>
+                <li data-status="10" class="btn {{ $status == 10 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[10] }}</li>
+                <li data-status="20" class="btn {{ $status == 20 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[20] }}</li>
                 <li>
                     <ul class="steps-slave">
-                        <li data-status="40" class="{{ $status == 40 ? 'active' : '' }}">
+                        <li data-status="40" class="btn {{ $status == 40 ? 'btn-primary' : 'btn-secondary' }}">
                             {{ $statuses[40] }}
                         </li>
-                        <li data-status="30" class="{{ $status == 30 ? 'active' : '' }}">
+                        <li data-status="30" class="btn {{ $status == 30 ? 'btn-primary' : 'btn-secondary' }}">
                             {{ $statuses[30] }}
                         </li>
                     </ul>

@@ -7,8 +7,8 @@
 $(function () {
     $('.steps li').on('click', function(e) {
         e.stopPropagation()
-        $('.steps li').not(this).removeClass('active')
-        $(this).addClass('active')
+        $('.steps li').not(this).not('.steps > li:last-child').removeClass('btn-primary').addClass('btn-secondary')
+        $(this).removeClass('btn-secondary').addClass('btn-primary')
 
         $('#status').val($(this).data('status'))
     })

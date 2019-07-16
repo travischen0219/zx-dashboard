@@ -280,10 +280,9 @@
 .steps li {
     box-sizing: border-box;
     padding: 5px;
-    border-radius: 50%;
     width: 80px;
-    height: 80px;
-    background-color: gray;
+    height: 30px;
+    border-radius: 0.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -292,27 +291,25 @@
     cursor: pointer;
 }
 
-.steps li.active {
-    background-color: crimson !important;
-}
-
 .steps > li + li {
-    margin-left: 80px;
+    margin-left: 40px;
 }
 
 .steps > li::before {
     content: '';
     height: 2px;
     background-color: gray;
-    width: 80px;
+    width: 40px;
     position: absolute;
-    left: -80px;
+    left: -40px;
 }
 
 .steps-slave {
     flex-direction: row;
-    margin-left: 40px;
+    margin: 0;
+    margin-left: 80px;
     position: relative;
+    padding: 0;
 }
 
 .steps-slave::before {
@@ -321,19 +318,13 @@
     background-color: gray;
     width: 2px;
     position: absolute;
-    left: 0px;
-    top: 40px;
-    bottom: 40px;
+    left: -40px;
+    top: 15px;
+    bottom: 15px;
 }
 
 .steps-slave > li {
     position: relative;
-}
-
-.steps-slave > li span {
-    position: absolute;
-    left: 0px;
-    top: 85px;
 }
 
 .steps-slave > li::before {

@@ -64,9 +64,9 @@
             <div class="text-right">
                 <div class="float-right text-left">
                 <span class="text-white">＋</span> 應付：$@{{ total_cost | number_format }}
-                <br />
+                &nbsp;&nbsp;
                 － 實付：$@{{ total_pay | number_format }}
-                <hr>
+                &nbsp;&nbsp;
                 ＝ 剩餘：$@{{ (total_cost - total_pay) | number_format }}
                 </div>
             </div>
