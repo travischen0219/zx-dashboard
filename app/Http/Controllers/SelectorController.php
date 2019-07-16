@@ -33,7 +33,7 @@ class SelectorController extends Controller
         $material_modules = Material_module::all();
 
         foreach ($material_modules as $key => $material_module) {
-            $material_modules[$key]->material2 = Material_module::encodeMaterials($material_module->materials, true);
+            $material_modules[$key]->material = Material_module::appendMaterials($material_module->materials, true);
         }
 
         $data['material_modules'] = $material_modules;
