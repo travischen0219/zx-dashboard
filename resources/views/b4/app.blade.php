@@ -10,6 +10,8 @@
     @yield('css')
 </head>
 <body>
+    <div id="loader"><i class="fas fa-cog fa-spin"></i></div>
+
     @include('b4.sidebar')
 
     <div id="content" class="container-fluid">
@@ -66,6 +68,8 @@
 
             return true
         })
+
+        $("#loader").fadeOut("slow")
     })
     </script>
     @yield('script')

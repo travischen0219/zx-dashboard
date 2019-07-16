@@ -27,7 +27,7 @@
                     <tr>
                         <td title="操作" nowrap>
                             <button type="button"
-                                onclick="selectMaterialModule(JSON.stringify({{ json_encode($material_module, JSON_HEX_QUOT | JSON_HEX_TAG) }}));"
+                                onclick="selectMaterialModule(JSON.stringify({{ json_encode($material_module->material, JSON_HEX_QUOT | JSON_HEX_TAG) }}));"
                                 class="btn btn-outline-primary">選擇</button>
                         </td>
                         <td title="編號">{{ $material_module->code }}</td>

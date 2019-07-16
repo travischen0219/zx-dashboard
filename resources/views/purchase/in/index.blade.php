@@ -7,17 +7,6 @@
 
 @section('css')
     <style>
-        #loader {
-            position: fixed;
-            left: 0px;
-            top: 0px;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            background: url("{{asset('assets/apps/img/loader_icon.gif')}}") 50% 50% no-repeat rgb(249, 249, 249);
-            background-size: 120px 120px;
-        }
-
         .memo {
             white-space: nowrap;
             width: 100px;
@@ -31,8 +20,6 @@
     @php
         $na = '<span class="text-muted">未選</span>';
     @endphp
-
-    <div id="loader"></div>
 
     <div class="form-group">
         <label class="control-label">狀態：</label>
@@ -168,7 +155,6 @@
     }
 
     $(function () {
-        $("#loader").fadeOut("slow")
         var table = $('#data').DataTable(dtOptions)
     })
 </script>

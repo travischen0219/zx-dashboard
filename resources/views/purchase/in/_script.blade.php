@@ -5,7 +5,7 @@
 
 <script>
 $(function () {
-    $('.steps li').on('click', function(e) {
+    $('.steps li').not('.steps > li:last-child').on('click', function(e) {
         e.stopPropagation()
         $('.steps li').not(this).not('.steps > li:last-child').removeClass('btn-primary').addClass('btn-secondary')
         $(this).removeClass('btn-secondary').addClass('btn-primary')

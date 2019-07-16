@@ -247,6 +247,20 @@
     }
 }
 
+#loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    background-color: rgba(205, 205, 205, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 96px;
+}
+
 #data {
     thead {
         tr {
