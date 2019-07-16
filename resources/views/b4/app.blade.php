@@ -69,7 +69,7 @@
             return true
         })
 
-        $("#loader").fadeOut("slow")
+        $("#loader").fadeOut("fast")
     })
     </script>
     @yield('script')

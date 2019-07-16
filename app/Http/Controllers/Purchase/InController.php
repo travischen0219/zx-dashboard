@@ -8,6 +8,7 @@ use App\Model\Supplier;
 use App\Model\Manufacturer;
 use App\Model\Pay;
 
+use App\Model\Material;
 use App\Model\Material_unit;
 use App\Model\Material_module;
 
@@ -48,6 +49,7 @@ class InController extends Controller
         $data = [];
 
         $in = new In;
+
         $in->status = 10;
 
         $data['in'] = $in;
@@ -92,10 +94,10 @@ class InController extends Controller
         $data['manufacturers'] = Manufacturer::allWithKey();
         $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
-        $data['materials'] = Material_module::appendMaterials($in->materials);
+        $data['materials'] = Material::appendMaterials($in->materials);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
         $data['pays'] = Pay::appendPays($in->pays);
-        $data['total_cost'] = Material_module::getTotalCost($in->materials);
+        $data['total_cost'] = Material::getTotalCost($in->materials);
 
         return view('purchase.in.show', $data);
     }
@@ -116,11 +118,11 @@ class InController extends Controller
         $data['suppliers'] = Supplier::allWithKey();
         $data['manufacturers'] = Manufacturer::allWithKey();
 
-        $data['materials'] = Material_module::appendMaterials($in->materials);
+        $data['materials'] = Material::appendMaterials($in->materials);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         $data['pays'] = Pay::appendPays($in->pays);
-        $data['total_cost'] = Material_module::getTotalCost($in->materials);
+        $data['total_cost'] = Material::getTotalCost($in->materials);
 
         $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
@@ -174,11 +176,14 @@ class InController extends Controller
             $code = $in->code;
         }
 
+        $old_status = $in->status;
+        $new_status = $request->status;
+
         // 打包物料模組
-        if ($in->status == 30 || $in->status == 40) {
+        if ($in->status == 40) {
             // 不更新物料模組
         } else {
-            $in->materials = Material_module::packMaterials($request);
+            $in->materials = Material::packMaterials($request);
         }
 
         // 打包付款資料
@@ -194,8 +199,12 @@ class InController extends Controller
 
         $in->status = $request->status;
         $in->created_user = session('admin_user')->id;
-
         $in->save();
+
+        // 改變庫存，更新庫存
+        if ($old_status != 40 && $new_status == 40) {
+            Material::storeToStock($in, 2);
+        }
 
         return $in;
     }

@@ -80,7 +80,7 @@
                     <td>{{ $statuses[$in->status] ?? '' }}</td>
                     <td>
                         @php
-                            $tr_total_cost = App\Model\Material_module::getTotalCost($in->materials) ?? 0;
+                            $tr_total_cost = App\Model\Material::getTotalCost($in->materials) ?? 0;
                             $tr_total_pay = App\Model\Pay::getTotalPay($in->pays) ?? 0;
                         @endphp
                         應付：${{ number_format($tr_total_cost) }}

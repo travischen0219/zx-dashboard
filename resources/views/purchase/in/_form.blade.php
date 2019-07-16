@@ -13,7 +13,7 @@
     @if (\Request::route()->getName() == 'in.create')
         <span class="text-danger">自動產生</span>
     @elseif (\Request::route()->getName() == 'in.edit')
-        <span class="text-primary">{{ $in->code }}</span>
+        <span class="text-primary">P{{ $in->code }}</span>
     @endif
 </div>
 
@@ -74,7 +74,7 @@
 
 <div class="form-group">
     <label for="status">狀態：</label>
-    @if ($in->status == 30 || $in->status == 40)
+    @if ($in->status == 40)
         <span class="text-primary">{{ $statuses[$in->status] }}</span>
     @else
         <div class="d-inline-block pl-2">
@@ -104,7 +104,7 @@
 <div class="form-group">
     <label for="status" class="align-top">狀態說明：</label>
     <div class="d-inline-block text-primary">
-        轉入庫或轉加工之後，狀態跟物料清單將 [ <span class="text-danger">無法再編輯</span> ]
+        轉入庫之後，狀態跟物料清單將 [ <span class="text-danger">無法再編輯</span> ]
         <br>轉入庫 [ <span class="text-danger">會</span> ] 修改庫存數，轉加工 [ <span class="text-danger">不會</span> ] 修改庫存數
     </div>
 </div>
@@ -120,7 +120,7 @@
 
 <input type="hidden" name="referrer" value="{{ URL::previous() }}">
 
-@if ($in->status == 30 || $in->status == 40)
+@if ($in->status == 40)
     <material-view
         :materials="materials"
         :units="units"

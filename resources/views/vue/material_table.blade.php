@@ -48,13 +48,13 @@
                             </button>
                         </td>
                         <td title="數量">
-                            倉庫：<input type="text"
+                            入庫：<input type="text"
                                 class="form-control"
                                 v-model="item.amount"
                                 name="material_amount[]"
                                 placeholder="請輸入數字"
                                 style="width: 100px;" />
-                                @{{ units[item.unit].name }}
+                            / 庫存：@{{ item.stock }}@{{ units[item.unit].name }}
 
                             <template v-if="item.cal == 1">
                                 <div class="mt-1">
@@ -78,7 +78,7 @@
                             </template>
                         </td>
                         <td title="單位成本">
-                            倉庫：<input type="text"
+                            入庫：<input type="text"
                                 class="form-control"
                                 v-model="item.cost"
                                 name="material_cost[]"
@@ -242,6 +242,7 @@ function applyMaterial(str, idx) {
         code: material.fullCode,
         name: material.fullName,
         amount: 0,
+        stock: material.stock,
         cal_amount: 0,
         buy_amount: 0,
         unit: material.unit,

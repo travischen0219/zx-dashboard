@@ -69,7 +69,7 @@ class Material_moduleController extends Controller
         $material_module = Material_module::find($id);
         $data['material_module'] = $material_module;
 
-        $data['materials'] = Material_module::appendMaterials($material_module->materials);
+        $data['materials'] = Material::appendMaterials($material_module->materials);
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson([
             $material_module->file1,
@@ -163,7 +163,7 @@ class Material_moduleController extends Controller
         }
 
         // 打包物料模組
-        $material_module->materials =  Material_module::packMaterials($request);
+        $material_module->materials =  Material::packMaterials($request);
 
         // 處理檔案清單
         StorageFile::packFiles($request, $material_module);
