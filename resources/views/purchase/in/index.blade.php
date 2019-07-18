@@ -23,10 +23,18 @@
 
     <div class="form-group">
         <label class="control-label">狀態：</label>
-        <select class="form-control d-inline-block w-auto" name="status" onchange="location.href='/purchase/in/search/' + this.value">
-            <option value="">全部</option>
+        <select class="form-control d-inline-block w-auto" name="status" onchange="location.href='/purchase/in/search/' + this.value + '/{{ $pay_status }}'">
+            <option value="0">全部</option>
             @foreach ($statuses as $key => $value)
                 <option value="{{ $key }}" {{ $key == $status ? 'selected' : ''}}>{{ $value }}</option>
+            @endforeach
+        </select>
+
+        <label class="control-label ml-3">付款：</label>
+        <select class="form-control d-inline-block w-auto" name="status" onchange="location.href='/purchase/in/search/{{ $status }}/' + this.value">
+            <option value="0">全部</option>
+            @foreach ($pay_statuses as $key => $value)
+                <option value="{{ $key }}" {{ $key == $pay_status ? 'selected' : ''}}>{{ $value }}</option>
             @endforeach
         </select>
     </div>
@@ -80,8 +88,8 @@
                     <td>{{ $statuses[$in->status] ?? '' }}</td>
                     <td>
                         @php
-                            $tr_total_cost = App\Model\Material::getTotalCost($in->materials) ?? 0;
-                            $tr_total_pay = App\Model\Pay::getTotalPay($in->pays) ?? 0;
+                            $tr_total_cost = $in->total_cost();
+                            $tr_total_pay = $in->total_pay();
                         @endphp
                         應付：${{ number_format($tr_total_cost) }}
                         <br>

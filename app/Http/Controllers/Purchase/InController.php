@@ -24,17 +24,28 @@ class InController extends Controller
      */
     public function index(Request $request)
     {
-        $status = $request->status ?? '';
+        $status = $request->status ?? 0;
+        $pay_status = $request->pay_status ?? 0;
 
         $data = [];
 
         $ins = In::orderBy('id', 'desc');
-        if ($status != '') $ins->where('status', $status);
+        if ($status != 0) $ins->where('status', $status);
+
+        // 付清
+        if ($pay_status == 1) {
+            $ins->where('balance', '<=', 0);
+        } elseif ($pay_status == 2) {
+            $ins->where('balance', '>', 0);
+        }
+
         $ins = $ins->get();
 
         $data['ins'] = $ins;
         $data['statuses'] = In::statuses();
+        $data['pay_statuses'] = In::pay_statuses();
         $data['status'] = $status;
+        $data['pay_status'] = $pay_status;
 
         return view('purchase.in.index', $data);
     }
@@ -188,6 +199,10 @@ class InController extends Controller
 
         // 打包付款資料
         $in->pays = Pay::packPays($request);
+
+        $in->total_cost = $in->total_cost();
+        $in->total_pay = $in->total_pay();
+        $in->balance = $in->total_cost - $in->total_pay;
 
         $in->lot_id = $request->lot_id ?? 0;
         $in->supplier_id = $request->supplier_id ?? 0;

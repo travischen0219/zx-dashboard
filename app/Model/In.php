@@ -22,6 +22,16 @@ class In extends Model
         return $data;
     }
 
+    static public function pay_statuses()
+    {
+        $data = [];
+
+        $data[1] = '付清';
+        $data[2] = '未付清';
+
+        return $data;
+    }
+
     public function lot()
     {
         return $this->hasOne(Lot::class, 'id', 'lot_id');
@@ -35,5 +45,15 @@ class In extends Model
     public function manufacturer()
     {
         return $this->hasOne(Manufacturer::class, 'id', 'manufacturer_id');
+    }
+
+    public function total_cost()
+    {
+        return Material::getTotalCost($this->materials);
+    }
+
+    public function total_pay()
+    {
+        return Pay::getTotalPay($this->pays);
     }
 }

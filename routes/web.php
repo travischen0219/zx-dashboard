@@ -327,7 +327,9 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
 Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(
     function () {
         Route::get('in/search', 'InController@index');
-        Route::get('in/search/{status}', 'InController@index')->where('status', '[0-9]+');
+        Route::get('in/search/{status}/{pay_status}', 'InController@index')
+            ->where('status', '[0-9]+')
+            ->where('pay_status', '[0-9]+');
         // Route::get('in/view/{id}', 'InController@view')->where('id', '[0-9]+');
         Route::resource('in', 'InController');
     }
