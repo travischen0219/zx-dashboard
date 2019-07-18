@@ -8,28 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
-    public function warehouse_name()
+    public function in()
     {
-        return $this->hasOne(Warehouse::class, 'id', 'warehouse');
+        return $this->hasOne(In::class, 'id', 'in_id');
     }
 
-    public function material_name()
+    public function material()
     {
-        return $this->hasOne(Material::class, 'id', 'material');
+        return $this->hasOne(Material::class, 'id', 'material_id');
     }
 
-    public function  user_name()
-    {
-        return $this->hasOne(User::class, 'id', 'created_user');
-    }
-
-    public function supplier_name()
-    {
-        return $this->hasOne(Supplier::class, 'id', 'supplier');
-    }
-
-    public function customer_name()
-    {
-        return $this->hasOne(Customer::class, 'id', 'customer');
-    }
 }

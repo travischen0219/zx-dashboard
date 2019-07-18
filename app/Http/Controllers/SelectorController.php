@@ -11,6 +11,7 @@ use App\Model\Customer;
 use App\Model\Lot;
 use App\Model\Supplier;
 use App\Model\Manufacturer;
+use App\Model\Stock;
 
 class SelectorController extends Controller
 {
@@ -105,5 +106,15 @@ class SelectorController extends Controller
         $data['lots'] = $lots;
 
         return view('selector.lot', $data);
+    }
+
+    // 入庫紀錄
+    public function in_stock_records(Request $request)
+    {
+        $id = $request->id ?? 0;
+        $stocks = Stock::where('in_id', $id)->get();
+        $data['stocks'] = $stocks;
+
+        return view('selector.in_stock_records', $data);
     }
 }

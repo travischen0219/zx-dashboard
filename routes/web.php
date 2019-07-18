@@ -313,6 +313,9 @@ Route::middleware('admin.login')->prefix('selector')->group(
 
         // 批號選擇器
         Route::get('lot', 'SelectorController@lot');
+
+        // 入庫紀錄
+        Route::get('in_stock_records/{id}', 'SelectorController@in_stock_records');
     }
 );
 

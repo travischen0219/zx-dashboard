@@ -1,4 +1,4 @@
-@extends('layouts.print')
+@extends('b4.print')
 
 @section('title','採購單')
 

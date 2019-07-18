@@ -13,6 +13,14 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .mfp-wrap {
+            z-index: 8000;
+        }
+        .mfp-iframe-holder .mfp-content {
+            width: 85%;
+            height: 85%;
+            max-width: 100%;
+        }
     </style>
 @endsection
 
@@ -85,7 +93,16 @@
                         <div>預計到貨：{!! $in->should_arrive_date ?? $na !!}</div>
                         <div>實際到貨：{!! $in->arrive_date ?? $na !!}</div>
                     </td>
-                    <td>{{ $statuses[$in->status] ?? '' }}</td>
+                    <td>
+                        {{ $statuses[$in->status] ?? '' }}
+
+                        @if ($in->status == 40)
+                            <br>
+                            <button type="button" onclick="listStockRecords({{ $in->id }})" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-eye"></i> 庫存紀錄
+                            </button>
+                        @endif
+                    </td>
                     <td>
                         應付：${{ number_format($in->total_cost) }}
                         <br>
@@ -99,9 +116,9 @@
                     </td>
                     <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>
                     <td align="center">
-                        {{-- @if ($in->status == 30 || $in->status == 40) --}}
+                        {{-- @if (in->status == 40) --}}
                         @if (false)
-                            <button type="button" onclick="location.href='/purchase/in/{{ $in->id }}';" class="btn btn-outline-success btn-sm">
+                            <button type="button" onclick="listStockRecords({{ $in->id }})" class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-eye"></i> 查看
                             </button>
                         @else
@@ -156,6 +173,18 @@
         if(confirm('確定要刪除嗎 ?')){
             $('#delete-form-' + id).submit()
         }
+    }
+
+    function listStockRecords(id) {
+        $.magnificPopup.open({
+            showCloseBtn : false,
+            closeOnBgClick: true,
+            fixedContentPos: false,
+            items: {
+                src: "/selector/in_stock_records/" + id,
+                type: "iframe"
+            }
+        })
     }
 
     $(function () {
