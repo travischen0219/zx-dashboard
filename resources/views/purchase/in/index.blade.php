@@ -161,7 +161,16 @@
 
         var selected;
         selected = chkArray.join(',');
-        openInNewTab("/print/in_details/" + selected);
+
+        if (selected == '') {
+            swalOption.type = "error"
+            swalOption.title = '請至少選擇一筆採購單'
+            swal.fire(swalOption)
+
+            return false
+        }
+
+        openInNewTab("/print/in_details/" + selected)
     }
 
     function openInNewTab(url) {
