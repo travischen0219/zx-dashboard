@@ -45,7 +45,7 @@
 
     <a href="{{ route('in.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增採購</a>
     <span class="btn btn-primary mr-2" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆列印</span>
-    全選 <input type="checkbox" class="checkAll" id="checkAll" value="1">
+    <label for="checkAll">全選</label> <input type="checkbox" class="checkAll" id="checkAll" value="1">
 
     <br><br>
 
