@@ -144,7 +144,7 @@
 
         var selected;
         selected = chkArray.join(',');
-        openInNewTab("/print/buy_details/" + selected);
+        openInNewTab("/print/in_details/" + selected);
     }
 
     function openInNewTab(url) {

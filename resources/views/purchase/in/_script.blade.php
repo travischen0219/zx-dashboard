@@ -18,8 +18,8 @@ $(function () {
     $('#app').submit(function () {
         // 必填欄位檢查
         var error_message = ''
-        if ($('#lot_id').val() == '') error_message += '<div>批號必須選擇</div>'
-        if ($('#supplier_id').val() == '') error_message += '<div>供應商必須選擇</div>'
+        if ($('#lot_id').val() == 0) error_message += '<div>批號必須選擇</div>'
+        if ($('#supplier_id').val() == 0) error_message += '<div>供應商必須選擇</div>'
         if ($('#buy_date').val() == '') error_message += '<div>採購日期必須選擇</div>'
 
         if (error_message != '') {

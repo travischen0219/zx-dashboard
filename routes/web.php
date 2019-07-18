@@ -281,13 +281,9 @@ Route::middleware('admin.login')->prefix('print')->group(
         Route::get('in_detail/{id}', 'PrintController@in_detail');
         Route::post('in_detail', 'PrintController@in_detail');
 
-        // 採購單報表
-        Route::get('buy_detail/{id}', 'PrintController@buy_detail');
-        Route::post('buy_detail', 'PrintController@buy_detail');
-
         // 採購單報表 (多張)
-        Route::get('buy_details/{ids}', 'PrintController@buy_details');
-        Route::post('buy_details', 'PrintController@buy_details');
+        Route::get('in_details/{ids}', 'PrintController@in_details');
+        Route::post('in_details', 'PrintController@in_details');
 
         // 物料模組
         Route::get('material_module/{id}', 'PrintController@material_module');

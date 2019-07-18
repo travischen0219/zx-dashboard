@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="col-4 text-right">
                                     <div>NO：P{{ $in->code }}</div>
-                                    <div>批號：{{ $in->lot->code }}</div>
+                                    <div>批號：{{ $in->lot->code ?? '' }}</div>
                                 </div>
                             </div>
                         </th>
@@ -72,7 +72,7 @@
                         <th colspan="99">
                             <div class="row align-items-center">
                                 <div class="col-4" style="font-size: 18px;">
-                                    廠商：{{ $in->supplier->shortName }}
+                                    廠商：{{ $in->supplier->shortName ?? '' }}
                                 </div>
                                 <div class="col-8 text-right">
                                     訂購日期：{{ date('Y年m月d日'), strtotime($in->buy_date) }}

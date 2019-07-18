@@ -102,45 +102,22 @@ class PrintController extends Controller
         return view('print.in_detail', $data);
     }
 
-    public function buy_details(Request $request)
+    public function in_details(Request $request)
     {
         $ids = $request->ids ? explode(',', $request->ids) : [];
         if (count($ids) == 0) exit();
 
         $data = [];
         foreach($ids as $key => $id) {
-            $buy = Buy::find($id);
-            if (!$buy) exit();
+            $in = In::find($id);
+            if (!$in) exit();
 
-            $materials = unserialize($buy->materials);
+            $in->materials = Material::appendMaterials($in->materials, true);
 
-            $buy->count = count($materials['material']);
-
-            $array = [];
-            for($i = 0; $i < count($materials['material']); $i++) {
-                $material = Material::find($materials['material'][$i]);
-                $unit = Material_unit::find($material->unit);
-
-                $array[] = [
-                    'id' => $material->id,
-                    'code' => $material->fullCode,
-                    'name' => $material->fullName,
-                    'calAmount' => $materials['materialCalAmount'][$i],
-                    'amount' => $materials['materialAmount'][$i],
-                    'price' => (float) $materials['materialPrice'][$i],
-                    'unit' =>  $unit->name
-                ];
-            }
-
-            $buy->materials = $array;
-
-            $supplier = Supplier::find($buy->supplier);
-
-            $data['buys'][$key]['buy'] = $buy;
-            $data['buys'][$key]['supplier'] = $supplier;
+            $data['ins'][$key]['in'] = $in;
         }
 
-        return view('print.buy_detail', $data);
+        return view('print.in_detail', $data);
     }
 
     public function material_module(Request $request)
