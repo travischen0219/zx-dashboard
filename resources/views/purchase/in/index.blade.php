@@ -69,7 +69,7 @@
                 <tr>
                     <td>
                         <input type="checkbox" class="print_pdf" name="print_pdf" value="{{ $in->id }}">
-                        <a href="/print/in/{{ $in->id }}" target="_blank"
+                        <a href="/print/in_detail/{{ $in->id }}" target="_blank"
                             class="btn blue btn-outline-primary btn-sm">列印</a>
                     </td>
                     <td>P{{ $in->code }}</td>
@@ -87,18 +87,14 @@
                     </td>
                     <td>{{ $statuses[$in->status] ?? '' }}</td>
                     <td>
-                        @php
-                            $tr_total_cost = $in->total_cost();
-                            $tr_total_pay = $in->total_pay();
-                        @endphp
-                        應付：${{ number_format($tr_total_cost) }}
+                        應付：${{ number_format($in->total_cost) }}
                         <br>
-                        實付：${{ number_format($tr_total_pay) }}
+                        實付：${{ number_format($in->total_pay) }}
                         <br>
-                        @if ($tr_total_cost - $tr_total_pay <= 0)
+                        @if ($in->balance <= 0)
                             剩餘：<span class="text-success">付清</span>
                         @else
-                            剩餘：<span class="text-danger">${{ number_format($tr_total_cost - $tr_total_pay) }}</span>
+                            剩餘：<span class="text-danger">${{ number_format($in->balance) }}</span>
                         @endif
                     </td>
                     <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>

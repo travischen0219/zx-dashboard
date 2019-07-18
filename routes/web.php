@@ -278,6 +278,10 @@ Route::middleware('admin.login')->prefix('print')->group(
         Route::post('buy', 'PrintController@buy')->name('print.buy');
 
         // 採購單報表
+        Route::get('in_detail/{id}', 'PrintController@in_detail');
+        Route::post('in_detail', 'PrintController@in_detail');
+
+        // 採購單報表
         Route::get('buy_detail/{id}', 'PrintController@buy_detail');
         Route::post('buy_detail', 'PrintController@buy_detail');
 
@@ -326,7 +330,6 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
 // 進貨管理
 Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(
     function () {
-        Route::get('in/search', 'InController@index');
         Route::get('in/search/{status}/{pay_status}', 'InController@index')
             ->where('status', '[0-9]+')
             ->where('pay_status', '[0-9]+');

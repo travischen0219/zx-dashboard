@@ -23,7 +23,7 @@
                             @{{ item.code + ' ' + item.name }}
                         </td>
                         <td title="數量">
-                            入庫：
+                            數量：
                                 @{{ item.amount }}
                                 @{{ units[item.unit].name }}
 
@@ -41,7 +41,7 @@
                             </template>
                         </td>
                         <td title="單位成本">
-                            入庫：
+                            成本：
                             $@{{ item.cost }}
                             / $@{{ item.amount * item.cost | number_format }}
 

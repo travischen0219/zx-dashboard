@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\Supplier;
-use App\Model\Buy;
+use App\Model\In;
 use App\Model\Material;
 use App\Model\Material_unit;
 use App\Model\Material_module;
@@ -86,43 +86,20 @@ class PrintController extends Controller
         return view('print.buy', $data);
     }
 
-    public function buy_detail(Request $request)
+    public function in_detail(Request $request)
     {
         $id = $request->id ?? 0;
         if ($id == 0) exit();
 
-        $buy = Buy::find($id);
-        if (!$buy) exit();
+        $in = In::find($id);
+        if (!$in) exit();
 
-        $materials = unserialize($buy->materials);
-
-        $buy->count = count($materials['material']);
-
-        $array = [];
-        for($i = 0; $i < count($materials['material']); $i++) {
-            $material = Material::find($materials['material'][$i]);
-            $unit = Material_unit::find($material->unit);
-
-            $array[] = [
-                'id' => $material->id,
-                'code' => $material->fullCode,
-                'name' => $material->fullName,
-                'calAmount' => $materials['materialCalAmount'][$i],
-                'amount' => $materials['materialAmount'][$i],
-                'price' => (float) $materials['materialPrice'][$i],
-                'unit' =>  $unit->name
-            ];
-        }
-
-        $buy->materials = $array;
-
-        $supplier = Supplier::find($buy->supplier);
+        $in->materials = Material::appendMaterials($in->materials, true);
 
         $data = [];
-        $data['buys'][0]['buy'] = $buy;
-        $data['buys'][0]['supplier'] = $supplier;
+        $data['ins'][0]['in'] = $in;
 
-        return view('print.buy_detail', $data);
+        return view('print.in_detail', $data);
     }
 
     public function buy_details(Request $request)

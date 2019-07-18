@@ -48,7 +48,7 @@
                             </button>
                         </td>
                         <td title="數量">
-                            入庫：<input type="text"
+                            數量：<input type="text"
                                 class="form-control"
                                 v-model="item.amount"
                                 name="material_amount[]"
@@ -78,7 +78,7 @@
                             </template>
                         </td>
                         <td title="單位成本">
-                            入庫：<input type="text"
+                            成本：<input type="text"
                                 class="form-control"
                                 v-model="item.cost"
                                 name="material_cost[]"
