@@ -105,29 +105,11 @@ class Sidebar
     {
         $data =[];
 
-        // $data[] = [
-        //     'route' => 'inquiry.index',
-        //     'request' => 'purchase/inquiry*',
-        //     'title' => '詢價'
-        // ];
-
-        // $data[] = [
-        //     'route' => 'buy.index',
-        //     'request' => 'purchase/buy*',
-        //     'title' => '採購'
-        // ];
-
         $data[] = [
             'route' => 'in.index',
             'request' => 'purchase/in*',
             'title' => '採購'
         ];
-
-        // $data[] = [
-        //     'route' => 'ibuy_to_stock.index',
-        //     'request' => 'purchase/ibuy_to_stock*',
-        //     'title' => '採購轉入庫中'
-        // ];
 
         $data[] = [
             'route' => 'stock.index',

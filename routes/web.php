@@ -336,3 +336,12 @@ Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->gro
         Route::resource('in', 'InController');
     }
 );
+
+// 入庫管理
+Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
+    function () {
+        Route::get('stock/search/{type}', 'StockController@index')
+            ->where('type', '[0-9]+');
+        Route::resource('stock', 'StockController');
+    }
+);
