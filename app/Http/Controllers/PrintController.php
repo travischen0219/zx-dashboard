@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Model\Lot;
 use App\Model\Supplier;
 use App\Model\In;
 use App\Model\Material;
@@ -31,6 +32,10 @@ class PrintController extends Controller
 
         // 參數：欄位選擇
         $data['selColumns'] = $request->selColumns ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // 全部批號
+        $lots = Lot::allWithKey();
+        $data["lots"] = $lots;
 
         // 全部供應商
         $suppliers = Supplier::allWithKey();

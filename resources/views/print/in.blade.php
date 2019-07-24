@@ -57,19 +57,27 @@
                         批號 (<a href="javascript: resetLot()" class="text-warning">清除</a>)：
                     </label>
                     <button type="button" id="btn_lot_id" class="btn btn-primary" onclick="listLots()">
-                        按此選擇批號
+                        @if (isset($lots[$lot_id]))
+                            {{ $lots[$lot_id]->code }} {{ $lots[$lot_id]->name }}
+                        @else
+                            按此選擇批號
+                        @endif
                     </button>
 
-                    <input type="hidden" name="lot_id" id="lot_id" value="0">
+                    <input type="hidden" name="lot_id" id="lot_id" value="{{ $lot_id }}">
 
                     <label for="supplier_id" class="ml-3">
                         供應商 (<a href="javascript: resetSupplier()" class="text-warning">清除</a>)：
                     </label>
                     <button type="button" id="btn_supplier_id" class="btn btn-primary" onclick="listSuppliers()">
-                        按此選擇供應商
+                        @if (isset($suppliers[$supplier_id]))
+                            {{ $suppliers[$supplier_id]->code }} {{ $suppliers[$supplier_id]->shortName }}
+                        @else
+                            按此選擇供應商
+                        @endif
                     </button>
 
-                    <input type="hidden" name="supplier_id" id="supplier_id" value="0">
+                    <input type="hidden" name="supplier_id" id="supplier_id" value="{{ $supplier_id }}">
                 </div>
 
                 <div class="form-group">
