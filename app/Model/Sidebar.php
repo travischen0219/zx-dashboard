@@ -148,6 +148,13 @@ class Sidebar
             'target' => '_blank'
         ];
 
+        $data[] = [
+            'route' => 'print.in_unpay',
+            'request' => '/print/in_unpay*',
+            'title' => '未付款資料',
+            'target' => '_blank'
+        ];
+
         return $data;
     }
 

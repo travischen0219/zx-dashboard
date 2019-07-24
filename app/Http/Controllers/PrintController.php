@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Supplier;
 use App\Model\In;
-use App\Model\Buy;
 use App\Model\Material;
 use App\Model\Material_unit;
 use App\Model\Material_module;
@@ -102,6 +101,30 @@ class PrintController extends Controller
         }
 
         return view('print.in_detail', $data);
+    }
+
+    public function in_unpay(Request $request)
+    {
+        $data = [];
+        $unpaysOrigin = In::whereIn('status', [20, 30, 40])->where('balance', '>', 0)->get();
+
+        $unpays = [];
+        foreach ($unpaysOrigin as $unpay) {
+            if (!isset($unpays[$unpay["supplier_id"]])) $unpays[$unpay["supplier_id"]] = [];
+
+            array_push($unpays[$unpay["supplier_id"]], $unpay);
+        }
+        ksort($unpays);
+        $data["unpays"] = $unpays;
+
+        $suppliers = Supplier::allWithKey();
+        $data["suppliers"] = $suppliers;
+
+        $supplierKeys = array_keys($unpays);
+        sort($supplierKeys);
+        $data["supplierKeys"] = $supplierKeys;
+
+        return view('print.in_unpay', $data);
     }
 
     public function material_module(Request $request)
