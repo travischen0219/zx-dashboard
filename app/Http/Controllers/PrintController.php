@@ -30,7 +30,7 @@ class PrintController extends Controller
         $data["supplier_id"] = $supplier_id;
 
         // 參數：欄位選擇
-        $data['selColumns'] = $request->selColumns ?? [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        $data['selColumns'] = $request->selColumns ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         // 全部供應商
         $suppliers = Supplier::allWithKey();

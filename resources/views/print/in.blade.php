@@ -137,7 +137,7 @@
                             @if(in_array(3, $selColumns))<td title="廠商">{{ $in->supplier->shortName ?? '' }}</td>@endif
                             @if(in_array(4, $selColumns))<td title="編號">{{ $material['code'] }}</td>@endif
                             @if(in_array(5, $selColumns))<td title="品名">{{ $material['name'] }}</td>@endif
-                            @if(in_array(6, $selColumns) && $material['cal'] == 1)
+                            @if(in_array(6, $selColumns))
                                 <td title="採購數量" class="text-right">
                                     {{ number_format($material['cal_amount'], 2) }}
                                     {{ $units[$material['cal_unit']]->name ?? '' }}
