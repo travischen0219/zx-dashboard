@@ -38,7 +38,7 @@ class PrintController extends Controller
         $data["suppliers"] = $suppliers;
 
         // 全部欄位
-        $data['columns'] = ['項次', '批號', '廠商', '編號', '品名', '採購數量', '進貨數量', '單價', '金額'];
+        $data['columns'] = ['項次', '採購日期', '批號', '廠商', '編號', '品名', '採購數量', '進貨數量', '單價', '金額'];
 
         $ins = In::whereIn('status', [20, 30, 40]);
 

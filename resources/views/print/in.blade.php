@@ -132,24 +132,25 @@
                     @foreach ($in->materials as $key2 => $material)
                         <tr>
                             @if(in_array(0, $selColumns))<td title="項次" class="text-center">{{ $index++ }}</td>@endif
-                            @if(in_array(1, $selColumns))<td title="批號">{{ $in->lot->code ?? '' }}</td>@endif
-                            @if(in_array(2, $selColumns))<td title="廠商">{{ $in->supplier->shortName ?? '' }}</td>@endif
-                            @if(in_array(3, $selColumns))<td title="編號">{{ $material['code'] }}</td>@endif
-                            @if(in_array(4, $selColumns))<td title="品名">{{ $material['name'] }}</td>@endif
-                            @if(in_array(5, $selColumns) && $material['cal'] == 1)
+                            @if(in_array(1, $selColumns))<td title="採購日期" class="text-center">{{ $in->buy_date ?? '' }}</td>@endif
+                            @if(in_array(2, $selColumns))<td title="批號">{{ $in->lot->code ?? '' }}</td>@endif
+                            @if(in_array(3, $selColumns))<td title="廠商">{{ $in->supplier->shortName ?? '' }}</td>@endif
+                            @if(in_array(4, $selColumns))<td title="編號">{{ $material['code'] }}</td>@endif
+                            @if(in_array(5, $selColumns))<td title="品名">{{ $material['name'] }}</td>@endif
+                            @if(in_array(6, $selColumns) && $material['cal'] == 1)
                                 <td title="採購數量" class="text-right">
                                     {{ number_format($material['cal_amount'], 2) }}
                                     {{ $units[$material['cal_unit']]->name ?? '' }}
                                 </td>
                             @endif
-                            @if(in_array(6, $selColumns))
+                            @if(in_array(7, $selColumns))
                                 <td title="進貨數量" class="text-right">
                                     {{ number_format($material['amount'], 2) }}
                                     {{ $units[$material['unit']]->name ?? '' }}
                                 </td>
                             @endif
-                            @if(in_array(7, $selColumns))<td title="單價" class="text-right">${{ number_format($material['price'], 2) }}</td>@endif
-                            @if(in_array(8, $selColumns))<td title="金額" class="text-right">${{ number_format($material['amount'] * $material['price'], 2) }}</td>@endif
+                            @if(in_array(8, $selColumns))<td title="單價" class="text-right">${{ number_format($material['price'], 2) }}</td>@endif
+                            @if(in_array(9, $selColumns))<td title="金額" class="text-right">${{ number_format($material['amount'] * $material['price'], 2) }}</td>@endif
                         </tr>
                     @endforeach
                 @endforeach
