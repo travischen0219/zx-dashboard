@@ -139,8 +139,10 @@
                             @if(in_array(5, $selColumns))<td title="品名">{{ $material['name'] }}</td>@endif
                             @if(in_array(6, $selColumns))
                                 <td title="採購數量" class="text-right">
-                                    {{ number_format($material['cal_amount'], 2) }}
-                                    {{ $units[$material['cal_unit']]->name ?? '' }}
+                                    @if ($material['cal'] == 1)
+                                        {{ number_format($material['cal_amount'], 2) }}
+                                        {{ $units[$material['cal_unit']]->name ?? '' }}
+                                    @endif
                                 </td>
                             @endif
                             @if(in_array(7, $selColumns))
