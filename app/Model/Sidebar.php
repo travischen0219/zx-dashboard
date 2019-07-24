@@ -117,34 +117,34 @@ class Sidebar
             'title' => '入庫'
         ];
 
-        $data[] = [
-            'route' => 'account_payable.index',
-            'request' => 'purchase/account_payable*',
-            'title' => '應付帳款管理'
-        ];
+        // $data[] = [
+        //     'route' => 'account_payable.index',
+        //     'request' => 'purchase/account_payable*',
+        //     'title' => '應付帳款管理'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'payment_record.index',
+        //     'request' => 'purchase/payment_record*',
+        //     'title' => '付款記錄'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'p_sales_return.index',
+        //     'request' => 'purchase/p_sales_return*',
+        //     'title' => '採購退貨'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'p_exchange.index',
+        //     'request' => 'purchase/p_exchange*',
+        //     'title' => '採購換貨'
+        // ];
 
         $data[] = [
-            'route' => 'payment_record.index',
-            'request' => 'purchase/payment_record*',
-            'title' => '付款記錄'
-        ];
-
-        $data[] = [
-            'route' => 'p_sales_return.index',
-            'request' => 'purchase/p_sales_return*',
-            'title' => '採購退貨'
-        ];
-
-        $data[] = [
-            'route' => 'p_exchange.index',
-            'request' => 'purchase/p_exchange*',
-            'title' => '採購換貨'
-        ];
-
-        $data[] = [
-            'route' => 'print.buy',
-            'request' => '/print/buy*',
-            'title' => '報表',
+            'route' => 'print.in',
+            'request' => '/print/in*',
+            'title' => '採購報表',
             'target' => '_blank'
         ];
 

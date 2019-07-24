@@ -20,6 +20,10 @@
         top: 20px;
         right: 20px;
     }
+    .form label {
+        width: auto;
+        text-align: initial;
+    }
     .table + .table {
         margin-top: 40px;
     }
@@ -32,7 +36,7 @@
         <div id="header">
             <h3>列印採購報表</h3>
 
-            <form action="/print/buy" method="post" class="form mt-3">
+            <form action="/print/in" method="post" class="form mt-3">
                 @csrf
                 <div class="form-group">
                     <label for="year">期間：</label>
@@ -49,22 +53,23 @@
                         @endfor
                     </select> 月
 
-                    <label for="lot_number" class="ml-3">批號：</label>
-                    <input type="text"
-                        name="lot_number"
-                        id="lot_number"
-                        value="{{ $lot_number }}"
-                        class="form-control d-inline-block">
+                    <label for="lot_id" class="ml-3">
+                        批號 (<a href="javascript: resetLot()" class="text-warning">清除</a>)：
+                    </label>
+                    <button type="button" id="btn_lot_id" class="btn btn-primary" onclick="listLots()">
+                        按此選擇批號
+                    </button>
 
-                    <label for="supplier" class="ml-3">供應商：</label>
-                    <select name="supplierID" id="supplierID" class="form-control d-inline-block" style="width: 200px;">
-                        <option value="">全部</option>
-                        @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}" {{ $supplierID == $supplier->id ? 'selected' : '' }}>
-                                {{ $supplier->code }} {{ $supplier->shortName }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <input type="hidden" name="lot_id" id="lot_id" value="0">
+
+                    <label for="supplier_id" class="ml-3">
+                        供應商 (<a href="javascript: resetSupplier()" class="text-warning">清除</a>)：
+                    </label>
+                    <button type="button" id="btn_supplier_id" class="btn btn-primary" onclick="listSuppliers()">
+                        按此選擇供應商
+                    </button>
+
+                    <input type="hidden" name="supplier_id" id="supplier_id" value="0">
                 </div>
 
                 <div class="form-group">
@@ -123,16 +128,26 @@
                 </tr>
 
                 @php($index = 1)
-                @foreach ($buys as $key1 => $buy)
-                    @foreach ($buy->materials as $key2 => $material)
+                @foreach ($ins as $key1 => $in)
+                    @foreach ($in->materials as $key2 => $material)
                         <tr>
                             @if(in_array(0, $selColumns))<td title="項次" class="text-center">{{ $index++ }}</td>@endif
-                            @if(in_array(1, $selColumns))<td title="批號">{{ $buy->lot_number }}</td>@endif
-                            @if(in_array(2, $selColumns))<td title="廠商">{{ $suppliers[$buy->supplier]->shortName }}</td>@endif
+                            @if(in_array(1, $selColumns))<td title="批號">{{ $in->lot->code ?? '' }}</td>@endif
+                            @if(in_array(2, $selColumns))<td title="廠商">{{ $in->supplier->shortName ?? '' }}</td>@endif
                             @if(in_array(3, $selColumns))<td title="編號">{{ $material['code'] }}</td>@endif
                             @if(in_array(4, $selColumns))<td title="品名">{{ $material['name'] }}</td>@endif
-                            @if(in_array(5, $selColumns))<td title="採購數量" class="text-right">{{ number_format($material['calAmount'], 2) }}</td>@endif
-                            @if(in_array(6, $selColumns))<td title="進貨數量" class="text-right">{{ number_format($material['amount'], 2) }}</td>@endif
+                            @if(in_array(5, $selColumns) && $material['cal'] == 1)
+                                <td title="採購數量" class="text-right">
+                                    {{ number_format($material['cal_amount'], 2) }}
+                                    {{ $units[$material['cal_unit']]->name ?? '' }}
+                                </td>
+                            @endif
+                            @if(in_array(6, $selColumns))
+                                <td title="進貨數量" class="text-right">
+                                    {{ number_format($material['amount'], 2) }}
+                                    {{ $units[$material['unit']]->name ?? '' }}
+                                </td>
+                            @endif
                             @if(in_array(7, $selColumns))<td title="單價" class="text-right">${{ number_format($material['price'], 2) }}</td>@endif
                             @if(in_array(8, $selColumns))<td title="金額" class="text-right">${{ number_format($material['amount'] * $material['price'], 2) }}</td>@endif
                         </tr>
@@ -147,6 +162,22 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" style="z-index: 6500;">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="modal-iframe" frameBorder="0" src="" height="100%" width="100%"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -158,6 +189,48 @@ function tapCol(obj) {
     } else {
         obj.parent().removeClass('btn-primary').addClass('btn-light');
     }
+}
+
+function listLots() {
+    $("#modal .modal-title").html("選擇批號")
+    $("#modal-iframe").attr("src", "")
+    $("#modal-iframe").attr("src", "/selector/lot")
+    $("#modal-iframe").height('70vh')
+    $('#modal').modal('show')
+}
+
+function listSuppliers() {
+    $("#modal .modal-title").html("選擇供應商")
+    $("#modal-iframe").attr("src", "")
+    $("#modal-iframe").attr("src", "/selector/supplier/1")
+    $("#modal-iframe").height('70vh')
+    $('#modal').modal('show')
+}
+
+function applyLot(str) {
+    var lot = JSON.parse(str)
+
+    $('#lot_id').val(lot.id)
+    $('#btn_lot_id').html(lot.code + ' ' + lot.name)
+
+    $('#modal').modal('hide')
+}
+
+function applySupplier(str) {
+    var supplier = JSON.parse(str)
+
+    $('#supplier_id').val(supplier.id)
+    $('#btn_supplier_id').html(supplier.code + ' ' + supplier.fullName)
+    $('#modal').modal('hide')
+}
+
+function resetSupplier() {
+    $('#supplier_id').val(0)
+    $('#btn_supplier_id').html('按此選擇供應商')
+}
+function resetLot() {
+    $('#lot_id').val(0)
+    $('#btn_lot_id').html('按此選擇批號')
 }
 </script>
 @endsection

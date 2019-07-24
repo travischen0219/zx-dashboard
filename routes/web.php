@@ -274,8 +274,12 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(fun
 Route::middleware('admin.login')->prefix('print')->group(
     function () {
         // 採購總報表
-        Route::get('buy', 'PrintController@buy')->name('print.buy');
-        Route::post('buy', 'PrintController@buy')->name('print.buy');
+        // Route::get('buy', 'PrintController@buy')->name('print.buy');
+        // Route::post('buy', 'PrintController@buy')->name('print.buy');
+
+        // 採購總報表
+        Route::get('in', 'PrintController@in')->name('print.in');
+        Route::post('in', 'PrintController@in')->name('print.in');
 
         // 採購單報表
         Route::get('in_detail/{id}', 'PrintController@in_detail');
@@ -316,6 +320,9 @@ Route::middleware('admin.login')->prefix('selector')->group(
 
         // 入庫紀錄
         Route::get('in_stock_records/{id}', 'SelectorController@in_stock_records');
+
+        // 物料庫存紀錄
+        Route::get('material_stock_records/{id}', 'SelectorController@material_stock_records');
     }
 );
 

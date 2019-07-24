@@ -98,7 +98,7 @@
 
                         @if ($in->status == 40)
                             <br>
-                            <button type="button" onclick="listStockRecords({{ $in->id }})" class="btn btn-outline-success btn-sm">
+                            <button type="button" onclick="show_stock_records({{ $in->id }})" class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-eye"></i> 庫存紀錄
                             </button>
                         @endif
@@ -143,6 +143,23 @@
     </table>
 
     <br><br>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" style="z-index: 6500;">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">庫存紀錄</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="modal-iframe" frameBorder="0" src="" height="100%" width="100%"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -150,6 +167,13 @@
     $("#checkAll").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
     });
+
+    function show_stock_records(id) {
+        $("#modal-iframe").attr("src", "")
+        $("#modal-iframe").attr("src", "/selector/in_stock_records/" + id)
+        $("#modal-iframe").height('70vh')
+        $('#modal').modal('show')
+    }
 
     function pdfsubmit() {
 
