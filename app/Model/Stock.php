@@ -15,7 +15,7 @@ class Stock extends Model
         $data[0] = '全部';
         $data[1] = '一般入庫';
         $data[2] = '採購轉入庫';
-        $data[3] = '退貨入庫';
+        $data[3] = '銷貨 - 退貨入庫';
 
         return $data;
     }
