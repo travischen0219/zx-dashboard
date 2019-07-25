@@ -58,6 +58,24 @@ class Material_moduleController extends Controller
         return redirect()->route('material_module.index')->with('message', '新增成功');
     }
 
+    public function show($id)
+    {
+        $material_module = Material_module::find($id);
+        $data['material_module'] = $material_module;
+
+        $data['materials'] = Material::appendMaterials($material_module->materials);
+        $data['units'] = Material_unit::allJson();
+        $data['files'] = StorageFile::allJson([
+            $material_module->file1,
+            $material_module->file2,
+            $material_module->file3
+        ]);
+
+        $data["show"] = 1;
+
+        return view('settings.material_module.edit', $data);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -76,6 +94,8 @@ class Material_moduleController extends Controller
             $material_module->file2,
             $material_module->file3
         ]);
+
+        $data["show"] = 0;
 
         return view('settings.material_module.edit', $data);
     }
