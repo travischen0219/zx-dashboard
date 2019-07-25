@@ -222,6 +222,21 @@
                         </li>
 
                         <li class="nav-item
+                            @if(Request::is('settings/lot*'))
+                                active open
+                            @endif">
+                            <a href="{{ route('lot.index') }}" class="nav-link ">
+                                <span class="title"
+                                    @if(Request::is('settings/lot*'))
+                                        style="color:#59deea;"
+                                    @endif>批號管理</span>
+                                @if(Request::is('settings/lot*'))
+                                    <span class="selected"></span>
+                                @endif
+                            </a>
+                        </li>
+
+                        {{-- <li class="nav-item
                             @if(Request::is('settings/warehouses*'))
                                 active open
                             @endif">
@@ -234,9 +249,9 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
-                        <li class="nav-item
+                        {{-- <li class="nav-item
                             @if(Request::is('settings/warehouse_category*'))
                                 active open
                             @endif">
@@ -249,7 +264,7 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
 
 
@@ -286,7 +301,7 @@
                     </a>
 
                     <ul class="sub-menu">
-                        <li class="nav-item
+                        {{-- <li class="nav-item
                             @if(Request::is('purchase/inquiry*'))
                                 active open
                             @endif">
@@ -299,9 +314,9 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
-                        <li class="nav-item
+                        {{-- <li class="nav-item
                             @if(Request::is('purchase/buy*'))
                                 active open
                             @endif">
@@ -314,9 +329,24 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item
+                            @if(Request::is('purchase/in*'))
+                                active open
+                            @endif">
+                            <a href="{{ route('in.index') }}" class="nav-link ">
+                                <span class="title"
+                                    @if(Request::is('purchase/in*'))
+                                        style="color:#59deea;"
+                                    @endif>採購</span>
+                                @if(Request::is('purchase/in*'))
+                                    <span class="selected"></span>
+                                @endif
+                            </a>
+                        </li>
+
+                        {{-- <li class="nav-item
                             @if(Request::is('purchase/ibuy_to_stock*'))
                                 active open
                             @endif">
@@ -329,7 +359,7 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item
                             @if(Request::is('purchase/stock*'))
@@ -346,7 +376,20 @@
                             </a>
                         </li>
 
-                        <li class="nav-item
+                        <li class="nav-item">
+                            <a href="{{ route('print.in') }}" class="nav-link" target="_blank">
+                                <span class="title">採購報表</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('print.in_unpay') }}" class="nav-link" target="_blank">
+                                <span class="title">未付款資料</span>
+                            </a>
+                        </li>
+
+
+                        {{-- <li class="nav-item
                             @if(Request::is('purchase/account_payable*'))
                                 active open
                             @endif">
@@ -359,9 +402,9 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
-                        <li class="nav-item
+                        {{-- <li class="nav-item
                             @if(Request::is('purchase/payment_record*'))
                                 active open
                             @endif">
@@ -374,9 +417,9 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
-                        <li class="nav-item
+                        {{-- <li class="nav-item
                             @if(Request::is('purchase/p_sales_return*'))
                                 active open
                             @endif">
@@ -403,13 +446,13 @@
                                     <span class="selected"></span>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="/print/buy" class="nav-link" target="_blank">
                                 <span class="title">報表</span>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
 

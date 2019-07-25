@@ -349,7 +349,7 @@ Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->gro
 );
 
 // 入庫管理
-Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
+Route::middleware('admin.login')->namespace('Stock')->prefix('purchase')->group(
     function () {
         Route::get('stock/search/{type}', 'StockController@index')
             ->where('type', '[0-9]+');
