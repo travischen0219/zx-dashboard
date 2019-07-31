@@ -20,8 +20,10 @@
             height: 85%;
             max-width: 100%;
         }
+    </style>
 
-        @if ($show == 1)
+    @if ($show == 1)
+        <style>
             form {
                 cursor: not-allowed;
             }
@@ -29,8 +31,9 @@
             form * {
                 pointer-events: none;
             }
-        @endif
-    </style>
+        </style>
+    @endif
+
 @endsection
 
 @section('content')

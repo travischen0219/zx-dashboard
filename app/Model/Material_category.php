@@ -17,4 +17,16 @@ class Material_category extends Model
 
         return $data;
     }
+
+    static public function allWithID()
+    {
+        $categories = Material_category::where('delete_flag', 0)->orderBy('orderby', 'asc')->get();
+
+        $data = [];
+        foreach ($categories as $category) {
+            $data[$category['id']] = $category;
+        }
+
+        return $data;
+    }
 }

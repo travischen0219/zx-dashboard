@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Stock;
 
 use App\Model\Stock;
+use App\Model\Stock2;
 use App\Model\Material;
 use Illuminate\Http\Request;
 use App\Model\Material_warehouse;
@@ -19,7 +20,7 @@ class AdjustmentController extends Controller
     public function index()
     {
         $search_code = "all";
-        $stocks = Stock::where('delete_flag','0')->where('stock_option','2')->orderBy('updated_at','desc')->get();
+        $stocks = Stock2::where('delete_flag','0')->where('stock_option','2')->orderBy('updated_at','desc')->get();
         return view('stock.adjustment.show',compact('stocks'));
     }
 
