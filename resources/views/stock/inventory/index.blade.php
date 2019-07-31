@@ -76,7 +76,7 @@
                     </td>
                     <td align="center" class="align-middle">
                         @if ($inventory->status == 1)
-                            <button type="button" onclick="location.href='/stock/inventory/{{ $inventory->id }}/check';" class="btn btn-outline-info btn-sm">
+                            <button type="button" onclick="location.href='/stock/inventory/{{ $inventory->id }}/check'" class="btn btn-outline-info btn-sm">
                                 <i class="fas fa-list-ol"></i> 盤點
                             </button>
 
@@ -88,7 +88,7 @@
                                 <i class="fas fa-trash-alt"></i> 刪除
                             </button>
                         @else
-                            <button type="button" onclick="location.href='{{ route('inventory.edit', $inventory->id) }}';" class="btn btn-outline-success btn-sm">
+                            <button type="button" onclick="location.href='/stock/inventory/{{ $inventory->id }}/view'" class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-eye"></i> 查看及誤差處理
                             </button>
                         @endif

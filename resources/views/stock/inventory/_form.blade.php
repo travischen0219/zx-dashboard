@@ -16,7 +16,12 @@
 @if ($inventory->id > 0)
     <div class="form-group">
         <label class="control-label">倉庫類別：</label>
-        {{ $categories[$inventory->category_id]->name }}
+        @if ($inventory->category_id == 0)
+            全部
+        @else
+            {{ $categories[$inventory->category_id]->name }}
+        @endif
+
         <small class="text-danger ml-2">(盤點中無法修改類別)</small>
         <input type="hidden" name="category_id" value="{{ $inventory->category_id }}">
     </div>

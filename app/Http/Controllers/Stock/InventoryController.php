@@ -6,6 +6,7 @@ use App\Model\Inventory;
 use App\Model\InventoryRecord;
 use App\Model\Material_category;
 use App\Model\Material;
+use App\Model\Stock;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InventoryRequest;
@@ -188,6 +189,7 @@ class InventoryController extends Controller
         if ($id == 0) abort(404);
 
         $inventory = Inventory::find($id);
+        if ($inventory->status != 1) abort(404);
         $inventoryRecords = InventoryRecord::where('inventory_id', $inventory->id)->orderBy('id', 'asc')->get();
 
         $data = [];
@@ -211,5 +213,53 @@ class InventoryController extends Controller
         $inventoryRecord->diff = number_format($physical_inventory - $original_inventory, 2);
 
         return $inventoryRecord;
+    }
+
+    public function view(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) abort(404);
+
+        $inventory = Inventory::find($id);
+        if ($inventory->status != 2) abort(404);
+        $inventoryRecords = InventoryRecord::where('inventory_id', $inventory->id)->orderBy('id', 'asc')->get();
+
+        $data = [];
+        $data['inventory'] = $inventory;
+        $data['inventoryRecords'] = $inventoryRecords;
+
+        return view('stock.inventory.view', $data);
+    }
+
+    public function fix(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) abort(404);
+
+        // 盤點細目
+        $inventoryRecord = InventoryRecord::find($id);
+        $inventoryRecord->quick_fix = 1;
+        $inventoryRecord->save();
+
+        // 盤點表
+        $inventory = Inventory::find($inventoryRecord->inventory_id);
+
+        // 建立一筆差異
+        $stock = new Stock;
+        $stock->inventory_id = $inventory->id;
+        $stock->type = 10;
+        $stock->stock_date = date('Y-m-d');
+        $stock->material_id = $inventoryRecord->material_id;
+        $stock->amount = $inventoryRecord->physical_inventory - $inventoryRecord->original_inventory;
+        $stock->amount_before = $inventoryRecord->physical_inventory;
+        $stock->amount_after = $inventoryRecord->original_inventory;
+        $stock->memo = "INV" . $inventory->code . " 快速修正";
+        $stock->save();
+
+        // 存回物料
+        $inventoryRecord->material->stock = $inventoryRecord->physical_inventory;
+        $inventoryRecord->material->save();
+
+        return redirect("/stock/inventory/{$inventory->id}/view");
     }
 }

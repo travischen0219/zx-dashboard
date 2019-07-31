@@ -285,7 +285,11 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('purchase')->group(
 Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
     function () {
         // 盤點
+        Route::get('inventory/{id}/view', 'InventoryController@view')
+            ->where('id', '[0-9]+');
         Route::get('inventory/{id}/check', 'InventoryController@check')
+            ->where('id', '[0-9]+');
+        Route::get('inventory/{id}/fix', 'InventoryController@fix')
             ->where('id', '[0-9]+');
         Route::post('inventory/record', 'InventoryController@record');
         Route::resource('inventory', 'InventoryController');
