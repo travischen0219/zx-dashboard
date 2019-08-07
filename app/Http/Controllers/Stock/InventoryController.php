@@ -18,13 +18,16 @@ class InventoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $status = $request->status ?? 0;
-
         $data = [];
 
-        $data['inventories'] = Inventory::orderBy('status', 'asc')->orderBy('id', 'desc')->get();
+        $data['inventories'] = Inventory::orderBy('status', 'asc')->orderBy('id', 'desc');
+
+        if ($status > 0) $data['inventories'] = $data['inventories']->where('status', $status);
+        $data['inventories'] = $data['inventories']->get();
+
         $data['categories'] = Material_category::allWithCode();
         $data['statuses'] = Inventory::statuses();
         $data['status'] = $status;

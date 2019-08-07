@@ -27,7 +27,7 @@
 @section('content')
     <div class="form-group">
         <label class="control-label">類別：</label>
-        <select class="form-control d-inline-block w-auto" name="type" onchange="location.href='/stock/stock/search/' + this.value">
+        <select class="form-control d-inline-block w-auto" name="type" onchange="location.href='/purchase/stock/search/' + this.value">
             @foreach ($types as $key => $value)
                 <option value="{{ $key }}" {{ $key == $type ? 'selected' : ''}}>{{ $value }}</option>
             @endforeach

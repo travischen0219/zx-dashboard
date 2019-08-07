@@ -76,9 +76,6 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::resource('material_module', 'Material_moduleController');
     Route::post('material_module/search','Material_moduleController@search')->name('material_module.search');
     Route::post('material_module_file/delete/{file}/{material}/{id}','Material_moduleController@delete_file');
-
-
-
 });
 
 Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->group(function(){
@@ -292,6 +289,8 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
         Route::get('inventory/{id}/fix', 'InventoryController@fix')
             ->where('id', '[0-9]+');
         Route::post('inventory/record', 'InventoryController@record');
+
+        Route::get('inventory/search/{status}', 'InventoryController@index');
         Route::resource('inventory', 'InventoryController');
     }
 );
