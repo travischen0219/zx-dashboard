@@ -253,11 +253,11 @@ class Sidebar
         //     'title' => '調撥'
         // ];
 
-        $data[] = [
-            'route' => 'on_order_follow.index',
-            'request' => 'stock/on_order_follow*',
-            'title' => '在途量追蹤'
-        ];
+        // $data[] = [
+        //     'route' => 'on_order_follow.index',
+        //     'request' => 'stock/on_order_follow*',
+        //     'title' => '在途量追蹤'
+        // ];
 
         $data[] = [
             'route' => 'semi_finished_schedule.index',
