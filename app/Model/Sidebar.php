@@ -229,17 +229,17 @@ class Sidebar
             'title' => '盤點'
         ];
 
-        $data[] = [
-            'route' => 'adjustment.index',
-            'request' => 'stock/adjustment*',
-            'title' => '誤差處理'
-        ];
+        // $data[] = [
+        //     'route' => 'adjustment.index',
+        //     'request' => 'stock/adjustment*',
+        //     'title' => '誤差處理'
+        // ];
 
-        $data[] = [
-            'route' => 'transfer_inventory.index',
-            'request' => 'stock/transfer_inventory*',
-            'title' => '調撥'
-        ];
+        // $data[] = [
+        //     'route' => 'transfer_inventory.index',
+        //     'request' => 'stock/transfer_inventory*',
+        //     'title' => '調撥'
+        // ];
 
         $data[] = [
             'route' => 'on_order_follow.index',
