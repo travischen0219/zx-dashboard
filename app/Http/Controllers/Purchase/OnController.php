@@ -30,4 +30,23 @@ class OnController extends Controller
 
         return view('purchase.on.index', $data);
     }
+
+    public function in ()
+    {
+        $ins = In::where('status', 20)->get();
+
+        foreach ($ins as $in) {
+            $rawMaterials = Material::appendMaterials($in->materials, true);
+
+            foreach ($rawMaterials as $key => $rawMaterial) {
+                $rawMaterials[$key]['model'] = Material::find($rawMaterial['id']);
+            }
+            $in->materials = $rawMaterials;
+        }
+
+        $data = [];
+        $data['ins'] = $ins;
+
+        return view('purchase.on.in', $data);
+    }
 }

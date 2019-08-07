@@ -264,6 +264,7 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
 Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(
     function () {
         Route::get('on', 'OnController@index')->name('on.index');
+        Route::get('ion', 'OnController@in')->name('ion.index');
 
         Route::get('in/search/{status}/{pay_status}', 'InController@index')
             ->where('status', '[0-9]+')
