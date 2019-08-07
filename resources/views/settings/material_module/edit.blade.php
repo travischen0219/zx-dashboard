@@ -89,7 +89,7 @@
 
 @section('content')
 
-<div class="row">
+<div id="app" class="row">
 
     <div class="col-md-12 ">
         <!-- BEGIN SAMPLE FORM PORTLET-->
@@ -101,43 +101,30 @@
                     id="material_module_from" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
+
+                    <h3 class="form-group">
+                        編號 : <span style="color:#000">{{ $material_module->code }}</span>
+                    </h3>
+
+                    <div class="form-group form-md-line-input form-md-floating-label">
+                        <input type="text" name="name" class="form-control" id="name" value="{{ $material_module->name }}">
+                        <label for="name" style="color: #248ff1;">名稱</label>
+                        <span class="help-block"></span>
+                    </div>
+
+                    <div class="form-group form-md-line-input form-md-floating-label">
+                        <textarea class="form-control" rows="3" name="memo" id="memo">{{ $material_module->memo }}</textarea>
+                        <label for="memo" style="color:#248ff1;font-size: 16px;">產品說明</label>
+                    </div>
+
+                    <material-table
+                        :rows="rows"
+                        :units="units"
+                        ref="materialTable">
+                    </material-table>
+
                     <div class="form-body">
-
-                        <div class="col-md-12" style="height:90px;">
-
-                            <div class="col-md-4">
-                                <div class="form-group form-md-line-input">
-                                    <input type="text" name="name" class="form-control" id="name"
-                                        value="{{ $material_module->name }}">
-                                    <label for="name" style="color:#248ff1;">名稱</label>
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group form-md-line-input">
-                                    <input type="text" name="code" class="form-control" id="code"
-                                        value="{{ $material_module->code }}" disabled="disabled">
-                                    <label for="lot_number" style="color:#248ff1;">編號</label>
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-md-12">
-
-
-                            <div class="col-md-12">
-                                <div class="form-group form-md-line-input">
-                                    <textarea class="form-control" rows="3" name="memo" id="memo"
-                                        {{ $material_module->status != 1 ? 'disabled' : ''}}>{{ $material_module->memo }}</textarea>
-                                    <label for="memo" style="color:#248ff1;font-size: 16px;">產品說明</label>
-                                </div>
-                            </div>
-
-                        </div>
-
-
+                        {{--
                         <div class="col-md-12">
                             <!-- BEGIN EXAMPLE TABLE PORTLET-->
                             <div class="portlet light bordered">
@@ -191,7 +178,7 @@
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->
-                        </div>
+                        </div> --}}
 
                         {{-- file upload start --}}
                         <div class="col-md-12">
@@ -459,177 +446,28 @@
 <script src="{{asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript">
 </script>
 
+{{-- 物料表格 --}}
+@include('vue.material_table')
+
 <script>
-    var materialCount = $("#materialCount").val();
-    var currentMaterial = 0;
+var app = new Vue({
+    el: '#app',
+    data: {
+        units: {!! $units !!},
+        rows: {!! $materials2 !!}
+    }
+})
 
-    function addMaterial() {
-        $.post(
-            "{{ route('selectMaterial_module.addRow') }}", {
-                '_token': "{{csrf_token()}}",
-                'materialCount': materialCount
-            },
-            function (response) {
-                $("#materialTable").append(response);
-                total();
-                materialCount++;
-            }
-        );
+function submit_btn() {
+    if ($('#name').val() == '') {
+        swalOption.title = '請輸入名稱';
+        swal(swalOption);
+        return false;
     }
 
-    function delMaterial(id) {
-        $("#materialRow" + id).fadeOut('fast', function () {
-            $(this).remove();
-            total();
-        });
-    }
-
-    function openSelectMaterial(id) {
-        currentMaterial = id;
-        $.magnificPopup.open({
-            showCloseBtn: false,
-            enableEscapeKey: false,
-            closeOnBgClick: true,
-            fixedContentPos: false,
-            modal: false,
-            type: 'iframe',
-            items: {
-                src: "{{route('selectMaterial')}}"
-            }
-        });
-    }
-
-    function setMaterial(code, name, buy, unit, cost, price, id, unit_name) {
-        $.magnificPopup.close();
-        var str = code + ' ' + name;
-        $('#materialName' + currentMaterial).text(str);
-        $('#material' + currentMaterial).val(id);
-        $('#materialAmount' + currentMaterial).val(buy);
-        $('#materialUnit_show' + currentMaterial).html(unit_name);
-        $('#materialUnit' + currentMaterial).val(unit);
-        $('#materialCost' + currentMaterial).val(cost);
-        $('#materialPrice' + currentMaterial).val(price);
-
-        total();
-    }
-
-    function total() {
-        var total_cost = 0;
-        var total_price = 0;
-
-        $(".materialRow").each(function (index, el) {
-            var subTotal = 0;
-            var subAmount = $(this).find(".materialAmount").val();
-            var subCost = $(this).find(".materialCost").val();
-            var subPrice = $(this).find(".materialPrice").val();
-
-            if (isNaN(subAmount) || isNaN(subCost) || isNaN(subPrice)) {
-                $(this).find(".materialSubTotal_cost").html("請輸入數字");
-                $(this).find(".materialSubTotal_price").html("請輸入數字");
-            } else if (subAmount <= 0 || subCost <= 0 || subPrice <= 0) {
-                $(this).find(".materialSubTotal_cost").html("不可為負數或零");
-                $(this).find(".materialSubTotal_price").html("不可為負數或零");
-            } else {
-                total_cost += subAmount * subCost;
-                $(this).find(".materialSubTotal_cost").html(subAmount * subCost);
-                total_price += subAmount * subPrice;
-                $(this).find(".materialSubTotal_price").html(subAmount * subPrice);
-            }
-        });
-
-        $("#materialTotal_cost").html(total_cost);
-        $("#materialTotal_price").html(total_price);
-        $("#total_cost").val(total_cost);
-        $("#total_price").val(total_price);
-    }
-
-    $(function () {
-        total();
-    });
-
-    function submit_btn() {
-
-        var check_number = 0;
-        var check_negative = 0;
-        var check_material = 0;
-        var check_same_material = 0;
-        var material_array = [];
-        var same_material = '';
-        $(".materialRow").each(function (index, el) {
-            var subAmount = $(this).find(".materialAmount").val();
-            var subCost = $(this).find(".materialCost").val();
-            var subPrice = $(this).find(".materialPrice").val();
-            if (isNaN(subAmount) || isNaN(subCost) || isNaN(subPrice)) {
-                check_number++;
-            }
-            if (subAmount <= 0 || subCost <= 0 || subPrice <= 0) {
-                check_negative++;
-            }
-
-            if ($(this).find(".select_material").val() != '') {
-                check_material++;
-            }
-            if (material_array.indexOf($(this).find(".select_material").val()) >= 0) {
-                check_same_material++;
-                same_material += $(this).find(".get_material_name").text() + "\r\n";
-            }
-            material_array.push($(this).find(".select_material").val());
-        });
-        if (check_number > 0) {
-            $('#error_number').click();
-            return;
-        }
-        if (check_negative > 0) {
-            //       $('#error_negative').click();
-            //      return;
-        }
-        if (check_material == 0) {
-            $('#error_material').click();
-            return;
-        }
-        if (check_same_material > 0) {
-            swal({
-                title: "選擇的物料有重複",
-                text: same_material,
-                type: "warning",
-                showCancelButton: false,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: '確定',
-                cancelButtonText: '取消',
-                closeOnConfirm: true
-            });
-            return;
-        }
-
+    if (checkMaterials()) {
         $("#material_module_from").submit();
     }
-
-    function batchEditAmount() {
-        $("#batchEdit").fadeToggle('fast');
-    }
-
-    function batchAmountApply() {
-        if (isNaN($("#batchAmount").val())) {
-            swal({
-                title: "請輸入數字",
-                type: "warning",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: '確定',
-                closeOnConfirm: true
-            }, function () {
-                $("#batchAmount").val('');
-            });
-
-            return false;
-        }
-
-        $(".materialAmount").each(function(index, element) {
-            $(this).val(($(this).val() * $("#batchAmount").val()).toFixed(2));
-        });
-
-        // $(".materialAmount").val($(".materialAmount").val() * $("#batchAmount").val());
-        $("#batchAmount").val('');
-        $("#batchEdit").hide();
-    }
+}
 </script>
 @endsection

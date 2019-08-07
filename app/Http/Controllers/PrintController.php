@@ -175,30 +175,53 @@ class PrintController extends Controller
         if (!$module) exit();
 
         $materials = unserialize($module->materials);
-        $module->count = count($materials['material']);
+        $materials2 = Material_module::encodeMaterials($module->materials, true);
 
         $array = [];
-        for($i = 0; $i < count($materials['material']); $i++) {
-            $material = Material::find($materials['material'][$i]);
-            $unit = Material_unit::find($material->unit);
+        foreach ($materials2 as $material) {
+            $m = Material::find($material['id']);
+            $unit = Material_unit::find($material['unit']);
 
             $array[] = [
-                'id' => $material->id,
-                'code' => $material->fullCode,
-                'name' => $material->fullName,
-                'size' => $material->size,
-                'color' => $material->color,
-                'stock' => $material->stock,
-                'memo' => $material->memo,
-                'amount' => $materials['materialAmount'][$i],
-                'price' => (float) $materials['materialPrice'][$i],
+                'id' => $material['id'],
+                'code' => $m->fullCode,
+                'name' => $m->fullName,
+                'size' => $m->size,
+                'color' => $m->color,
+                'stock' => $m->stock,
+                'memo' => $m->memo,
+                'amount' => $material['amount'],
+                'price' => (float) $material['price'],
                 'unit' =>  $unit->name
             ];
         }
 
         $module->materials = $array;
 
-        $data = [];
+        // $module->count = count($materials['material']);
+
+        // $array = [];
+        // for($i = 0; $i < count($materials['material']); $i++) {
+        //     $material = Material::find($materials['material'][$i]);
+        //     $unit = Material_unit::find($material->unit);
+
+        //     $array[] = [
+        //         'id' => $material->id,
+        //         'code' => $material->fullCode,
+        //         'name' => $material->fullName,
+        //         'size' => $material->size,
+        //         'color' => $material->color,
+        //         'stock' => $material->stock,
+        //         'memo' => $material->memo,
+        //         'amount' => $materials['materialAmount'][$i],
+        //         'price' => (float) $materials['materialPrice'][$i],
+        //         'unit' =>  $unit->name
+        //     ];
+        // }
+
+        // $module->materials = $array;
+
+        // 單筆列印
         $data = [];
         $data['modules'][0]['module'] = $module;
 

@@ -32,7 +32,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -41,7 +41,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -63,7 +63,7 @@
 
                         <div class="form-group form-md-line-input form-md-floating-label">
                             <input type="text" name="name" class="form-control" id="form_control_1" value="{{ $unit->name }}">
-                            <label for="form_control_1">分類名稱</label>
+                            <label for="form_control_1">單位名稱</label>
                             <span class="help-block"></span>
                         </div>
 
@@ -71,7 +71,7 @@
                             <span>最後修改人員 : {{ $updated_user->fullname }} @if($updated_user->delete_flag != 0) <span style="color:red;">(該人員已刪除)</span> @endif</span><br>
                             <span>最後修改時間 : {{ $unit->updated_at }}</span>
                         </div>
-                        
+
                     </div>
                     <div class="form-actions noborder">
                         <button type="submit" class="btn blue">存 檔</button>
@@ -81,8 +81,8 @@
             </div>
         </div>
         <!-- END SAMPLE FORM PORTLET-->
-    
-    
+
+
     </div>
 </div>
 

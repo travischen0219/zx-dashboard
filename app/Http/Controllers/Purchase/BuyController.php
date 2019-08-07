@@ -68,7 +68,10 @@ class BuyController extends Controller
                 $buy_no = $last_buy_no->buy_no + 1;
             }
         }
-        return view('purchase.buy.create', compact('buy_no'));
+
+        $units = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
+
+        return view('purchase.buy.create', compact('buy_no', 'units'));
     }
 
     /**

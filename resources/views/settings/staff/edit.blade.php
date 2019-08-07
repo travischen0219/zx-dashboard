@@ -21,7 +21,7 @@
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
         background: #43a546; }
 
-    
+
 
     .form-group.form-md-line-input .form-control::-moz-placeholder {
       color: #43a546;}
@@ -31,7 +31,7 @@
       color: #43a546; }
 
     .form-horizontal .form-group.form-md-line-input > label {
-    
+
     color: #43a546;
     }
 
@@ -40,7 +40,7 @@
         background-color: #43a546;
     }
 
-    
+
 
 </style>
 
@@ -54,7 +54,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -63,7 +63,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -81,7 +81,7 @@
             <div class="portlet-body form">
                 <form role="form" action="{{ route('staff.update',$user->id) }}" method="POST">
                     {{ csrf_field() }}
-                    {{ method_field('PUT') }}             
+                    {{ method_field('PUT') }}
                     <div class="form-body">
 
                     <div class="col-md-12">
@@ -109,14 +109,14 @@
                                 @foreach($deps as $dep)
                                     <option value="{{$dep->id}}" {{ $user->department_id == $dep->id ? 'selected' : '' }}>{{$dep->name}} </option>
                                 @endforeach
-                                
+
                             </select>
                             <label for="form_control_3" style="color:#43a546;"><span style="color:red;">*</span>部門</label>
                         </div>
                     </div>
 
                     <div class="col-md-3">
-                        
+
                         <div class="form-group form-md-line-input">
                             <select class="form-control" id="form_control_4" name="pro_title">
                                 <option value="" {{ $user->professional_title_id=='' ? 'selected' : '' }}>選擇職稱</option>
@@ -213,7 +213,7 @@
                                         <span class="check"></span>
                                         <span class="box"></span> 關閉 </label>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -225,8 +225,8 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">    
-                    <hr>                
+                    <div class="col-md-12">
+                    <hr>
                     <div class="form-actions noborder">
                         <button type="submit" class="btn"><i class="fa fa-check"></i> 存 檔</button>
                         <a href="{{ route('staff.index') }}" class="btn red"><i class="fa fa-times"></i> 取 消</a>
@@ -238,8 +238,8 @@
             </div>
         </div>
         <!-- END SAMPLE FORM PORTLET-->
-    
-    
+
+
     </div>
 </div>
 

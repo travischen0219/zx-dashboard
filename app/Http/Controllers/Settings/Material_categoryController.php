@@ -30,7 +30,7 @@ class Material_categoryController extends Controller
             foreach($data_id as $key=>$value){
                 $cate = Material_category::find($value);
                 $cate->orderby = $data_orderby[$key];
-                $cate->updated_user = session('admin_user')->id;                                                                      
+                $cate->updated_user = session('admin_user')->id;
                 $cate->save();
             }
             return "success";
@@ -58,7 +58,7 @@ class Material_categoryController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         if(Material_category::where('delete_flag','0')->where('code',$request->code)->first()){
             return redirect()->back()->with('error','分類代號已存在 不可重覆');
         }
@@ -83,6 +83,7 @@ class Material_categoryController extends Controller
             $cate = new Material_category;
             $cate->code = $request->code;
             $cate->name = $request->name;
+            $cate->cal = $request->cal;
             $cate->orderby = $final_orderby + 1;
             $cate->created_user = session('admin_user')->id;
             $cate->delete_flag = 0;
@@ -90,7 +91,7 @@ class Material_categoryController extends Controller
             return redirect()->route('material_category.index')->with('message', '新增成功');
         } catch(Exception $e) {
             return redirect()->route('material_category.index')->with('error', '新增失敗');
-            
+
         }
     }
 
@@ -112,7 +113,7 @@ class Material_categoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
+    {
         $cate = Material_category::find($id);
         if($cate->updated_user > 0){
             $updated_user = User::where('id',$cate->updated_user)->first();
@@ -153,12 +154,13 @@ class Material_categoryController extends Controller
         try{
             $cate = Material_category::find($id);
             $cate->name = $request->name;
-            $cate->updated_user = session('admin_user')->id;          
+            $cate->cal = $request->cal;
+            $cate->updated_user = session('admin_user')->id;
             $cate->save();
             return redirect()->route('material_category.index')->with('message', '修改成功');
         } catch(Exception $e) {
             return redirect()->route('material_category.index')->with('error', '修改失敗');
-            
+
         }
     }
 
@@ -193,11 +195,11 @@ class Material_categoryController extends Controller
                 $cate->delete_flag = 1;
                 $cate->deleted_at = Now();
                 $cate->deleted_user = session('admin_user')->id;
-                $cate->save();                
+                $cate->save();
                 return redirect()->route('material_category.index')->with('message','刪除成功');
             }
         } catch (Exception $e) {
-            return redirect()->route('material_category.index')->with('error','刪除失敗');            
-        } 
+            return redirect()->route('material_category.index')->with('error','刪除失敗');
+        }
     }
 }

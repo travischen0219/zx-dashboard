@@ -25,7 +25,7 @@
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
         background: #248ff1; }
 
-    
+
 
     .form-group.form-md-line-input .form-control::-moz-placeholder {
       color: #248ff1;}
@@ -35,7 +35,7 @@
       color: #248ff1; }
 
     .form-horizontal .form-group.form-md-line-input > label {
-    
+
     color: #248ff1;
     }
 
@@ -110,7 +110,7 @@
 <div class="page-bar">
 
     <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
+    @include('layouts.theme_panel')
     <!-- END THEME PANEL -->
 
 
@@ -119,7 +119,7 @@
         <small></small>
     </h1>
     <!-- END PAGE TITLE-->
-    
+
 </div>
 <!-- END PAGE BAR -->
 
@@ -137,7 +137,7 @@
             <div class="portlet-body form">
                 <form role="form" action="{{ route('materials.update', $material->id) }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    {{ method_field('PUT') }}                                                    
+                    {{ method_field('PUT') }}
                     <div class="form-body">
                         <div class="col-md-10">
 
@@ -147,7 +147,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <select class="form-control" id="material_category" name="material_category" onchange="showFullCode();">
+                                        <select class="form-control" id="material_category" name="material_category" onchange="getCal($(this).val()); showFullCode();">
                                             <option value="" {{ old('material_category') == '' ? 'selected' : '' }}>請選擇</option>
                                             @foreach($material_categories as $cate)
                                                 @if(old('material_category'))
@@ -163,7 +163,7 @@
                             </div>
 
 
-                            <div class="col-md-12">                        
+                            <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span >完整編號 : </span>
                                 </div>
@@ -171,12 +171,12 @@
                                     <span>{{ $material->fullCode }} </span><span style="color:red"> (不可更改)</span>
                                 </div>
                             </div>
-                            
-                            <div class="col-md-12">       
+
+                            <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span >品名 : </span>
-                                </div>  
-                                         
+                                </div>
+
                                 <div class="col-md-8">
                                     <div class="form-group form-md-line-input form-md-floating-label">
                                         <input type="text" name="fullName" class="form-control" id="form_control_1" value="{{ old('fullName')!='' ? old('fullName') : $material->fullName }}">
@@ -189,7 +189,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span >單位 : </span>
-                                </div>   
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-md-line-input">
                                         <select class="form-control" id="unit" name="unit">
@@ -223,10 +223,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">
+                            <div id="cal-column" class="well col-md-12" style="display: none;">
+                                <div class="col-md-12 text-danger">有指定計價欄位的分類才會出現</div>
+
                                 <div class="col-md-2 table_title">
                                     <span >計價單位 : </span>
-                                </div>   
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-md-line-input">
                                         <select class="form-control" id="cal_unit" name="cal_unit">
@@ -250,7 +252,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span ></span>
-                                </div>   
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-md-line-input form-md-floating-label">
                                         <input type="text" name="size" class="form-control" id="form_control_4" value="{{ old('size') != '' ? old('size') : $material->size }}">
@@ -270,7 +272,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span ></span>
-                                </div>   
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-md-line-input form-md-floating-label">
                                         <input type="text" name="buy" class="form-control" id="form_control_6" value="{{ old('buy') != '' ? old('buy') : $material->buy }}">
@@ -290,8 +292,8 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span >倉儲位置 : </span>
-                                </div>  
-                                            
+                                </div>
+
                                 <div class="col-md-8">
                                     <div class="info-box hover-zoom-effect" >
                                         <div class="icon bg-cyan">
@@ -314,7 +316,7 @@
                                                             (需指定後才能進行庫存操作)
                                                         @endif
                                                     </div>
-                                                    <div><span id="warehouse_show_2">@if($material->warehouse > 0) {{$warehouse->code}} @else 請點我選擇 @endif</span> 
+                                                    <div><span id="warehouse_show_2">@if($material->warehouse > 0) {{$warehouse->code}} @else 請點我選擇 @endif</span>
                                                         @if(false)
                                                             <span style="color:red;"> (關閉)</span>
                                                         @endif
@@ -330,7 +332,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-2 table_title">
                                     <span ></span>
-                                </div> 
+                                </div>
                                 <div class="col-md-8">
                                     <div class="form-group form-md-line-input">
                                         <textarea class="form-control" rows="3" name="memo" id="memo">{{ old('memo') != '' ? old('memo') : $material->memo }}</textarea>
@@ -338,12 +340,12 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-12">
                                 <div class="form-group form-md-line-input">
                                     <div class="col-md-2 table_title">
                                         <span >啟用狀態:</span>
-                                    </div> 
+                                    </div>
                                     <div class="col-md-8">
                                         <div class="md-radio-inline" style="margin-top:25px;">
                                             <div class="md-radio has-info">
@@ -371,12 +373,12 @@
                         </div>
 
                         {{-- file upload start --}}
-                        <div class="col-md-12">                                        
+                        <div class="col-md-12">
                             <div style="border: #248ff1 solid 2px;width:100%;height: 400px;">
                                 <div class="col-md-12">
                                     <p style="font-size:18px;margin-top:18px;margin-left:20px;color:#248ff1;">檔案上傳<span style="color:red;">【每一檔案上傳限制5M；操作新增時勿同時做刪除舊檔案動作，可先刪除再新增，或先新增存檔再刪除，新增和刪除檔案請分開兩次處理】</span></p>
                                     <hr>
-                                </div>  
+                                </div>
 
                                 @if($material->file_1 >0)
 
@@ -397,7 +399,7 @@
                                                         } else {
                                                             event.preventDefault();
                                                         }">刪除</a>
-                                                    
+
                                                 </p>
                                             </div>
                                         </div>
@@ -424,7 +426,7 @@
                                                         } else {
                                                             event.preventDefault();
                                                         }">刪除</a>
-                                                    
+
                                                 </p>
                                             </div>
                                         </div>
@@ -451,7 +453,7 @@
                                                         } else {
                                                             event.preventDefault();
                                                         }">刪除</a>
-                                                    
+
                                                 </p>
                                             </div>
                                         </div>
@@ -461,14 +463,14 @@
 
                                 @if($upload_check_1)
                                     <div class="col-md-4">
-                                        <div class="col-md-6">                    
+                                        <div class="col-md-6">
                                             <div class="form-group form-md-line-input form-md-floating-label">
                                                 <input type="text" name="name_1" class="form-control" id="name_1" value="{{ old('name_1') }}">
                                                 <label for="name_1">名稱</label>
                                                 <span class="help-block"></span>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">                    
+                                        <div class="col-md-12">
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                     <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -486,14 +488,14 @@
                                 @endif
                                 @if($upload_check_2)
                                     <div class="col-md-4">
-                                        <div class="col-md-6">                    
+                                        <div class="col-md-6">
                                             <div class="form-group form-md-line-input form-md-floating-label">
                                                 <input type="text" name="name_2" class="form-control" id="name_2" value="{{ old('name_2') }}">
                                                 <label for="name_2">名稱</label>
                                                 <span class="help-block"></span>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">                    
+                                        <div class="col-md-12">
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                     <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -511,14 +513,14 @@
                                 @endif
                                 @if($upload_check_3)
                                     <div class="col-md-4">
-                                        <div class="col-md-6">                    
+                                        <div class="col-md-6">
                                             <div class="form-group form-md-line-input form-md-floating-label">
                                                 <input type="text" name="name_3" class="form-control" id="name_3" value="{{ old('name_3') }}">
                                                 <label for="name_3">名稱</label>
                                                 <span class="help-block"></span>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">                    
+                                        <div class="col-md-12">
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
                                                     <img src="{{ asset('assets/apps/img/no_image.png') }}" alt="" /> </div>
@@ -533,7 +535,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endif 
+                                @endif
                             </div>
                         </div>
                         {{-- file upload end --}}
@@ -545,7 +547,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">         
+                        <div class="col-md-12">
                             <div class="form-actions noborder">
                                 <button type="submit" class="btn"><i class="fa fa-check"></i> 存 檔</button>
                                 <a href="{{ route('materials.index') }}" class="btn red"><i class="fa fa-times"></i> 取 消</a>
@@ -612,7 +614,7 @@
 //         $('#fullCode').html(str);
 //         $('#fullCode_input').val(str);
 
-        
+
 //     }
 // }
 
@@ -621,9 +623,9 @@
 function openSelectWarehouse() {
 
     $.magnificPopup.open({
-        showCloseBtn : false, 
+        showCloseBtn : false,
         enableEscapeKey : false,
-        closeOnBgClick: true, 
+        closeOnBgClick: true,
         fixedContentPos: false,
         modal:false,
         type:'iframe',
@@ -641,8 +643,21 @@ function setWarehouse(id,fullName,code,category){
 function delete_warehouse(){
     $('#warehouse_show_1').html('(需指定後才能進行庫存操作)');
     $('#warehouse_show_2').html('請點我選擇');
-    $('#warehouse_id').val('');    
+    $('#warehouse_id').val('');
 }
 
+var categories = {!! JSON_ENCODE($material_categories, JSON_HEX_QUOT | JSON_HEX_TAG) !!};
+
+function getCal(v) {
+    if (v != '' && categories[v].cal == '1') {
+        $('#cal-column').show();
+    } else {
+        $('#cal-column').hide();
+    }
+}
+
+$(function() {
+    getCal($('#material_category').val());
+})
 </script>
 @endsection

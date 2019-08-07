@@ -18,36 +18,58 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        if(Warehouse_category::where('delete_flag','0')->count() > 0){
-            $cate_first = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->first();
+        if (Warehouse_category::where('delete_flag', '0')->count() > 0) {
+            $search_like = '';
+
+            $cate_first = Warehouse_category::where('delete_flag', '0')
+                ->where('status', '1')
+                ->orderBy('orderby', 'ASC')
+                ->first();
             $search_code = $cate_first->id;
-            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();  
-            $warehouses = Warehouse::where('delete_flag','0')->where('category',$cate_first->id)->orderBy('code','ASC')->get();
-            return view('settings.warehouse.show',compact('warehouses','search_code','cates'));
+            $cates = Warehouse_category::where('delete_flag', '0')
+                ->where('status', '1')
+                ->orderBy('orderby', 'ASC')
+                ->get();
+            $warehouses = Warehouse::where('delete_flag', '0')
+                ->where('category', $cate_first->id)
+                ->orderBy('code', 'ASC')
+                ->get();
+            return view(
+                'settings.warehouse.show',
+                compact('warehouses', 'search_code', 'cates', 'search_like')
+            );
         } else {
-            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');                        
+            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');
         }
     }
 
     public function search(Request $request)
     {
-        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();       
-        
+        $cates = Warehouse_category::where('delete_flag', '0')
+            ->where('status', '1')
+            ->orderBy('orderby', 'ASC')
+            ->get();
+
         $search_like = $request->search_codeOrName;
         $search_code = $request->search_category;
-        $warehouses = Warehouse::where(function($query) use ($search_code,$search_like) {
-                                    $query->where('delete_flag','0')
-                                        ->where('category',$search_code)
-                                        ->where('code','like','%'.$search_like.'%');
-                                })
-                                ->orWhere(function($query) use ($search_code,$search_like) {
-                                    $query->where('delete_flag','0')
-                                        ->where('category',$search_code)
-                                        ->where('fullName','like','%'.$search_like.'%');
-                                })
-                                ->orderBy('code','ASC')
-                                ->get();
-        return view('settings.warehouse.show',compact('warehouses','search_code','cates'));
+        $warehouses = Warehouse::where(
+            function ($query) use ($search_code,$search_like) {
+                $query->where('delete_flag', '0')
+                    ->where('category', $search_code)
+                    ->where('code', 'like', '%' . $search_like . '%');
+            }
+        )->orWhere(
+            function ($query) use ($search_code,$search_like) {
+                $query->where('delete_flag', '0')
+                    ->where('category', $search_code)
+                    ->where('fullName', 'like', '%' . $search_like . '%');
+            }
+        )->orderBy('code', 'ASC')->get();
+
+        return view(
+            'settings.warehouse.show',
+            compact('warehouses', 'search_code', 'cates', 'search_like')
+        );
     }
 
     /**
@@ -57,7 +79,7 @@ class WarehouseController extends Controller
      */
     public function create()
     {
-        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();               
+        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
         return view('settings.warehouse.create',compact('cates'));
     }
 
@@ -71,12 +93,12 @@ class WarehouseController extends Controller
     {
         $same_code = Warehouse::where('delete_flag','0')->where('code',$request->code)->first();
         if($same_code){
-            return redirect()->back()->with('error', '倉儲編號已存在，不可重複');            
+            return redirect()->back()->with('error', '倉儲編號已存在，不可重複');
         }
 
         $rules = [
             'category' => 'required',
-            'code' => 'required',          
+            'code' => 'required',
             'fullName' => 'required',
         ];
 
@@ -84,7 +106,7 @@ class WarehouseController extends Controller
             'category.required' => '分類 必選',
             'fullName.required' => '倉儲名稱 必填',
             'code.required' => '倉儲編號 必填',
-            // 'code.unique' => '倉儲編號已存在，不可重複',                      
+            // 'code.unique' => '倉儲編號已存在，不可重複',
         ];
         $this->validate($request, $rules, $messages);
 
@@ -93,7 +115,7 @@ class WarehouseController extends Controller
         $file_3=null;
         if($request->hasFile('upload_image_1')){
             $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
-        } 
+        }
         if($request->hasFile('upload_image_2')){
             $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
         }
@@ -185,13 +207,13 @@ class WarehouseController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'category' => 'required',       
+            'category' => 'required',
             'fullName' => 'required',
         ];
 
         $messages = [
             'category.required' => '分類 必選',
-            'fullName.required' => '倉儲名稱 必填',                    
+            'fullName.required' => '倉儲名稱 必填',
         ];
         $this->validate($request, $rules, $messages);
 
@@ -204,7 +226,7 @@ class WarehouseController extends Controller
         if($request->hasFile('upload_image_1')){
             $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
             $check_1 = true;
-        } 
+        }
         if($request->hasFile('upload_image_2')){
             $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
             $check_2 = true;
@@ -228,9 +250,9 @@ class WarehouseController extends Controller
             }
             if($check_3){
                 $warehouse->file_3 = $file_3;
-            } 
+            }
             $warehouse->status = $request->status;
-            $warehouse->updated_user = session('admin_user')->id;       
+            $warehouse->updated_user = session('admin_user')->id;
             $warehouse->save();
             return redirect()->route('warehouses.index')->with('message','修改成功');
         } catch (Exception $e) {
@@ -278,8 +300,8 @@ class WarehouseController extends Controller
             $warehouse->save();
             return redirect()->route('warehouses.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('warehouses.index')->with('error','刪除失敗');            
-        } 
+            return redirect()->route('warehouses.index')->with('error','刪除失敗');
+        }
     }
 
     public function delete_file($file_no,$warehouse,$file_id)
@@ -303,8 +325,8 @@ class WarehouseController extends Controller
 
             return redirect()->route('warehouses.edit',$warehouse->id)->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('warehouses.edit',$warehouse->id)->with('error','刪除失敗');            
-        } 
+            return redirect()->route('warehouses.edit',$warehouse->id)->with('error','刪除失敗');
+        }
 
     }
 
@@ -316,7 +338,7 @@ class WarehouseController extends Controller
         $src_image = imagecreatefromstring(file_get_contents(asset('upload/'.$origin_file_name)));
         $src_width = imagesx($src_image);
         $src_height = imagesy($src_image);
-        
+
         $tmp_image_width = 0;
         $tmp_image_height = 0;
         if ($src_width / $src_height >= $width / $height) {
@@ -326,17 +348,17 @@ class WarehouseController extends Controller
             $tmp_image_height = $height;
             $tmp_image_width = round($tmp_image_height * $src_width / $src_height);
         }
-        
+
         $tmpImage = imagecreatetruecolor($tmp_image_width, $tmp_image_height);
         imagecopyresampled($tmpImage, $src_image, 0, 0, 0, 0, $tmp_image_width, $tmp_image_height, $src_width, $src_height);
-        
+
         $final_image = imagecreatetruecolor($width, $height);
         $color = imagecolorallocate($final_image, 255, 255, 255);
         imagefill($final_image, 0, 0, $color);
-        
+
         $x = round(($width - $tmp_image_width) / 2);
         $y = round(($height - $tmp_image_height) / 2);
-        
+
         imagecopy($final_image, $tmpImage, $x, $y, 0, 0, $tmp_image_width, $tmp_image_height);
 
         if($img_type == '.jpeg' || $img_type == '.jpg'){
@@ -345,7 +367,7 @@ class WarehouseController extends Controller
         $func = "image".substr($img_type,1);
         $func($final_image,'upload/'.$tmp_file_name);
         if(isset($final_image)) {imagedestroy($final_image);}
-        
+
     }
     private function file_process($name, $file)
     {
@@ -358,7 +380,7 @@ class WarehouseController extends Controller
             $file->move('upload', $thumb_origin);
             $this->thumb_process($thumb_origin, $thumb_450, $fileType, 450, 450);
         } else {
-            $thumb_450 = "file_image.jpg";            
+            $thumb_450 = "file_image.jpg";
             $file->move('upload', $thumb_origin);
         }
         $img = new Gallery;

@@ -11,6 +11,8 @@
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #1 for statistics, charts, recent events and reports" name="description" />
         <meta content="" name="author" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
         <link href="{{asset('assets/global/plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css" />
@@ -137,12 +139,29 @@
         <script src="{{asset('assets/layouts/global/scripts/quick-sidebar.min.js')}}" type="text/javascript"></script>
         <script src="{{asset('assets/layouts/global/scripts/quick-nav.min.js')}}" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+        <script>
+        Vue.filter('number_format', function (value) {
+            value = Math.round(value * 100) / 100
+            return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        })
+
+        var number_format = Vue.filter('my-number_format')
+
+        var swalOption = {
+            title: "",
+            text: "",
+            type: "warning",
+            showCancelButton: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: '確定',
+            cancelButtonText: '取消',
+            closeOnConfirm: true
+        };
+        </script>
 
         @yield('scripts')
 
-        <script>
-
-        </script>
     </body>
 
 </html>
