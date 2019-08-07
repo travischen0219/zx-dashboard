@@ -190,6 +190,8 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(fun
 
 });
 
+
+
 /*** 報表 ***/
 Route::middleware('admin.login')->prefix('print')->group(
     function () {
@@ -261,6 +263,8 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
 // 進貨管理
 Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(
     function () {
+        Route::get('on', 'OnController@index')->name('on.index');
+
         Route::get('in/search/{status}/{pay_status}', 'InController@index')
             ->where('status', '[0-9]+')
             ->where('pay_status', '[0-9]+');

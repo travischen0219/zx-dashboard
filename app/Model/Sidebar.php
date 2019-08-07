@@ -112,6 +112,12 @@ class Sidebar
         ];
 
         $data[] = [
+            'route' => 'on.index',
+            'request' => 'purchase/on*',
+            'title' => '在途量追蹤 (依照物料)'
+        ];
+
+        $data[] = [
             'route' => 'stock.index',
             'request' => 'purchase/stock*',
             'title' => '入庫'
