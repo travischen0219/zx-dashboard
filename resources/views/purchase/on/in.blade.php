@@ -9,6 +9,10 @@
 @endsection
 
 @section('content')
+    @if (count($ins) == 0)
+        <h1>沒有任何在途物料</h1>
+    @endif
+
     <table class="table table-bordered" id="data">
         @foreach($ins as $key => $in)
             <tr class="bg-primary text-white">
