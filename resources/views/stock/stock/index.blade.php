@@ -70,7 +70,7 @@
                         <td title="採購單號">{{ $stock->in ? 'P' . $stock->in->code : '無' }}</td>
                         <td title="批號">{{ $stock->in->lot->code ?? $stock->lot->code ?? '無' }}</td>
                         <td title="物料">{{ $stock->material->fullCode ?? ''}} {{ $stock->material->fullName ?? ''}}</td>
-                        <td title="數量">{{ $stock->amount }}{{ $unit}}</td>
+                        <td title="數量">{{ $stock->amount }}{{ $unit }}</td>
                         <td title="入庫 (前→後) 數量">{{ $stock->amount_before }}{{ $unit}} → {{ $stock->amount_after }}{{ $unit}}</td>
                         <td title="目前庫存">{{ $stock->material->stock ?? 0 }}{{ $unit}}</td>
                     </tr>

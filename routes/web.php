@@ -286,8 +286,11 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
             ->where('id', '[0-9]+');
         Route::get('inventory/{id}/check', 'InventoryController@check')
             ->where('id', '[0-9]+');
+        Route::get('inventory/{id}/quickFix', 'InventoryController@quickFix')
+            ->where('id', '[0-9]+');
         Route::get('inventory/{id}/fix', 'InventoryController@fix')
             ->where('id', '[0-9]+');
+        Route::post('inventory/fixSave', 'InventoryController@fixSave');
         Route::post('inventory/record', 'InventoryController@record');
 
         Route::get('inventory/search/{status}', 'InventoryController@index');

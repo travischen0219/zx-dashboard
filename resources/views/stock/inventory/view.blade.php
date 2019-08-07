@@ -40,26 +40,28 @@
     <table class="table table-striped table-bordered table-hover" id="data">
         <thead>
             <tr class="bg-success text-white">
-                <th>物料編號</th>
                 <th>分類</th>
                 <th>品名</th>
                 <th>單位</th>
                 <th>尺寸</th>
                 <th>應有庫存</th>
-                <th>目前庫存</th>
+                {{-- <th>目前庫存</th> --}}
                 <th>盤點數量</th>
                 <th>異常</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody>
             @foreach($inventoryRecords as $inventoryRecord)
                 <tr>
-                    <td titler="物料編號" class="align-middle">{{ $inventoryRecord->material->fullCode ?? '' }}</td>
                     <td titler="分類" class="align-middle">
                         [{{ $inventoryRecord->material->material_category_name->code ?? '' }}]
                         {{ $inventoryRecord->material->material_category_name->name ?? '' }}
                     </td>
-                    <td titler="品名" class="align-middle">{{ $inventoryRecord->material->fullName ?? '' }}</td>
+                    <td titler="品名" class="align-middle">
+                        {{ $inventoryRecord->material->fullCode ?? '' }}<br>
+                        {{ $inventoryRecord->material->fullName ?? '' }}
+                    </td>
                     <td titler="單位" class="align-middle">{{ $inventoryRecord->material->material_unit_name->name ?? '' }}</td>
                     <td titler="尺寸" class="align-middle">{{ $inventoryRecord->material->size ?? '' }}</td>
                     <td titler="應有庫存" align="right" class="align-middle">
@@ -69,40 +71,61 @@
                             {{ number_format($inventoryRecord->material->stock ?? 0, 2) }}
                         @endif
                     </td>
-                    <td titler="目前庫存" align="right" class="align-middle">
+                    {{-- <td titler="目前庫存" align="right" class="align-middle">
                         {{ number_format($inventoryRecord->material->stock ?? 0, 2) }}
-                    </td>
+                    </td> --}}
                     <td titler="盤點數量" align="right" class="text-nowrap align-middle">
                         @if ($inventoryRecord->physical_inventory != null)
                             {{ number_format($inventoryRecord->physical_inventory, 2) }}
                         @endif
                     </td>
-                    <td titler="異常" id="result_{{ $inventoryRecord->id }}" align="center" class="align-middle">
+                    <td titler="異常" id="result_{{ $inventoryRecord->id }}" align="left" class="align-middle" nowrap>
                         @if ($inventoryRecord->physical_inventory != null)
-                            @if ($inventoryRecord->original_inventory == $inventoryRecord->physical_inventory)
+                            @if ($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory == 0)
                                 <span class="text-success">正確</span>
                             @else
-                                <span class="text-danger">
-                                    {{ number_format($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory, 2) }}
-                                </span>
-                                @if ($inventoryRecord->quick_fix == 0)
+                                <div>
+                                    異常：<span class="text-warning">
+                                        {{ number_format($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory, 2) }}
+                                    </span>
+                                </div>
+                                <div>
+                                    調整：<span class="text-info">
+                                        {{ number_format($inventoryRecord->fix(), 2) }}
+                                    </span>
+                                </div>
+                                <div>
+                                    差異剩餘：<span class="text-danger">
+                                        {{ number_format($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory - $inventoryRecord->fix(), 2) }}
+                                    </span>
+                                </div>
+                            @endif
+                        @else
+                            <span class="text-warning">未盤點</span>
+                        @endif
+                    </td>
+                    <td title="操作" align="center" class="align-middle" nowrap>
+                        @if ($inventoryRecord->physical_inventory != null)
+                            @if ($inventoryRecord->original_inventory != $inventoryRecord->physical_inventory)
+                                @if ($inventoryRecord->least() != 0)
                                     <button type="button"
                                         class="btn btn-sm btn-warning"
-                                        onclick="quickFix({{ $inventoryRecord->id }});"
-                                        style="float: right;">
-                                        <small style="float: right;">快速修正</small>
+                                        onclick="quickFix({{ $inventoryRecord->id }});">
+                                        <i class="fas fa-bolt"></i> 快速修正
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-sm btn-info"
+                                        onclick="fix({{ $inventoryRecord->id }});">
+                                        <i class="fas fa-balance-scale-right"></i> 差異處理
                                     </button>
                                 @else
                                     <button type="button"
                                         class="btn btn-sm btn-outline-success"
-                                        disabled="disabled"
-                                        style="float: right;">
-                                        <small style="float: right;">已修正</small>
+                                        disabled="disabled">
+                                        <i class="fas fa-check"></i> 已修正
                                     </button>
                                 @endif
                             @endif
-                        @else
-                            <span class="text-warning">未盤點</span>
                         @endif
                     </td>
                 </tr>
@@ -116,6 +139,11 @@
     <script>
     $(function () {
         var table = $('#data').DataTable(dtOptions)
+
+        $('#data').on('page.dt', function () {
+            var info = table.page.info()
+            console.log(info)
+        })
     })
 
     function saveCheck(id) {
@@ -140,18 +168,19 @@
                 'physical_inventory': physical_inventory
             },
             function(response) {
-                $('#physical_inventory_' + id).val(response.physical_inventory)
+                location.reload()
+                // $('#physical_inventory_' + id).val(response.physical_inventory)
 
-                if (response.diff == 0) {
-                    $("#result_" + id).html(`<span class="text-success">正確</span>`)
-                } else {
-                    $("#result_" + id).html(`
-                        <span class="text-danger">
-                            ${response.diff}
-                        </span>
-                    `)
-                }
-                $("#inventory_" + id).busyLoad('hide');
+                // if (response.diff == 0) {
+                //     $("#result_" + id).html(`<span class="text-success">正確</span>`)
+                // } else {
+                //     $("#result_" + id).html(`
+                //         <span class="text-danger">
+                //             ${response.diff}
+                //         </span>
+                //     `)
+                // }
+                // $("#inventory_" + id).busyLoad('hide');
             }
         )
     }
@@ -179,7 +208,7 @@
                     text: '資料送出中，請勿關閉或離開...'
                 })
 
-                location.href = `/stock/inventory/${id}/fix`
+                location.href = `/stock/inventory/${id}/quickFix`
             } else {
                 return false
             }
@@ -196,6 +225,10 @@
         // }, function () {
         //     location.href = '/stock/inventory/quick_fix/{{ $inventory->id }}/' + id;
         // })
+    }
+
+    function fix(id) {
+        location.href = `/stock/inventory/${id}/fix`
     }
     </script>
 @endsection

@@ -17,6 +17,7 @@ class Stock extends Model
         $data[2] = '採購轉入庫';
         $data[3] = '銷貨 - 退貨入庫';
         $data[10] = '盤點 - 快速修正';
+        $data[12] = '盤點 - 差異處理';
 
         return $data;
     }

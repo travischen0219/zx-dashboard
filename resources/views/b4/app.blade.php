@@ -38,7 +38,8 @@
         'buttons': [
             { extend: 'colvis', text: '欄位篩選' }
         ],
-        'order': []
+        'order': [],
+        'stateSave': true
     }
 
     const swalOption = {

@@ -234,7 +234,7 @@ class InventoryController extends Controller
         return view('stock.inventory.view', $data);
     }
 
-    public function fix(Request $request)
+    public function quickFix(Request $request)
     {
         $id = $request->id ?? 0;
         if ($id == 0) abort(404);
@@ -264,5 +264,58 @@ class InventoryController extends Controller
         $inventoryRecord->material->save();
 
         return redirect("/stock/inventory/{$inventory->id}/view");
+    }
+
+    public function fix(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) abort(404);
+
+        // 盤點細目
+        $inventoryRecord = InventoryRecord::find($id);
+        $stocks = $inventoryRecord->stocks();
+
+        // 盤點表
+        $inventory = Inventory::find($inventoryRecord->inventory_id);
+
+        $data = [];
+        $data['inventoryRecord'] = $inventoryRecord;
+        $data['inventory'] = $inventory;
+        $data['stocks'] = $stocks;
+
+        return view('stock.inventory.fix', $data);
+    }
+
+    public function fixSave(Request $request)
+    {
+        $id = $request->id ?? 0;
+        $amount = $request->amount ?? 0;
+        $memo = $request->memo ?? 0;
+        if ($id == 0) abort(404);
+
+        // 盤點細目
+        $inventoryRecord = InventoryRecord::find($id);
+
+        // 盤點表
+        $inventory = Inventory::find($inventoryRecord->inventory_id);
+
+        // 建立一筆差異
+        $stock = new Stock;
+        $stock->inventory_id = $inventory->id;
+        $stock->type = 12; // 差異處理
+        $stock->stock_date = date('Y-m-d');
+        $stock->material_id = $inventoryRecord->material_id;
+        $stock->amount = $amount;
+        $stock->amount_before = $inventoryRecord->physical_inventory;
+        $stock->amount_after = $inventoryRecord->physical_inventory + $amount;
+        $stock->memo = $memo;
+        $stock->save();
+
+        // 存回物料
+        $inventoryRecord->material->stock = $stock->amount_after;
+        $inventoryRecord->material->save();
+
+        return redirect('/stock/inventory/' . $id . '/fix');
+
     }
 }
