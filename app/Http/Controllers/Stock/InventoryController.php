@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Stock;
 
-use App\Model\Buy;
-use App\Model\User;
-use App\Model\Material;
 use App\Model\Inventory;
-use App\Model\Material_unit;
+use App\Model\InventoryRecord;
+use App\Model\Material_category;
+use App\Model\Material;
 use App\Model\Stock;
 use Illuminate\Http\Request;
-use App\Model\Inventory_list;
-use App\Model\Material_warehouse;
-use App\Model\Warehouse_category;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\InventoryRequest;
 
 class InventoryController extends Controller
 {
@@ -21,30 +18,21 @@ class InventoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $search_code = 'all';
-        $inventories = Inventory::where('delete_flag','0')->get();
-        return view('stock.inventory.show',compact('inventories','search_code'));
-    }
+        $status = $request->status ?? 0;
+        $data = [];
 
-    public function search(Request $request)
-    {
-        $search_code = $request->search_category;
-        if($request->search_lot_number){
-            if($search_code == 'all'){
-                $inventories = Inventory::where('delete_flag','0')->where('lot_number','like','%'.$request->search_lot_number.'%')->get();
-            } else {
-                $inventories = Inventory::where('delete_flag','0')->where('status',$search_code)->where('lot_number','like','%'.$request->search_lot_number.'%')->get();
-            }
-        } else {
-            if($search_code == 'all'){
-                $inventories = Inventory::where('delete_flag','0')->get();
-            } else {
-                $inventories = Inventory::where('delete_flag','0')->where('status',$search_code)->get();
-            }
-        }
-        return view('stock.inventory.show',compact('inventories','search_code'));
+        $data['inventories'] = Inventory::orderBy('status', 'asc')->orderBy('id', 'desc');
+
+        if ($status > 0) $data['inventories'] = $data['inventories']->where('status', $status);
+        $data['inventories'] = $data['inventories']->get();
+
+        $data['categories'] = Material_category::allWithCode();
+        $data['statuses'] = Inventory::statuses();
+        $data['status'] = $status;
+
+        return view('stock.inventory.index', $data);
     }
 
     /**
@@ -54,21 +42,16 @@ class InventoryController extends Controller
      */
     public function create()
     {
-        $inventory_no = date("Ymd")."001";
-        $last_inventory_no = Inventory::orderBy('inventory_no','DESC')->first();
-        if($last_inventory_no){
-            if($last_inventory_no->inventory_no >= $inventory_no){
-                $inventory_no = $last_inventory_no->inventory_no + 1;
-            }
-        }
+        $data = [];
+        $data['function'] = 'inventory';
+        $data['title'] = '盤點 - 新增盤點';
 
-        if(Warehouse_category::where('delete_flag','0')->count() > 0){
-            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
-            return view('stock.inventory.create',compact('inventory_no','cates'));
-        } else {
-            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');
-        }
+        $inventory = new Inventory;
 
+        $data['inventory'] = $inventory;
+        $data['categories'] = Material_category::allWithID();
+
+        return view('stock.inventory.create', $data);
     }
 
     /**
@@ -77,252 +60,262 @@ class InventoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InventoryRequest $request)
     {
+        $validated = $request->validated();
 
-
-        $rules = [
-            'lot_number' => 'required',
-            'inventory_sdate' => 'date_format:"Y-m-d"|required',
-            // 'inventory_edate' => 'date_format:"Y-m-d"|required',
-        ];
-        $messages = [
-            'lot_number.required' => '批號 必填',
-            'inventory_sdate.date_format' => '盤點開始日期限格式錯誤',
-            'inventory_sdate.required' => '盤點開始日期 必填',
-            // 'inventory_edate.date_format' => '盤點結束日期格式錯誤',
-        ];
-        $this->validate($request, $rules, $messages);
-
-         try{
-            $inventory = new Inventory;
-            $inventory->lot_number = $request->lot_number;
-            $inventory->inventory_no = $request->inventory_no;
-
-            if($request->warehouse_category == 'all'){
-                $inventory->warehouse_category = 0;
-            } else {
-                $inventory->warehouse_category = $request->warehouse_category;
-            }
-            $inventory->inventory_sdate = $request->inventory_sdate;
-            $inventory->inventory_edate = $request->inventory_edate;
-            $inventory->memo = $request->memo;
-            $inventory->status = 1;
-            $inventory->created_user = session('admin_user')->id;
-            $inventory->delete_flag = 0;
-            $inventory->save();
-
-            if($request->warehouse_category == 'all'){
-                $warehouse_categories = Warehouse_category::where('delete_flag','0')->where('status','1')->get();
-                foreach($warehouse_categories as $warehouse_category){
-                    $material_warehouses = Material_warehouse::where('delete_flag','0')->where('warehouse_category_id',$warehouse_category->id)->orderBy('warehouse_id','ASC')->get();
-                    foreach($material_warehouses as $material){
-                        $inventory_list = new Inventory_list;
-                        $inventory_list->lot_number = $request->lot_number;
-                        $inventory_list->inventory_id = $inventory->id;
-                        $inventory_list->material_id = $material->material_id;
-                        $inventory_list->warehouse_id = $material->warehouse_id;
-                        $inventory_list->original_inventory = $material->stock;
-                        $inventory_list->created_user = session('admin_user')->id;
-                        $inventory_list->delete_flag = 0;
-                        $inventory_list->save();
-                    }
-                }
-            } else {
-                $material_warehouses = Material_warehouse::where('delete_flag','0')->where('warehouse_category_id',$request->warehouse_category)->orderBy('warehouse_id','ASC')->get();
-                foreach($material_warehouses as $material){
-                    $inventory_list = new Inventory_list;
-                    $inventory_list->lot_number = $request->lot_number;
-                    $inventory_list->inventory_id = $inventory->id;
-                    $inventory_list->material_id = $material->material_id;
-                    $inventory_list->warehouse_id = $material->warehouse_id;
-                    $inventory_list->original_inventory = $material->stock;
-                    $inventory_list->created_user = session('admin_user')->id;
-                    $inventory_list->delete_flag = 0;
-                    $inventory_list->save();
-                }
-
-            }
-
-            return redirect()->route('inventory.index')->with('message', '新增成功');
-        } catch(Exception $e) {
-            return redirect()->route('inventory.index')->with('error', '新增失敗');
-        }
-
+        $this->save(0, $request);
+        return redirect('/stock/inventory')->with('message', '新增成功');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Model\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Inventory $inventory)
     {
-        $inquiry = Inventory::find($id);
-        if($inquiry->updated_user > 0){
-            $updated_user = User::where('id',$inquiry->updated_user)->first();
-        } else {
-            $updated_user = User::where('id',$inquiry->created_user)->first();
-        }
-        return view('stock.inventory.show_one', compact('inquiry','updated_user'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Model\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Inventory $inventory)
     {
-        $inquiry = Inventory::find($id);
-        if($inquiry->updated_user > 0){
-            $updated_user = User::where('id',$inquiry->updated_user)->first();
-        } else {
-            $updated_user = User::where('id',$inquiry->created_user)->first();
-        }
-        return view('stock.inventory.edit', compact('inquiry','updated_user'));
-    }
+        $data = [];
+        $data['function'] = 'inventory';
+        $data['title'] = '盤點 - 修改盤點';
 
-     public function edit_list($id)
-    {
-        $inventory = Inventory::find($id);
-        $materials = Inventory_list::where('inventory_id',$id)->get();
-        return view('stock.inventory.edit_list', compact('inventory','materials'));
-    }
+        $data['inventory'] = $inventory;
+        $data['categories'] = Material_category::allWithID();
+        $data['statuses'] = Inventory::statuses();
 
-    public function show_list($id)
-    {
-        $inventory = Inventory::find($id);
-        $materials = Inventory_list::where('inventory_id',$id)->get();
-        return view('stock.inventory.show_list', compact('inventory','materials'));
+        return view('stock.inventory.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Model\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(InventoryRequest $request, Inventory $inventory)
     {
-        if($request->status == 2){
-            if($request->inventory_edate == ''){
-                return redirect()->back()->with('error', '盤點結束日期 必填');
-            }
-        }
+        $validated = $request->validated();
 
-        $rules = [
-            // 'lot_number' => 'required',
-            // 'inventory_sdate' => 'date_format:"Y-m-d"|required',
-            'inventory_edate' => 'date_format:"Y-m-d"|required',
-        ];
-        $messages = [
-            // 'lot_number.required' => '批號 必填',
-            // 'inventory_sdate.date_format' => '盤點開始日期限格式錯誤',
-            'inventory_edate.required' => '盤點結束日期 必填',
-            'inventory_edate.date_format' => '盤點結束日期格式錯誤',
-        ];
-        $this->validate($request, $rules, $messages);
-
-
-            try{
-                $inquiry = Inventory::find($id);
-                // $inquiry->lot_number = $request->lot_number;
-                // $inquiry->inventory_sdate = $request->inventory_sdate;
-                $inquiry->inventory_edate = $request->inventory_edate;
-                $inquiry->memo = $request->memo;
-                $inquiry->status = $request->status;
-                $inquiry->updated_user = session('admin_user')->id;
-                $inquiry->save();
-
-                return redirect()->route('inventory.index')->with('message', '修改成功');
-
-            } catch(Exception $e) {
-                return redirect()->route('inventory.index')->with('error', '修改失敗');
-            }
-
-
+        $this->save($inventory->id, $request);
+        return redirect('/stock/inventory')->with('message', '修改成功');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Model\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Inventory $inventory)
     {
-        try{
-            $inquiry = Inventory::find($id);
-            $inquiry->delete_flag = 1;
-            $inquiry->deleted_at = Now();
-            $inquiry->deleted_user = session('admin_user')->id;
-            $inquiry->save();
-            return redirect()->route('inventory.index')->with('message','刪除成功');
-        } catch (Exception $e) {
-            return redirect()->route('inventory.index')->with('error','刪除失敗');
-        }
+        $inventoryRecords = InventoryRecord::where('inventory_id', $inventory->id);
+        $inventoryRecords->update(['deleted_user' => session('admin_user')->id]);
+        $inventoryRecords->delete();
+
+        $inventory->deleted_user = session('admin_user')->id;
+        $inventory->save();
+        $inventory->delete();
+
+        return redirect(route('inventory.index'));
     }
 
-    public function quick_fix(Request $request)
+    public function save($id, $request)
     {
-        $inventoryID = $request->inventoryID ?? 0;
+        // 新增或修改
+        if ($id == 0) {
+            $inventory = new Inventory;
+
+            $code = date("Ymd") . "001";
+            $last_code = Inventory::orderBy('code', 'DESC')->first();
+            if ($last_code) {
+                if ($last_code->code >= $code) {
+                    $code = $last_code->code + 1;
+                }
+            }
+            $inventory->code = $code;
+            $inventory->status = 1;
+        } else {
+            $inventory = Inventory::find($id);
+            $inventory->status = $request->status;
+        }
+
+        $inventory->name = $request->name ?? '';
+        $inventory->category_id = $request->category_id ?? 0;
+        $inventory->start_date = $request->start_date ?? null;
+        $inventory->end_date = $request->end_date ?? null;
+        $inventory->memo = $request->memo ?? '';
+
+        $inventory->save();
+
+        // 新增盤點後，新增一張盤點清單
+        if ($id == 0) {
+            $materials = Material::where('delete_flag','0');
+
+            if ($inventory->category_id > 0) {
+                $category = Material_category::find($inventory->category_id);
+                $materials = $materials->where('material_categories_code', $category->code);
+            }
+
+            $materials = $materials->orderBy('fullCode', 'asc')->get();
+
+            foreach ($materials as $material_id) {
+                $inventoryRecord = new InventoryRecord;
+                $inventoryRecord->inventory_id = $inventory->id;
+                $inventoryRecord->material_id = $material_id->id;
+                $inventoryRecord->original_inventory = null;
+                $inventoryRecord->physical_inventory = null;
+                $inventoryRecord->quick_fix = 0;
+                $inventoryRecord->created_user = session('admin_user')->id;
+                $inventoryRecord->save();
+            }
+        }
+
+        return $inventory;
+    }
+
+    public function check(Request $request)
+    {
         $id = $request->id ?? 0;
+        if ($id == 0) abort(404);
 
-        if ($inventoryID == 0 || $id == 0) exit();
+        $inventory = Inventory::find($id);
+        if ($inventory->status != 1) abort(404);
+        $inventoryRecords = InventoryRecord::where('inventory_id', $inventory->id)->orderBy('id', 'asc')->get();
 
-        // 盤點表
-        $inventory = Inventory::find($inventoryID);
+        $data = [];
+        $data['inventory'] = $inventory;
+        $data['inventoryRecords'] = $inventoryRecords;
+
+        return view('stock.inventory.check', $data);
+    }
+
+    public function record(Request $request)
+    {
+        $id = $request->id ?? 0;
+        $original_inventory = $request->original_inventory ?? 0;
+        $physical_inventory = $request->physical_inventory ?? 0;
+        if ($id == 0) abort(404);
+
+        $inventoryRecord = inventoryRecord::find($id);
+        $inventoryRecord->original_inventory = $original_inventory;
+        $inventoryRecord->physical_inventory = $physical_inventory;
+        $inventoryRecord->save();
+        $inventoryRecord->diff = number_format($physical_inventory - $original_inventory, 2);
+
+        return $inventoryRecord;
+    }
+
+    public function view(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) abort(404);
+
+        $inventory = Inventory::find($id);
+        if ($inventory->status != 2) abort(404);
+        $inventoryRecords = InventoryRecord::where('inventory_id', $inventory->id)->orderBy('id', 'asc')->get();
+
+        $data = [];
+        $data['inventory'] = $inventory;
+        $data['inventoryRecords'] = $inventoryRecords;
+
+        return view('stock.inventory.view', $data);
+    }
+
+    public function quickFix(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) abort(404);
 
         // 盤點細目
-        $inventory_list = Inventory_list::find($id);
-        $inventory_list->quick_fix = 1;
-        $inventory_list->save();
+        $inventoryRecord = InventoryRecord::find($id);
+        $inventoryRecord->quick_fix = 1;
+        $inventoryRecord->save();
 
-        // 物料
-        $material = Material::find($inventory_list->material_id);
-
-        // 物料單位
-        $material_unit = Material_unit::find($material->unit);
-        $unit = $material_unit->name;
-
-        // 物料倉庫
-        $material_warehouse = Material_warehouse::where('material_id', $inventory_list->material_id)
-            ->where('warehouse_id', $inventory_list->warehouse_id)->first();
+        // 盤點表
+        $inventory = Inventory::find($inventoryRecord->inventory_id);
 
         // 建立一筆差異
         $stock = new Stock;
-        $stock->lot_number = "{$inventory->inventory_no} {$inventory->lot_number} 快速修正";
-        $stock->stock_option = 2;
-        $stock->status = 0;
-        $stock->stock_no = $material->stock_no + 1;   // 序號重物料序號+1
-        $stock->material = $inventory_list->material_id;
-        $stock->warehouse = $inventory_list->warehouse_id;
-        $stock->total_start_quantity = $material->stock;
-        $stock->start_quantity = $inventory_list->original_inventory;
-        $stock->quantity = $inventory_list->physical_inventory - $inventory_list->original_inventory;
-        $stock->calculate_quantity = "{$stock->total_start_quantity} $unit -> " . ($material->stock + ($inventory_list->physical_inventory - $inventory_list->original_inventory)) . " $unit";
+        $stock->inventory_id = $inventory->id;
+        $stock->type = 10;
         $stock->stock_date = date('Y-m-d');
-        $stock->memo = '';
-        $stock->created_user = session('admin_user')->id;
-        $stock->delete_flag = 0;
+        $stock->material_id = $inventoryRecord->material_id;
+        $stock->amount = $inventoryRecord->physical_inventory - $inventoryRecord->original_inventory;
+        $stock->amount_before = $inventoryRecord->physical_inventory;
+        $stock->amount_after = $inventoryRecord->original_inventory;
+        $stock->memo = "INV" . $inventory->code . " 快速修正";
         $stock->save();
 
         // 存回物料
-        $material->stock = $material->stock + ($inventory_list->physical_inventory - $inventory_list->original_inventory);
-        $material->stock_no = $material->stock_no + 1;
-        $material->save();
+        $inventoryRecord->material->stock = $inventoryRecord->physical_inventory;
+        $inventoryRecord->material->save();
 
-        // 存回物料倉庫
-        $material_warehouse->stock = $inventory_list->physical_inventory;
-        $material_warehouse->save();
-
-        return redirect('/stock/inventory/show_list/' . $inventoryID);
+        return redirect("/stock/inventory/{$inventory->id}/view");
     }
 
+    public function fix(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) abort(404);
+
+        // 盤點細目
+        $inventoryRecord = InventoryRecord::find($id);
+        $stocks = $inventoryRecord->stocks();
+
+        // 盤點表
+        $inventory = Inventory::find($inventoryRecord->inventory_id);
+
+        $data = [];
+        $data['inventoryRecord'] = $inventoryRecord;
+        $data['inventory'] = $inventory;
+        $data['stocks'] = $stocks;
+
+        return view('stock.inventory.fix', $data);
+    }
+
+    public function fixSave(Request $request)
+    {
+        $id = $request->id ?? 0;
+        $amount = $request->amount ?? 0;
+        $memo = $request->memo ?? 0;
+        if ($id == 0) abort(404);
+
+        // 盤點細目
+        $inventoryRecord = InventoryRecord::find($id);
+
+        // 盤點表
+        $inventory = Inventory::find($inventoryRecord->inventory_id);
+
+        // 建立一筆差異
+        $stock = new Stock;
+        $stock->inventory_id = $inventory->id;
+        $stock->type = 12; // 差異處理
+        $stock->stock_date = date('Y-m-d');
+        $stock->material_id = $inventoryRecord->material_id;
+        $stock->amount = $amount;
+        $stock->amount_before = $inventoryRecord->physical_inventory;
+        $stock->amount_after = $inventoryRecord->physical_inventory + $amount;
+        $stock->memo = $memo;
+        $stock->save();
+
+        // 存回物料
+        $inventoryRecord->material->stock = $stock->amount_after;
+        $inventoryRecord->material->save();
+
+        return redirect('/stock/inventory/' . $id . '/fix');
+
+    }
 }
-
-

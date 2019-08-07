@@ -1,4 +1,4 @@
-@extends('layouts.print')
+@extends('b4.print')
 
 @section('title','物料模組')
 
@@ -69,7 +69,7 @@
                             <td title="序號" class="text-center">{{ $index++ }}</td>
                             <td title="品名">{{ $material['code'] }} {{ $material['name'] }}</td>
                             <td title="數量" class="text-right">{{ number_format($material['amount'], 2) }}</td>
-                            <td title="單位">{{ $material['unit'] }}</td>
+                            <td title="單位" class="text-center">{{ $material['unit'] }}</td>
                             <td title="尺寸">{{ $material['size'] }}</td>
                             <td title="顏色">{{ $material['color'] }}</td>
                             <td title="庫存" class="text-right">{{ number_format($material['stock'], 2) }}</td>

@@ -8,28 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
-    public function warehouse_name()
+    static public function types()
     {
-        return $this->hasOne(Warehouse::class, 'id', 'warehouse');
+        $data = [];
+
+        $data[0] = '全部';
+        $data[1] = '一般入庫';
+        $data[2] = '採購轉入庫';
+        $data[3] = '銷貨 - 退貨入庫';
+        $data[10] = '盤點 - 快速修正';
+        $data[12] = '盤點 - 差異處理';
+
+        return $data;
     }
 
-    public function material_name()
+    public function in()
     {
-        return $this->hasOne(Material::class, 'id', 'material');
+        return $this->hasOne(In::class, 'id', 'in_id');
     }
 
-    public function  user_name()
+    public function lot()
     {
-        return $this->hasOne(User::class, 'id', 'created_user');
+        return $this->hasOne(Lot::class, 'id', 'lot_id');
     }
 
-    public function supplier_name()
+    public function material()
     {
-        return $this->hasOne(Supplier::class, 'id', 'supplier');
+        return $this->hasOne(Material::class, 'id', 'material_id');
     }
 
-    public function customer_name()
-    {
-        return $this->hasOne(Customer::class, 'id', 'customer');
-    }
 }

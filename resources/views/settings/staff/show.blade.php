@@ -3,7 +3,8 @@
 @section('title','員工資料')
 
 @section('page-header')
-    <i class="fas fa-users active-color"></i> 基本資料 - 員工資料
+    @include('settings.company')
+    {{-- <i class="fas fa-users active-color"></i> 基本資料 - 員工資料 --}}
 @endsection
 
 @section('content')

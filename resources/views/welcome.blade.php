@@ -24,7 +24,7 @@
                 <div class="tabbable-line">
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_15_1">
-                            <form class="login-form" action="{{ route('login') }}" method="post" id="name_form">
+                            <form class="login-form" action="{{ route('login') }}" method="post" id="name_form" target="_top">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="setType" value="name">
                                 <input type="hidden" name="sendCode">
@@ -42,7 +42,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="form-actions">
+                    <div class="form-actions text-center">
                         <a href="javascript: void(0);" class="btn btn-default uppercase"
                             style="background-color:#36c6d3;color:white;font-size: 16px;" onclick="sendForm();">登 入</a>
                     </div>
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <div class="copyright"> 版本：0.81 </div>
+    <div class="copyright"> 版本：0.90 </div>
     <script src="{{asset('assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/global/plugins/bootstrap/js/bootstrap.min.js')}}" type="text/javascript"></script>
     <script>

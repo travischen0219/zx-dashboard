@@ -1,4 +1,4 @@
-@extends('layouts.print')
+@extends('b4.print')
 
 @section('title','採購單')
 
@@ -45,9 +45,8 @@
         </button>
     </nav>
 
-    @foreach ($buys as $k => $value)
-        @php($buy = $value['buy'])
-        @php($supplier = $value['supplier'])
+    @foreach ($ins as $k => $value)
+        @php($in = $value['in'])
         <div class="container">
             <h2 align="center">真⼼蓮坊股份有限公司</h2>
             <table class="table table-bordered" style="page-break-after:always">
@@ -63,8 +62,8 @@
                                     採購單
                                 </div>
                                 <div class="col-4 text-right">
-                                    <div>NO：P{{ $buy->buy_no }}</div>
-                                    <div>批號：{{ $buy->lot_number }}</div>
+                                    <div>NO：P{{ $in->code }}</div>
+                                    <div>批號：{{ $in->lot->code ?? '' }}</div>
                                 </div>
                             </div>
                         </th>
@@ -73,12 +72,12 @@
                         <th colspan="99">
                             <div class="row align-items-center">
                                 <div class="col-4" style="font-size: 18px;">
-                                    廠商：{{ $supplier->shortName }}
+                                    廠商：{{ $in->supplier->shortName ?? '' }}
                                 </div>
                                 <div class="col-8 text-right">
-                                    訂購日期：{{ date('Y年m月d日'), strtotime($buy->buyDate) }}
+                                    訂購日期：{{ date('Y年m月d日'), strtotime($in->buy_date) }}
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    交貨日期：{{ date('Y年m月d日'), strtotime($buy->realReceiveDate) }}
+                                    交貨日期：{{ date('Y年m月d日'), strtotime($in->arrive_date) }}
                                 </div>
                             </div>
                         </th>
@@ -97,19 +96,19 @@
                     </tr>
 
                     @php($index = 1)
-                    @foreach ($buy->materials as $key => $material)
+                    @foreach ($in->materials as $key => $material)
                         <tr style="height: 50px;">
                             <td title="項次" class="text-center">{{ $index++ }}</td>
                             <td title="貨品編號">{{ $material['code'] }}</td>
                             <td title="品名規格">{{ $material['name'] }}</td>
-                            <td title="數量" class="text-right">{{ number_format($material['calAmount'], 2) }}</td>
+                            <td title="數量" class="text-right">{{ number_format($material['amount'], 2) }}</td>
                             <td title="單位" class="text-center">{{ $material['unit'] }}</td>
-                            <td title="單價" class="text-right">{{ number_format($material['price'], 2) }}</td>
-                            <td title="小計" class="text-right">{{ number_format($material['calAmount'] * $material['price'], 2) }}</td>
+                            <td title="單價" class="text-right">{{ number_format($material['cost'], 2) }}</td>
+                            <td title="小計" class="text-right">{{ number_format($material['amount'] * $material['cost'], 2) }}</td>
                         </tr>
                     @endforeach
 
-                    @for ($i = 0; $i < 19 - count($buy->materials); $i++)
+                    @for ($i = 0; $i < 19 - count($in->materials); $i++)
                         <tr style="height: 50px;">
                             <td title="項次" class="text-center"></td>
                             <td title="貨品編號"></td>
@@ -138,7 +137,7 @@
                     <tr style="height: 200px;">
                         <th colspan="99">
                             <div style="font-size: 18px;">附註：請確認交期後，傳真回本公司。</div>
-                            <div>採購備註內容：{{ nl2br($buy->memo) }}</div>
+                            <div>採購備註內容：{{ nl2br($in->memo) }}</div>
                         </th>
                     </tr>
                 </tfoot>

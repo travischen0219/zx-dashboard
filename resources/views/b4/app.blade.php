@@ -10,14 +10,17 @@
     @yield('css')
 </head>
 <body>
+    <div id="loader"><i class="fas fa-cog fa-spin"></i></div>
+
     @include('b4.sidebar')
 
     <div id="content" class="container-fluid">
-        <div class="h3 pb-2 mt-4 mb-5 border-bottom">@yield('page-header')</div>
+        <div id="page-header" class="h3 pb-2 mt-4 mb-5 border-bottom">@yield('page-header')</div>
         @yield('content')
     </div>
 
     <script src="/js/app.js?{{ env('APP_VERSION') }}"></script>
+    <script src="{{ asset('assets/global/plugins/jquery-ui/datepicker-zh-TW.js') }}" type="text/javascript"></script>
     <script>
     const dtOptions = {
         dom: `
@@ -34,7 +37,9 @@
         },
         'buttons': [
             { extend: 'colvis', text: '欄位篩選' }
-        ]
+        ],
+        'order': [],
+        'stateSave': true
     }
 
     const swalOption = {
@@ -42,9 +47,31 @@
         text: "",
         type: "",
         showCancelButton: false,
-        confirmButtonText: '確定',
-        closeOnConfirm: true
+        confirmButtonText: '確定'
     }
+
+    Vue.filter('number_format', function (value) {
+        if (isNaN(value)) return 0
+        value = Math.round(value * 100) / 100
+        return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    })
+
+    var number_format = Vue.filter('my-number_format')
+
+    $(function () {
+        $('form').submit(function () {
+            $.busyLoadFull("show", {
+                textPosition: "bottom",
+                textMargin: "20px",
+                background: "rgba(0, 0, 0, 0.70)",
+                text: '資料送出中，請勿關閉或離開...'
+            });
+
+            return true
+        })
+
+        $("#loader").fadeOut("fast")
+    })
     </script>
     @yield('script')
 </body>

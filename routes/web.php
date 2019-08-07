@@ -76,87 +76,6 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::resource('material_module', 'Material_moduleController');
     Route::post('material_module/search','Material_moduleController@search')->name('material_module.search');
     Route::post('material_module_file/delete/{file}/{material}/{id}','Material_moduleController@delete_file');
-
-
-
-});
-
-Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(function(){
-    Route::resource('inquiry', 'InquiryController');
-    Route::post('inquiry/search','InquiryController@search')->name('inquiry.search');
-
-    Route::get('selectSupplier','SelectController@selectSupplier')->name('selectSupplier');
-    Route::get('createSupplier','SelectController@create_supplier')->name('createSupplier');
-    Route::post('storeSupplier','SelectController@store_supplier')->name('storeSupplier');
-    Route::post('selectSupplier/search','SelectController@search_supplier')->name('selectSupplier.search');
-
-
-    Route::post('selectMaterial/addRow','SelectController@addRow')->name('selectMaterial.addRow');
-    Route::post('selectMaterial_module/addRow','SelectController@addRow_module')->name('selectMaterial_module.addRow');
-    Route::get('selectMaterial','SelectController@selectMaterial')->name('selectMaterial');
-    Route::get('createMaterial','SelectController@create_Material')->name('createMaterial');
-    Route::post('storeMaterial','SelectController@store_Material')->name('storeMaterial');
-    Route::post('selectMaterial/search','SelectController@search_material')->name('selectMaterial.search');
-
-    // 詢價 新增物料列
-    Route::post('selectMaterial_inquery/addRow','InquiryController@addRow')->name('selectMaterial_inquery.addRow');
-    // 詢價 新增物料模組
-    Route::post('selectMaterialModule_inquery/addRow','InquiryController@addModule')->name('selectMaterialModule_inquery.addModule');
-
-    // 採購 新增物料列
-    Route::post('selectMaterial_buy/addRow','BuyController@addRow')->name('selectMaterial_buy.addRow');
-    // 採購 新增物料模組
-    Route::post('selectMaterialModule_buy/addRow','BuyController@addModule')->name('selectMaterialModule_buy.addModule');
-
-
-    Route::get('selectMaterial_stock','SelectController@selectMaterial_stock')->name('selectMaterial_stock');
-    Route::post('selectMaterial_stock/search','SelectController@search_material_stock')->name('selectMaterial_stock.search');
-
-    Route::resource('buy', 'BuyController');
-    Route::post('buy/search','BuyController@search')->name('buy.search');
-
-    // 採購轉入庫中
-    Route::resource('ibuy_to_stock', 'Buy_to_stockController');
-    Route::post('ibuy_to_stock/search','Buy_to_stockController@search')->name('ibuy_to_stock.search');
-    Route::post('select_material_toStock/addRow','SelectController@addRow_toStock')->name('select_material_toStock.addRow');
-
-    Route::resource('stock', 'StockController');
-    Route::post('stock/search','StockController@search')->name('stock.search');
-
-    Route::post('select_material_stock/addRow','SelectController@addRow_stock')->name('select_material_stock.addRow');
-    // 差異處理 新增物料列
-    Route::post('select_material_adjustment/addRow','SelectController@addRow_adjustment')->name('select_material_adjustment.addRow');
-    // 調撥 新增物料列
-    Route::post('select_material_transfer_inventory/addRow','SelectController@addRow_transfer')->name('select_material_transfer_inventory.addRow');
-
-    Route::post('get_warehouse_stock','SelectController@get_warehouse_stock')->name('get_warehouse_stock');
-
-    Route::get('account_payable/print','Account_payableController@print')->name('account_payable.print');
-    Route::resource('account_payable', 'Account_payableController');
-    Route::post('account_payable/search','Account_payableController@index')->name('account_payable.search');
-
-    // 付款記錄
-    Route::resource('payment_record', 'Payment_recordController');
-
-    // 退貨
-    Route::resource('p_sales_return', 'P_sales_returnController');
-    Route::post('p_sales_return/search','P_sales_returnController@search')->name('p_sales_return.search');
-    Route::post('p_sales_return/search_return','P_sales_returnController@search_return')->name('p_sales_return.search_return');
-    // Route::post('sales_return/delete/{file}/{sale}/{id}','SaleController@delete_file');
-
-    // 換貨
-    Route::resource('p_exchange', 'P_exchangeController');
-    Route::post('p_exchange/search','P_exchangeController@search')->name('p_exchange.search');
-    Route::post('p_exchange/search_exchange','P_exchangeController@search_exchange')->name('p_exchange.search_exchange');
-
-
-    // 月報表
-    Route::get('monthly_report/print', 'Monthly_reportController@print')->name('monthly_report.print');
-    Route::post('monthly_report/print', 'Monthly_reportController@print')->name('monthly_report.print');
-    Route::resource('monthly_report', 'Monthly_reportController');
-    // 年報表
-    Route::resource('annual_report', 'Annual_reportController');
-
 });
 
 Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->group(function(){
@@ -271,29 +190,110 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(fun
 
 });
 
+/*** 報表 ***/
 Route::middleware('admin.login')->prefix('print')->group(
     function () {
         // 採購總報表
-        Route::get('buy', 'PrintController@buy')->name('print.buy');
-        Route::post('buy', 'PrintController@buy')->name('print.buy');
+        // Route::get('buy', 'PrintController@buy')->name('print.buy');
+        // Route::post('buy', 'PrintController@buy')->name('print.buy');
+
+        // 採購總報表
+        Route::get('in', 'PrintController@in')->name('print.in');
+        Route::post('in', 'PrintController@in')->name('print.in');
+
+        // 採購未付款總報表
+        Route::get('in_unpay', 'PrintController@in_unpay')->name('print.in_unpay');
+        Route::post('in_unpay', 'PrintController@in_unpay')->name('print.in_unpay');
 
         // 採購單報表
-        Route::get('buy_detail/{id}', 'PrintController@buy_detail');
-        Route::post('buy_detail', 'PrintController@buy_detail');
+        Route::get('in_detail/{id}', 'PrintController@in_detail');
+        Route::post('in_detail', 'PrintController@in_detail');
 
         // 採購單報表 (多張)
-        Route::get('buy_details/{ids}', 'PrintController@buy_details');
-        Route::post('buy_details', 'PrintController@buy_details');
+        Route::get('in_details/{ids}', 'PrintController@in_details');
+        Route::post('in_details', 'PrintController@in_details');
 
         // 物料模組
         Route::get('material_module/{id}', 'PrintController@material_module');
     }
 );
 
+/*** 選擇器 ***/
 Route::middleware('admin.login')->prefix('selector')->group(
     function () {
         // 物料選擇器
         Route::get('material/{idx}', 'SelectorController@material');
         Route::get('material/{idx}/{code}', 'SelectorController@material');
+
+        // 物料模組選擇器
+        Route::get('material_module/', 'SelectorController@material_module');
+
+        // 客戶選擇器
+        Route::get('customer', 'SelectorController@customer');
+        Route::get('customer/{category}', 'SelectorController@customer');
+
+        // 供應商選擇器
+        Route::get('supplier', 'SelectorController@supplier');
+        Route::get('supplier/{category}', 'SelectorController@supplier');
+
+        // 加工廠商選擇器
+        Route::get('manufacturer', 'SelectorController@manufacturer');
+        Route::get('manufacturer/{category}', 'SelectorController@manufacturer');
+
+        // 批號選擇器
+        Route::get('lot', 'SelectorController@lot');
+
+        // 入庫紀錄
+        Route::get('in_stock_records/{id}', 'SelectorController@in_stock_records');
+
+        // 物料庫存紀錄
+        Route::get('material_stock_records/{id}', 'SelectorController@material_stock_records');
+    }
+);
+
+/*** 批號管理 ***/
+Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->group(
+    function () {
+        Route::resource('lot', 'LotController');
+    }
+);
+
+// 進貨管理
+Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(
+    function () {
+        Route::get('in/search/{status}/{pay_status}', 'InController@index')
+            ->where('status', '[0-9]+')
+            ->where('pay_status', '[0-9]+');
+        // Route::get('in/view/{id}', 'InController@view')->where('id', '[0-9]+');
+        Route::resource('in', 'InController');
+    }
+);
+
+// 入庫管理
+Route::middleware('admin.login')->namespace('Stock')->prefix('purchase')->group(
+    function () {
+        Route::get('stock/search/{type}', 'StockController@index')
+            ->where('type', '[0-9]+');
+        Route::resource('stock', 'StockController');
+    }
+);
+
+/*** 庫存盤點 ***/
+Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
+    function () {
+        // 盤點
+        Route::get('inventory/{id}/view', 'InventoryController@view')
+            ->where('id', '[0-9]+');
+        Route::get('inventory/{id}/check', 'InventoryController@check')
+            ->where('id', '[0-9]+');
+        Route::get('inventory/{id}/quickFix', 'InventoryController@quickFix')
+            ->where('id', '[0-9]+');
+        Route::get('inventory/{id}/fix', 'InventoryController@fix')
+            ->where('id', '[0-9]+');
+        Route::post('inventory/fixSave', 'InventoryController@fixSave');
+        Route::post('inventory/record', 'InventoryController@record');
+
+        Route::get('inventory/search/{status}', 'InventoryController@index');
+        Route::resource('inventory', 'InventoryController');
     }
 );

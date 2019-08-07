@@ -2,14 +2,33 @@
 
 namespace App\Model;
 
-
-use App\Model\Warehouse_category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Inventory extends Model
 {
-    public function warehouse_category_name()
+    use SoftDeletes;
+
+    static public function statuses()
     {
-        return $this->hasOne(Warehouse_category::class, 'id', 'warehouse_category');
+        $data = [];
+
+        $data[1] = '盤點中';
+        $data[2] = '已盤點';
+
+        return $data;
+    }
+
+    public function percent()
+    {
+        $inventoryRecordAll = InventoryRecord::where('inventory_id', $this->id)->count();
+        $inventoryRecord = InventoryRecord::where('inventory_id', $this->id)->whereNotNull('physical_inventory')->count();
+
+        return round($inventoryRecord / $inventoryRecordAll * 100, 2);
+    }
+
+    public function category()
+    {
+        return $this->hasOne(Material_category::class, 'id', 'category_id');
     }
 }

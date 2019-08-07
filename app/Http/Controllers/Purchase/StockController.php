@@ -54,7 +54,7 @@ class StockController extends Controller
         }
         return view('purchase.stock.show',compact('stocks','search_code'));
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -74,13 +74,13 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            // 'lot_number' => 'required',                      
+            // 'lot_number' => 'required',
             'supplier' => 'required',
             'stock_date' => 'date_format:"Y-m-d"|required',
 
         ];
         $messages = [
-            // 'lot_number.required' => '批號 必填',                     
+            // 'lot_number.required' => '批號 必填',
             'supplier.required' => '尚未選擇 供應商',
             'stock_date.required' => '入庫日期 必填',
             'stock_date.date_format' => '入庫日期格式錯誤',
@@ -107,7 +107,7 @@ class StockController extends Controller
 
             try{
                 $total_materials = count($material);
-                for($i=0; $i < $total_materials; $i++){ 
+                for($i=0; $i < $total_materials; $i++){
 
                     $material_stock = Material::find($material[$i]);
                     $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$material[$i])->get();
@@ -147,31 +147,31 @@ class StockController extends Controller
                             $warehouse_end_quantity = $warehouse_start_quantity + $quantity;
                             $unit = $material_stock->material_unit_name->name;
                             $str = $warehouse_start_quantity.' '.$unit.' -> '.number_format($warehouse_end_quantity,2,'.','').' '.$unit;
-                            $find_warehouse_category = Warehouse::find($warehouse[$i]);  
-                            
+                            $find_warehouse_category = Warehouse::find($warehouse[$i]);
+
                             $material_warehouse_add = new Material_warehouse;
                             $material_warehouse_add->material_id = $material[$i];
                             $material_warehouse_add->warehouse_id = $warehouse[$i];
                             $material_warehouse_add->warehouse_category_id = $find_warehouse_category->category;
-                            $material_warehouse_add->stock = $quantity;                
+                            $material_warehouse_add->stock = $quantity;
                             $material_warehouse_add->created_user = session('admin_user')->id;
                             $material_warehouse_add->delete_flag = 0;
                             $material_warehouse_add->save();
                         }
-                        
+
                     } else {
                         // 若無預設倉儲
                         $quantity = number_format($materialAmount[$i],2,'.','');
                         $warehouse_end_quantity = $warehouse_start_quantity + $quantity;
                         $unit = $material_stock->material_unit_name->name;
                         $str = $warehouse_start_quantity.' '.$unit.' -> '.number_format($warehouse_end_quantity,2,'.','').' '.$unit;
-                        $find_warehouse_category = Warehouse::find($warehouse[$i]);                          
-                        
+                        $find_warehouse_category = Warehouse::find($warehouse[$i]);
+
                         $material_warehouse_add = new Material_warehouse;
                         $material_warehouse_add->material_id = $material[$i];
                         $material_warehouse_add->warehouse_id = $warehouse[$i];
                         $material_warehouse_add->warehouse_category_id = $find_warehouse_category->category;
-                        $material_warehouse_add->stock = $quantity;                
+                        $material_warehouse_add->stock = $quantity;
                         $material_warehouse_add->created_user = session('admin_user')->id;
                         $material_warehouse_add->delete_flag = 0;
                         $material_warehouse_add->save();
@@ -181,14 +181,14 @@ class StockController extends Controller
                     }
 
                     $stock = new Stock;
-                    $stock->lot_number = $request->lot_number;        
+                    $stock->lot_number = $request->lot_number;
                     $stock->stock_option = $materialOption[$i];
                     $stock->status = 0;
-                    $stock->stock_no = $material_stock->stock_no + 1;                          
+                    $stock->stock_no = $material_stock->stock_no + 1;
                     $stock->material = $material[$i];
                     $stock->warehouse = $warehouse[$i];
                     $stock->supplier = $request->supplier;
-                    $stock->total_start_quantity = $material_stock->stock;                                    
+                    $stock->total_start_quantity = $material_stock->stock;
                     $stock->start_quantity = $warehouse_start_quantity;
                     $stock->quantity = $quantity;
                     $stock->calculate_quantity = $str;
@@ -203,7 +203,7 @@ class StockController extends Controller
                     $material_stock->stock = $material_end_quantity;
                     $material_stock->save();
                 }
-                
+
                 return redirect()->route('stock.index')->with('message', '新增成功');
             } catch(Exception $e) {
                 return redirect()->route('stock.index')->with('error', '新增失敗');
@@ -213,7 +213,7 @@ class StockController extends Controller
         } else {
             return redirect()->back()->with('error', '未選擇任何物料');
         }
-        
+
     }
 
     /**
@@ -245,7 +245,7 @@ class StockController extends Controller
         // foreach($stock_materials as $stock_material){
         //     $material_id = $stock_material->material;
         //     $material = Material::where('id',$material_id)->first();
-            
+
         //     if($material->warehouse > 0){
         //         $warehouse = $material->warehouse_name->code;
         //         $warehouse_id = $material->warehouse;
@@ -285,12 +285,12 @@ class StockController extends Controller
         //         <td>
         //             <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" style="width:120px; height: 30px; vertical-align: middle;" value="'.$stock->quantity.'" disabled>
         //         </td>
-        //         <input type="hidden" name="stock_id[]" id="stock_id'.$materialCount.'" class="stock_id" value="'.$stock_material->id.'">                
+        //         <input type="hidden" name="stock_id[]" id="stock_id'.$materialCount.'" class="stock_id" value="'.$stock_material->id.'">
         //     </tr>';
-        //     $materialCount++;               
+        //     $materialCount++;
         // }
         // return view('purchase.stock.edit', compact('stock','data','materialCount'));
-     
+
     }
 
     /**
@@ -303,13 +303,13 @@ class StockController extends Controller
     public function update(Request $request, $id)
     {
         // $rules = [
-        //     // 'lot_number' => 'required',                      
+        //     // 'lot_number' => 'required',
         //     // 'supplier' => 'required',
         //     'stock_date' => 'date_format:"Y-m-d"|required',
 
         // ];
         // $messages = [
-        //     // 'lot_number.required' => '批號 必填',                     
+        //     // 'lot_number.required' => '批號 必填',
         //     // 'supplier.required' => '尚未選擇 供應商',
         //     'stock_date.required' => '入庫日期 必填',
         //     'stock_date.date_format' => '入庫日期格式錯誤',
@@ -321,10 +321,10 @@ class StockController extends Controller
         // try{
         //     for($i=0; $i < $total_materials_check; $i++){
         //         if($request->material[$i]){
-                    
+
         //             $stock = Stock::find($request->stock_id[$i]);
         //             $material_stock = Material::find($stock->material);
-        //             $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$request->material[$i])->get();                    
+        //             $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$request->material[$i])->get();
 
         //             $material_start_quantity = $material_stock->stock;
         //             $material_end_quantity = 0;
@@ -361,31 +361,31 @@ class StockController extends Controller
         //                     $warehouse_end_quantity = $warehouse_start_quantity + $quantity;
         //                     $unit = $material_stock->material_unit_name->name;
         //                     $str = $warehouse_start_quantity.' '.$unit.' -> '.number_format($warehouse_end_quantity,2,'.','').' '.$unit;
-        //                     $find_warehouse_category = Warehouse::find($request->materialWarehouse[$i]);  
-                            
+        //                     $find_warehouse_category = Warehouse::find($request->materialWarehouse[$i]);
+
         //                     $material_warehouse_add = new Material_warehouse;
         //                     $material_warehouse_add->material_id = $request->material[$i];
         //                     $material_warehouse_add->warehouse_id = $request->materialWarehouse[$i];
         //                     $material_warehouse_add->warehouse_category_id = $find_warehouse_category->category;
-        //                     $material_warehouse_add->stock = $quantity;                
+        //                     $material_warehouse_add->stock = $quantity;
         //                     $material_warehouse_add->created_user = session('admin_user')->id;
         //                     $material_warehouse_add->delete_flag = 0;
         //                     $material_warehouse_add->save();
         //                 }
-                        
+
         //             } else {
         //                 // 若無預設倉儲
         //                 $quantity = number_format($stock->quantity,2,'.','');
         //                 $warehouse_end_quantity = $warehouse_start_quantity + $quantity;
         //                 $unit = $material_stock->material_unit_name->name;
         //                 $str = $warehouse_start_quantity.' '.$unit.' -> '.number_format($warehouse_end_quantity,2,'.','').' '.$unit;
-        //                 $find_warehouse_category = Warehouse::find($request->materialWarehouse[$i]);                          
-                        
+        //                 $find_warehouse_category = Warehouse::find($request->materialWarehouse[$i]);
+
         //                 $material_warehouse_add = new Material_warehouse;
         //                 $material_warehouse_add->material_id = $request->material[$i];
         //                 $material_warehouse_add->warehouse_id = $request->materialWarehouse[$i];
         //                 $material_warehouse_add->warehouse_category_id = $find_warehouse_category->category;
-        //                 $material_warehouse_add->stock = $quantity;                
+        //                 $material_warehouse_add->stock = $quantity;
         //                 $material_warehouse_add->created_user = session('admin_user')->id;
         //                 $material_warehouse_add->delete_flag = 0;
         //                 $material_warehouse_add->save();
@@ -394,11 +394,11 @@ class StockController extends Controller
         //                 $material_stock->warehouse_category = $find_warehouse_category->category;
         //             }
         //         }
-                
 
-        //         $stock->status = 0;                            
+
+        //         $stock->status = 0;
         //         $stock->warehouse = $request->materialWarehouse[$i];
-        //         $stock->total_start_quantity = $material_stock->stock;                
+        //         $stock->total_start_quantity = $material_stock->stock;
         //         $stock->start_quantity = $warehouse_start_quantity;
         //         $stock->calculate_quantity = $str;
         //         $stock->stock_date = $request->stock_date;
@@ -414,7 +414,7 @@ class StockController extends Controller
         // } catch(Exception $e) {
         //     return redirect()->route('stock.index')->with('error', '編輯失敗');
         // }
-        
+
     }
 
     /**

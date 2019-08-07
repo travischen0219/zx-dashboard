@@ -14,6 +14,27 @@
 @import '~datatables.net-rowreorder-bs4/css/rowReorder.bootstrap4.min.css';
 // @import '~datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css';
 @import '~magnific-popup/dist/magnific-popup.css';
+@import '~jquery-ui/themes/base/all.css';
+
+* {
+    font-family: 'Microsoft JhengHei';
+}
+
+.d-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-preview {
+    position: relative;
+}
+.file-delete {
+    color: red;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
 
 .active-color {
     color: #18cdc4;
@@ -226,6 +247,20 @@
     }
 }
 
+#loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    background-color: rgba(205, 205, 205, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 96px;
+}
+
 #data {
     thead {
         tr {
@@ -235,51 +270,101 @@
     }
 }
 
-/* 初始label顏色 */
-.form-group.form-md-line-input.form-md-floating-label .form-control~label {
-    color: #43a546;
+.form {
+    label {
+        width: 100px;
+        text-align: right;
+    }
+
+    input[type=text], textarea {
+        display: inline-block;
+        width: auto;
+    }
 }
 
-/* help-block顏色 */
-.form-group.form-md-line-input .form-control.edited:not([readonly])~.help-block,
-.form-group.form-md-line-input .form-control:focus:not([readonly])~.help-block {
-    color: #43a546;
+// 步驟條
+.steps {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
 }
 
-/* focus後的label顏色 */
-.form-group.form-md-line-input .form-control.edited:not([readonly])~label,
-.form-group.form-md-line-input .form-control.edited:not([readonly])~.form-control-focus,
-.form-group.form-md-line-input .form-control:focus:not([readonly])~label,
-.form-group.form-md-line-input .form-control:focus:not([readonly])~.form-control-focus {
-    color: #43a546;
+.steps li {
+    box-sizing: border-box;
+    padding: 5px;
+    width: 80px;
+    height: 30px;
+    border-radius: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    cursor: pointer;
 }
 
-/* focus後的底線顏色 */
-.form-group.form-md-line-input .form-control.edited:not([readonly])~label:after,
-.form-group.form-md-line-input .form-control.edited:not([readonly])~.form-control-focus:after,
-.form-group.form-md-line-input .form-control:focus:not([readonly])~label:after,
-.form-group.form-md-line-input .form-control:focus:not([readonly])~.form-control-focus:after {
-    background: #43a546;
+.steps > li + li {
+    margin-left: 40px;
 }
 
-.form-group.form-md-line-input .form-control::-moz-placeholder {
-    color: #43a546;
+.steps > li::before {
+    content: '';
+    height: 2px;
+    background-color: gray;
+    width: 40px;
+    position: absolute;
+    left: -40px;
 }
 
-.form-group.form-md-line-input .form-control:-ms-input-placeholder {
-    color: #43a546;
+.steps-slave {
+    flex-direction: row;
+    margin: 0;
+    margin-left: 80px;
+    position: relative;
+    padding: 0;
 }
 
-.form-group.form-md-line-input .form-control::-webkit-input-placeholder {
-    color: #43a546;
+.steps-slave::before {
+    content: '';
+    height: auto;
+    background-color: gray;
+    width: 2px;
+    position: absolute;
+    left: -40px;
+    top: 15px;
+    bottom: 15px;
 }
 
-.form-horizontal .form-group.form-md-line-input>label {
-
-    color: #43a546;
+.steps-slave > li {
+    position: relative;
 }
 
-button[type=submit] {
-    color: #fff;
-    background-color: #43a546;
+.steps-slave > li::before {
+    content: '';
+    height: 2px;
+    background-color: gray;
+    width: 40px;
+    position: absolute;
+    left: -40px;
+}
+
+.steps-slave li + li {
+    margin-top: 20px;
+}
+
+.steps > li:first-child::before {
+    content: unset;
+}
+
+.steps > li:last-child {
+    background-color: transparent;
+}
+
+.memo {
+    white-space: nowrap;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

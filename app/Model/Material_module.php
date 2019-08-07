@@ -3,9 +3,12 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Material_module extends Model
 {
+    use SoftDeletes;
+
     public function image_1()
     {
         return $this->hasOne(Gallery::class, 'id', 'file_1');
@@ -19,6 +22,20 @@ class Material_module extends Model
         return $this->hasOne(Gallery::class, 'id', 'file_3');
     }
 
+    public function file1()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_1');
+    }
+    public function file2()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_2');
+    }
+    public function file3()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_3');
+    }
+
+    // 停用
     static public function encodeMaterials($materials, $php = false)
     {
         $data = [];
@@ -45,4 +62,5 @@ class Material_module extends Model
             return $data;
         }
     }
+
 }

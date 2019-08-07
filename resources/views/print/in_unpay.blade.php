@@ -1,4 +1,4 @@
-@extends('layouts.print')
+@extends('b4.print')
 
 @section('title','未付款資料')
 
@@ -53,27 +53,39 @@
         @foreach ($unpays as $key => $unpay)
             <table class="table table-bordered" id="table-{{ $key }}">
                 <tr>
-                    <th rowspan="{{ count($unpays) }}" width="25%" class="align-middle text-center">
+                    <th rowspan="{{ count($unpay) + 2 }}" width="15%" class="align-middle text-center">
                         <div>{{ $suppliers[$key]['code'] }}</div>
                         <div>{{ $suppliers[$key]['shortName'] }}</div>
                     </th>
-                    <th width="25%">批號</th>
-                    <th width="25%">採購單號</th>
-                    <th width="25%" class="text-right">金額</th>
+                    <th width="20%">批號</th>
+                    <th width="20%">採購單號</th>
+                    <th width="15%" class="text-right">金額</th>
+                    <th width="15%" class="text-right">已付</th>
+                    <th width="15%" class="text-right">剩餘</th>
                 </tr>
 
                 @php($subTotal = 0)
+                @php($subPay = 0)
                 @foreach ($unpay as $detail)
                     <tr>
-                        <td>{{ $detail['lot_number'] }}</td>
-                        <td>P{{ $detail['buy_no'] }}</td>
-                        <td class="text-right">${{ number_format($detail['totals'], 2) }}</td>
+                        <td>{{ $detail->lot->code ?? '' }}</td>
+                        <td>{{ $detail->code ? 'P' . $detail->code : '' }}</td>
+                        <td class="text-right">${{ number_format($detail->total_cost, 2) }}</td>
+                        <td class="text-right">${{ number_format($detail->total_pay, 2) }}</td>
+                        <td class="text-right">${{ number_format($detail->total_cost - $detail->total_pay, 2) }}</td>
                     </tr>
-                    @php($subTotal += $detail['totals'])
+                    @php($subTotal += $detail->total_cost)
+                    @php($subPay += $detail->total_pay)
                 @endforeach
 
                 <tr>
-                    <td colspan="3" class="text-right">小計：${{ number_format($subTotal, 2) }}</td>
+                    <td colspan="5" class="text-right">
+                        應付：${{ number_format($subTotal, 2) }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        已付：${{ number_format($subPay, 2) }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        剩餘：${{ number_format($subTotal - $subPay, 2) }}
+                    </td>
                 </tr>
             </table>
         @endforeach

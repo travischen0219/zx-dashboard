@@ -152,6 +152,15 @@ Vue.component('buy-table', {
         addRow: function() {
             this.rows.push(Object.assign({}, this.row))
             this.$forceUpdate();
+            console.log('forceUpdate')
+            this.$nextTick(function() {
+                console.log('forceUpdate')
+                $('.datepicker').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    regional: 'zh-TW'
+                })
+            })
         },
         deleteRow: function(idx) {
             this.rows.splice(idx, 1);

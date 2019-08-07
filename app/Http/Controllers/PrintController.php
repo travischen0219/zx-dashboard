@@ -3,14 +3,173 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Model\Lot;
 use App\Model\Supplier;
-use App\Model\Buy;
+use App\Model\In;
 use App\Model\Material;
 use App\Model\Material_unit;
 use App\Model\Material_module;
 
 class PrintController extends Controller
 {
+    public function in(Request $request)
+    {
+        // 參數：年
+        $year = $request->year ?? date('Y', strtotime('-1 month'));
+        $data["year"] = $year;
+
+        // 參數：月
+        $month = $request->month ?? date('m', strtotime('-1 month'));
+        $data["month"] = $month;
+
+        // 參數：批號
+        $lot_id = $request->lot_id ?? 0;
+        $data["lot_id"] = $lot_id;
+
+        // 參數：供應商
+        $supplier_id = $request->supplier_id ?? 0;
+        $data["supplier_id"] = $supplier_id;
+
+        // 參數：欄位選擇
+        $data['selColumns'] = $request->selColumns ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // 全部批號
+        $lots = Lot::allWithKey();
+        $data["lots"] = $lots;
+
+        // 全部供應商
+        $suppliers = Supplier::allWithKey();
+        $data["suppliers"] = $suppliers;
+
+        // 全部欄位
+        $data['columns'] = ['項次', '採購日期', '批號', '廠商', '編號', '品名', '採購數量', '進貨數量', '單價', '金額'];
+
+        $ins = In::whereIn('status', [20, 30, 40]);
+
+        if ($year != '') {
+            $ins->whereYear('buy_date', $year);
+        }
+
+        if ($month != 'all') {
+            $ins->whereMonth('buy_date', $month);
+        }
+
+        if ($lot_id != 0) {
+            $ins->where('lot_id', $lot_id);
+        }
+
+        if ($supplier_id != 0) {
+            $ins->where('supplier_id', $supplier_id);
+        }
+
+        $ins = $ins->get();
+
+        foreach ($ins as $key => $in) {
+            $ins[$key]->materials = Material::appendMaterials($in->materials, true);
+        }
+
+        $data["ins"] = $ins;
+        $data["units"] = Material_unit::allWithKey();
+
+        return view('print.in', $data);
+    }
+
+    public function in_detail(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) exit();
+
+        $in = In::find($id);
+        if (!$in) exit();
+
+        $in->materials = Material::appendMaterials($in->materials, true);
+
+        $data = [];
+        $data['ins'][0]['in'] = $in;
+
+        return view('print.in_detail', $data);
+    }
+
+    public function in_details(Request $request)
+    {
+        $ids = $request->ids ? explode(',', $request->ids) : [];
+        if (count($ids) == 0) exit();
+
+        $data = [];
+        foreach($ids as $key => $id) {
+            $in = In::find($id);
+            if (!$in) exit();
+
+            $in->materials = Material::appendMaterials($in->materials, true);
+
+            $data['ins'][$key]['in'] = $in;
+        }
+
+        return view('print.in_detail', $data);
+    }
+
+    public function in_unpay(Request $request)
+    {
+        $data = [];
+        $unpaysOrigin = In::whereIn('status', [20, 30, 40])->where('balance', '>', 0)->get();
+
+        $unpays = [];
+        foreach ($unpaysOrigin as $unpay) {
+            if (!isset($unpays[$unpay["supplier_id"]])) $unpays[$unpay["supplier_id"]] = [];
+
+            array_push($unpays[$unpay["supplier_id"]], $unpay);
+        }
+        ksort($unpays);
+        $data["unpays"] = $unpays;
+
+        $suppliers = Supplier::allWithKey();
+        $data["suppliers"] = $suppliers;
+
+        $supplierKeys = array_keys($unpays);
+        sort($supplierKeys);
+        $data["supplierKeys"] = $supplierKeys;
+
+        return view('print.in_unpay', $data);
+    }
+
+    public function material_module(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) exit();
+
+        $module = Material_module::find($id);
+        if (!$module) exit();
+
+        $materials = unserialize($module->materials);
+
+        $array = [];
+        foreach ($materials as $material) {
+            $m = Material::find($material['id']);
+            $unit = Material_unit::find($m->unit);
+
+            $array[] = [
+                'id' => $material['id'],
+                'code' => $m->fullCode,
+                'name' => $m->fullName,
+                'size' => $m->size,
+                'color' => $m->color,
+                'stock' => $m->stock,
+                'memo' => $m->memo,
+                'amount' => $material['amount'],
+                'price' => (float) $material['price'],
+                'unit' =>  $unit->name
+            ];
+        }
+
+        $module->materials = $array;
+
+        // 單筆列印
+        $data = [];
+        $data['modules'][0]['module'] = $module;
+
+        return view('print.material_module', $data);
+    }
+
     public function buy(Request $request)
     {
         // 參數：年
@@ -84,147 +243,5 @@ class PrintController extends Controller
         $data["buys"] = $buys;
 
         return view('print.buy', $data);
-    }
-
-    public function buy_detail(Request $request)
-    {
-        $id = $request->id ?? 0;
-        if ($id == 0) exit();
-
-        $buy = Buy::find($id);
-        if (!$buy) exit();
-
-        $materials = unserialize($buy->materials);
-
-        $buy->count = count($materials['material']);
-
-        $array = [];
-        for($i = 0; $i < count($materials['material']); $i++) {
-            $material = Material::find($materials['material'][$i]);
-            $unit = Material_unit::find($material->unit);
-
-            $array[] = [
-                'id' => $material->id,
-                'code' => $material->fullCode,
-                'name' => $material->fullName,
-                'calAmount' => $materials['materialCalAmount'][$i],
-                'amount' => $materials['materialAmount'][$i],
-                'price' => (float) $materials['materialPrice'][$i],
-                'unit' =>  $unit->name
-            ];
-        }
-
-        $buy->materials = $array;
-
-        $supplier = Supplier::find($buy->supplier);
-
-        $data = [];
-        $data['buys'][0]['buy'] = $buy;
-        $data['buys'][0]['supplier'] = $supplier;
-
-        return view('print.buy_detail', $data);
-    }
-
-    public function buy_details(Request $request)
-    {
-        $ids = $request->ids ? explode(',', $request->ids) : [];
-        if (count($ids) == 0) exit();
-
-        $data = [];
-        foreach($ids as $key => $id) {
-            $buy = Buy::find($id);
-            if (!$buy) exit();
-
-            $materials = unserialize($buy->materials);
-
-            $buy->count = count($materials['material']);
-
-            $array = [];
-            for($i = 0; $i < count($materials['material']); $i++) {
-                $material = Material::find($materials['material'][$i]);
-                $unit = Material_unit::find($material->unit);
-
-                $array[] = [
-                    'id' => $material->id,
-                    'code' => $material->fullCode,
-                    'name' => $material->fullName,
-                    'calAmount' => $materials['materialCalAmount'][$i],
-                    'amount' => $materials['materialAmount'][$i],
-                    'price' => (float) $materials['materialPrice'][$i],
-                    'unit' =>  $unit->name
-                ];
-            }
-
-            $buy->materials = $array;
-
-            $supplier = Supplier::find($buy->supplier);
-
-            $data['buys'][$key]['buy'] = $buy;
-            $data['buys'][$key]['supplier'] = $supplier;
-        }
-
-        return view('print.buy_detail', $data);
-    }
-
-    public function material_module(Request $request)
-    {
-        $id = $request->id ?? 0;
-        if ($id == 0) exit();
-
-        $module = Material_module::find($id);
-        if (!$module) exit();
-
-        $materials = unserialize($module->materials);
-        $materials2 = Material_module::encodeMaterials($module->materials, true);
-
-        $array = [];
-        foreach ($materials2 as $material) {
-            $m = Material::find($material['id']);
-            $unit = Material_unit::find($material['unit']);
-
-            $array[] = [
-                'id' => $material['id'],
-                'code' => $m->fullCode,
-                'name' => $m->fullName,
-                'size' => $m->size,
-                'color' => $m->color,
-                'stock' => $m->stock,
-                'memo' => $m->memo,
-                'amount' => $material['amount'],
-                'price' => (float) $material['price'],
-                'unit' =>  $unit->name
-            ];
-        }
-
-        $module->materials = $array;
-
-        // $module->count = count($materials['material']);
-
-        // $array = [];
-        // for($i = 0; $i < count($materials['material']); $i++) {
-        //     $material = Material::find($materials['material'][$i]);
-        //     $unit = Material_unit::find($material->unit);
-
-        //     $array[] = [
-        //         'id' => $material->id,
-        //         'code' => $material->fullCode,
-        //         'name' => $material->fullName,
-        //         'size' => $material->size,
-        //         'color' => $material->color,
-        //         'stock' => $material->stock,
-        //         'memo' => $material->memo,
-        //         'amount' => $materials['materialAmount'][$i],
-        //         'price' => (float) $materials['materialPrice'][$i],
-        //         'unit' =>  $unit->name
-        //     ];
-        // }
-
-        // $module->materials = $array;
-
-        // 單筆列印
-        $data = [];
-        $data['modules'][0]['module'] = $module;
-
-        return view('print.material_module', $data);
     }
 }

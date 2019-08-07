@@ -11,20 +11,26 @@ class Sidebar
         $data[] = [
             'route' => 'staff.index',
             'request' => 'settings/staff*',
-            'title' => '員工資料'
+            'title' => '公司資料'
         ];
 
-        $data[] = [
-            'route' => 'department.index',
-            'request' => 'settings/department*',
-            'title' => '部門設定'
-        ];
+        // $data[] = [
+        //     'route' => 'staff.index',
+        //     'request' => 'settings/staff*',
+        //     'title' => '員工資料'
+        // ];
 
-        $data[] = [
-            'route' => 'professional_title.index',
-            'request' => 'settings/professional_title*',
-            'title' => '職稱設定'
-        ];
+        // $data[] = [
+        //     'route' => 'department.index',
+        //     'request' => 'settings/department*',
+        //     'title' => '部門設定'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'professional_title.index',
+        //     'request' => 'settings/professional_title*',
+        //     'title' => '職稱設定'
+        // ];
 
         $data[] = [
             'route' => 'supplier.index',
@@ -35,7 +41,7 @@ class Sidebar
         $data[] = [
             'route' => 'manufacturer.index',
             'request' => 'settings/manufacturer*',
-            'title' => '廠商資料'
+            'title' => '加工廠商'
         ];
 
         $data[] = [
@@ -75,16 +81,22 @@ class Sidebar
         ];
 
         $data[] = [
-            'route' => 'warehouses.index',
-            'request' => 'settings/warehouses*',
-            'title' => '倉儲資料'
+            'route' => 'lot.index',
+            'request' => 'settings/lot*',
+            'title' => '批號管理'
         ];
 
-        $data[] = [
-            'route' => 'warehouse_category.index',
-            'request' => 'settings/warehouse_category*',
-            'title' => '倉儲分類設定'
-        ];
+        // $data[] = [
+        //     'route' => 'warehouses.index',
+        //     'request' => 'settings/warehouses*',
+        //     'title' => '倉儲資料'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'warehouse_category.index',
+        //     'request' => 'settings/warehouse_category*',
+        //     'title' => '倉儲分類設定'
+        // ];
 
         return $data;
     }
@@ -94,21 +106,9 @@ class Sidebar
         $data =[];
 
         $data[] = [
-            'route' => 'inquiry.index',
-            'request' => 'purchase/inquiry*',
-            'title' => '詢價'
-        ];
-
-        $data[] = [
-            'route' => 'buy.index',
-            'request' => 'purchase/buy*',
+            'route' => 'in.index',
+            'request' => 'purchase/in*',
             'title' => '採購'
-        ];
-
-        $data[] = [
-            'route' => 'ibuy_to_stock.index',
-            'request' => 'purchase/ibuy_to_stock*',
-            'title' => '採購轉入庫中'
         ];
 
         $data[] = [
@@ -117,34 +117,41 @@ class Sidebar
             'title' => '入庫'
         ];
 
+        // $data[] = [
+        //     'route' => 'account_payable.index',
+        //     'request' => 'purchase/account_payable*',
+        //     'title' => '應付帳款管理'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'payment_record.index',
+        //     'request' => 'purchase/payment_record*',
+        //     'title' => '付款記錄'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'p_sales_return.index',
+        //     'request' => 'purchase/p_sales_return*',
+        //     'title' => '採購退貨'
+        // ];
+
+        // $data[] = [
+        //     'route' => 'p_exchange.index',
+        //     'request' => 'purchase/p_exchange*',
+        //     'title' => '採購換貨'
+        // ];
+
         $data[] = [
-            'route' => 'account_payable.index',
-            'request' => 'purchase/account_payable*',
-            'title' => '應付帳款管理'
+            'route' => 'print.in',
+            'request' => '/print/in*',
+            'title' => '採購報表',
+            'target' => '_blank'
         ];
 
         $data[] = [
-            'route' => 'payment_record.index',
-            'request' => 'purchase/payment_record*',
-            'title' => '付款記錄'
-        ];
-
-        $data[] = [
-            'route' => 'p_sales_return.index',
-            'request' => 'purchase/p_sales_return*',
-            'title' => '採購退貨'
-        ];
-
-        $data[] = [
-            'route' => 'p_exchange.index',
-            'request' => 'purchase/p_exchange*',
-            'title' => '採購換貨'
-        ];
-
-        $data[] = [
-            'route' => 'print.buy',
-            'request' => '/print/buy*',
-            'title' => '報表',
+            'route' => 'print.in_unpay',
+            'request' => '/print/in_unpay*',
+            'title' => '未付款資料',
             'target' => '_blank'
         ];
 
@@ -222,17 +229,17 @@ class Sidebar
             'title' => '盤點'
         ];
 
-        $data[] = [
-            'route' => 'adjustment.index',
-            'request' => 'stock/adjustment*',
-            'title' => '誤差處理'
-        ];
+        // $data[] = [
+        //     'route' => 'adjustment.index',
+        //     'request' => 'stock/adjustment*',
+        //     'title' => '誤差處理'
+        // ];
 
-        $data[] = [
-            'route' => 'transfer_inventory.index',
-            'request' => 'stock/transfer_inventory*',
-            'title' => '調撥'
-        ];
+        // $data[] = [
+        //     'route' => 'transfer_inventory.index',
+        //     'request' => 'stock/transfer_inventory*',
+        //     'title' => '調撥'
+        // ];
 
         $data[] = [
             'route' => 'on_order_follow.index',
