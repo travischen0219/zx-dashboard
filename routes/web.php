@@ -13,6 +13,7 @@ Route::get('barcode_PDF/{id}','PDFController@barcode_pdf');
 Route::get('logout','LoginController@logout')->name('logout');
 
 Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->group(function(){
+    // 員工管理
     Route::resource('staff', 'StaffController');
 
     Route::resource('department', 'DepartmentController');
