@@ -41,8 +41,10 @@ class StaffController extends Controller
     {
         $validated = $request->validated();
 
+        $request->password = bcrypt($request->password);
         $user = User::create($request->all());
         $user->created_user = session('admin_user')->id;
+        $user->password = bcrypt($user->password);
         $user->save();
 
         return redirect(route('staff.index'))->with('message','新增成功');
@@ -78,7 +80,11 @@ class StaffController extends Controller
         $user->tel = $request->tel;
         $user->mobile = $request->mobile;
         $user->address = $request->address;
-        $user->password = $request->password;
+
+        if ($request->password != '') {
+            $user->password = bcrypt($request->password);
+        }
+
         $user->status = $request->status;
         $user->memo = $request->memo;
         $user->updated_user = session('admin_user')->id;

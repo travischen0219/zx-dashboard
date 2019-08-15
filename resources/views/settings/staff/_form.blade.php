@@ -84,7 +84,7 @@
 <div class="form-group d-inline-block align-top">
     <label for="password"><span style="color:red;">*</span>密碼：</label>
     <input type="password" name="password" class="form-control w-auto d-inline-block" id="password"
-        value="{{ old('password') ?? $user->password }}">
+        value="" placeholder="{{ Request::is('settings/staff/create') ? '' : '不改免填' }}"">
     <br>
     <label for="password"></label>
     <span class="help-block text-danger">最少8個英文或數字組成</span>
@@ -93,7 +93,7 @@
 <div class="form-group d-inline-block align-top">
     <label for="password_confirmation" style="width: 120px;"><span style="color:red;">*</span>再次確認密碼：</label>
     <input type="password" name="password_confirmation" class="form-control w-auto d-inline-block" id="password_confirmation"
-        value="{{ old('password_confirmation') ?? $user->password }}">
+        value="" placeholder="{{ Request::is('settings/staff/create') ? '' : '不改免填' }}">
     <br>
     <label for="password" style="width: 120px;"></label>
     <span class="help-block text-danger">最少8個英文或數字組成</span>

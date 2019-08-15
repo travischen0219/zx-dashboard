@@ -29,10 +29,12 @@ class StaffRequest extends FormRequest
             $staff_code = 'required|unique:users,staff_code|max:20';
             $username = 'required|unique:users,username|max:50';
             $email = 'required|unique:users,email|max:120';
+            $password = 'required|min:8|confirmed';
         } else {
             $staff_code = '';
             $username = '';
             $email = '';
+            $password = 'nullable|min:8|confirmed';
         }
 
         return [
@@ -40,7 +42,7 @@ class StaffRequest extends FormRequest
             'fullname' => 'required|string',
             'username' => $username,
             'email' => $email,
-            'password' => 'required|min:8|confirmed',
+            'password' => $password,
             'department_id' => 'required',
             'professional_title_id' => 'required'
         ];
