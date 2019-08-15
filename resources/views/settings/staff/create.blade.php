@@ -2,7 +2,7 @@
 
 @section('title', '員工資料建立')
 @section('page-header')
-    <i class="fas fa-tasks active-color mr-1"></i>基本資料 - 員工資料建立
+    <i class="fas fa-users active-color mr-1"></i>基本資料 - 員工資料建立
 @endsection
 
 @section('css')
