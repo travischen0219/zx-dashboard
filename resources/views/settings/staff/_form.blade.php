@@ -102,7 +102,7 @@
 <div class="clearfix"></div>
 
 <div class="form-group d-inline-block">
-    <label for="email">Email：</label>
+    <label for="email"><span style="color:red;">*</span>Email：</label>
     <input type="text" name="email" class="form-control" size="60" id="email"
         value="{{ old('email') ?? $user->email }}">
 </div>

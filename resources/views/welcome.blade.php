@@ -24,7 +24,8 @@
                 <div class="tabbable-line">
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_15_1">
-                            <form class="login-form" action="{{ route('login') }}" method="post" id="name_form" target="_top">
+                            <form class="login-form" action="{{ route('login') }}" method="post" id="name_form"
+                                target="_top">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="setType" value="name">
                                 <input type="hidden" name="sendCode">
