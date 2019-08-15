@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DepartmentRequest extends FormRequest
+class ProfessionalTitleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +23,15 @@ class DepartmentRequest extends FormRequest
      */
     public function rules()
     {
-        $method = $this->method();
-
         return [
-            'name' => 'required|unique:departments,name,' . $this->department . ',id,deleted_at,NULL|max:50'
+            'name' => 'required|unique:professional_titles,name,' . $this->professional_title . ',id,deleted_at,NULL|max:50'
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => '部門名稱'
+            'name' => '職稱名稱'
         ];
     }
 }
