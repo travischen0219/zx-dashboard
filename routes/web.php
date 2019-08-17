@@ -16,22 +16,27 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     // 員工管理
     Route::resource('staff', 'StaffController');
 
+    // 部門管理
     Route::resource('department', 'DepartmentController');
     Route::post('department/update_orderby','DepartmentController@update_orderby')->name('department.update.orderby');
 
+    // 職稱管理
     Route::resource('professional_title', 'Professional_titleController');
     Route::post('professional_title/update_orderby','Professional_titleController@update_orderby')->name('professional_title.update.orderby');
+
     // 供應商
     Route::resource('supplier', 'SupplierController');
-    Route::post('supplier/search','SupplierController@search')->name('supplier.search');
+    Route::post('supplier/search','SupplierController@index')->name('supplier.search');
+
     // 廠商
     Route::resource('manufacturer', 'ManufacturerController');
     Route::post('manufacturer/search','ManufacturerController@search')->name('manufacturer.search');
+
     // 加工方式
     Route::resource('process_function', 'Process_functionController');
     Route::post('process_function/update_orderby','Process_functionController@update_orderby')->name('process_function.update.orderby');
 
-
+    // 客戶管理
     Route::resource('customers', 'CustomerController');
     Route::post('customers/search','CustomerController@search')->name('customers.search');
 
