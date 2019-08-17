@@ -12,372 +12,159 @@ use App\Model\Material_category;
 use App\Model\Material_warehouse;
 use App\Model\Helper;
 use App\Model\Warehouse_category;
+use App\Model\StorageFile;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MaterialRequest;
+use Storage;
 
 class MaterialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        $search_code = 'all';
-        if(Material_unit::where('delete_flag','0')->count()>0){
-            if(Material_category::where('delete_flag','0')->count()>0){
-                $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
-                $materials = Material::where('delete_flag','0')->orderBy('fullCode', 'ASC')->get();
-                return view('settings.material.show',compact('material_categories', 'materials','search_code'));
-            } else {
-                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');
-            }
-        } else {
+        $search_code = $request->search_category ?? 'all';
+
+        if (Material_unit::where('delete_flag', '0')->count() <= 0) {
             return redirect()->route('material_unit.index')->with('error', '尚無 單位 資料，請先建立');
         }
-    }
 
-    public function search(Request $request)
-    {
+        if (Material_category::where('delete_flag', '0')->count() <= 0) {
+            return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');
+        }
+
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
 
-        $search_code = $request->search_category;
         if ($search_code == 'all') {
-            $materials = Material::where('delete_flag', '0')
-                ->orderBy('fullCode', 'ASC')->get();
+            $materials = Material::orderBy('fullCode', 'ASC')->get();
         } else {
-            $materials = Material::where('delete_flag', '0')
-                ->where('material_categories_code', $search_code)
+            $materials = Material::where('material_categories_code', $search_code)
                 ->orderBy('fullCode', 'ASC')->get();
         }
 
-        return view('settings.material.show', compact('material_categories', 'materials', 'search_code'));
+        $data = [];
+        $data['material_categories'] = $material_categories;
+        $data['materials'] = $materials;
+        $data['search_code'] = $search_code;
+
+        return view('settings.material.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
         $material_categories = Helper::arrayAppendKey($material_categories, 'code');
-        // return $material_categories;
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
-        return view('settings.material.create',compact('material_categories','material_units'));
+
+        $data = [];
+        $data['material_categories'] = $material_categories;
+        $data['material_units'] = $material_units;
+        $data['material'] = new Material;
+        $data['material']->status = 1;
+
+        $data['units'] = Material_unit::allJson();
+        $data['files'] = StorageFile::allJson([]);
+
+        return view('settings.material.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(MaterialRequest $request)
     {
-        $rules = [
-            'fullName' => 'required|string',
-            'fullCode' => 'required|string|unique:materials',
-        ];
+        $validated = $request->validated();
 
-        $messages = [
-            'fullName.required' => '品名 必填',
-            'fullCode.required' => '物料編號 不完整',
-            'fullCode.unique' => '物料編號已存在，不可重複',
-        ];
-        $this->validate($request, $rules, $messages);
-
-        $file_1=null;
-        $file_2=null;
-        $file_3=null;
-        if($request->hasFile('upload_image_1')){
-            $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
-        }
-        if($request->hasFile('upload_image_2')){
-            $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
-        }
-        if($request->hasFile('upload_image_3')){
-            $file_3 = $this->file_process($request->name_3, $request->upload_image_3);
-        }
-
-        try{
-            $material = new Material;
-            $material->fullName = $request->fullName;
-            $material->material_categories_code = $request->material_category;
-            $material->fullcode = $request->fullCode;
-            $material->code1 = $request->code_1;
-            $material->code2 = $request->code_2;
-            $material->code3 = $request->code_3;
-            $material->unit = $request->unit;
-            $material->cost = $request->cost;
-            $material->price = $request->price;
-            $material->cal_unit = $request->cal_unit;
-            $material->cal_price = $request->cal_price;
-            $material->size = $request->size;
-            $material->color = $request->color;
-            $material->buy = $request->buy;
-            $material->safe = $request->safe;
-
-            if($request->warehouse_id > 0){
-                $material->warehouse = $request->warehouse_id;
-                $find_warehouse = Warehouse::find($request->warehouse_id);
-                $material->warehouse_category = $find_warehouse->category;
-            }
-
-            $material->memo = $request->memo;
-            $material->file_1 = $file_1;
-            $material->file_2 = $file_2;
-            $material->file_3 = $file_3;
-            $material->stock = 0;
-            $material->stock_no = 0;
-            $material->status = $request->status;
-            $material->created_user = session('admin_user')->id;
-            $material->delete_flag = 0;
-            $material->save();
-
-            if($request->warehouse_id > 0){
-
-                $warehouse = new Material_warehouse;
-                $warehouse->material_id = $material->id;
-                $warehouse->warehouse_id = $request->warehouse_id;
-                $warehouse->warehouse_category_id = $material->warehouse_category;
-                $warehouse->stock = 0;
-                $warehouse->created_user = session('admin_user')->id;
-                $warehouse->delete_flag = 0;
-                $warehouse->save();
-            }
-
-
-            return redirect()->route('materials.index')->with('message','新增成功');
-        } catch (Exception $e) {
-            return redirect()->route('materials.index')->with('error','新增失敗');
-        }
+        $this->save(0, $request);
+        return redirect()->route('material.index')->with('message', '新增成功');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $material = Material::find($id);
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
+        $material_categories = Helper::arrayAppendKey($material_categories, 'code');
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
-        if($material->warehouse > 0){
-            $warehouse = Warehouse::where('id',$material->warehouse)->first();
-        } else {
-            $warehouse = '';
-        }
-        if($material->updated_user > 0){
-            $updated_user = User::where('id',$material->updated_user)->first();
-        } else {
-            $updated_user = User::where('id',$material->created_user)->first();
-        }
-        return view('settings.material.show_one',compact('material', 'material_categories','material_units', 'updated_user', 'warehouse'));
+
+        $data = [];
+        $data['material'] = $material;
+        $data['material_categories'] = $material_categories;
+        $data['material_units'] = $material_units;
+
+        $data['units'] = Material_unit::allJson();
+        $data['files'] = StorageFile::allJson(
+            [
+                $material->file1,
+                $material->file2,
+                $material->file3
+            ]
+        );
+
+        $data["show"] = 1;
+
+        return view('settings.material.edit', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $material = Material::find($id);
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
         $material_categories = Helper::arrayAppendKey($material_categories, 'code');
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
-        if($material->warehouse > 0){
-            $warehouse = Warehouse::where('id',$material->warehouse)->first();
-        } else {
-            $warehouse = '';
-        }
-        if($material->updated_user > 0){
-            $updated_user = User::where('id',$material->updated_user)->first();
-        } else {
-            $updated_user = User::where('id',$material->created_user)->first();
-        }
 
-        $upload_check_1 = true;
-        $upload_check_2 = true;
-        $upload_check_3 = true;
+        $data = [];
+        $data['material'] = $material;
+        $data['material_categories'] = $material_categories;
+        $data['material_units'] = $material_units;
 
-        if($material->file_1 > 0){
-            $upload_check_1 = false;
-        }
-        if($material->file_2 > 0){
-            $upload_check_2 = false;
-        }
-        if($material->file_3 > 0){
-            $upload_check_3 = false;
-        }
+        $data['units'] = Material_unit::allJson();
+        $data['files'] = StorageFile::allJson(
+            [
+                $material->file1,
+                $material->file2,
+                $material->file3
+            ]
+        );
 
-        return view('settings.material.edit',compact('material', 'material_categories','material_units', 'updated_user', 'warehouse','upload_check_1','upload_check_2','upload_check_3'));
+        $data["show"] = 0;
+
+        return view('settings.material.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(MaterialRequest $request, $id)
     {
-        //$material = Material::find($id);
-        // if($material->fullName == $request->fullName){
-        //     $rules = ['fullName' => 'required|unique:materials'.($id ? ",id,$id" : '')];
-        // } else {
-        //     if($check_id = Material::where('fullName',$request->fullName)->first()){
-        //         if($check_id->id != $id){
-        //             return redirect()->back()->with('error','品名已存在 不可重複');
-        //             die;
-        //         }
-        //     }
-        // }
+        $validated = $request->validated();
 
-        $rules = [
-            'fullName' => 'required|string',
-        ];
-
-        $messages = [
-
-            'fullName.required' => '品名 必填',
-
-        ];
-        $this->validate($request, $rules, $messages);
-
-        $file_1=null;
-        $file_2=null;
-        $file_3=null;
-        $check_1 = false;
-        $check_2 = false;
-        $check_3 = false;
-        if($request->hasFile('upload_image_1')){
-            $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
-            $check_1 = true;
-        }
-        if($request->hasFile('upload_image_2')){
-            $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
-            $check_2 = true;
-        }
-        if($request->hasFile('upload_image_3')){
-            $file_3 = $this->file_process($request->name_3, $request->upload_image_3);
-            $check_3 = true;
-        }
-
-
-        try{
-            $material = Material::find($id);
-            $material->fullName = $request->fullName;
-            $material->material_categories_code = $request->material_category;
-            $material->unit = $request->unit;
-            $material->cost = $request->cost;
-            $material->price = $request->price;
-            $material->cal_unit = $request->cal_unit;
-            $material->cal_price = $request->cal_price;
-            $material->size = $request->size;
-            $material->color = $request->color;
-            $material->buy = $request->buy;
-            $material->safe = $request->safe;
-
-            if($request->warehouse_id > 0 ){
-                if($material->warehouse != $request->warehouse_id){
-                    $material->warehouse = $request->warehouse_id;
-                    $this_warehouse = Warehouse::find($request->warehouse_id);
-                    $material->warehouse_category = $this_warehouse->category;
-
-                    $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$id)->get();
-
-                    $check_has_warehouse = 0;
-                    if($material_warehouses->count() > 0){
-                        // 有倉儲
-                        // 判斷是否建立過倉儲
-                        foreach($material_warehouses as $material_warehouse){
-                            if($request->warehouse_id == $material_warehouse->warehouse_id){
-                                $check_has_warehouse++;
-                            }
-                        }
-                        if($check_has_warehouse == 0){
-                            // 新的倉儲位置
-                            $material_warehouse_add = new Material_warehouse;
-                            $material_warehouse_add->material_id = $id;
-                            $material_warehouse_add->warehouse_id = $request->warehouse_id;
-                            $material_warehouse_add->warehouse_category_id = $this_warehouse->category;
-                            $material_warehouse_add->stock = 0;
-                            $material_warehouse_add->created_user = session('admin_user')->id;
-                            $material_warehouse_add->delete_flag = 0;
-                            $material_warehouse_add->save();
-                        }
-                    } else {
-                        // 若無預設倉儲
-                        $material_warehouse_add = new Material_warehouse;
-                        $material_warehouse_add->material_id = $id;
-                        $material_warehouse_add->warehouse_id = $request->warehouse_id;
-                        $material_warehouse_add->warehouse_category_id = $this_warehouse->category;
-                        $material_warehouse_add->stock = 0;
-                        $material_warehouse_add->created_user = session('admin_user')->id;
-                        $material_warehouse_add->delete_flag = 0;
-                        $material_warehouse_add->save();
-                    }
-                }
-            }
-
-            $material->memo = $request->memo;
-            if($check_1){
-                $material->file_1 = $file_1;
-            }
-            if($check_2){
-                $material->file_2 = $file_2;
-            }
-            if($check_3){
-                $material->file_3 = $file_3;
-            }
-            $material->safe = $request->safe;
-            $material->status = $request->status;
-            $material->updated_user = session('admin_user')->id;
-            $material->save();
-            return redirect()->route('materials.index')->with('message','修改成功');
-        } catch (Exception $e) {
-            return redirect()->route('materials.index')->with('error','修改失敗');
-        }
+        $this->save($id, $request);
+        return redirect()->route('material.index')->with('message', '修改成功');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         try{
             $material = Material::find($id);
 
-            if($material->file_1 > 0){
-                $gallery = Gallery::find($material->file_1);
-                $gallery->delete_flag = 1;
-                $gallery->deleted_at = Now();
-                $gallery->deleted_user = session('admin_user')->id;
-                $gallery->save();
+            if($material->file_1 > 0) {
+                $file = StorageFile::find($material->file_1);
+                if ($file) {
+                    Storage::delete('public/files/' . $file->file_name);
+                    Storage::delete('public/thunmbs/' . $file->file_name);
+                    $file->delete();
+                }
             }
-            if($material->file_2 > 0){
-                $gallery = Gallery::find($material->file_2);
-                $gallery->delete_flag = 1;
-                $gallery->deleted_at = Now();
-                $gallery->deleted_user = session('admin_user')->id;
-                $gallery->save();
+
+            if($material->file_2 > 0) {
+                $file = StorageFile::find($material->file_2);
+                if ($file) {
+                    Storage::delete('public/files/' . $file->file_name);
+                    Storage::delete('public/thunmbs/' . $file->file_name);
+                    $file->delete();
+                }
             }
-            if($material->file_3 > 0){
-                $gallery = Gallery::find($material->file_3);
-                $gallery->delete_flag = 1;
-                $gallery->deleted_at = Now();
-                $gallery->deleted_user = session('admin_user')->id;
-                $gallery->save();
+
+            if($material->file_3 > 0) {
+                $file = StorageFile::find($material->file_3);
+                if ($file) {
+                    Storage::delete('public/files/' . $file->file_name);
+                    Storage::delete('public/thunmbs/' . $file->file_name);
+                    $file->delete();
+                }
             }
 
             $material->status = 2;
@@ -385,9 +172,10 @@ class MaterialController extends Controller
             $material->deleted_at = Now();
             $material->deleted_user = session('admin_user')->id;
             $material->save();
-            return redirect()->route('materials.index')->with('message','刪除成功');
+            $material->delete();
+            return redirect()->route('material.index')->with('message', '刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('materials.index')->with('error','刪除失敗');
+            return redirect()->route('material.index')->with('error', '刪除失敗');
         }
     }
 
@@ -481,6 +269,50 @@ class MaterialController extends Controller
         $img->delete_flag = 0;
         $img->save();
         return $img->id;
+    }
+
+    public function save($id, $request)
+    {
+        // 新增或修改
+        if ($id == 0) {
+            $material = new Material;
+
+            // 不可修改的欄位 (分類、編號、庫存)
+            $material->code1 = $request->code_1;
+            $material->code2 = $request->code_2;
+            $material->code3 = $request->code_3;
+            $material->fullcode = $request->fullCode;
+            $material->material_categories_code = $request->material_category;
+
+            $material->stock = 0;
+            $material->stock_no = 0;
+
+            $material->created_user = session('admin_user')->id;
+        } else {
+            $material = Material::find($id);
+            $material->updated_user = session('admin_user')->id;
+        }
+
+        // 處理檔案清單
+        StorageFile::packFiles($request, $material);
+
+        $material->fullName = $request->fullName;
+        $material->unit = $request->unit;
+        $material->cost = $request->cost;
+        $material->price = $request->price;
+        $material->cal_unit = $request->cal_unit;
+        $material->cal_price = $request->cal_price;
+        $material->size = $request->size;
+        $material->color = $request->color;
+        $material->buy = $request->buy;
+        $material->safe = $request->safe;
+        $material->memo = $request->memo;
+        $material->status = $request->status;
+        $material->created_user = session('admin_user')->id;
+        $material->delete_flag = 0;
+        $material->save();
+
+        return $material;
     }
 }
 

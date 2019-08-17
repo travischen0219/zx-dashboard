@@ -41,7 +41,7 @@
 
 @section('content')
 
-    <form role="form" action="{{ route('materials.search') }}" method="POST" id="search_from">
+    <form role="form" action="{{ route('material.search') }}" method="POST" id="search_from">
         {{ csrf_field() }}
         <div class="form-group">
             <label class="control-label"> 篩選分類 :</label>
@@ -58,7 +58,7 @@
 
     @include('includes.messages')
     <div class="mb-3">
-        <a href="{{ route('materials.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增物料</a>
+        <a href="{{ route('material.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增物料</a>
         <span class="btn btn-primary" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆PDF列印</span>
     </div>
 
@@ -91,7 +91,7 @@
                     <td>
                         {{ $material->fullCode }}
                         <br>
-                        <a href="{{ route('materials.show', $material->id) }}">{{$material->fullName}}</a>
+                        <a href="{{ route('material.show', $material->id) }}">{{$material->fullName}}</a>
                     </td>
                     <td>{{ $material->size }}</td>
 
@@ -114,7 +114,7 @@
                         {{-- <a href="javascript: show_stock_records('{{ $material->id }}');" class="btn blue btn-outline-primary btn-sm float-right">庫存紀錄</a> --}}
                     </td>
                     <td align="center" id="functions_btn">
-                        <a href="{{ route('materials.edit', $material->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
+                        <a href="{{ route('material.edit', $material->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
                         <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
                             if(confirm('確定要刪除嗎 ?')){
                                 event.preventDefault();
@@ -128,7 +128,7 @@
                             @else
                                 javascript:;' class="btn green btn-outline btn-sm" disabled>條碼</a>
                             @endif
-                        <form id="delete-form-{{$material->id}}" action="{{ route('materials.destroy', $material->id) }}" method="post" style="display:none">
+                        <form id="delete-form-{{$material->id}}" action="{{ route('material.destroy', $material->id) }}" method="post" style="display:none">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
                         </form>

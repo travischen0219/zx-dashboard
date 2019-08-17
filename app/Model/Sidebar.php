@@ -51,8 +51,8 @@ class Sidebar
         ];
 
         $data[] = [
-            'route' => 'materials.index',
-            'request' => 'settings/materials*',
+            'route' => 'material.index',
+            'request' => 'settings/material*',
             'title' => '物料管理'
         ];
 

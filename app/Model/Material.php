@@ -7,9 +7,12 @@ use App\Model\Warehouse;
 use App\Model\Material_unit;
 use App\Model\Material_category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Material extends Model
 {
+    use SoftDeletes;
+
     public function material_category_name()
     {
         return $this->hasOne(Material_category::class, 'code', 'material_categories_code');
@@ -36,6 +39,19 @@ class Material extends Model
     public function image_3()
     {
         return $this->hasOne(Gallery::class, 'id', 'file_3');
+    }
+
+    public function file1()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_1');
+    }
+    public function file2()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_2');
+    }
+    public function file3()
+    {
+        return $this->hasOne(StorageFile::class, 'id', 'file_3');
     }
 
     static public function allWithUnit($code)

@@ -46,10 +46,10 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::resource('material_unit', 'Material_unitController');
     Route::post('material_unit/update_orderby','Material_unitController@update_orderby')->name('material_unit.update.orderby');
 
-    Route::resource('materials', 'MaterialController');
-    Route::post('materials/search','MaterialController@search')->name('materials.search');
+    // 物料管理
+    Route::resource('material', 'MaterialController');
+    Route::post('material/search','MaterialController@index')->name('material.search');
     Route::post('material_file/delete/{file}/{material}/{id}','MaterialController@delete_file');
-
 
     Route::resource('warehouses', 'WarehouseController');
     Route::post('warehouses/search','WarehouseController@search')->name('warehouses.search');
