@@ -1,97 +1,34 @@
-@extends('layouts.app')
+@extends('b4.app')
 
-@section('title','加工方式修改')
-
-@section('css')
-<style>
-    /* 初始label顏色 */
-    .form-group.form-md-line-input.form-md-floating-label .form-control ~ label {
-        color: #248ff1; }
-    /* help-block顏色 */
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .help-block, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .help-block {
-        color: #248ff1;}
-    /* focus後的label顏色 */
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label,
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus {
-        color: #248ff1; }
-    /* focus後的底線顏色 */
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
-        background: #248ff1; }
-</style>
-
-
+@section('title', '加工方式修改')
+@section('page-header')
+    <i class="fas fa-id-card-alt active-color mr-1"></i>基本資料 - 加工方式修改
 @endsection
 
-@section('page_header')
-<!-- BEGIN PAGE HEADER-->
+@section('css')
 
-<!-- BEGIN PAGE BAR -->
-<div class="page-bar">
-
-    <!-- BEGIN THEME PANEL -->
-    @include('layouts.theme_panel')    
-    <!-- END THEME PANEL -->
-
-
-    <!-- BEGIN PAGE TITLE-->
-    <h1 class="page-title"> 加工方式修改
-        <small></small>
-    </h1>
-    <!-- END PAGE TITLE-->
-    
-</div>
-<!-- END PAGE BAR -->
-
-<!-- END PAGE HEADER-->
 @endsection
 
 @section('content')
 
-<div class="row">
-    <div class="col-md-6 ">
-        <!-- BEGIN SAMPLE FORM PORTLET-->
-        <div class="portlet light">
-            @include('includes.messages')
-            <div class="portlet-body form">
-                <form role="form" action="{{ route('process_function.update', $unit->id) }}" method="POST">
-                    {{ csrf_field() }}
-                    {{ method_field('PUT') }}
-                    <div class="form-body">
+    {!! Form::open([
+        'url' => route('process_function.update', $unit->id),
+        'method' => 'PUT',
+        'class' => 'form'
+    ]) !!}
+        @include('settings.process_function._form')
 
-                        <div class="form-group form-md-line-input form-md-floating-label">
-                            <input type="text" name="name" class="form-control" id="form_control_1" value="{{ $unit->name }}">
-                            <label for="form_control_1">加工名稱</label>
-                            <span class="help-block"></span>
-                        </div>
+        <div class="form-group">
+            <label></label>
 
-                        <div class="well">
-                            <span>最後修改人員 : {{ $updated_user->fullname }} @if($updated_user->delete_flag != 0) <span style="color:red;">(該人員已刪除)</span> @endif</span><br>
-                            <span>最後修改時間 : {{ $unit->updated_at }}</span>
-                        </div>
-                        
-                    </div>
-                    <div class="form-actions noborder">
-                        <button type="submit" class="btn blue">存 檔</button>
-                        <a href="{{ route('process_function.index') }}" class="btn red">取 消</a>
-                    </div>
-                </form>
-            </div>
+            <button type="submit" class="btn btn-primary">修改職稱</button>
+            <button type="button" onclick="location.href='{{ route('process_function.index') }}'" class="btn btn-link ml-3">取消</button>
         </div>
-        <!-- END SAMPLE FORM PORTLET-->
-    
-    
-    </div>
-</div>
-
-
-
+    {!! Form::close() !!}
 
 @endsection
 
 
-@section('scripts')
+@section('script')
 
 @endsection
