@@ -28,9 +28,9 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::resource('supplier', 'SupplierController');
     Route::post('supplier/search','SupplierController@index')->name('supplier.search');
 
-    // 廠商
+    // 加工廠商
     Route::resource('manufacturer', 'ManufacturerController');
-    Route::post('manufacturer/search','ManufacturerController@search')->name('manufacturer.search');
+    Route::post('manufacturer/search','ManufacturerController@index')->name('manufacturer.search');
 
     // 加工方式
     Route::resource('process_function', 'Process_functionController');

@@ -22,9 +22,7 @@
 @section('content')
     {!! Form::open([
         'url' => route('supplier.store'),
-        'class' => 'form',
-        'id' => 'app',
-        'files' => true
+        'class' => 'form'
     ]) !!}
     @include('settings.supplier._form')
 

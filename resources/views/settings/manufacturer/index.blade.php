@@ -1,8 +1,8 @@
 @extends('b4.app')
 
-@section('title','廠商資料')
+@section('title','加工廠商資料')
 @section('page-header')
-    <i class="fas fa-industry active-color"></i> 基本資料 - 廠商資料
+    <i class="fas fa-industry active-color"></i> 基本資料 - 加工廠商資料
 @endsection
 
 @section('css')
@@ -33,7 +33,7 @@
     <form role="form" action="{{ route('manufacturer.search') }}" method="POST" id="search_from">
         {{ csrf_field() }}
         <div class="form-group">
-            <label class="control-label"> 篩選分類 :</label>
+            <label class="control-label">篩選分類：</label>
             <select class="form-control d-inline-block w-auto" name="search_category" onchange="search();">
                 <option value="all" {{$search_code == 'all' ? 'selected' : ''}}>全部</option>
                 <option value="1" {{$search_code == 1 ? 'selected' : ''}}>常用</option>
@@ -45,7 +45,7 @@
 
     @include('includes.messages')
     <div class="caption font-dark mb-3">
-        <a href="{{ route('manufacturer.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增廠商</a>
+        <a href="{{ route('manufacturer.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增加工廠商</a>
     </div>
 
     <table class="table table-striped table-bordered table-hover" id="data" >

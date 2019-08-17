@@ -3,9 +3,12 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Manufacturer extends Model
 {
+    use SoftDeletes;
+
     static public function categories()
     {
         $data = [];
