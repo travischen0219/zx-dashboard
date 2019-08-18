@@ -22,6 +22,17 @@ $(function () {
         if ($('#supplier_id').val() == 0) error_message += '<div>供應商必須選擇</div>'
         if ($('#buy_date').val() == '') error_message += '<div>採購日期必須選擇</div>'
 
+        if (app.materials.length <= 0) error_message += '<div>尚未選取任何物料</div>'
+
+        var unsignedNumber = false
+        app.materials.forEach(function(element) {
+            console.log(element.amount)
+            if (isNaN(element.amount) || element.amount <= 0) {
+                unsignedNumber = true
+            }
+        })
+        if (unsignedNumber) error_message += '<div>數量請輸入大於0的數字</div>'
+
         if (error_message != '') {
             swalOption.type = "error"
             swalOption.title = '存檔失敗';
