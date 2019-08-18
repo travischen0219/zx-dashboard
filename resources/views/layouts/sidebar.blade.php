@@ -210,7 +210,7 @@
                             @if(Request::is('settings/customers*'))
                                 active open
                             @endif">
-                            <a href="{{ route('customers.index') }}" class="nav-link ">
+                            <a href="{{ route('customer.index') }}" class="nav-link ">
                                 <span class="title"
                                     @if(Request::is('settings/customers*'))
                                         style="color:#59deea;"
