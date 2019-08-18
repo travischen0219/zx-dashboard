@@ -148,7 +148,7 @@ class Material extends Model
     }
 
     // 物料清單轉庫存
-    static public function storeToStock($record, $type = 0)
+    static public function storeToStock($record, $way = 0, $type = 0)
     {
         $data = [];
         $class = get_class($record);
@@ -162,13 +162,20 @@ class Material extends Model
             $stock->lot_id = $record->lot_id ?? 0;
             $stock->in_id = ($class == 'App\Model\In' ? $record->id : 0);
             $stock->out_id = ($class == 'App\Model\Out' ? $record->id : 0);
+            $stock->way = $way;
             $stock->type = $type;
             $stock->material_id = $material['id'];
             $stock->supplier_id = $record->supplier_id ?? 0;
             $stock->customer_id = $record->customer_id ?? 0;
             $stock->amount = $material['amount'];
             $stock->amount_before = $m->stock;
-            $stock->amount_after = $stock->amount_before + $material['amount'];
+
+            if ($way == 1) {
+                $stock->amount_after = $stock->amount_before + $material['amount'];
+            } elseif ($way == 2) {
+                $stock->amount_after = $stock->amount_before - $material['amount'];
+            }
+
             $stock->stock_date = date('Y-m-d');
             $stock->memo = '';
 

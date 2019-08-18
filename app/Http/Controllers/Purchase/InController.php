@@ -218,7 +218,7 @@ class InController extends Controller
 
         // 改變庫存，更新庫存
         if ($old_status != 40 && $new_status == 40) {
-            Material::storeToStock($in, 2);
+            Material::storeToStock($in, 1, 2);
         }
 
         return $in;

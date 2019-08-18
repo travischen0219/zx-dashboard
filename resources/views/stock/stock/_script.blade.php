@@ -24,12 +24,21 @@ $(function () {
         if ($('#stock_date').val() == '') error_message += '<div>入庫日期必須選擇</div>'
         if (app.stocks.length <= 0) error_message += '<div>尚未選取任何物料</div>'
 
+        var unsignedNumber = false
+        app.stocks.forEach(function(element) {
+            console.log(element.amount)
+            if (isNaN(element.amount) || element.amount <= 0) {
+                unsignedNumber = true
+            }
+        })
+        if (unsignedNumber) error_message += '<div>數量請輸入大於0的數字</div>'
+
         if (error_message != '') {
             swalOption.type = "error"
-            swalOption.title = '存檔失敗';
-            swalOption.html = error_message;
-            swal.fire(swalOption);
-            return false;
+            swalOption.title = '存檔失敗'
+            swalOption.html = error_message
+            swal.fire(swalOption)
+            return false
         }
 
         // 入庫檢查
@@ -38,7 +47,7 @@ $(function () {
         app.stocks.forEach(function (element) {
             const unit = app.units[element.unit]
             const old_stock = element.stock
-            let new_stock = Number(element.stock) + Number(element.amount)
+            let new_stock = Number(element.stock) {{ $way == 1 ? '+' : $way ==2 ? '-' : '' }} Number(element.amount)
             new_stock = new_stock.toFixed(2)
 
             stock_change_html += `
@@ -56,7 +65,7 @@ $(function () {
             html: stock_change_html,
             type: 'info',
             showCancelButton: true,
-            confirmButtonText: '確定入庫',
+            confirmButtonText: '確定{{ $title }}',
             cancelButtonText: '取消',
             width: 600
         }).then((result) => {
@@ -103,6 +112,18 @@ function listSuppliers() {
     })
 }
 
+function listCustomers() {
+    $.magnificPopup.open({
+        showCloseBtn : false,
+        closeOnBgClick: true,
+        fixedContentPos: false,
+        items: {
+            src: "/selector/customer",
+            type: "iframe"
+        }
+    })
+}
+
 function applyLot(str) {
     var lot = JSON.parse(str)
 
@@ -115,5 +136,12 @@ function applySupplier(str) {
 
     $('#supplier_id').val(supplier.id)
     $('#btn_supplier_id').html(supplier.code + ' ' + supplier.fullName)
+}
+
+function applyCustomer(str) {
+    var customer = JSON.parse(str)
+
+    $('#customer_id').val(customer.id)
+    $('#btn_customer_id').html(customer.code + ' ' + customer.fullName)
 }
 </script>

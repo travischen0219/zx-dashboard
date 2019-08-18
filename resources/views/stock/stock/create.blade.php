@@ -2,7 +2,7 @@
 
 @section('title', $title)
 @section('page-header')
-    <i class="fas fa-archive active-color mr-2"></i> {{ $title }}
+    <i class="fas fa-archive active-color mr-2"></i> 庫存 - 新增{{ $title }}
 @endsection
 
 @section('css')
@@ -28,7 +28,7 @@
 
         <div class="form-group mt-3 text-center">
             <button type="submit" class="btn btn-primary px-5">
-                <i class="fas fa-check mr-1"></i> 新增入庫
+                <i class="fas fa-check mr-1"></i> 新增{{ $title }}
             </button>
             <button type="button" onclick="location.href='{{ route('stock.index') }}'" class="btn btn-link ml-3">取消</button>
         </div>
@@ -37,4 +37,8 @@
 
 @section('script')
     @include('stock.stock._script')
+
+    <script>
+    $('label').addClass('{{ $text }}')
+    </script>
 @endsection

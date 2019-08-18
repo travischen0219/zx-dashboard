@@ -10,53 +10,61 @@ use App\Http\Controllers\Controller;
 
 class StockController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    var $title = '';
+    var $text = '';
+
+    public function __construct(Request $request)
+    {
+        if ($request->way == 1) {
+            $this->title = '入庫';
+            $this->text = 'text-success';
+        } elseif ($request->way == 2) {
+            $this->title = '出庫';
+            $this->text = 'text-danger';
+        }
+    }
+
     public function index(Request $request)
     {
         $data = [];
 
-        $data['function'] = 'in';
-        $data['title'] = '採購進貨 - 入庫';
-        $data['types'] = Stock::types();
+        $data['way'] = $request->way ?? 0;
+        $data['ways'] = Stock::ways();
         $data['type'] = $request->type ?? 0;
+        $data['types1'] = Stock::types(1);
+        $data['types2'] = Stock::types(2);
+        $data['types'] = Stock::types($data['way']);
 
-        $stocks = Stock::whereIn('type', [1, 2, 3]);
-        if ($request->type > 0) {
-            $stocks = $stocks->where('type', $request->type);
+        $stocks = Stock::orderBy('id', 'desc');
+        if ($data['way'] > 0) {
+            $stocks = $stocks->where('way', $data['way']);
         }
-        $stocks = $stocks->orderBy('id', 'desc')->get();
+
+        if ($data['type'] > 0) {
+            $stocks = $stocks->where('type', $data['type']);
+        }
+
+        $stocks = $stocks->get();
         $data['stocks'] = $stocks;
 
         return view('stock.stock.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(Request $request)
     {
-        $data = [];
-        $data['function'] = 'in';
-        $data['title'] = '採購進貨 - 新增入庫';
+        $way = $request->way ?? 0;
 
-        $data['types'] = Stock::types();
+        $data = [];
+        $data['way'] = $way;
+        $data['title'] = $this->title;
+        $data['text'] = $this->text;
+
+        $data['types'] = Stock::types($way);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         return view('stock.stock.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (isset($request->material_id)) {
@@ -64,7 +72,7 @@ class StockController extends Controller
                 $stock = new Stock;
 
                 $stock->lot_id = $request->lot_id;
-                $stock->supplier_id = $request->supplier_id;
+                $stock->way = $request->way;
                 $stock->type = $request->type;
                 $stock->stock_date = $request->stock_date;
 
@@ -74,7 +82,15 @@ class StockController extends Controller
                 $stock->material_id = $request->material_id[$i];
                 $stock->amount = $request->material_amount[$i];
                 $stock->amount_before = $m->stock;
-                $stock->amount_after = $m->stock + $stock->amount;
+
+                if ($request->way == 1) {
+                    $stock->supplier_id = $request->supplier_id;
+                    $stock->amount_after = $m->stock + $stock->amount;
+                } elseif ($request->way == 2) {
+                    $stock->customer_id = $request->customer_id;
+                    $stock->amount_after = $m->stock - $stock->amount;
+                }
+
                 $stock->memo = $request->material_memo[$i];
 
                 $m->stock = $stock->amount_after;
@@ -84,7 +100,7 @@ class StockController extends Controller
             }
         }
 
-        return redirect($request->referrer)->with('message', '入庫成功');
+        return redirect($request->referrer)->with('message', $this->title . '成功');
     }
 
     /**

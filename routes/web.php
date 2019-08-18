@@ -40,43 +40,18 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::resource('customer', 'CustomerController');
     Route::post('customer/search', 'CustomerController@index')->name('customer.search');
 
+    // 物料分類
     Route::resource('material_category', 'Material_categoryController');
-    Route::post('material_category/update_orderby','Material_categoryController@update_orderby')->name('material_category.update.orderby');
+    Route::post('material_category/update_orderby', 'Material_categoryController@update_orderby')->name('material_category.update.orderby');
 
+    // 單位
     Route::resource('material_unit', 'Material_unitController');
-    Route::post('material_unit/update_orderby','Material_unitController@update_orderby')->name('material_unit.update.orderby');
+    Route::post('material_unit/update_orderby', 'Material_unitController@update_orderby')->name('material_unit.update.orderby');
 
     // 物料管理
     Route::resource('material', 'MaterialController');
     Route::post('material/search','MaterialController@index')->name('material.search');
     Route::post('material_file/delete/{file}/{material}/{id}','MaterialController@delete_file');
-
-    Route::resource('warehouses', 'WarehouseController');
-    Route::post('warehouses/search','WarehouseController@search')->name('warehouses.search');
-    Route::get('selectWarehouse','SelectController@selectWarehouse')->name('selectWarehouse');
-    Route::post('selectWarehouse/search','SelectController@search_warehouse')->name('selectWarehouse.search');
-    Route::post('warehouse_file/delete/{file}/{material}/{id}','WarehouseController@delete_file');
-
-    // 出庫 倉儲選擇
-    Route::get('selectWarehouse_stock/{id}','SelectController@selectWarehouse_stock');
-    Route::post('selectWarehouse_stock/search','SelectController@search_warehouse_stock')->name('selectWarehouse_stock.search');
-    // 差異處理 調撥 倉儲選擇
-    Route::get('selectWarehouse_byMaterial/{id}','SelectController@selectWarehouse_byMaterial');
-    // 轉入庫 選物料
-    Route::get('selectMaterial_byId/{id}','SelectController@selectMaterial_byId');
-    // 調撥 新倉儲選擇
-    Route::get('selectNewWarehouse_stock/{id}','SelectController@selectNewWarehouse_stock');
-    Route::post('selectNewWarehouse_stock/search','SelectController@search_new_warehouse_stock')->name('selectNewWarehouse_stock.search');
-
-    Route::resource('warehouse_category', 'Warehouse_categoryController');
-    Route::post('warehouse_category/update_orderby','Warehouse_categoryController@update_orderby')->name('warehouse_category.update.orderby');
-    // 物料管理 秀出庫存列表
-    Route::get('show_stock','SelectController@show_stock')->name('show_stock');
-    Route::get('show_stock/{id}','SelectController@show_stock')->name('show_stock.detail');
-
-    Route::resource('gallery', 'GalleryController');
-    Route::get('file_download/{id}', 'GalleryController@file_download');
-    Route::post('gallery/search','GalleryController@search')->name('gallery.search');
 
     // 物料模組
     Route::resource('material_module', 'Material_moduleController');
@@ -128,7 +103,6 @@ Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->gro
     Route::post('select_material_module_out_stock/addRow','SelectController@addModule_out_stock')->name('select_material_module_out_stock.addModule');
 
 
-
     Route::post('select_material_module_purchase/addRow','SelectController@addModule_purchase')->name('select_material_module_purchase.addModule');
 
     // 應收
@@ -156,13 +130,18 @@ Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->gro
     Route::post('prime_cost/search','Prime_costController@search')->name('prime_cost.search');
 });
 
-Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(function(){
-
-    Route::get('inventory/quick_fix/{inventoryID}/{id}','InventoryController@quick_fix');
+Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(function() {
+    // 盤點
+    Route::get('inventory/quick_fix/{inventoryID}/{id}', 'InventoryController@quick_fix');
     Route::resource('inventory', 'InventoryController');
-    Route::post('inventory/search','InventoryController@search')->name('inventory.search');
-    Route::get('inventory/edit_list/{id}','InventoryController@edit_list');
-    Route::get('inventory/show_list/{id}','InventoryController@show_list');
+    Route::post('inventory/search', 'InventoryController@search')->name('inventory.search');
+    Route::get('inventory/edit_list/{id}', 'InventoryController@edit_list');
+    Route::get('inventory/show_list/{id}', 'InventoryController@show_list');
+
+    // 入出庫
+    Route::get('stock/search/{way}/{type}', 'StockController@index')->name('stock.search')
+        ->where('way', '[0-9]+')->where('type', '[0-9]+');
+    Route::resource('stock', 'StockController');
 
     Route::resource('inventory_list', 'Inventory_listController');
 
@@ -281,13 +260,13 @@ Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->gro
 );
 
 // 入庫管理
-Route::middleware('admin.login')->namespace('Stock')->prefix('purchase')->group(
-    function () {
-        Route::get('stock/search/{type}', 'StockController@index')
-            ->where('type', '[0-9]+');
-        Route::resource('stock', 'StockController');
-    }
-);
+// Route::middleware('admin.login')->namespace('Stock')->prefix('purchase')->group(
+//     function () {
+//         Route::get('stock/search/{type}', 'StockController@index')
+//             ->where('type', '[0-9]+');
+//         Route::resource('stock', 'StockController');
+//     }
+// );
 
 /*** 庫存盤點 ***/
 Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(

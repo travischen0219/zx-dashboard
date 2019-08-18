@@ -12,7 +12,7 @@
     <label class="control-label">類別：</label>
     <select class="form-control d-inline-block w-auto" name="type">
         @foreach ($types as $key => $value)
-            @if (in_array($key, [1, 3]))
+            @if (in_array($key, [1, 3, 15]))
                 <option value="{{ $key }}">{{ $value }}</option>
             @endif
         @endforeach
@@ -31,14 +31,24 @@
 
     <input type="hidden" name="lot_id" id="lot_id" value="0">
 
-    <label for="supplier_id">供應商：</label>
-    <button type="button" id="btn_supplier_id" class="btn btn-primary" onclick="listSuppliers()">
-        按此選擇供應商
-    </button>
+    @if ($way == 1)
+        <label for="supplier_id">供應商：</label>
+        <button type="button" id="btn_supplier_id" class="btn btn-primary" onclick="listSuppliers()">
+            按此選擇供應商
+        </button>
 
-    <input type="hidden" name="supplier_id" id="supplier_id" value="0">
+        <input type="hidden" name="supplier_id" id="supplier_id" value="0">
+    @elseif ($way == 2)
+        <label for="customer_id">客戶：</label>
+        <button type="button" id="btn_customer_id" class="btn btn-primary" onclick="listCustomers()">
+            按此選擇客戶
+        </button>
+
+        <input type="hidden" name="customer_id" id="customer_id" value="0">
+    @endif
 </div>
 
+<input type="hidden" name="way" value="{{ $way }}">
 <input type="hidden" name="referrer" value="{{ URL::previous() }}">
 
 <br>

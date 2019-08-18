@@ -125,7 +125,9 @@ class SelectorController extends Controller
         $id = $request->id ?? 0;
         $stocks = Stock::where('material_id', $id)->get();
         $data['stocks'] = $stocks;
-        $data['types'] = Stock::types();
+        $data['ways'] = Stock::ways();
+        $data['types1'] = Stock::types(1);
+        $data['types2'] = Stock::types(2);
 
         return view('selector.stock_records', $data);
     }
