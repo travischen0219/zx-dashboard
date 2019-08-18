@@ -3,9 +3,12 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Material_unit extends Model
 {
+    use SoftDeletes;
+
     static public function allWithKey()
     {
         $units = Material_unit::where('delete_flag', 0)->orderBy('orderby', 'asc')->get();
