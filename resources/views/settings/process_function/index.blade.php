@@ -93,7 +93,8 @@
         dtOptions.paging = false
         dtOptions.info = false
         dtOptions.buttons = []
-
+        dtOptions.order = [[0, 'asc']]
+        dtOptions.stateSave = false
         dtOptions.rowReorder = { selector: 'tr' }
         var table = $('#data').DataTable(dtOptions)
     })

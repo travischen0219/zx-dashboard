@@ -150,15 +150,15 @@
                         </li>
 
                         <li class="nav-item
-                            @if(Request::is('settings/materials*'))
+                            @if(Request::is('settings/material*'))
                                 active open
                             @endif">
-                            <a href="{{ route('materials.index') }}" class="nav-link ">
+                            <a href="{{ route('material.index') }}" class="nav-link ">
                                 <span class="title"
-                                    @if(Request::is('settings/materials*'))
+                                    @if(Request::is('settings/material*'))
                                         style="color:#59deea;"
                                     @endif>物料管理</span>
-                                @if(Request::is('settings/materials*'))
+                                @if(Request::is('settings/material*'))
                                     <span class="selected"></span>
                                 @endif
                             </a>

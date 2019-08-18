@@ -1,3 +1,8 @@
+@php
+    $routeNamePrefix = \Route::current()->action['as'];
+    $routeNamePrefix = explode('.', $routeNamePrefix)[0]
+@endphp
+
 <div id="sidebar">
     <a id="sidebar-brand" href="javascript: void(0);">
         <span id="sidebar-name" class="extend mr-1">真心蓮坊進銷存</span>
@@ -20,7 +25,7 @@
             <ul>
                 @foreach (App\Model\Sidebar::settings() as $item)
                     <li>
-                        <a href="{{ route($item['route']) }}" class="{{ Request::is($item['request']) ? 'active' : '' }}">
+                        <a href="{{ route($item['route']) }}" class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
                             {{ $item['title'] }}
                         </a>
                     </li>
@@ -38,7 +43,7 @@
                     <li>
                         <a href="{{ route($item['route']) }}"
                             target="{{ $item['target'] ?? '_self' }}"
-                            class="{{ Request::is($item['request']) ? 'active' : '' }}">
+                            class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
                             {{ $item['title'] }}
                         </a>
                     </li>
@@ -55,7 +60,7 @@
                     <li>
                         <a href="{{ route($item['route']) }}"
                             target="{{ $item['target'] ?? '_self' }}"
-                            class="{{ Request::is($item['request']) ? 'active' : '' }}">
+                            class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
                             {{ $item['title'] }}
                         </a>
                     </li>
@@ -72,7 +77,7 @@
                     <li>
                         <a href="{{ route($item['route']) }}"
                             target="{{ $item['target'] ?? '_self' }}"
-                            class="{{ Request::is($item['request']) ? 'active' : '' }}">
+                            class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
                             {{ $item['title'] }}
                         </a>
                     </li>

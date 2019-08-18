@@ -3,9 +3,12 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Material_category extends Model
 {
+    use SoftDeletes;
+
     static public function allWithCode()
     {
         $categories = Material_category::where('delete_flag', 0)->orderBy('orderby', 'asc')->get();
