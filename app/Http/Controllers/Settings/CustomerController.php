@@ -7,216 +7,71 @@ use App\Model\Setting;
 use App\Model\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerRequest;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $search_code = 'all';
 
-        $categories = Customer::categories();
-        $customers = Customer::where('delete_flag', '0')->get();
-        return view(
-            'settings.customer.show',
-            compact('customers', 'search_code', 'categories')
-        );
-    }
-
-    public function search(Request $request)
+    public function index(Request $request)
     {
-        $search_code = $request->search_category;
-        $categories = Customer::categories();
+        $search_code = $request->search_category ?? 'all';
 
         if ($search_code == 'all') {
-            $customers = Customer::where('delete_flag', '0')->get();
+            $customers = Customer::all();
         } else {
-            $customers = Customer::where('delete_flag', '0')
-                ->where('category', $search_code)->get();
+            $customers = Customer::where('category', $search_code)->get();
         }
-        return view(
-            'settings.customer.show',
-            compact('customers', 'search_code', 'categories')
-        );
+
+        $data = [];
+        $data['customers'] = $customers;
+        $data['search_code'] = $search_code;
+
+        return view('settings.customer.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('settings.customer.create');
+        $data['customer'] = new Customer;
+        $data['customer']->status = 1;
+
+        return view('settings.customer.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
-        $rules = [
-            'fullName' => 'required|string',
-            'shortName' => 'required|string',
-        ];
-
-        $messages = [
-            'fullName.required' => '全名 不可為空',
-            'shortName.required' => '簡稱 不可為空',
-        ];
-        $this->validate($request, $rules, $messages);
-
-        try{
-            $latest_code = Setting::where('set_key','customer_code')->first();
-            $number = (int)$latest_code->set_value + 1;
-            $code_str = "C".str_pad($number, 6, '0',STR_PAD_LEFT);
-
-            $customer = new Customer;
-            $customer->code = $code_str;
-            $customer->gpn = $request->gpn;
-            $customer->fullName = $request->fullName;
-            $customer->shortName = $request->shortName;
-            $customer->category = $request->category;
-            $customer->pay = $request->pay;
-            $customer->receiving = $request->receiving;
-            $customer->owner = $request->owner;
-            $customer->contact = $request->contact;
-            $customer->tel = $request->tel;
-            $customer->fax = $request->fax;
-            $customer->address = $request->address;
-            $customer->email = $request->email;
-            $customer->invoiceTitle = $request->invoiceTitle;
-            $customer->invoiceAddress = $request->invoiceAddress;
-            $customer->website = $request->website;
-            $customer->close_date = $request->close_date;
-            $customer->contact1 = $request->contact1;
-            $customer->contactContent1 = $request->contactContent1;
-            $customer->contactPerson1 = $request->contactPerson1;
-            $customer->contact2 = $request->contact2;
-            $customer->contactContent2 = $request->contactContent2;
-            $customer->contactPerson2 = $request->contactPerson2;
-            $customer->contact3 = $request->contact3;
-            $customer->contactContent3 = $request->contactContent3;
-            $customer->contactPerson3 = $request->contactPerson3;
-            $customer->memo = $request->memo;
-            $customer->status = $request->status;
-            $customer->created_user = session('admin_user')->id;
-            $customer->delete_flag = 0;
-            $customer->save();
-
-            $latest_code->set_value = $number;
-            $latest_code->save();
-            return redirect()->route('customers.index')->with('message','新增成功');
-
-        } catch (Exception $e) {
-            return redirect()->route('customers.index')->with('error','新增失敗');
-        }
+        $validated = $request->validated();
+        $this->save(0, $request);
+        return redirect(route('customer.index'))->with('message', '新增成功');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $customer = Customer::find($id);
-        if($customer->updated_user > 0){
-            $updated_user = User::where('id',$customer->updated_user)->first();
-        } else {
-            $updated_user = User::where('id',$customer->created_user)->first();
-        }
-        return view('settings.customer.show_one', compact('customer','updated_user'));
+
+        $data = [];
+        $data['customer'] = $customer;
+        $data["show"] = 1;
+
+        return view('settings.customer.edit', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $customer = Customer::find($id);
-        if($customer->updated_user > 0){
-            $updated_user = User::where('id',$customer->updated_user)->first();
-        } else {
-            $updated_user = User::where('id',$customer->created_user)->first();
-        }
-        return view('settings.customer.edit', compact('customer','updated_user'));
+
+        $data = [];
+        $data['customer'] = $customer;
+        $data['show'] = 0;
+        return view('settings.customer.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(CustomerRequest $request, $id)
     {
-        $rules = [
-            'fullName' => 'required|string',
-            'shortName' => 'required|string',
-        ];
-
-        $messages = [
-            'fullName.required' => '全名 不可為空',
-            'shortName.required' => '簡稱 不可為空',
-        ];
-        $this->validate($request, $rules, $messages);
-
-        try{
-            $customer = Customer::find($id);
-            $customer->gpn = $request->gpn;
-            $customer->fullName = $request->fullName;
-            $customer->shortName = $request->shortName;
-            $customer->category = $request->category;
-            $customer->pay = $request->pay;
-            $customer->receiving = $request->receiving;
-            $customer->owner = $request->owner;
-            $customer->contact = $request->contact;
-            $customer->tel = $request->tel;
-            $customer->fax = $request->fax;
-            $customer->address = $request->address;
-            $customer->email = $request->email;
-            $customer->invoiceTitle = $request->invoiceTitle;
-            $customer->invoiceAddress = $request->invoiceAddress;
-            $customer->website = $request->website;
-            $customer->close_date = $request->close_date;
-            $customer->contact1 = $request->contact1;
-            $customer->contactContent1 = $request->contactContent1;
-            $customer->contactPerson1 = $request->contactPerson1;
-            $customer->contact2 = $request->contact2;
-            $customer->contactContent2 = $request->contactContent2;
-            $customer->contactPerson2 = $request->contactPerson2;
-            $customer->contact3 = $request->contact3;
-            $customer->contactContent3 = $request->contactContent3;
-            $customer->contactPerson3 = $request->contactPerson3;
-            $customer->memo = $request->memo;
-            $customer->status = $request->status;
-            $customer->updated_user = session('admin_user')->id;
-            $customer->save();
-            return redirect()->route('customers.index')->with('message','修改成功');
-        } catch (Exception $e) {
-            return redirect()->route('customers.index')->with('error','修改失敗');
-        }
+        $validated = $request->validated();
+        $this->save($id, $request);
+        return redirect(route('customer.index'))->with('message', '修改成功');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         try{
@@ -226,9 +81,63 @@ class CustomerController extends Controller
             $customer->deleted_at = Now();
             $customer->deleted_user = session('admin_user')->id;
             $customer->save();
-            return redirect()->route('customers.index')->with('message','刪除成功');
+            $customer->delete();
+            return redirect()->route('customer.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('customers.index')->with('error','刪除失敗');
+            return redirect()->route('customer.index')->with('error','刪除失敗');
         }
+    }
+
+    public function save($id, $request)
+    {
+        // 新增或修改
+        if ($id == 0) {
+            $customer = new Customer;
+
+            $latest_code = Setting::where('set_key', 'customer_code')->first();
+            $number = (int)$latest_code->set_value + 1;
+            $code_str = "S".str_pad($number, 6, '0', STR_PAD_LEFT);
+            $customer->code = $code_str;
+        } else {
+            $customer = Customer::find($id);
+        }
+
+        $customer->gpn = $request->gpn;
+        $customer->fullName = $request->fullName;
+        $customer->shortName = $request->shortName;
+        $customer->category = $request->category;
+        $customer->pay = $request->pay;
+        $customer->receiving = $request->receiving;
+        $customer->owner = $request->owner;
+        $customer->contact = $request->contact;
+        $customer->tel = $request->tel;
+        $customer->fax = $request->fax;
+        $customer->address = $request->address;
+        $customer->email = $request->email;
+        $customer->invoiceTitle = $request->invoiceTitle;
+        $customer->invoiceAddress = $request->invoiceAddress;
+        $customer->website = $request->website;
+        $customer->close_date = $request->close_date;
+        $customer->contact1 = $request->contact1;
+        $customer->contactContent1 = $request->contactContent1;
+        $customer->contactPerson1 = $request->contactPerson1;
+        $customer->contact2 = $request->contact2;
+        $customer->contactContent2 = $request->contactContent2;
+        $customer->contactPerson2 = $request->contactPerson2;
+        $customer->contact3 = $request->contact3;
+        $customer->contactContent3 = $request->contactContent3;
+        $customer->contactPerson3 = $request->contactPerson3;
+        $customer->memo = $request->memo;
+        $customer->status = $request->status;
+
+        if ($id == 0) {
+            $customer->created_user = session('admin_user')->id;
+        } else {
+            $customer->updated_user = session('admin_user')->id;
+        }
+
+        $customer->save();
+
+        return $customer;
     }
 }

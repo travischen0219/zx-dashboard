@@ -37,8 +37,8 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::post('process_function/update_orderby','Process_functionController@update_orderby')->name('process_function.update.orderby');
 
     // 客戶管理
-    Route::resource('customers', 'CustomerController');
-    Route::post('customers/search','CustomerController@search')->name('customers.search');
+    Route::resource('customer', 'CustomerController');
+    Route::post('customer/search', 'CustomerController@index')->name('customer.search');
 
     Route::resource('material_category', 'Material_categoryController');
     Route::post('material_category/update_orderby','Material_categoryController@update_orderby')->name('material_category.update.orderby');

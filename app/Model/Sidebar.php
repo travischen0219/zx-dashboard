@@ -75,8 +75,8 @@ class Sidebar
         ];
 
         $data[] = [
-            'route' => 'customers.index',
-            'request' => 'settings/customers*',
+            'route' => 'customer.index',
+            'request' => 'settings/customer*',
             'title' => '客戶資料'
         ];
 

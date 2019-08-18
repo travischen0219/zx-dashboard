@@ -7,7 +7,7 @@
 
 @section('content')
 
-    <form role="form" class="form-inline mb-3" action="{{ route('customers.search') }}" method="POST" id="search_from">
+    <form role="form" class="form-inline mb-3" action="{{ route('customer.search') }}" method="POST" id="search_from">
         {{ csrf_field() }}
         <div class="form-group">
             <label class="control-label mr-2">篩選分類：</label>
@@ -23,7 +23,7 @@
     </form>
 
     @include('includes.messages')
-    <a href="{{ route('customers.create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> 新增客戶</a>
+    <a href="{{ route('customer.create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> 新增客戶</a>
 
     <table class="table table-striped table-bordered table-hover" id="data" >
         <thead>
@@ -47,12 +47,12 @@
                         {{ $categories[$customer->category] ?? '未分類' }}
                     </td>
 
-                    <td><a href="{{ route('customers.show', $customer->id) }}">{{$customer->fullName}}</a></td>
+                    <td><a href="{{ route('customer.show', $customer->id) }}">{{$customer->fullName}}</a></td>
                     <td>{{$customer->tel}}</td>
                     <td>{{$customer->address}}</td>
                     <td align="center" id="functions_btn">
                         {{-- <a href="{{ route('customers.show', $customer->id) }}" class="btn purple btn-outline btn-sm">查看</a>                                 --}}
-                        <a href="{{ route('customers.edit', $customer->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
+                        <a href="{{ route('customer.edit', $customer->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
                         <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
                             if(confirm('確定要刪除嗎 ?')){
                                 event.preventDefault();
@@ -61,7 +61,7 @@
                                 event.preventDefault();
                             }">刪除</a>
 
-                        <form id="delete-form-{{$customer->id}}" action="{{ route('customers.destroy', $customer->id) }}" method="post" style="display:none">
+                        <form id="delete-form-{{$customer->id}}" action="{{ route('customer.destroy', $customer->id) }}" method="post" style="display:none">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
                         </form>
