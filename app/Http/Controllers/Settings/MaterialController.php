@@ -61,6 +61,8 @@ class MaterialController extends Controller
         $data['material'] = new Material;
         $data['material']->status = 1;
 
+        $data['lastFullCode'] = Material::lastFullCode();
+
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson([]);
 
@@ -86,6 +88,8 @@ class MaterialController extends Controller
         $data['material'] = $material;
         $data['material_categories'] = $material_categories;
         $data['material_units'] = $material_units;
+
+        $data['lastFullCode'] = Material::lastFullCode();
 
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson(
@@ -121,6 +125,8 @@ class MaterialController extends Controller
                 $material->file3
             ]
         );
+
+        $data['lastFullCode'] = Material::lastFullCode();
 
         $data["show"] = 0;
 

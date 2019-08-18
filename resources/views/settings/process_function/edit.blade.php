@@ -21,7 +21,7 @@
         <div class="form-group">
             <label></label>
 
-            <button type="submit" class="btn btn-primary">修改職稱</button>
+            <button type="submit" class="btn btn-primary">修改加工方式</button>
             <button type="button" onclick="location.href='{{ route('process_function.index') }}'" class="btn btn-link ml-3">取消</button>
         </div>
     {!! Form::close() !!}
@@ -30,5 +30,5 @@
 
 
 @section('script')
-
+    @include('b4.alert')
 @endsection

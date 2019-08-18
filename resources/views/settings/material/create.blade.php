@@ -41,4 +41,5 @@
 
 @section('script')
     @include('settings.material._script')
+    @include('b4.alert')
 @endsection

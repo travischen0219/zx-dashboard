@@ -40,4 +40,5 @@
 
 @section('script')
     @include('settings.lot._script')
+    @include('b4.alert')
 @endsection

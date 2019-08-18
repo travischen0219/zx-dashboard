@@ -31,7 +31,8 @@
 
 
 @section('script')
-<script>
+    <script>
 
-</script>
+    </script>
+    @include('b4.alert')
 @endsection

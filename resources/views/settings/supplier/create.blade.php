@@ -36,5 +36,5 @@
 @endsection
 
 @section('script')
-
+    @include('b4.alert')
 @endsection

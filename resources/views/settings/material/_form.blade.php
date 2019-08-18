@@ -30,6 +30,13 @@
 
     <div class="col-md-12">
         <div class="form-group">
+            <label>最新編號：</label>
+            {{ $lastFullCode}}
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
             <label for=""><span class="text-danger">*</span>物料編號：</label>
 
             @if (\Request::route()->getName() == 'material.create')

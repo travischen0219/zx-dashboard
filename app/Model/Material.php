@@ -181,4 +181,10 @@ class Material extends Model
 
         return true;
     }
+
+    // 最後物料編號
+    static public function lastFullCode()
+    {
+        return Material::orderBy('created_at', 'desc')->first()->fullCode;
+    }
 }
