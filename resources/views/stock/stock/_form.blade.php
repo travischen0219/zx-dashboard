@@ -12,15 +12,15 @@
     <label class="control-label">類別：</label>
     <select class="form-control d-inline-block w-auto" name="type">
         @foreach ($types as $key => $value)
-            @if (in_array($key, [1, 3, 15]))
+            @if (in_array($key, [1, 3, 15, 20]))
                 <option value="{{ $key }}">{{ $value }}</option>
             @endif
         @endforeach
     </select>
 
-    <label for="buy_date"><span class="text-danger">*</span> 入庫日期：</label>
+    <label for="buy_date"><span class="text-danger">*</span> {{ $title }}日期：</label>
     <input type="text" name="stock_date" id="stock_date" value="{{ date('Y/m/d') }}"
-        class="form-control datepicker" readonly="readonly" placeholder="請輸入入庫日期" autocomplete="off" />
+        class="form-control datepicker" readonly="readonly" placeholder="請輸入{{ $title }}日期" autocomplete="off" />
 </div>
 
 <div class="form-group">

@@ -27,7 +27,7 @@ class Stock extends Model
         $data = [];
 
         if ($way == 1) {
-            // 入庫：可手動 1 3 15
+            // 入庫：可手動 1 3 15 20
             $data[0] = '全部';
             $data[1] = '一般入庫';
             $data[2] = '採購轉入庫';
@@ -44,6 +44,7 @@ class Stock extends Model
             $data[10] = '盤點 - 快速修正出庫';
             $data[12] = '盤點 - 差異處理出庫';
             $data[15] = '加工出庫';
+            $data[20] = '餘料處理';
         }
 
         return $data;
