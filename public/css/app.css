@@ -18692,10 +18692,6 @@ readers do not read off random characters that represent icons */
   content: unset;
 }
 
-.steps > li:last-child {
-  background-color: transparent;
-}
-
 .memo {
   white-space: nowrap;
   width: 100px;

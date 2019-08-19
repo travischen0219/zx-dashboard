@@ -193,6 +193,7 @@ class Material_moduleController extends Controller
 
         $material_module->total_cost = $request->total_cost;
         $material_module->total_price = $request->total_price;
+        $material_module->price = $request->price ?? 0;
 
         $material_module->status = 1;
         $material_module->created_user = session('admin_user')->id;

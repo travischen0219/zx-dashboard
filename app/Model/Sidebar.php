@@ -123,6 +123,12 @@ class Sidebar
         ];
 
         $data[] = [
+            'route' => 'out.index',
+            'request' => 'shopping/out*',
+            'title' => '銷貨 (New)'
+        ];
+
+        $data[] = [
             'route' => 'apply_out_stock.index',
             'request' => 'shopping/apply_out_stock*',
             'title' => '申請出庫'
@@ -189,17 +195,17 @@ class Sidebar
             'title' => '入出庫'
         ];
 
-        $data[] = [
-            'route' => 'semi_finished_schedule.index',
-            'request' => 'stock/semi_finished_schedule*',
-            'title' => '半成品進度追蹤'
-        ];
+        // $data[] = [
+        //     'route' => 'process.index',
+        //     'request' => 'stock/process*',
+        //     'title' => '半成品進度追蹤'
+        // ];
 
-        $data[] = [
-            'route' => 'residual_material_processing.index',
-            'request' => 'stock/residual_material_processing*',
-            'title' => '餘料處理'
-        ];
+        // $data[] = [
+        //     'route' => 'residual_material_processing.index',
+        //     'request' => 'stock/residual_material_processing*',
+        //     'title' => '餘料處理'
+        // ];
 
         return $data;
     }

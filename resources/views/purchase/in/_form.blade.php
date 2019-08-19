@@ -85,16 +85,9 @@
                 <li data-status="50" class="btn {{ $status == 50 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[50] }}</li>
                 <li data-status="10" class="btn {{ $status == 10 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[10] }}</li>
                 <li data-status="20" class="btn {{ $status == 20 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[20] }}</li>
-                <li>
-                    <ul class="steps-slave">
-                        <li data-status="40" class="btn {{ $status == 40 ? 'btn-primary' : 'btn-secondary' }}">
-                            {{ $statuses[40] }}
-                        </li>
-                        <li data-status="30" class="btn {{ $status == 30 ? 'btn-primary' : 'btn-secondary' }}">
-                            {{ $statuses[30] }}
-                        </li>
-                    </ul>
-                </li>
+                <li data-status="30" class="btn {{ $status == 30 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[30] }}</li>
+                <li data-status="35" class="btn {{ $status == 35 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[35] }}</li>
+                <li data-status="40" class="btn {{ $status == 40 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[40] }}</li>
             </ul>
         </div>
     @endif

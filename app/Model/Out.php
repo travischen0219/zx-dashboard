@@ -5,7 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class In extends Model
+class Out extends Model
 {
     use SoftDeletes;
 
@@ -13,7 +13,7 @@ class In extends Model
     {
         $data = [];
 
-        $data[10] = '詢價中';
+        $data[10] = '報價中';
         $data[20] = '已採購';
         $data[30] = '轉加工';
         $data[35] = '加工完成';

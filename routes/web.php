@@ -253,9 +253,20 @@ Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->gro
 
         Route::get('in/search/{status}/{pay_status}', 'InController@index')
             ->where('status', '[0-9]+')
-            ->where('pay_status', '[0-9]+');
-        // Route::get('in/view/{id}', 'InController@view')->where('id', '[0-9]+');
+            ->where('pay_status', '[0-9]+')
+            ->name('in.search');
         Route::resource('in', 'InController');
+    }
+);
+
+// 銷貨管理
+Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->group(
+    function () {
+        Route::get('out/search/{status}/{pay_status}', 'OutController@index')
+            ->where('status', '[0-9]+')
+            ->where('pay_status', '[0-9]+')
+            ->name('out.search');
+        Route::resource('out', 'OutController');
     }
 );
 
@@ -285,5 +296,8 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
 
         Route::get('inventory/search/{status}', 'InventoryController@index')->name('inventory.search');
         Route::resource('inventory', 'InventoryController');
+
+        // 半成品
+        Route::get('process', 'ProcessController@index')->name('process.index');
     }
 );
