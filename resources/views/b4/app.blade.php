@@ -22,6 +22,12 @@
     <script src="/js/app.js?{{ env('APP_VERSION') }}"></script>
     <script src="{{ asset('assets/global/plugins/jquery-ui/datepicker-zh-TW.js') }}" type="text/javascript"></script>
     <script>
+    function numberFormat(value) {
+        if (isNaN(value)) return 0
+        value = Math.round(value * 100) / 100
+        return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
     const dtOptions = {
         dom: `
             <"float-left mt-1"l>

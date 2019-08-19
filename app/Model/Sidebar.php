@@ -34,27 +34,27 @@ class Sidebar
         ];
 
         $data[] = [
-            'route' => 'material.index',
-            'request' => 'settings/material*',
-            'title' => '物料管理'
-        ];
-
-        $data[] = [
-            'route' => 'material_category.index',
-            'request' => 'settings/material_category*',
-            'title' => '物料分類設定'
-        ];
-
-        $data[] = [
             'route' => 'material_unit.index',
             'request' => 'settings/material_unit*',
             'title' => '單位設定'
         ];
 
         $data[] = [
+            'route' => 'material.index',
+            'request' => 'settings/material*',
+            'title' => '<strong>物料</strong>管理'
+        ];
+
+        $data[] = [
+            'route' => 'material_category.index',
+            'request' => 'settings/material_category*',
+            'title' => '<strong>物料</strong>分類設定'
+        ];
+
+        $data[] = [
             'route' => 'material_module.index',
             'request' => 'settings/material_module*',
-            'title' => '物料模組'
+            'title' => '<strong>物料</strong>模組'
         ];
 
         $data[] = [
@@ -80,7 +80,7 @@ class Sidebar
         $data[] = [
             'route' => 'in.index',
             'request' => 'purchase/in*',
-            'title' => '採購'
+            'title' => '<strong>採購</strong>'
         ];
 
         $data[] = [
@@ -188,12 +188,6 @@ class Sidebar
             'request' => 'stock/stock*',
             'title' => '入出庫'
         ];
-
-        // $data[] = [
-        //     'route' => 'sout.index',
-        //     'request' => 'stock/sout*',
-        //     'title' => '出庫'
-        // ];
 
         $data[] = [
             'route' => 'semi_finished_schedule.index',

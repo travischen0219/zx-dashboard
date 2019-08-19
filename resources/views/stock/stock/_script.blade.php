@@ -20,6 +20,7 @@ $(function () {
 
     $('#app').submit(function () {
         // 必填欄位檢查
+        const way = {{ $way }}
         var error_message = ''
         if ($('#stock_date').val() == '') error_message += '<div>入庫日期必須選擇</div>'
         if (app.stocks.length <= 0) error_message += '<div>尚未選取任何物料</div>'
@@ -41,19 +42,28 @@ $(function () {
             return false
         }
 
-        // 入庫檢查
+        // 入出庫檢查
         stock_change_html = '<table class="table table-bordered">'
 
         app.stocks.forEach(function (element) {
             const unit = app.units[element.unit]
             const old_stock = element.stock
-            let new_stock = Number(element.stock) {{ $way == 1 ? '+' : $way ==2 ? '-' : '' }} Number(element.amount)
+
+            let new_stock
+            let rotate
+            if (way == 1) {
+                new_stock = Number(element.stock) + Number(element.amount)
+                rotate = '<span class="rotate-up">→</span>'
+            } else if (way == 2) {
+                new_stock = Number(element.stock) - Number(element.amount)
+                rotate = '<span class="rotate-down">→</span>'
+            }
             new_stock = new_stock.toFixed(2)
 
             stock_change_html += `
                 <tr>
                     <td class="text-left">${element.code} ${element.name}</td>
-                    <td class="text-right">${old_stock}${unit.name} → ${new_stock}${unit.name}</td>
+                    <td class="text-right">${old_stock}${unit.name} ${rotate} ${new_stock}${unit.name}</td>
                 </tr>
             `
         })

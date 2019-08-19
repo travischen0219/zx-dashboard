@@ -57,7 +57,7 @@ $(function () {
                 stock_change_html += `
                     <tr>
                         <td class="text-left">${element.code} ${element.name}</td>
-                        <td class="text-right">${old_stock}${unit.name} → ${new_stock}${unit.name}</td>
+                        <td class="text-right">${old_stock}${unit.name} <span class="rotate-up">→</span> ${new_stock}${unit.name}</td>
                     </tr>
                 `
             })

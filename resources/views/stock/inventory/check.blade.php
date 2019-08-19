@@ -62,11 +62,11 @@
                     <td titler="單位" class="align-middle">{{ $inventoryRecord->material->material_unit_name->name ?? '' }}</td>
                     <td titler="尺寸" class="align-middle">{{ $inventoryRecord->material->size ?? '' }}</td>
                     <td titler="應有庫存" align="right" class="align-middle">
-                        {{ number_format($inventoryRecord->material->stock ?? 0, 2) }}
+                        {{ number_format($inventoryRecord->original_inventory ?? 0, 2) }}
                         <input type="hidden"
                             name="original_inventory_{{ $inventoryRecord->id }}"
                             id="original_inventory_{{ $inventoryRecord->id }}"
-                            value="{{ $inventoryRecord->material->stock ?? 0}}" />
+                            value="{{ $inventoryRecord->original_inventory ?? 0}}" />
                     </td>
                     <td titler="盤點數量" class="text-nowrap align-middle">
                         <div id="inventory_{{ $inventoryRecord->id }}">
@@ -86,7 +86,8 @@
                                 <span class="text-success">正確</span>
                             @else
                                 <span class="text-danger">
-                                    {{ number_format($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory, 2) }}
+                                    系統{{ $inventoryRecord->original_inventory > $inventoryRecord->physical_inventory ? '多' : '少'}}
+                                    {{ number_format(abs($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory), 2) }}
                                 </span>
                             @endif
                         @else
@@ -110,10 +111,10 @@
         const original_inventory = $('#original_inventory_' + id).val()
         const physical_inventory = $('#physical_inventory_' + id).val()
 
-        if (isNaN(physical_inventory) || physical_inventory == '') {
+        if (isNaN(physical_inventory) || physical_inventory == '' || physical_inventory < 0) {
             swalOption.type = "error"
             swalOption.title = '存檔失敗';
-            swalOption.html = '盤點數量必須是數字';
+            swalOption.html = '盤點數量必須是數字 (0或正數)';
             swal.fire(swalOption);
             return false;
         }
@@ -135,7 +136,7 @@
                 } else {
                     $("#result_" + id).html(`
                         <span class="text-danger">
-                            ${response.diff}
+                            系統${response.sign} ${response.diff}
                         </span>
                     `)
                 }

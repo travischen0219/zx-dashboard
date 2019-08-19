@@ -18383,6 +18383,18 @@ readers do not read off random characters that represent icons */
   color: #18cdc4;
 }
 
+.rotate-up {
+  transform: rotate(-45deg);
+  display: inline-block;
+  color: blue;
+}
+
+.rotate-down {
+  transform: rotate(45deg);
+  display: inline-block;
+  color: blue;
+}
+
 #sidebar {
   width: 195px;
   background-color: #26344B;

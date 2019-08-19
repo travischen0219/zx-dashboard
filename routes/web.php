@@ -273,17 +273,17 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
     function () {
         // 盤點
         Route::get('inventory/{id}/view', 'InventoryController@view')
-            ->where('id', '[0-9]+');
+            ->where('id', '[0-9]+')->name('inventory.view');
         Route::get('inventory/{id}/check', 'InventoryController@check')
-            ->where('id', '[0-9]+');
+            ->where('id', '[0-9]+')->name('inventory.check');
         Route::get('inventory/{id}/quickFix', 'InventoryController@quickFix')
-            ->where('id', '[0-9]+');
+            ->where('id', '[0-9]+')->name('inventory.quickFix');
         Route::get('inventory/{id}/fix', 'InventoryController@fix')
-            ->where('id', '[0-9]+');
-        Route::post('inventory/fixSave', 'InventoryController@fixSave');
-        Route::post('inventory/record', 'InventoryController@record');
+            ->where('id', '[0-9]+')->name('inventory.fix');
+        Route::post('inventory/fixSave', 'InventoryController@fixSave')->name('inventory.fixSave');
+        Route::post('inventory/record', 'InventoryController@record')->name('inventory.record');
 
-        Route::get('inventory/search/{status}', 'InventoryController@index');
+        Route::get('inventory/search/{status}', 'InventoryController@index')->name('inventory.search');
         Route::resource('inventory', 'InventoryController');
     }
 );

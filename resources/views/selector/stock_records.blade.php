@@ -31,8 +31,15 @@
                     @php
                         $unit = $stock->material->material_unit_name->name ?? '';
                         $bg = '';
-                        if ($stock->way == 1) $bg = 'table-success';
-                        if ($stock->way == 2) $bg = 'table-danger';
+                        $rotate = '';
+                        if ($stock->way == 1) {
+                            $bg = 'table-success';
+                            $rotate = 'rotate-up';
+                        }
+                        if ($stock->way == 2) {
+                            $bg = 'table-danger';
+                            $rotate = 'rotate-down';
+                        }
                     @endphp
                     <tr class="{{ $bg }}">
                         <td title="入出庫">{{ $ways[$stock->way] ?? '' }}</td>
@@ -54,7 +61,7 @@
                         <td title="批號">{{ $stock->in->lot->code ?? '' }}</td>
                         <td title="物料">{{ $stock->material->fullCode}}<br>{{ $stock->material->fullName}}</td>
                         <td title="數量">{{ $stock->amount }}{{ $unit}}</td>
-                        <td title="(前->後) 數量">{{ $stock->amount_before }}{{ $unit}} -> {{ $stock->amount_after }}{{ $unit}}</td>
+                        <td title="(前->後) 數量">{{ $stock->amount_before }}{{ $unit}} <span class="{{ $rotate }}">→</span> {{ $stock->amount_after }}{{ $unit}}</td>
                         <td title="庫存">{{ $stock->material->stock }}{{ $unit}}</td>
                     </tr>
                 @endforeach

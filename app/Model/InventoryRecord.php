@@ -17,12 +17,19 @@ class InventoryRecord extends Model
     public function fix()
     {
         $inventory = Inventory::find($this->inventory_id);
-        $stocks = Stock::where('inventory_id', $inventory->id)
+
+        $stocksIn = Stock::where('inventory_id', $inventory->id)
             ->where('material_id', $this->material_id)
+            ->where('way', 1)
+            ->whereIn('type', [10, 12])
+            ->sum('amount');
+        $stocksOut = Stock::where('inventory_id', $inventory->id)
+            ->where('material_id', $this->material_id)
+            ->where('way', 2)
             ->whereIn('type', [10, 12])
             ->sum('amount');
 
-        return $stocks;
+        return $stocksIn - $stocksOut;
     }
 
     public function least()

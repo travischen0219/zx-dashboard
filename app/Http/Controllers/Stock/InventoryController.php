@@ -35,11 +35,6 @@ class InventoryController extends Controller
         return view('stock.inventory.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $data = [];
@@ -54,12 +49,6 @@ class InventoryController extends Controller
         return view('stock.inventory.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(InventoryRequest $request)
     {
         $validated = $request->validated();
@@ -68,23 +57,11 @@ class InventoryController extends Controller
         return redirect('/stock/inventory')->with('message', '新增成功');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Model\Inventory  $inventory
-     * @return \Illuminate\Http\Response
-     */
     public function show(Inventory $inventory)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Inventory  $inventory
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Inventory $inventory)
     {
         $data = [];
@@ -175,7 +152,7 @@ class InventoryController extends Controller
                 $inventoryRecord = new InventoryRecord;
                 $inventoryRecord->inventory_id = $inventory->id;
                 $inventoryRecord->material_id = $material_id->id;
-                $inventoryRecord->original_inventory = null;
+                $inventoryRecord->original_inventory = $material_id->stock;
                 $inventoryRecord->physical_inventory = null;
                 $inventoryRecord->quick_fix = 0;
                 $inventoryRecord->created_user = session('admin_user')->id;
@@ -213,7 +190,9 @@ class InventoryController extends Controller
         $inventoryRecord->original_inventory = $original_inventory;
         $inventoryRecord->physical_inventory = $physical_inventory;
         $inventoryRecord->save();
-        $inventoryRecord->diff = number_format($physical_inventory - $original_inventory, 2);
+
+        $inventoryRecord->sign = $original_inventory > $physical_inventory ? '多' : '少';
+        $inventoryRecord->diff = number_format(abs($original_inventory - $physical_inventory), 2);
 
         return $inventoryRecord;
     }
@@ -250,6 +229,7 @@ class InventoryController extends Controller
         // 建立一筆差異
         $stock = new Stock;
         $stock->inventory_id = $inventory->id;
+        $stock->way = $inventoryRecord->physical_inventory > $inventoryRecord->original_inventory ? 1 : 2;
         $stock->type = 10;
         $stock->stock_date = date('Y-m-d');
         $stock->material_id = $inventoryRecord->material_id;
@@ -281,6 +261,7 @@ class InventoryController extends Controller
         $data = [];
         $data['inventoryRecord'] = $inventoryRecord;
         $data['inventory'] = $inventory;
+        $data['ways'] = Stock::ways();
         $data['stocks'] = $stocks;
 
         return view('stock.inventory.fix', $data);
@@ -289,8 +270,9 @@ class InventoryController extends Controller
     public function fixSave(Request $request)
     {
         $id = $request->id ?? 0;
+        $way = $request->way ?? 0;
         $amount = $request->amount ?? 0;
-        $memo = $request->memo ?? 0;
+        $memo = $request->memo ?? '';
         if ($id == 0) abort(404);
 
         // 盤點細目
@@ -302,12 +284,19 @@ class InventoryController extends Controller
         // 建立一筆差異
         $stock = new Stock;
         $stock->inventory_id = $inventory->id;
+        $stock->way = $way;
         $stock->type = 12; // 差異處理
         $stock->stock_date = date('Y-m-d');
         $stock->material_id = $inventoryRecord->material_id;
         $stock->amount = $amount;
         $stock->amount_before = $inventoryRecord->physical_inventory;
-        $stock->amount_after = $inventoryRecord->physical_inventory + $amount;
+
+        if ($way == 1) {
+            $stock->amount_after = $inventoryRecord->physical_inventory + $amount;
+        } elseif ($way ==2) {
+            $stock->amount_after = $inventoryRecord->physical_inventory - $amount;
+        }
+
         $stock->memo = $memo;
         $stock->save();
 

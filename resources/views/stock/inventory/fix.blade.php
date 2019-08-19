@@ -60,17 +60,28 @@
         <div class="form-group">
             <label class="w-auto">異常：</label>
             <span class="text-warning">
-                {{ number_format($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory, 2) }}
+                系統{{ $inventoryRecord->original_inventory > $inventoryRecord->physical_inventory ? '多' : '少'}}
+                {{ number_format(abs($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory), 2) }}
             </span>
 
             <label class="w-auto ml-3">調整：</label>
             <span class="text-info">
-                {{ number_format($inventoryRecord->fix(), 2) }}
+                @if ($inventoryRecord->fix() != 0)
+                    系統
+                    {{ $inventoryRecord->fix() > 0 ? '+' : '' }}{{ number_format($inventoryRecord->fix(), 2) }}
+                @else
+                    無
+                @endif
             </span>
 
             <label class="w-auto ml-3">差異剩餘：</label>
             <span class="text-danger">
-                {{ number_format($inventoryRecord->least(), 2) }}
+                @if ($inventoryRecord->physical_inventory - $inventoryRecord->original_inventory - $inventoryRecord->fix() == 0)
+                    無
+                @else
+                    系統{{ $inventoryRecord->original_inventory - $inventoryRecord->physical_inventory - $inventoryRecord->fix() > 0 ? '多' : '少'}}
+                    {{ number_format(abs($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory - $inventoryRecord->fix()), 2) }}
+                @endif
             </span>
         </div>
     </div>
@@ -79,15 +90,20 @@
 
     <fieldset>
         <legend>新增差異</legend>
-        <form action="/stock/inventory/fixSave" method="post" class="form">
+        <form action="/stock/inventory/fixSave" method="post" class="form" id="form">
             {{ csrf_field() }}
             <div class="form-group">
-                <label for="amount" class="w-auto">數量：</label>
+                <select name="way" id="way" class="form-control w-auto d-inline-block">
+                    <option value="">請選擇入出庫</option>
+                    <option value="1">入庫</option>
+                    <option value="2">出庫</option>
+                </select>
+                <label for="amount" class="w-auto ml-2">數量：</label>
                 <input type="number" step="0.01" class="form-control w-auto d-inline-block" name="amount" id="amount" aria-describedby="helpId" placeholder="請輸入數字">
                 <label for="memo" class="w-auto ml-3">說明：</label>
                 <input type="text" class="form-control w-25" name="memo" id="memo">
-                <button type="submit" class="btn btn-primary align-top ml-2">保存</button>
-                <small id="helpId" class="form-text text-danger">請輸入正負數字調整差異，例如：100 或 -100</small>
+                <button type="button" onclick="saveCheck()" class="btn btn-primary align-top ml-2">保存</button>
+                <small id="helpId" class="form-text text-danger">請輸入正的數字，入庫會增加系統庫存數量，出庫會減少系統庫存數量</small>
             </div>
 
             <input type="hidden" name="id" id="id" value="{{ $inventoryRecord->id }}">
@@ -96,10 +112,11 @@
 
     <fieldset>
         <legend>差異處理紀錄</legend>
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-bordered">
             <thead>
                 <tr class="bg-success text-white">
                     <th>處理時間</th>
+                    <th>入出庫</th>
                     <th>數量</th>
                     <th>入庫 (前→後) 數量</th>
                     <th>說明</th>
@@ -107,10 +124,23 @@
             </thead>
             <tbody>
                 @foreach($stocks as $stock)
-                    <tr>
+                    @php
+                        $bg = '';
+                        $rotate = '';
+                        if ($stock->way == 1) {
+                            $bg = 'table-success';
+                            $rotate = 'rotate-up';
+                        }
+                        if ($stock->way == 2) {
+                            $bg = 'table-danger';
+                            $rotate = 'rotate-down';
+                        }
+                    @endphp
+                    <tr class="{{ $bg }}">
                         <td>{{ $stock->created_at }}</td>
+                        <td>{{ $ways[$stock->way] ?? '' }}</td>
                         <td>{{ $stock->amount }}</td>
-                        <td title="入庫 (前→後) 數量">{{ $stock->amount_before }} → {{ $stock->amount_after }}</td>
+                        <td title="入庫 (前→後) 數量">{{ $stock->amount_before }} <span class="{{ $rotate }}">→</span> {{ $stock->amount_after }}</td>
                         <td>{{ $stock->memo }}</td>
                     </tr>
                 @endforeach
@@ -131,89 +161,27 @@
         })
     })
 
-    function saveCheck(id) {
-        const original_inventory = $('#original_inventory_' + id).val()
-        const physical_inventory = $('#physical_inventory_' + id).val()
+    function saveCheck() {
+        const way = $('#way').val()
+        const amount = $('#amount').val()
 
-        if (isNaN(physical_inventory) || physical_inventory == '') {
+        if (way != 1 && way != 2) {
             swalOption.type = "error"
             swalOption.title = '存檔失敗';
-            swalOption.html = '盤點數量必須是數字';
+            swalOption.html = '請選擇入出庫';
             swal.fire(swalOption);
             return false;
         }
 
-        $("#inventory_" + id).busyLoad('show', { spinner: "accordion" });
-        $.post(
-            "/stock/inventory/record",
-            {
-                '_token': "{{ csrf_token() }}",
-                'id': id,
-                'original_inventory': original_inventory,
-                'physical_inventory': physical_inventory
-            },
-            function(response) {
-                location.reload()
-                // $('#physical_inventory_' + id).val(response.physical_inventory)
+        if (isNaN(amount) || amount == '' || amount < 0) {
+            swalOption.type = "error"
+            swalOption.title = '存檔失敗';
+            swalOption.html = '盤點數量必須是正的數字';
+            swal.fire(swalOption);
+            return false;
+        }
 
-                // if (response.diff == 0) {
-                //     $("#result_" + id).html(`<span class="text-success">正確</span>`)
-                // } else {
-                //     $("#result_" + id).html(`
-                //         <span class="text-danger">
-                //             ${response.diff}
-                //         </span>
-                //     `)
-                // }
-                // $("#inventory_" + id).busyLoad('hide');
-            }
-        )
-    }
-
-    function saveCheckAuto(id) {
-        $('#physical_inventory_' + id).val($('#original_inventory_' + id).val())
-        saveCheck(id)
-    }
-
-    function quickFix(id) {
-        swal.fire({
-            title: '快速修正',
-            html: '將會依照差異數量自動填入誤差處理中，是否繼續？',
-            type: 'info',
-            showCancelButton: true,
-            confirmButtonText: '確定修正',
-            cancelButtonText: '取消',
-            width: 600
-        }).then((result) => {
-            if (result.value) {
-                $.busyLoadFull("show", {
-                    textPosition: "bottom",
-                    textMargin: "20px",
-                    background: "rgba(0, 0, 0, 0.70)",
-                    text: '資料送出中，請勿關閉或離開...'
-                })
-
-                location.href = `/stock/inventory/${id}/quickFix`
-            } else {
-                return false
-            }
-        })
-        // swal({
-        //     title: "快速修正",
-        //     text: "將會依照差異數量自動填入誤差處理中，是否繼續？",
-        //     type: "warning",
-        //     showCancelButton: true,
-        //     confirmButtonColor: "#DD6B55",
-        //     confirmButtonText: '確定',
-        //     cancelButtonText: '取消',
-        //     closeOnConfirm: false
-        // }, function () {
-        //     location.href = '/stock/inventory/quick_fix/{{ $inventory->id }}/' + id;
-        // })
-    }
-
-    function fix(id) {
-        location.href = `/stock/inventory/${id}/fix`
+        $('#form').submit()
     }
     </script>
 @endsection

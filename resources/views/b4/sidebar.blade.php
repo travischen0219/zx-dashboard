@@ -26,7 +26,7 @@
                 @foreach (App\Model\Sidebar::settings() as $item)
                     <li>
                         <a href="{{ route($item['route']) }}" class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                            {{ $item['title'] }}
+                            {!! $item['title'] !!}
                         </a>
                     </li>
                 @endforeach
@@ -44,7 +44,7 @@
                         <a href="{{ route($item['route']) }}"
                             target="{{ $item['target'] ?? '_self' }}"
                             class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                            {{ $item['title'] }}
+                            {!! $item['title'] !!}
                         </a>
                     </li>
                 @endforeach
@@ -61,13 +61,13 @@
                         <a href="{{ route($item['route']) }}"
                             target="{{ $item['target'] ?? '_self' }}"
                             class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                            {{ $item['title'] }}
+                            {!! $item['title'] !!}
                         </a>
                     </li>
                 @endforeach
             </ul>
         </li>
-        <li {{ Request::is('stock*') ? 'active' : '' }}">
+        <li class="{{ Request::is('stock*') ? 'active' : '' }}">
             <a href="#">
                 <i class="fas fa-cube"></i>
                 <span class="extend">庫存盤點</span>
@@ -78,7 +78,7 @@
                         <a href="{{ route($item['route']) }}"
                             target="{{ $item['target'] ?? '_self' }}"
                             class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                            {{ $item['title'] }}
+                            {!! $item['title'] !!}
                         </a>
                     </li>
                 @endforeach
