@@ -147,6 +147,22 @@ class Material extends Model
         return $total_cost;
     }
 
+    // 物料總售價
+    static public function getTotalPrice($materials)
+    {
+        $data = [];
+        $materials = unserialize($materials);
+
+        $total_price = 0;
+        foreach ($materials as $material) {
+            $amount = $material['amount'] ?? 0;
+            $price = $material['price'] ?? 0;
+            $total_price += ($amount * $price);
+        }
+
+        return $total_price;
+    }
+
     // 物料清單轉庫存
     static public function storeToStock($record, $way = 0, $type = 0)
     {

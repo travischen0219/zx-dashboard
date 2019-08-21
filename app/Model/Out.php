@@ -14,10 +14,10 @@ class Out extends Model
         $data = [];
 
         $data[10] = '報價中';
-        $data[20] = '已採購';
-        $data[30] = '轉加工';
-        $data[35] = '加工完成';
-        $data[40] = '轉入庫';
+        $data[20] = '新訂單';
+        $data[30] = '申請出庫';
+        $data[35] = '集貨撿貨';
+        $data[40] = '轉出庫';
         $data[50] = '已取消';
 
         return $data;
@@ -27,8 +27,8 @@ class Out extends Model
     {
         $data = [];
 
-        $data[1] = '付清';
-        $data[2] = '未付清';
+        $data[1] = '收清';
+        $data[2] = '未收清';
 
         return $data;
     }
@@ -38,19 +38,19 @@ class Out extends Model
         return $this->hasOne(Lot::class, 'id', 'lot_id');
     }
 
-    public function supplier()
+    public function customer()
     {
-        return $this->hasOne(Supplier::class, 'id', 'supplier_id');
-    }
-
-    public function manufacturer()
-    {
-        return $this->hasOne(Manufacturer::class, 'id', 'manufacturer_id');
+        return $this->hasOne(Customer::class, 'id', 'customer_id');
     }
 
     public function total_cost()
     {
-        return Material::getTotalCost($this->materials);
+        return Material_module::getTotalCost($this->material_modules);
+    }
+
+    public function total_price()
+    {
+        return Material_module::getTotalPrice($this->material_modules);
     }
 
     public function total_pay()

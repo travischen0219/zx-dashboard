@@ -38,6 +38,7 @@ class SelectorController extends Controller
         }
 
         $data['material_modules'] = $material_modules;
+        $data['idx'] = $request->idx ?? -1;
 
         return view('selector.material_module', $data);
     }

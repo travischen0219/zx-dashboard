@@ -2,9 +2,9 @@
     <div class="card card-default mt-3">
         <div class="card-body">
             <h4>
-                付款紀錄
+                @{{ title }}款紀錄
                 <button type="button" @click="addRow" class="btn btn-primary btn-add ml-2">
-                    <i class="fa fa-plus"></i> 新增付款
+                    <i class="fa fa-plus"></i> 新增@{{ title }}款
                 </button>
             </h4>
 
@@ -12,7 +12,7 @@
                 <thead>
                     <tr class="">
                         <th width="1" style="white-space: nowrap">操作</th>
-                        <th>付款日期</th>
+                        <th>@{{ title }}款日期</th>
                         <th>金額</th>
                         <th>發票 / 收據</th>
                         <th colspan="2">註解</th>
@@ -27,13 +27,13 @@
                                 <i class="fas fa-times"></i>
                             </button>
                         </td>
-                        <td title="付款日期">
+                        <td :title="title + '款日期'">
                             <input type="text"
                                 name="pay_date[]"
                                 v-model="item.pay_date"
                                 class="form-control datepicker"
                                 readonly="readonly"
-                                placeholder="請輸入付款日期" />
+                                :placeholder="'請輸入' + title + '款日期'" />
                         </td>
                         <td title="金額">
                             <input type="text"
@@ -63,9 +63,9 @@
 
             <div class="text-right">
                 <div class="float-right text-left">
-                <span class="text-white">＋</span> 應付：$@{{ total_cost | number_format }}
+                <span class="text-white">＋</span> 應@{{ title }}：$@{{ total_cost | number_format }}
                 &nbsp;&nbsp;
-                － 實付：$@{{ total_pay | number_format }}
+                － 實@{{ title }}：$@{{ total_pay | number_format }}
                 &nbsp;&nbsp;
                 ＝ 剩餘：$@{{ (total_cost - total_pay) | number_format }}
                 </div>
@@ -91,6 +91,14 @@ Vue.component('pay-table', {
     },
 
     props: {
+        way: {
+            type: Number,
+            default: 1
+        },
+        title: {
+            type: String,
+            default: '付'
+        },
         pays: Array,
         invoice_types: Object,
         total_cost: Number

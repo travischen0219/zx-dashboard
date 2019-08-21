@@ -122,7 +122,7 @@
                 成本總計 (應付)：$@{{ total_cost | number_format }}
                 <input type="hidden" name="material_total_cost" v-model="total_cost">
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                售價總計：$@{{ total_price | number_format }}
+                售價總計 (應收)：$@{{ total_price | number_format }}
                 <input type="hidden" name="material_total_price" v-model="total_price">
             </div>
         </div>
@@ -169,6 +169,8 @@ Vue.component('material-table', {
             this.materials.forEach(element => {
                 total_price += parseFloat(element.price) * parseFloat(element.amount)
             })
+
+            this.$emit('update:total_price', total_price);
 
             return total_price
         }

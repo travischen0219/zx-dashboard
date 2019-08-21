@@ -117,58 +117,52 @@ class Sidebar
         $data =[];
 
         $data[] = [
-            'route' => 'sale.index',
-            'request' => 'shopping/sale*',
-            'title' => '銷貨'
-        ];
-
-        $data[] = [
             'route' => 'out.index',
             'request' => 'shopping/out*',
-            'title' => '銷貨 (New)'
+            'title' => '<strong>銷貨</strong>'
         ];
 
-        $data[] = [
-            'route' => 'apply_out_stock.index',
-            'request' => 'shopping/apply_out_stock*',
-            'title' => '申請出庫'
-        ];
+        // $data[] = [
+        //     'route' => 'apply_out_stock.index',
+        //     'request' => 'shopping/apply_out_stock*',
+        //     'title' => '申請出庫'
+        // ];
 
-        $data[] = [
-            'route' => 'picking.index',
-            'request' => 'shopping/picking*',
-            'title' => '集貨撿貨'
-        ];
+        // $data[] = [
+        //     'route' => 'picking.index',
+        //     'request' => 'shopping/picking*',
+        //     'title' => '集貨撿貨'
+        // ];
 
-        $data[] = [
-            'route' => 'out_stock.index',
-            'request' => 'shopping/out_stock*',
-            'title' => '出庫'
-        ];
+        // $data[] = [
+        //     'route' => 'out_stock.index',
+        //     'request' => 'shopping/out_stock*',
+        //     'title' => '出庫'
+        // ];
 
-        $data[] = [
-            'route' => 'account_receivable.index',
-            'request' => 'shopping/account_receivable*',
-            'title' => '應收帳款管理'
-        ];
+        // $data[] = [
+        //     'route' => 'account_receivable.index',
+        //     'request' => 'shopping/account_receivable*',
+        //     'title' => '應收帳款管理'
+        // ];
 
-        $data[] = [
-            'route' => 'receivable_record.index',
-            'request' => 'shopping/receivable_record*',
-            'title' => '收款記錄'
-        ];
+        // $data[] = [
+        //     'route' => 'receivable_record.index',
+        //     'request' => 'shopping/receivable_record*',
+        //     'title' => '收款記錄'
+        // ];
 
-        $data[] = [
-            'route' => 's_sales_return.index',
-            'request' => 'shopping/s_sales_return*',
-            'title' => '銷貨退貨'
-        ];
+        // $data[] = [
+        //     'route' => 's_sales_return.index',
+        //     'request' => 'shopping/s_sales_return*',
+        //     'title' => '銷貨退貨'
+        // ];
 
-        $data[] = [
-            'route' => 's_exchange.index',
-            'request' => 'shopping/s_exchange*',
-            'title' => '銷貨換貨'
-        ];
+        // $data[] = [
+        //     'route' => 's_exchange.index',
+        //     'request' => 'shopping/s_exchange*',
+        //     'title' => '銷貨換貨'
+        // ];
 
         $data[] = [
             'route' => 'prime_cost.index',

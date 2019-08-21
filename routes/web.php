@@ -213,6 +213,7 @@ Route::middleware('admin.login')->prefix('selector')->group(
         Route::get('material/{idx}/{code}', 'SelectorController@material');
 
         // 物料模組選擇器
+        Route::get('material_module/{idx}', 'SelectorController@material_module');
         Route::get('material_module/', 'SelectorController@material_module');
 
         // 客戶選擇器
