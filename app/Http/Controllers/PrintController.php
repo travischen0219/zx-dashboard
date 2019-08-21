@@ -208,7 +208,7 @@ class PrintController extends Controller
     public function in_unpay(Request $request)
     {
         $data = [];
-        $unpaysOrigin = In::whereIn('status', [20, 30, 40])->where('balance', '>', 0)->get();
+        $unpaysOrigin = In::whereIn('status', [20, 30, 35, 40])->where('balance', '>', 0)->get();
 
         $unpays = [];
         foreach ($unpaysOrigin as $unpay) {
@@ -227,6 +227,30 @@ class PrintController extends Controller
         $data["supplierKeys"] = $supplierKeys;
 
         return view('print.in_unpay', $data);
+    }
+
+    public function out_unpay(Request $request)
+    {
+        $data = [];
+        $unpaysOrigin = Out::whereIn('status', [20, 30, 35, 40])->where('balance', '>', 0)->get();
+
+        $unpays = [];
+        foreach ($unpaysOrigin as $unpay) {
+            if (!isset($unpays[$unpay["customer_id"]])) $unpays[$unpay["customer_id"]] = [];
+
+            array_push($unpays[$unpay["customer_id"]], $unpay);
+        }
+        ksort($unpays);
+        $data["unpays"] = $unpays;
+
+        $customers = Customer::allWithKey();
+        $data["customers"] = $customers;
+
+        $customerKeys = array_keys($unpays);
+        sort($customerKeys);
+        $data["customerKeys"] = $customerKeys;
+
+        return view('print.out_unpay', $data);
     }
 
     public function material_module(Request $request)

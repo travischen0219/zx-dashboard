@@ -129,6 +129,13 @@ class Sidebar
             'target' => '_blank'
         ];
 
+        $data[] = [
+            'route' => 'print.out_unpay',
+            'request' => '/print/out_unpay*',
+            'title' => '未收款資料',
+            'target' => '_blank'
+        ];
+
         // $data[] = [
         //     'route' => 'apply_out_stock.index',
         //     'request' => 'shopping/apply_out_stock*',

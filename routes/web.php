@@ -196,6 +196,10 @@ Route::middleware('admin.login')->prefix('print')->group(
         Route::get('in_unpay', 'PrintController@in_unpay')->name('print.in_unpay');
         Route::post('in_unpay', 'PrintController@in_unpay')->name('print.in_unpay');
 
+        // 銷貨未收款總報表
+        Route::get('out_unpay', 'PrintController@out_unpay')->name('print.out_unpay');
+        Route::post('out_unpay', 'PrintController@out_unpay')->name('print.out_unpay');
+
         // 採購單報表
         Route::get('in_detail/{id}', 'PrintController@in_detail');
         Route::post('in_detail', 'PrintController@in_detail');
