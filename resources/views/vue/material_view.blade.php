@@ -9,9 +9,7 @@
                 <thead>
                     <tr class="">
                         <th width="400">物料</th>
-                        <th style="white-space: nowrap">
-                            數量
-                        </th>
+                        <th style="white-space: nowrap">數量</th>
                         <th style="white-space: nowrap">單位成本 / 小計</th>
                         <th style="white-space: nowrap">單位售價 / 小計</th>
                     </tr>

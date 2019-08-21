@@ -55,6 +55,11 @@ class Stock extends Model
         return $this->hasOne(In::class, 'id', 'in_id');
     }
 
+    public function out()
+    {
+        return $this->hasOne(Out::class, 'id', 'out_id');
+    }
+
     public function lot()
     {
         return $this->hasOne(Lot::class, 'id', 'lot_id');

@@ -161,7 +161,6 @@ Vue.component('material-table', {
             })
 
             this.$emit('update:total_cost', total_cost);
-
             return total_cost
         },
         total_price: function() {

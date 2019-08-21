@@ -40,6 +40,7 @@
                             <input type="hidden" name="material_module[]" v-model="item.id">
                             <input type="hidden" name="material_module_code[]" v-model="item.code">
                             <input type="hidden" name="material_module_name[]" v-model="item.name">
+                            <input type="hidden" name="material_module_cost[]" v-model="item.cost">
                             <button type="button"
                                 @click="listMaterialModule(idx);"
                                 class="btn btn-primary btn-block">
@@ -55,8 +56,8 @@
                                 style="width: 100px;" />
                         </td>
                         <td title="成本" class="align-middle">
-                            $@{{ item.total_cost | number_format }}
-                            / $@{{ item.amount * item.total_cost | number_format }}
+                            $@{{ item.cost | number_format }}
+                            / $@{{ item.amount * item.cost | number_format }}
                         </td>
                         <td title="售價">
                             <input type="text"
@@ -104,7 +105,7 @@ Vue.component('material-module-table', {
         total_cost: function() {
             var total_cost = 0
             this.material_modules.forEach(element => {
-                total_cost += parseFloat(element.total_cost) * parseFloat(element.amount)
+                total_cost += parseFloat(element.cost) * parseFloat(element.amount)
             })
 
             this.$emit('update:total_cost', total_cost);
@@ -190,7 +191,7 @@ function applyMaterialModule(str, idx) {
         code: materialModule.code,
         name: materialModule.name,
         amount: 0,
-        total_cost: materialModule.total_cost ? parseFloat(materialModule.total_cost) : 0,
+        cost: materialModule.total_cost ? parseFloat(materialModule.total_cost) : 0,
         price: materialModule.price ? parseFloat(materialModule.price) : 0,
     }
 

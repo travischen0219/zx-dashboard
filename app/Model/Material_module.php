@@ -75,6 +75,7 @@ class Material_module extends Model
                     'code' => $request->material_module_code[$i],
                     'name' => $request->material_module_name[$i],
                     'amount' => $request->material_module_amount[$i],
+                    'cost' => $request->material_module_cost[$i],
                     'price' => $request->material_module_price[$i]
                 ];
             }
@@ -96,7 +97,7 @@ class Material_module extends Model
             $data[$i]['name'] = $material_module['name'] ?? '';
 
             $data[$i]['amount'] = $material_module['amount'] ?? 0;
-            $data[$i]['total_cost'] = $material_module['total_cost'] ?? 0;
+            $data[$i]['cost'] = $material_module['cost'] ?? 0;
             $data[$i]['price'] = $material_module['price'] ?? 0;
 
             $i++;
@@ -108,5 +109,56 @@ class Material_module extends Model
             $data = json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             return $data;
         }
+    }
+
+    // 物料模組清單轉庫存
+    static public function storeToStock($record, $way = 0, $type = 0)
+    {
+        $data = [];
+        $class = get_class($record);
+
+        $material_modules = unserialize($record->material_modules);
+
+        foreach($material_modules as $material_module) {
+            $ms = Material_module::find($material_module['id']);
+
+            $materials = unserialize($ms->materials);
+
+            foreach($materials as $material) {
+                // 增加庫存紀錄
+                $stock = new Stock;
+                $m = Material::find($material['id']);
+
+                if (!$m) dd($m);
+
+                $stock->lot_id = $record->lot_id ?? 0;
+                $stock->in_id = ($class == 'App\Model\In' ? $record->id : 0);
+                $stock->out_id = ($class == 'App\Model\Out' ? $record->id : 0);
+                $stock->way = $way;
+                $stock->type = $type;
+                $stock->material_id = $material['id'];
+                $stock->supplier_id = $record->supplier_id ?? 0;
+                $stock->customer_id = $record->customer_id ?? 0;
+                $stock->amount = $material['amount'] * $material_module['amount'];
+                $stock->amount_before = $m->stock;
+
+                if ($way == 1) {
+                    $stock->amount_after = $stock->amount_before + $stock->amount;
+                } elseif ($way == 2) {
+                    $stock->amount_after = $stock->amount_before - $stock->amount;
+                }
+
+                $stock->stock_date = date('Y-m-d');
+                $stock->memo = '';
+
+                $stock->save();
+
+                // 更新物料庫存
+                $m->stock = $stock->amount_after;
+                $m->save();
+            }
+        }
+
+        return true;
     }
 }

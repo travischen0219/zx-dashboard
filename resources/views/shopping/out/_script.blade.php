@@ -46,30 +46,30 @@ $(function () {
         const new_status = $('#status').val()
 
         if (old_status != 40 && new_status == 40) {
-            stock_change_html = '<table class="table table-bordered">'
+            // stock_change_html = '<table class="table table-bordered">'
 
-            app.materials.forEach(function (element) {
-                const unit = app.units[element.unit]
-                const old_stock = element.stock
-                let new_stock = Number(element.stock) + Number(element.amount)
-                new_stock = new_stock.toFixed(2)
+            // app.materials.forEach(function (element) {
+            //     const unit = app.units[element.unit]
+            //     const old_stock = element.stock
+            //     let new_stock = Number(element.stock) + Number(element.amount)
+            //     new_stock = new_stock.toFixed(2)
 
-                stock_change_html += `
-                    <tr>
-                        <td class="text-left">${element.code} ${element.name}</td>
-                        <td class="text-right">${old_stock}${unit.name} <span class="rotate-down">→</span> ${new_stock}${unit.name}</td>
-                    </tr>
-                `
-            })
+            //     stock_change_html += `
+            //         <tr>
+            //             <td class="text-left">${element.code} ${element.name}</td>
+            //             <td class="text-right">${old_stock}${unit.name} <span class="rotate-down">→</span> ${new_stock}${unit.name}</td>
+            //         </tr>
+            //     `
+            // })
 
-            stock_change_html += `</table>`
+            // stock_change_html += `</table>`
 
             swal.fire({
                 title: '庫存將發生改變',
-                html: stock_change_html,
+                html: '',
                 type: 'info',
                 showCancelButton: true,
-                confirmButtonText: '確定入庫',
+                confirmButtonText: '確定出庫',
                 cancelButtonText: '取消',
                 width: 600
             }).then((result) => {

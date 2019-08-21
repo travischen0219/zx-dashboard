@@ -110,11 +110,14 @@
                             <button type="button" onclick="location.href='{{ route('out.edit', $out->id) }}';" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-pen"></i> 修改
                             </button>
-                            <button type="button" onclick="deleteIn({{ $out->id }});" class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> 刪除
-                            </button>
 
-                            <form id="delete-form-{{ $out->id }}" action="{{ route('in.destroy', $out) }}" method="post">
+                            @if ($out->status != 40)
+                                <button type="button" onclick="deleteIn({{ $out->id }});" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> 刪除
+                                </button>
+                            @endif
+
+                            <form id="delete-form-{{ $out->id }}" action="{{ route('out.destroy', $out) }}" method="post">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <input type="hidden" name="referrer" value="{{ URL::current() }}">

@@ -70,7 +70,7 @@ class OutController extends Controller
     public function store(Request $request)
     {
         $this->save(0, $request);
-        return redirect($request->referrer)->with('message', '修改成功');
+        return redirect()->route('out.index')->with('message', '修改成功');
     }
 
     /**
@@ -102,16 +102,16 @@ class OutController extends Controller
         $data = [];
 
         ///////////////
-        $data['out'] = $out;
-        $data['statuses'] = Out::statuses();
-        $data['lots'] = Lot::allWithKey();
-        $data['customers'] = Customer::allWithKey();
-        $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
+        // $data['out'] = $out;
+        // $data['statuses'] = Out::statuses();
+        // $data['lots'] = Lot::allWithKey();
+        // $data['customers'] = Customer::allWithKey();
+        // $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
-        $data['pays'] = json_encode([]);
-        $data['material_modules'] = json_encode([]);
-        $data['total_cost'] = 0;
-        $data['total_price'] = 0;
+        // $data['pays'] = json_encode([]);
+        // $data['material_modules'] = json_encode([]);
+        // $data['total_cost'] = 0;
+        // $data['total_price'] = 0;
         ///////////////
 
         $data['out'] = $out;
@@ -120,9 +120,9 @@ class OutController extends Controller
         $data['customers'] = Customer::allWithKey();
 
         $data['material_modules'] = Material_module::appendMaterialModules($out->material_modules);
-
         $data['pays'] = Pay::appendPays($out->pays);
-
+        $data['total_cost'] = 0;
+        $data['total_price'] = 0;
         $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         return view('shopping.out.edit', $data);
@@ -131,22 +131,16 @@ class OutController extends Controller
     public function update(Request $request, Out $out)
     {
         $this->save($out->id, $request);
-        return redirect($request->referrer)->with('message', '修改成功');
+        return redirect()->route('out.index')->with('message', '修改成功');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\In  $in
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(In $in, Request $request)
+    public function destroy(Out $out, Request $request)
     {
-        $in->deleted_user = session('admin_user')->id;
-        $in->save();
-        $in->delete();
+        $out->deleted_user = session('admin_user')->id;
+        $out->save();
+        $out->delete();
 
-        return redirect($request->referrer)->with('message', '刪除成功');
+        return redirect()->route('out.index')->with('message', '刪除成功');
     }
 
     public function save($id, $request)
@@ -198,7 +192,7 @@ class OutController extends Controller
 
         // 改變庫存，更新庫存
         if ($old_status != 40 && $new_status == 40) {
-            Material::storeToStock($out, 2, 2);
+            Material_module::storeToStock($out, 2, 2);
         }
 
         return $out;

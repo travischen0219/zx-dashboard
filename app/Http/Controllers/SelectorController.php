@@ -121,6 +121,18 @@ class SelectorController extends Controller
         return view('selector.stock_records', $data);
     }
 
+    // 出庫紀錄
+    public function out_stock_records(Request $request)
+    {
+        $id = $request->id ?? 0;
+        $stocks = Stock::where('out_id', $id)->get();
+        $data['stocks'] = $stocks;
+        $data['ways'] = Stock::ways();
+        $data['types2'] = Stock::types(2);
+
+        return view('selector.stock_records', $data);
+    }
+
     // 物料庫存紀錄
     public function material_stock_records(Request $request)
     {

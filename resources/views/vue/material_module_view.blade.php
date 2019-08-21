@@ -1,60 +1,34 @@
-<script type="text/x-template" id="material-view">
-    <div class="card card-default">
+<script type="text/x-template" id="material-module-view">
+    <div class="card card-default mb-3">
         <div class="card-body">
             <h4>
-                物料清單
+                物料模組清單
             </h4>
 
             <table id="" class="table">
                 <thead>
                     <tr class="">
-                        <th width="400">物料</th>
-                        <th style="white-space: nowrap">
-                            數量
-                        </th>
-                        <th style="white-space: nowrap">單位成本 / 小計</th>
-                        <th style="white-space: nowrap">單位售價 / 小計</th>
+                        <th width="400">物料模組</th>
+                        <th style="white-space: nowrap">數量</th>
+                        <th style="white-space: nowrap">成本 / 小計</th>
+                        <th style="white-space: nowrap">售價 / 小計</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr v-for="(item, idx) in materials">
-                        <td title="物料">
+                    <tr v-for="(item, idx) in material_modules">
+                        <td title="物料模組">
                             @{{ item.code + ' ' + item.name }}
                         </td>
                         <td title="數量">
-                            數量：
-                                @{{ item.amount }}
-                                @{{ units[item.unit].name }}
-
-                            <template v-if="item.cal == 1">
-                                <div class="mt-1">
-                                    計價：
-                                    @{{ item.cal_amount }}
-                                    @{{ units[item.cal_unit].name }}
-                                </div>
-                                <div class="mt-1">
-                                    採購：
-                                    @{{ item.buy_amount }}
-                                    @{{ units[item.cal_unit].name }}
-                                </div>
-                            </template>
+                            @{{ item.amount }}
                         </td>
-                        <td title="單位成本">
-                            成本：
-                            $@{{ item.cost }}
+                        <td title="成本" class="align-middle">
+                            $@{{ item.cost | number_format }}
                             / $@{{ item.amount * item.cost | number_format }}
-
-                            <template v-if="item.cal == 1">
-                                <div class="mt-1">
-                                    計價：
-                                    $@{{ item.cal_price }}
-                                    / $@{{ item.cal_amount * item.cal_price | number_format }}
-                                </div>
-                            </template>
                         </td>
-                        <td title="單位售價">
-                            $@{{ item.price }}
+                        <td title="售價">
+                            $@{{ item.price | number_format }}
                             / $@{{ item.amount * item.price | number_format }}
                         </td>
                     </tr>
@@ -64,7 +38,7 @@
             <hr>
 
             <div class="text-right">
-                共有 @{{ materials.length }} 種物料
+                共有 @{{ material_modules.length }} 種物料模組
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 成本總計 (應付)：$@{{ total_cost | number_format }}
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -75,8 +49,8 @@
 </script>
 
 <script>
-Vue.component('material-view', {
-    template: '#material-view',
+Vue.component('material-module-view', {
+    template: '#material-module-view',
 
     data: function () {
         return {
@@ -85,32 +59,30 @@ Vue.component('material-view', {
     },
 
     props: {
-        units: Object,
-        materials: Array,
-        module: true
+        material_modules: Array
     },
 
     computed: {
         total_cost: function() {
             var total_cost = 0
-            this.materials.forEach(element => {
+            this.material_modules.forEach(element => {
                 total_cost += parseFloat(element.cost) * parseFloat(element.amount)
             })
+
+            this.$emit('update:total_cost', total_cost);
 
             return total_cost
         },
         total_price: function() {
             var total_price = 0
-            this.materials.forEach(element => {
+            this.material_modules.forEach(element => {
                 total_price += parseFloat(element.price) * parseFloat(element.amount)
             })
 
+            this.$emit('update:total_price', total_price);
+
             return total_price
         }
-    },
-
-    methods: {
-
     },
 
     mounted: function () {

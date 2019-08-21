@@ -80,7 +80,7 @@
                             @if ($stock->way == 1)
                                 {{ $stock->in ? 'P' . $stock->in->code : '無' }}
                             @elseif ($stock->way == 2)
-                                {{ $stock->in ? 'S' . $stock->out->code : '無' }}
+                                {{ $stock->out ? 'S' . $stock->out->code : '無' }}
                             @endif
                         </td>
                         <td title="批號">{{ $stock->in->lot->code ?? $stock->lot->code ?? '無' }}</td>

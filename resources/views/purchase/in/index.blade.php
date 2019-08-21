@@ -125,9 +125,12 @@
                             <button type="button" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-pen"></i> 修改
                             </button>
-                            <button type="button" onclick="deleteIn({{ $in->id }});" class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> 刪除
-                            </button>
+
+                            @if ($in->status != 40)
+                                <button type="button" onclick="deleteIn({{ $in->id }});" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> 刪除
+                                </button>
+                            @endif
 
                             <form id="delete-form-{{ $in->id }}" action="{{ route('in.destroy', $in) }}" method="post">
                                 {{ csrf_field() }}

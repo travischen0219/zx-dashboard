@@ -234,6 +234,9 @@ Route::middleware('admin.login')->prefix('selector')->group(
         // 入庫紀錄
         Route::get('in_stock_records/{id}', 'SelectorController@in_stock_records');
 
+        // 出庫紀錄
+        Route::get('out_stock_records/{id}', 'SelectorController@out_stock_records');
+
         // 物料庫存紀錄
         Route::get('material_stock_records/{id}', 'SelectorController@material_stock_records');
     }

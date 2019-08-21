@@ -102,6 +102,11 @@ var app = new Vue({
         invoice_types: {!! $invoice_types !!},
         total_cost: {!! $total_cost !!},
         pays: {!! $pays !!}
+    },
+    watch: {
+        total_cost: function (val) {
+            console.log(val)
+        }
     }
 })
 
