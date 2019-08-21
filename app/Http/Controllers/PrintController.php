@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Lot;
 use App\Model\Supplier;
+use App\Model\Customer;
 use App\Model\In;
 use App\Model\Out;
 use App\Model\Material;
@@ -45,7 +46,7 @@ class PrintController extends Controller
         // 全部欄位
         $data['columns'] = ['項次', '採購日期', '批號', '廠商', '編號', '品名', '採購數量', '進貨數量', '單價', '金額'];
 
-        $ins = In::whereIn('status', [20, 30, 40]);
+        $ins = In::whereIn('status', [20, 30, 35, 40]);
 
         if ($year != '') {
             $ins->whereYear('buy_date', $year);
@@ -73,6 +74,67 @@ class PrintController extends Controller
         $data["units"] = Material_unit::allWithKey();
 
         return view('print.in', $data);
+    }
+
+    public function out(Request $request)
+    {
+        // 參數：年
+        $year = $request->year ?? date('Y', strtotime('-1 month'));
+        $data["year"] = $year;
+
+        // 參數：月
+        $month = $request->month ?? date('m', strtotime('-1 month'));
+        $data["month"] = $month;
+
+        // 參數：批號
+        $lot_id = $request->lot_id ?? 0;
+        $data["lot_id"] = $lot_id;
+
+        // 參數：客戶
+        $customer_id = $request->customer_id ?? 0;
+        $data["customer_id"] = $customer_id;
+
+        // 參數：欄位選擇
+        $data['selColumns'] = $request->selColumns ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // 全部批號
+        $lots = Lot::allWithKey();
+        $data["lots"] = $lots;
+
+        // 全部客戶
+        $customers = Customer::allWithKey();
+        $data["customers"] = $customers;
+
+        // 全部欄位
+        $data['columns'] = ['項次', '銷貨日期', '批號', '客戶', '編號', '品名', '銷貨數量', '單位成本', '單價', '金額'];
+
+        $outs = Out::whereIn('status', [20, 30, 35, 40]);
+
+        if ($year != '') {
+            $outs->whereYear('created_date', $year);
+        }
+
+        if ($month != 'all') {
+            $outs->whereMonth('created_date', $month);
+        }
+
+        if ($lot_id != 0) {
+            $outs->where('lot_id', $lot_id);
+        }
+
+        if ($customer_id != 0) {
+            $outs->where('customer_id', $customer_id);
+        }
+
+        $outs = $outs->get();
+
+        foreach ($outs as $key => $out) {
+            $outs[$key]->material_modules = Material_module::appendMaterialModules($out->material_modules, true);
+        }
+
+        $data["outs"] = $outs;
+
+        return view('print.out', $data);
     }
 
     public function in_detail(Request $request)

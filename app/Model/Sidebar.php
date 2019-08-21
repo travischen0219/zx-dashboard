@@ -122,6 +122,13 @@ class Sidebar
             'title' => '<strong>銷貨</strong>'
         ];
 
+        $data[] = [
+            'route' => 'print.out',
+            'request' => '/print/out*',
+            'title' => '銷貨報表',
+            'target' => '_blank'
+        ];
+
         // $data[] = [
         //     'route' => 'apply_out_stock.index',
         //     'request' => 'shopping/apply_out_stock*',

@@ -188,6 +188,10 @@ Route::middleware('admin.login')->prefix('print')->group(
         Route::get('in', 'PrintController@in')->name('print.in');
         Route::post('in', 'PrintController@in')->name('print.in');
 
+        // 銷貨總報表
+        Route::get('out', 'PrintController@out')->name('print.out');
+        Route::post('out', 'PrintController@out')->name('print.out');
+
         // 採購未付款總報表
         Route::get('in_unpay', 'PrintController@in_unpay')->name('print.in_unpay');
         Route::post('in_unpay', 'PrintController@in_unpay')->name('print.in_unpay');
