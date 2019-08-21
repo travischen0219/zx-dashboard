@@ -164,11 +164,11 @@ class Sidebar
         //     'title' => '銷貨換貨'
         // ];
 
-        $data[] = [
-            'route' => 'prime_cost.index',
-            'request' => 'shopping/prime_cost*',
-            'title' => '成本利潤估算'
-        ];
+        // $data[] = [
+        //     'route' => 'prime_cost.index',
+        //     'request' => 'shopping/prime_cost*',
+        //     'title' => '成本利潤估算'
+        // ];
 
         return $data;
     }

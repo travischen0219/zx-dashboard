@@ -53,6 +53,7 @@
                 <th>客戶</th>
                 <th>日期</th>
                 <th>狀態</th>
+                <th>利潤</th>
                 <th>收款</th>
                 <th>說明</th>
                 <th>操作</th>
@@ -87,6 +88,12 @@
                                 <i class="fas fa-eye"></i> 庫存紀錄
                             </button>
                         @endif
+                    </td>
+                    <td title="利潤">
+                        總成本：${{ number_format($out->total_cost) }}
+                        <br>
+                        利潤：${{ number_format($out->total_price - $out->total_cost) }}
+                        ({{ number_format(($out->total_price - $out->total_cost) / $out->total_cost * 100, 2) }}%)
                     </td>
                     <td>
                         應收：${{ number_format($out->total_price) }}

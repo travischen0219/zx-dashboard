@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Model\Lot;
 use App\Model\Supplier;
 use App\Model\In;
+use App\Model\Out;
 use App\Model\Material;
 use App\Model\Material_unit;
 use App\Model\Material_module;
@@ -90,6 +91,22 @@ class PrintController extends Controller
         return view('print.in_detail', $data);
     }
 
+    public function out_detail(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) exit();
+
+        $out = Out::find($id);
+        if (!$out) exit();
+
+        $out->material_modules = Material_module::appendMaterialModules($out->material_modules, true);
+
+        $data = [];
+        $data['outs'][0]['out'] = $out;
+
+        return view('print.out_detail', $data);
+    }
+
     public function in_details(Request $request)
     {
         $ids = $request->ids ? explode(',', $request->ids) : [];
@@ -106,6 +123,24 @@ class PrintController extends Controller
         }
 
         return view('print.in_detail', $data);
+    }
+
+    public function out_details(Request $request)
+    {
+        $ids = $request->ids ? explode(',', $request->ids) : [];
+        if (count($ids) == 0) exit();
+
+        $data = [];
+        foreach($ids as $key => $id) {
+            $out = Out::find($id);
+            if (!$out) exit();
+
+            $out->material_modules = Material_module::appendMaterialModules($out->material_modules, true);
+
+            $data['outs'][$key]['out'] = $out;
+        }
+
+        return view('print.out_detail', $data);
     }
 
     public function in_unpay(Request $request)

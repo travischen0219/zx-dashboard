@@ -200,6 +200,14 @@ Route::middleware('admin.login')->prefix('print')->group(
         Route::get('in_details/{ids}', 'PrintController@in_details');
         Route::post('in_details', 'PrintController@in_details');
 
+        // 銷貨單報表
+        Route::get('out_detail/{id}', 'PrintController@out_detail');
+        Route::post('out_detail', 'PrintController@out_detail');
+
+        // 銷貨單報表 (多張)
+        Route::get('out_details/{ids}', 'PrintController@out_details');
+        Route::post('out_details', 'PrintController@out_details');
+
         // 物料模組
         Route::get('material_module/{id}', 'PrintController@material_module');
     }
