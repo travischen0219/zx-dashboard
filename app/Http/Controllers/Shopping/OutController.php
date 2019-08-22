@@ -175,8 +175,8 @@ class OutController extends Controller
         // 打包付款資料
         $out->pays = Pay::packPays($request);
 
-        $out->total_cost = $request->material_module_total_cost;
-        $out->total_price = $request->material_module_total_price;
+        $out->total_cost = $request->total_cost;
+        $out->total_price = $request->total_price;
         $out->total_pay = $out->total_pay();
         $out->balance = $out->total_price - $out->total_pay;
 

@@ -101,14 +101,14 @@
 @if ($out->status == 40)
     <material-module-view
         :material_modules="material_modules"
-        :total.sync="total_cost"
+        :total_cost.sync="total_cost"
         :total_price.sync="total_price"
         ref="materialModuleView">
     </material-module-view>
 @else
     <material-module-table
         :material_modules="material_modules"
-        :total.sync="total_cost"
+        :total_cost.sync="total_cost"
         :total_price.sync="total_price"
         ref="materialModuleView">
     </material-module-table>
