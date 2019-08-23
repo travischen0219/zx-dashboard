@@ -95,6 +95,8 @@
                         利潤：${{ number_format($out->total_price - $out->total_cost) }}
                         @if ($out->total_cost > 0)
                             ({{ number_format(($out->total_price - $out->total_cost) / $out->total_cost * 100, 2) }}%)
+                        @else
+                            (0%)
                         @endif
                     </td>
                     <td>
