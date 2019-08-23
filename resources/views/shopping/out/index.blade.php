@@ -93,7 +93,9 @@
                         總成本：${{ number_format($out->total_cost) }}
                         <br>
                         利潤：${{ number_format($out->total_price - $out->total_cost) }}
-                        ({{ number_format(($out->total_price - $out->total_cost) / ($out->total_cost ?? 1) * 100, 2) }}%)
+                        @if ($out->total_cost > 0)
+                            ({{ number_format(($out->total_price - $out->total_cost) / $out->total_cost * 100, 2) }}%)
+                        @endif
                     </td>
                     <td>
                         應收：${{ number_format($out->total_price) }}
