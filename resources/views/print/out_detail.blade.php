@@ -124,7 +124,7 @@
                                 <div class="col-3 py-1"></div>
                                 <div class="col-1 py-1 border-right border-left text-center">主<br>管</div>
                                 <div class="col-3 py-1 border-right"></div>
-                                <div class="col-1 py-1 border-right border-left text-center">採<br>購</div>
+                                <div class="col-1 py-1 border-right border-left text-center">銷<br>售</div>
                                 <div class="col-3 py-1"></div>
                             </div>
                         </th>
