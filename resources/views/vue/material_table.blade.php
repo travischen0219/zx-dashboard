@@ -94,7 +94,7 @@
                                         name="material_cal_price[]"
                                         placeholder="請輸入數字"
                                         style="width: 100px;">
-                                    / $@{{ item.cal_amount * item.cal_price | number_format }}
+                                    / $@{{ item.buy_amount * item.cal_price | number_format }}
                                 </div>
                             </template>
                         </td>
@@ -117,7 +117,7 @@
                 共有 @{{ materials.length }} 種物料
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 計價總計：$@{{ total_cal | number_format }}
-                <input type="hidden" name="material_total_cost" v-model="total_cost">
+                <input type="hidden" name="material_total_cal" v-model="total_cal">
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 成本總計 (應付)：$@{{ total_cost | number_format }}
                 <input type="hidden" name="material_total_cost" v-model="total_cost">
@@ -149,7 +149,7 @@ Vue.component('material-table', {
         total_cal: function() {
             var total_cal = 0
             this.materials.forEach(element => {
-                total_cal += parseFloat(element.cal_price) * parseFloat(element.cal_amount)
+                total_cal += parseFloat(element.cal_price) * parseFloat(element.buy_amount)
             })
 
             return total_cal

@@ -200,6 +200,7 @@ class InController extends Controller
         // 打包付款資料
         $in->pays = Pay::packPays($request);
 
+        $in->total_cal = $in->total_cal();
         $in->total_cost = $in->total_cost();
         $in->total_pay = $in->total_pay();
         $in->balance = $in->total_cost - $in->total_pay;

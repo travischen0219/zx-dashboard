@@ -48,6 +48,11 @@ class In extends Model
         return $this->hasOne(Manufacturer::class, 'id', 'manufacturer_id');
     }
 
+    public function total_cal()
+    {
+        return Material::getTotalCal($this->materials);
+    }
+
     public function total_cost()
     {
         return Material::getTotalCost($this->materials);

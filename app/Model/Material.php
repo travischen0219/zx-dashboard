@@ -147,6 +147,23 @@ class Material extends Model
         return $total_cost;
     }
 
+    // 物料計價總成本
+    static public function getTotalCal($materials)
+    {
+        $data = [];
+        $materials = unserialize($materials);
+
+        $total_cal = 0;
+        foreach($materials as $material) {
+            $amount = $material['buy_amount'] ?? 0;
+            $cost = $material['cal_price'] ?? 0;
+            $total_cal += ($amount * $cost);
+        }
+
+
+        return $total_cal;
+    }
+
     // 物料總售價
     static public function getTotalPrice($materials)
     {
