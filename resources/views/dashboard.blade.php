@@ -7,6 +7,24 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/09/08</li>
+        <ul>
+            <li>[採購進貨 - 在途量] 在途量現在會包含轉加工的數量</li>
+            <li>[採購進貨 - 採購] 採購去掉了加工完成狀態</li>
+            <li>
+                [採購進貨 - 採購] 鋁條成本計算方式<br>
+                <span class="text-primary">
+                    成本自斷換算需要增加不少藍未來讓電腦做計算，反而需要更多操作<br>
+                    鋁條單位成本，以及計價成本可以自行計算好後，填入物料基本資料中，或是在採購時後輸入<br>
+                    就會得到正確數字，理論上計價總成本 = 總成本 (誤差1元內)
+                </span>
+                <br>
+                <img src="/images/dashboard/cal.png" width="600" style="margin: 10px 0;" />
+                <br>
+                <img src="/images/dashboard/cal2.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
+
         <li>2019/07/24
             <ul>
                 <li>[基本資料] [採購進貨] 改版整合優化</li>
