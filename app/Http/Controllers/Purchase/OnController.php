@@ -12,7 +12,8 @@ class OnController extends Controller
 
     public function index ()
     {
-        $ins = In::where('status', 20)->get();
+        // $ins = In::where('status', 20)->get();
+        $ins = In::whereIn('status', [20, 30])->get();
         $ms = [];
 
         foreach ($ins as $in) {
@@ -33,7 +34,7 @@ class OnController extends Controller
 
     public function in ()
     {
-        $ins = In::where('status', 20)->get();
+        $ins = In::whereIn('status', [20, 30])->get();
 
         foreach ($ins as $in) {
             $rawMaterials = Material::appendMaterials($in->materials, true);
