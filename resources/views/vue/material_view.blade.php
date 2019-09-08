@@ -47,7 +47,7 @@
                                 <div class="mt-1">
                                     計價：
                                     $@{{ item.cal_price }}
-                                    / $@{{ item.cal_amount * item.cal_price | number_format }}
+                                    / $@{{ item.buy_amount * item.cal_price | number_format }}
                                 </div>
                             </template>
                         </td>
@@ -63,6 +63,8 @@
 
             <div class="text-right">
                 共有 @{{ materials.length }} 種物料
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                計價總計：$@{{ total_cal | number_format }}
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 成本總計 (應付)：$@{{ total_cost | number_format }}
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -89,6 +91,14 @@ Vue.component('material-view', {
     },
 
     computed: {
+        total_cal: function() {
+            var total_cal = 0
+            this.materials.forEach(element => {
+                total_cal += parseFloat(element.cal_price) * parseFloat(element.buy_amount)
+            })
+
+            return total_cal
+        },
         total_cost: function() {
             var total_cost = 0
             this.materials.forEach(element => {

@@ -16,7 +16,7 @@ class In extends Model
         $data[10] = '詢價中';
         $data[20] = '已採購';
         $data[30] = '轉加工';
-        $data[35] = '加工完成';
+        // $data[35] = '加工完成';
         $data[40] = '轉入庫';
         $data[50] = '已取消';
 
