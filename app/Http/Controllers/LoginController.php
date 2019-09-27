@@ -37,7 +37,7 @@ class LoginController extends Controller
             // return back()->with('error','驗證碼錯誤');
         } else {
             if($request->setType == 'code'){
-                $user = User::where('staff_code',strtoupper($request->usercode))->where('delete_flag',0)->first();
+                $user = User::where('staff_code',strtoupper($request->usercode))->first();
 
                 if($user){
                     if($user->status != 100){
@@ -88,7 +88,7 @@ class LoginController extends Controller
                     return redirect()->back()->with('error','員工編號或密碼錯誤');
                 }
             } else if($request->setType == 'name'){
-                $user = User::where('username',strtoupper($request->username))->where('delete_flag',0)->first();
+                $user = User::where('username',strtoupper($request->username))->first();
                 if($user){
                     if($user->status != 1){
                         $login_log = new Login_log;

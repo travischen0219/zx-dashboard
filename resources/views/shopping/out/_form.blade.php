@@ -18,7 +18,7 @@
 </div>
 
 <div class="form-group">
-    <label for="lot_id"><span class="text-danger">*</span> 批號：</label>
+    <label for="lot_id">批號：</label>
     <button type="button" id="btn_lot_id" class="btn btn-primary" onclick="listLots()">
         @if (old('lot_id'))
             {{ $lots[old('lot_id')]->code }} {{ $lots[old('lot_id')]->name }}

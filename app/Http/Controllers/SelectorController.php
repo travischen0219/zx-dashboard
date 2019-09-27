@@ -52,10 +52,9 @@ class SelectorController extends Controller
         $data['categories'] = Customer::categories();
 
         if ($category == '') {
-            $customers = Customer::where('delete_flag', '0')->get();
+            $customers = Customer::all();
         } else {
-            $customers = Customer::where('delete_flag', '0')
-                ->where('category', $category)->get();
+            $customers = Customer::where('category', $category)->get();
         }
         $data['customers'] = $customers;
 
@@ -71,10 +70,9 @@ class SelectorController extends Controller
         $data['categories'] = Supplier::categories();
 
         if ($category == '') {
-            $suppliers = Supplier::where('delete_flag', '0')->get();
+            $suppliers = Supplier::all();
         } else {
-            $suppliers = Supplier::where('delete_flag', '0')
-                ->where('category', $category)->get();
+            $suppliers = Supplier::where('category', $category)->get();
         }
         $data['suppliers'] = $suppliers;
 
@@ -90,10 +88,9 @@ class SelectorController extends Controller
         $data['categories'] = Manufacturer::categories();
 
         if ($category == '') {
-            $manufacturers = Manufacturer::where('delete_flag', '0')->get();
+            $manufacturers = Manufacturer::all();
         } else {
-            $manufacturers = Manufacturer::where('delete_flag', '0')
-                ->where('category', $category)->get();
+            $manufacturers = Manufacturer::where('category', $category)->get();
         }
         $data['manufacturers'] = $manufacturers;
 

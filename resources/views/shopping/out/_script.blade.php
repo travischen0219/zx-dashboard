@@ -18,7 +18,7 @@ $(function () {
     $('#app').submit(function () {
         // 必填欄位檢查
         var error_message = ''
-        if ($('#lot_id').val() == 0) error_message += '<div>批號必須選擇</div>'
+        // if ($('#lot_id').val() == 0) error_message += '<div>批號必須選擇</div>'
         if ($('#customer_id').val() == 0) error_message += '<div>客戶必須選擇</div>'
         if ($('#created_date').val() == '') error_message += '<div>新增日期必須選擇</div>'
 
@@ -26,7 +26,6 @@ $(function () {
 
         var unsignedNumber = false
         app.material_modules.forEach(function(element) {
-            console.log(element.amount)
             if (isNaN(element.amount) || element.amount <= 0) {
                 unsignedNumber = true
             }

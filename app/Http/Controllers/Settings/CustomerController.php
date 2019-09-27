@@ -96,7 +96,7 @@ class CustomerController extends Controller
 
             $latest_code = Setting::where('set_key', 'customer_code')->first();
             $number = (int)$latest_code->set_value + 1;
-            $code_str = "S".str_pad($number, 6, '0', STR_PAD_LEFT);
+            $code_str = "C" . str_pad($number, 6, '0', STR_PAD_LEFT);
             $customer->code = $code_str;
         } else {
             $customer = Customer::find($id);
