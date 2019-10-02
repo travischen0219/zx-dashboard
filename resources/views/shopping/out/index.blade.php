@@ -39,8 +39,8 @@
     @include('includes.messages')
 
     <a href="{{ route('out.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增銷貨</a>
-    <span class="btn btn-primary mr-2" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆列印</span>
-    <label for="checkAll">全選</label> <input type="checkbox" class="checkAll" id="checkAll" value="1">
+    {{-- <span class="btn btn-primary mr-2" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆列印</span> --}}
+    {{-- <label for="checkAll">全選</label> <input type="checkbox" class="checkAll" id="checkAll" value="1"> --}}
 
     <br><br>
 
@@ -64,7 +64,7 @@
 
                 <tr>
                     <td>
-                        <input type="checkbox" class="print_pdf" name="print_pdf" value="{{ $out->id }}">
+                        {{-- <input type="checkbox" class="print_pdf" name="print_pdf" value="{{ $out->id }}"> --}}
                         <a href="/print/out_detail/{{ $out->id }}" target="_blank"
                             class="btn blue btn-outline-primary btn-sm">列印</a>
                     </td>
