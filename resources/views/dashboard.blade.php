@@ -8,6 +8,37 @@
 <div class="row">
     <ul style="font-size: 24px;">
         <li>
+            2019/10/02
+            <ul>
+                <li>
+                    [銷貨出貨 - 銷貨] 修改了報價單樣式並且可以顯示模組照片 (1~3張)
+                    <br>
+                    <img src="/images/dashboard/bjd.png" width="600" style="margin: 10px 0;" />
+                </li>
+                <li>
+                    [庫存盤點 - 出入庫]
+                    因為主機某個設定遺漏造成出入庫類別無法選取問題已經修復
+                    <br>
+                    <img src="/images/dashboard/crk.png" width="600" style="margin: 10px 0;" />
+                </li>
+                <li>
+                    [基本資料 - 物料管理]
+                    庫存不正確問題同上，修正後庫存數已經正確
+                    <br>
+                    <img src="/images/dashboard/kc.png" width="600" style="margin: 10px 0;" />
+                </li>
+                <li>
+                    [庫存盤點 - 出入庫]
+                    庫存出入庫清單增加顯示備註
+                    <br>
+                    <img src="/images/dashboard/kmemo.png" width="600" style="margin: 10px 0;" />
+                </li>
+            </ul>
+        </li>
+
+        <hr>
+
+        <li>
             2019/09/27
             <ul>
                 <li>[基本資料 - 客戶] 新增的客戶預設啟用，現在會出現在客戶選擇清單了</li>
