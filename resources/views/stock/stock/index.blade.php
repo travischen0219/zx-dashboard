@@ -46,6 +46,7 @@
                 <th>單號</th>
                 <th>批號</th>
                 <th>物料</th>
+                <th>備註</th>
                 <th>數量</th>
                 <th>(前→後) 數量</th>
                 <th>目前庫存</th>
@@ -85,6 +86,7 @@
                         </td>
                         <td title="批號">{{ $stock->in->lot->code ?? $stock->lot->code ?? '無' }}</td>
                         <td title="物料">{{ $stock->material->fullCode ?? ''}} {{ $stock->material->fullName ?? ''}}</td>
+                        <td title="備註">{{ $stock->memo ?? ''}}</td>
                         <td title="數量">{{ $stock->amount }}{{ $unit }}</td>
                         <td title="(前→後) 數量">{{ $stock->amount_before }}{{ $unit}} <span class="{{ $rotate }}">→</span> {{ $stock->amount_after }}{{ $unit}}</td>
                         <td title="目前庫存">{{ $stock->material->stock ?? 0 }}{{ $unit}}</td>
