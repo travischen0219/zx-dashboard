@@ -147,7 +147,10 @@
                     @endforeach
 
                     <tr>
-                        <th colspan="99">總計新台幣：{{ number_format($total, 2) }}</th>
+                        <th colspan="99">
+                            總計新台幣：{{ number_format($total, 2) }}
+                            ({{ $out->tax == 1 ? '含稅' : '未稅' }})
+                        </th>
                     </tr>
                 </tbody>
 

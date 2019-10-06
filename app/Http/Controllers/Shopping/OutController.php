@@ -52,6 +52,7 @@ class OutController extends Controller
         $out = new Out;
 
         $out->status = 10;
+        $out->tax = 0;
 
         $data['out'] = $out;
         $data['statuses'] = Out::statuses();
@@ -171,6 +172,8 @@ class OutController extends Controller
         } else {
             $out->material_modules = Material_module::packMaterialModules($request);
         }
+
+        $out->tax = $request->tax;
 
         // 打包付款資料
         $out->pays = Pay::packPays($request);

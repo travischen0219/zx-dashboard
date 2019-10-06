@@ -8,6 +8,19 @@
 <div class="row">
     <ul style="font-size: 24px;">
         <li>
+            2019/10/6
+            <ul>
+                <li>[銷貨出貨 - 銷貨] 修正報價單列印標題</li>
+                <li>
+                    [銷貨出貨 - 銷貨] 新增稅率欄位
+                    <br>
+                    <img src="/images/dashboard/tax1.png" width="500" style="margin: 10px 0;" />
+                    <img src="/images/dashboard/tax2.png" width="500" style="margin: 10px 0;" />
+                    <img src="/images/dashboard/tax3.png" width="500" style="margin: 10px 0;" />
+                </li>
+            </ul>
+        </li>
+        <li>
             2019/10/02
             <ul>
                 <li>

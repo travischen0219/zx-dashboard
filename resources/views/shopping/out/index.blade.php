@@ -101,6 +101,7 @@
                     </td>
                     <td>
                         應收：${{ number_format($out->total_price) }}
+                        <span class="text-primary">({{ $out->tax == 1 ? '含稅' : '未稅' }})</span>
                         <br>
                         實收：${{ number_format($out->total_pay) }}
                         <br>

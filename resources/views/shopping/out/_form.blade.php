@@ -85,6 +85,18 @@
     </div>
 </div>
 
+<div class="form-group d-inline-block">
+    <label for="tax1">稅率：</label>
+    <div class="custom-control custom-radio d-inline-block">
+        <input class="custom-control-input" type="radio" name="tax" id="tax1" value="1" {{ $out->tax == 1 ? 'checked' : '' }}>
+        <label class="custom-control-label text-left text-primary" for="tax1">含稅</label>
+    </div>
+    <div class="custom-control custom-radio d-inline-block">
+        <input class="custom-control-input" type="radio" name="tax" id="tax0" value="0" {{ $out->tax == 0 ? 'checked' : '' }}>
+        <label class="custom-control-label text-left text-danger" id="red-label" for="tax0">未稅</label>
+    </div>
+</div>
+
 <div class="form-group">
     <label for="memo" class="align-top">備註：</label>
 

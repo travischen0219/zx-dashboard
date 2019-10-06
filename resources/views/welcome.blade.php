@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <div class="copyright"> 版本：0.99.2 </div>
+    <div class="copyright"> 版本：0.99.3 </div>
     <script src="{{asset('assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/global/plugins/bootstrap/js/bootstrap.min.js')}}" type="text/javascript"></script>
     <script>
