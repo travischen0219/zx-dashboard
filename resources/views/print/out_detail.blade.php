@@ -48,7 +48,7 @@
     @foreach ($outs as $k => $value)
         @php($out = $value['out'])
         <div class="container">
-            <h2 align="center">真⼼蓮坊股份有限公司</h2>
+            <h2 align="center">真心蓮坊股份有限公司</h2>
             <table class="table table-bordered" style="page-break-after:always">
                 <thead>
                     <tr>
