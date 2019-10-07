@@ -8,6 +8,14 @@
 <div class="row">
     <ul style="font-size: 24px;">
         <li>
+            2019/10/7
+            <li>
+                [庫存盤點 - 出入庫] 修正差異處理後顯示異常問題
+                <br>
+                <img src="/images/dashboard/fix.png" width="300" style="margin: 10px 0;" />
+            </li>
+        </li>
+        <li>
             2019/10/6
             <ul>
                 <li>[銷貨出貨 - 銷貨] 修正報價單列印標題</li>
