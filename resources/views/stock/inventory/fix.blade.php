@@ -67,7 +67,6 @@
             <label class="w-auto ml-3">調整：</label>
             <span class="text-info">
                 @if ($inventoryRecord->fix() != 0)
-                    系統
                     {{ $inventoryRecord->fix() > 0 ? '+' : '' }}{{ number_format($inventoryRecord->fix(), 2) }}
                 @else
                     無
@@ -76,11 +75,11 @@
 
             <label class="w-auto ml-3">差異剩餘：</label>
             <span class="text-danger">
-                @if ($inventoryRecord->physical_inventory - $inventoryRecord->original_inventory - $inventoryRecord->fix() == 0)
+                @if ($inventoryRecord->original_inventory - $inventoryRecord->physical_inventory + $inventoryRecord->fix() == 0)
                     無
                 @else
-                    系統{{ $inventoryRecord->original_inventory - $inventoryRecord->physical_inventory - $inventoryRecord->fix() > 0 ? '多' : '少'}}
-                    {{ number_format(abs($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory - $inventoryRecord->fix()), 2) }}
+                    系統{{ $inventoryRecord->original_inventory - $inventoryRecord->physical_inventory + $inventoryRecord->fix() > 0 ? '多' : '少'}}
+                    {{ number_format(abs($inventoryRecord->original_inventory - $inventoryRecord->physical_inventory + $inventoryRecord->fix()), 2) }}
                 @endif
             </span>
         </div>

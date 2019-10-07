@@ -81,7 +81,7 @@
                     </td>
                     <td titler="異常" id="result_{{ $inventoryRecord->id }}" align="left" class="align-middle" nowrap>
                         @if ($inventoryRecord->physical_inventory != null)
-                            @if ($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory == 0)
+                            @if ($inventoryRecord->physical_inventory == $inventoryRecord->original_inventory)
                                 <span class="text-success">正確</span>
                             @else
                                 <div>
@@ -93,7 +93,6 @@
                                 <div>
                                     調整：<span class="text-info">
                                         @if ($inventoryRecord->fix() != 0)
-                                            系統
                                             {{ $inventoryRecord->fix() > 0 ? '+' : '' }}{{ number_format($inventoryRecord->fix(), 2) }}
                                         @else
                                             無
@@ -102,11 +101,11 @@
                                 </div>
                                 <div>
                                     差異剩餘：<span class="text-danger">
-                                        @if ($inventoryRecord->physical_inventory - $inventoryRecord->original_inventory - $inventoryRecord->fix() == 0)
+                                        @if ($inventoryRecord->original_inventory - $inventoryRecord->physical_inventory + $inventoryRecord->fix() == 0)
                                             無
                                         @else
-                                            系統{{ $inventoryRecord->original_inventory - $inventoryRecord->physical_inventory - $inventoryRecord->fix() > 0 ? '多' : '少'}}
-                                            {{ number_format(abs($inventoryRecord->physical_inventory -  $inventoryRecord->original_inventory - $inventoryRecord->fix()), 2) }}
+                                            系統{{ $inventoryRecord->original_inventory - $inventoryRecord->physical_inventory + $inventoryRecord->fix() > 0 ? '多' : '少'}}
+                                            {{ number_format(abs($inventoryRecord->original_inventory -  $inventoryRecord->physical_inventory + $inventoryRecord->fix()), 2) }}
                                         @endif
                                     </span>
                                 </div>
