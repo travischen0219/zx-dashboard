@@ -289,12 +289,12 @@ class InventoryController extends Controller
         $stock->stock_date = date('Y-m-d');
         $stock->material_id = $inventoryRecord->material_id;
         $stock->amount = $amount;
-        $stock->amount_before = $inventoryRecord->physical_inventory;
+        $stock->amount_before = $inventoryRecord->origin_inventory + $inventoryRecord->fix();
 
         if ($way == 1) {
-            $stock->amount_after = $inventoryRecord->physical_inventory + $amount;
+            $stock->amount_after = $inventoryRecord->origin_inventory + $inventoryRecord->fix() + $amount;
         } elseif ($way ==2) {
-            $stock->amount_after = $inventoryRecord->physical_inventory - $amount;
+            $stock->amount_after = $inventoryRecord->origin_inventory + $inventoryRecord->fix() - $amount;
         }
 
         $stock->memo = $memo;
