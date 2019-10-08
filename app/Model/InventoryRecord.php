@@ -34,7 +34,7 @@ class InventoryRecord extends Model
 
     public function least()
     {
-        return $this->physical_inventory - $this->original_inventory - $this->fix();
+        return $this->original_inventory - $this->physical_inventory + $this->fix();
     }
 
     public function stocks()

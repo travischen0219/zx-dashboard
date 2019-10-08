@@ -229,13 +229,13 @@ class InventoryController extends Controller
         // 建立一筆差異
         $stock = new Stock;
         $stock->inventory_id = $inventory->id;
-        $stock->way = $inventoryRecord->physical_inventory > $inventoryRecord->original_inventory ? 1 : 2;
+        $stock->way = $inventoryRecord->least() < 0 ? 1 : 2;
         $stock->type = 10;
         $stock->stock_date = date('Y-m-d');
         $stock->material_id = $inventoryRecord->material_id;
-        $stock->amount = $inventoryRecord->physical_inventory - $inventoryRecord->original_inventory;
-        $stock->amount_before = $inventoryRecord->physical_inventory;
-        $stock->amount_after = $inventoryRecord->original_inventory;
+        $stock->amount = abs($inventoryRecord->least());
+        $stock->amount_before = $inventoryRecord->original_inventory + $inventoryRecord->fix();
+        $stock->amount_after = $inventoryRecord->physical_inventory;
         $stock->memo = "INV" . $inventory->code . " 快速修正";
         $stock->save();
 
