@@ -169,7 +169,7 @@
                     </tr>
                     <tr style="height: 200px;">
                         <th colspan="99">
-                            <div>銷貨備註內容：{{ nl2br($out->memo) }}</div>
+                            <div>銷貨備註內容：<br>{!! nl2br($out->memo) !!}</div>
                         </th>
                     </tr>
                 </tfoot>

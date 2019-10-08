@@ -111,7 +111,7 @@
                             剩餘：<span class="text-danger">${{ number_format($out->balance) }}</span>
                         @endif
                     </td>
-                    <td><div class="memo" title="{{ $out->memo }}">{{ $out->memo }}</div></td>
+                    <td><div class="memo" title="{{ $out->memo }}">{!! nl2br($out->memo) !!}</div></td>
                     <td align="center">
                         {{-- @if (in->status == 40) --}}
                         @if (false)
