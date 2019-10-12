@@ -100,15 +100,15 @@
                         @endif
                     </td>
                     <td>
-                        應收：${{ number_format($out->total_price) }}
+                        應收：${{ number_format($out->total_price, 2) }}
                         <span class="text-primary">({{ $out->tax == 1 ? '含稅' : '未稅' }})</span>
                         <br>
-                        實收：${{ number_format($out->total_pay) }}
+                        實收：${{ number_format($out->total_pay, 2) }}
                         <br>
                         @if ($out->balance <= 0)
                             剩餘：<span class="text-success">收清</span>
                         @else
-                            剩餘：<span class="text-danger">${{ number_format($out->balance) }}</span>
+                            剩餘：<span class="text-danger">${{ number_format($out->balance, 2) }}</span>
                         @endif
                     </td>
                     <td><div class="memo" title="{{ $out->memo }}">{!! nl2br($out->memo) !!}</div></td>

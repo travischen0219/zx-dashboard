@@ -22,6 +22,12 @@ $(function () {
         if ($('#customer_id').val() == 0) error_message += '<div>客戶必須選擇</div>'
         if ($('#created_date').val() == '') error_message += '<div>新增日期必須選擇</div>'
 
+        // if ($('#sale_cost').val() != '') {
+        //     if (isNaN($('#sale_cost').val()) || $('#sale_cost').val() <= 0) {
+        //         error_message += '<div>管銷比率請輸入大於0的數字</div>'
+        //     }
+        // }
+
         if (app.material_modules.length <= 0) error_message += '<div>尚未選取任何物料模組</div>'
 
         var unsignedNumber = false
@@ -100,7 +106,8 @@ var app = new Vue({
         invoice_types: {!! $invoice_types !!},
         total_cost: {!! $total_cost !!},
         total_price: {!! $total_price !!},
-        pays: {!! $pays !!}
+        pays: {!! $pays !!},
+        tax: {!! $tax !!},
     }
 })
 

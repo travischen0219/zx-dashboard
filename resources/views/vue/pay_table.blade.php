@@ -65,9 +65,11 @@
                 <div class="float-right text-left">
                 <span class="text-white">＋</span> 應@{{ title }}：$@{{ total_cost | number_format }}
                 &nbsp;&nbsp;
+                稅：$@{{ (total_cost * tax - total_cost) | number_format }}
+                &nbsp;&nbsp;
                 － 實@{{ title }}：$@{{ total_pay | number_format }}
                 &nbsp;&nbsp;
-                ＝ 剩餘：$@{{ (total_cost - total_pay) | number_format }}
+                ＝ 剩餘：$@{{ (total_cost * tax - total_pay) | number_format }}
                 </div>
             </div>
         </div>
@@ -92,6 +94,10 @@ Vue.component('pay-table', {
 
     props: {
         way: {
+            type: Number,
+            default: 1
+        },
+        tax: {
             type: Number,
             default: 1
         },

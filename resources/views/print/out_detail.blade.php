@@ -116,7 +116,7 @@
                         <tr style="height: 50px;">
                             <td title="項目" class="text-center align-middle">{{ $outdex++ }}</td>
                             <td title="品名規格">
-                                <div>{{ $material_module['code'] }} {{ $material_module['name'] }}</div>
+                                <div>{{ $material_module['name'] }}</div>
                                 <div>
                                     <?php
                                         $m = \App\Model\Material_module::find($material_module['id']);
@@ -147,9 +147,12 @@
                     @endforeach
 
                     <tr>
-                        <th colspan="99">
-                            總計新台幣：{{ number_format($total, 2) }}
-                            ({{ $out->tax == 1 ? '含稅' : '未稅' }})
+                        <th colspan="99" class="text-right">
+                            小計：{{ number_format($total, 2) }}
+                            <br>
+                            稅：{{ number_format($total * ($out->tax == 1 ? 1.05 : 1) - $total, 2) }}
+                            <br>
+                            合計：{{ number_format($total * ($out->tax == 1 ? 1.05 : 1), 2) }}
                         </th>
                     </tr>
                 </tbody>

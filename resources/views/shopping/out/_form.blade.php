@@ -85,6 +85,12 @@
     </div>
 </div>
 
+{{-- <div class="form-group">
+    <label for="sale_cost">管銷費用：</label>
+    <input type="number" name="sale_cost" id="sale_cost" value="{{ old('sale_cost') ?? $out->sale_cost }}"
+        class="form-control" placeholder="請輸入比率" autocomplete="off" size="10" /> %
+</div> --}}
+
 <div class="form-group d-inline-block">
     <label for="tax1">稅率：</label>
     <div class="custom-control custom-radio d-inline-block">
@@ -94,6 +100,13 @@
     <div class="custom-control custom-radio d-inline-block">
         <input class="custom-control-input" type="radio" name="tax" id="tax0" value="0" {{ $out->tax == 0 ? 'checked' : '' }}>
         <label class="custom-control-label text-left text-danger" id="red-label" for="tax0">未稅</label>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="status" class="align-top">稅率說明：</label>
+    <div class="d-inline-block text-danger">
+        資料存檔後，收款總金額才會更新
     </div>
 </div>
 
@@ -130,6 +143,7 @@
     :way="2"
     :title="'收'"
     :pays="pays"
+    :tax="tax"
     :invoice_types="invoice_types"
     :total_cost="total_price"
     ref="payTable">

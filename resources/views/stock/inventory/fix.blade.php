@@ -75,7 +75,7 @@
 
             <label class="w-auto ml-3">差異剩餘：</label>
             <span class="text-danger">
-                @if ($inventoryRecord->original_inventory - $inventoryRecord->physical_inventory + $inventoryRecord->fix() == 0)
+                @if (abs($inventoryRecord->original_inventory - $inventoryRecord->physical_inventory + $inventoryRecord->fix()) < 0.01)
                     無
                 @else
                     系統{{ $inventoryRecord->original_inventory - $inventoryRecord->physical_inventory + $inventoryRecord->fix() > 0 ? '多' : '少'}}

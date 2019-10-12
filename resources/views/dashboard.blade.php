@@ -8,12 +8,34 @@
 <div class="row">
     <ul style="font-size: 24px;">
         <li>
+            2019/10/12
+            <ul>
+                <li>[庫存盤點 - 出入庫] 修正差異顯示 (0.00 > 已修正)</li>
+                <li>[銷貨出貨 - 銷貨] 修正銷貨單備註內容換行問題</li>
+                <li>
+                    [銷貨出貨 - 銷貨] 管銷費用採用模組方式新增，建議開一個管銷費用的模組所有的報價都能用 (如圖)
+                    <br>
+                    <img src="/images/dashboard/sale1.png" width="500" style="margin: 10px 0;" />
+                    <img src="/images/dashboard/sale2.png" width="800" style="margin: 10px 0;" />
+                    <img src="/images/dashboard/sale3.png" width="800" style="margin: 10px 0;" />
+                </li>
+                <li>
+                    [銷貨出貨 - 銷貨] 含稅為總報價多5%，因為稅金在所有加總完才計算，所以必須存檔才會更新價錢
+                    <br>
+                    <img src="/images/dashboard/tax4.png" width="500" style="margin: 10px 0;" />
+                    <img src="/images/dashboard/tax5.png" width="500" style="margin: 10px 0;" />
+                </li>
+            </ul>
+        </li>
+        <li>
             2019/10/7
-            <li>
-                [庫存盤點 - 出入庫] 修正差異處理後顯示異常問題
-                <br>
-                <img src="/images/dashboard/fix.png" width="300" style="margin: 10px 0;" />
-            </li>
+            <ul>
+                <li>
+                    [庫存盤點 - 出入庫] 修正差異處理後顯示異常問題
+                    <br>
+                    <img src="/images/dashboard/fix.png" width="300" style="margin: 10px 0;" />
+                </li>
+            </ul>
         </li>
         <li>
             2019/10/6

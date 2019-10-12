@@ -59,7 +59,7 @@ class OutController extends Controller
         $data['lots'] = Lot::allWithKey();
         $data['customers'] = Customer::allWithKey();
         $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
-
+        $data['tax'] = $out->tax == 1 ? 1.05 : 1;
         $data['pays'] = json_encode([]);
         $data['material_modules'] = json_encode([]);
         $data['total_cost'] = 0;
@@ -124,6 +124,7 @@ class OutController extends Controller
         $data['pays'] = Pay::appendPays($out->pays);
         $data['total_cost'] = 0;
         $data['total_price'] = 0;
+        $data['tax'] = $out->tax == 1 ? 1.05 : 1;
         $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         return view('shopping.out.edit', $data);
@@ -178,8 +179,10 @@ class OutController extends Controller
         // 打包付款資料
         $out->pays = Pay::packPays($request);
 
+        $tax = $out->tax == 1 ? 1.05 : 1;
+
         $out->total_cost = $request->total_cost;
-        $out->total_price = $request->total_price;
+        $out->total_price = $request->total_price * $tax;
         $out->total_pay = $out->total_pay();
         $out->balance = $out->total_price - $out->total_pay;
 
