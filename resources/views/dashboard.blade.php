@@ -8,6 +8,16 @@
 <div class="row">
     <ul style="font-size: 24px;">
         <li>
+            2019/10/26
+            <ul>
+                <li>
+                    [銷貨出貨 - 銷貨] 物料模組清單可拖曳編輯順序
+                    <br>
+                    <img src="/images/dashboard/sort.png" width="500" style="margin: 10px 0;" />
+                </li>
+            </ul>
+        </li>
+        <li>
             2019/10/12
             <ul>
                 <li>[庫存盤點 - 出入庫] 修正差異顯示 (0.00 > 已修正)</li>

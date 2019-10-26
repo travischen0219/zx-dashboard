@@ -28,7 +28,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody class="sortable">
                     <tr v-for="(item, idx) in material_modules">
                         <td title="操作">
                             <button type="button" @click="deleteRow(idx)"
@@ -177,7 +177,7 @@ Vue.component('material-module-table', {
     },
 
     mounted: function () {
-
+        $('.sortable').sortable()
     }
 });
 

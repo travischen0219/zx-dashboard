@@ -8,6 +8,7 @@ import 'datatables.net-buttons/js/buttons.colVis.min.js'
 import 'datatables.net-rowreorder-bs4'
 import 'magnific-popup'
 import 'jquery-ui/ui/widgets/datepicker.js'
+import 'jquery-ui/ui/widgets/sortable.js'
 import 'busy-load'
 
 import swal from 'sweetalert2';
