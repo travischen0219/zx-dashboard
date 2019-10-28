@@ -39,7 +39,7 @@ class SelectController extends Controller
 
     public function create_supplier()
     {
-        return view('purchase.inquiry.createSupplier');  
+        return view('purchase.inquiry.createSupplier');
     }
 
     public function create_Material()
@@ -47,22 +47,22 @@ class SelectController extends Controller
         $material_categories = Material_category::orderBy('orderby', 'ASC')->get();
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
         $warehouses = Warehouse::where('delete_flag','0')->where('status','1')->orderBy('code','ASC')->get();
-        return view('purchase.inquiry.createMaterial',compact('material_categories','material_units','warehouses'));  
+        return view('purchase.inquiry.createMaterial',compact('material_categories','material_units','warehouses'));
     }
 
     // 儲存物料選擇時新增的物料
     public function store_Material(Request $request)
     {
-        
+
         $rules = [
             'fullName' => 'required|string',
-            'fullCode' => 'required|string|unique:materials',            
+            'fullCode' => 'required|string|unique:materials',
         ];
 
         $messages = [
             'fullName.required' => '品名 必填',
             'fullCode.required' => '物料編號 不完整',
-            'fullCode.unique' => '物料編號已存在，不可重複',                      
+            'fullCode.unique' => '物料編號已存在，不可重複',
         ];
         $this->validate($request, $rules, $messages);
 
@@ -71,7 +71,7 @@ class SelectController extends Controller
         $file_3=null;
         if($request->hasFile('upload_image_1')){
             $file_1 = $this->file_process($request->name_1, $request->upload_image_1);
-        } 
+        }
         if($request->hasFile('upload_image_2')){
             $file_2 = $this->file_process($request->name_2, $request->upload_image_2);
         }
@@ -88,7 +88,7 @@ class SelectController extends Controller
             $material->code2 = $request->code_2;
             $material->code3 = $request->code_3;
             $material->unit = $request->unit;
-            $material->cost = $request->cost;            
+            $material->cost = $request->cost;
             $material->price = $request->price;
             $material->size = $request->size;
             $material->color = $request->color;
@@ -98,8 +98,8 @@ class SelectController extends Controller
             if($request->warehouse_id > 0){
                 $material->warehouse = $request->warehouse_id;
                 $find_warehouse = Warehouse::find($request->warehouse_id);
-                $material->warehouse_category = $find_warehouse->category;            
-            }          
+                $material->warehouse_category = $find_warehouse->category;
+            }
 
             $material->memo = $request->memo;
             $material->file_1 = $file_1;
@@ -113,12 +113,12 @@ class SelectController extends Controller
             $material->save();
 
             if($request->warehouse_id > 0){
-            
+
                 $warehouse = new Material_warehouse;
                 $warehouse->material_id = $material->id;
                 $warehouse->warehouse_id = $request->warehouse_id;
                 $warehouse->warehouse_category_id = $material->warehouse_category;
-                $warehouse->stock = 0;                
+                $warehouse->stock = 0;
                 $warehouse->created_user = session('admin_user')->id;
                 $warehouse->delete_flag = 0;
                 $warehouse->save();
@@ -139,7 +139,7 @@ class SelectController extends Controller
         $src_image = imagecreatefromstring(file_get_contents(asset('upload/'.$origin_file_name)));
         $src_width = imagesx($src_image);
         $src_height = imagesy($src_image);
-        
+
         $tmp_image_width = 0;
         $tmp_image_height = 0;
         if ($src_width / $src_height >= $width / $height) {
@@ -149,17 +149,17 @@ class SelectController extends Controller
             $tmp_image_height = $height;
             $tmp_image_width = round($tmp_image_height * $src_width / $src_height);
         }
-        
+
         $tmpImage = imagecreatetruecolor($tmp_image_width, $tmp_image_height);
         imagecopyresampled($tmpImage, $src_image, 0, 0, 0, 0, $tmp_image_width, $tmp_image_height, $src_width, $src_height);
-        
+
         $final_image = imagecreatetruecolor($width, $height);
         $color = imagecolorallocate($final_image, 255, 255, 255);
         imagefill($final_image, 0, 0, $color);
-        
+
         $x = round(($width - $tmp_image_width) / 2);
         $y = round(($height - $tmp_image_height) / 2);
-        
+
         imagecopy($final_image, $tmpImage, $x, $y, 0, 0, $tmp_image_width, $tmp_image_height);
 
         if($img_type == '.jpeg' || $img_type == '.jpg'){
@@ -168,7 +168,7 @@ class SelectController extends Controller
         $func = "image".substr($img_type,1);
         $func($final_image,'upload/'.$tmp_file_name);
         if(isset($final_image)) {imagedestroy($final_image);}
-        
+
     }
     private function file_process($name, $file)
     {
@@ -181,7 +181,7 @@ class SelectController extends Controller
             $file->move('upload', $thumb_origin);
             $this->thumb_process($thumb_origin, $thumb_450, $fileType, 450, 450);
         } else {
-            $thumb_450 = "file_image.jpg";            
+            $thumb_450 = "file_image.jpg";
             $file->move('upload', $thumb_origin);
         }
         $img = new Gallery;
@@ -214,6 +214,9 @@ class SelectController extends Controller
             $latest_code = Setting::where('set_key','supplier_code')->first();
             $number = (int)$latest_code->set_value + 1;
             $code_str = "S".str_pad($number, 6, '0',STR_PAD_LEFT);
+
+            $latest_code->set_value += 1;
+            $latest_code->save();
 
             $supplier = new Supplier;
             $supplier->code = $code_str;
@@ -251,7 +254,7 @@ class SelectController extends Controller
             $latest_code->set_value = $number;
             $latest_code->save();
             return redirect()->route('selectSupplier')->with('message','新增成功');
- 
+
         } catch (Exception $e) {
             return redirect()->route('selectSupplier')->with('error','新增失敗');
         }
@@ -272,7 +275,7 @@ class SelectController extends Controller
             </td>
             <td>
                 <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">無</span>
-                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">                
+                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">
             </td>
             <td>
                 <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" value="" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;">
@@ -300,7 +303,7 @@ class SelectController extends Controller
             </td>
             <td>
                 <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">無</span>
-                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">                
+                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">
             </td>
 
             <td>
@@ -330,7 +333,7 @@ class SelectController extends Controller
                 $materials = Material::where('delete_flag','0')->where('status','1')->where('unit','<>','0')->get();
                 return view('purchase.inquiry.selectMaterial',compact('materials','material_categories','search_code'));
             } else {
-                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');            
+                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');
             }
         } else {
             return view('purchase.inquiry.selectMaterial',compact('materials','material_categories','search_code'));
@@ -360,7 +363,7 @@ class SelectController extends Controller
                 $materials = Material::where('delete_flag','0')->where('status','1')->where('unit','<>','0')->get();
                 return view('purchase.stock.selectMaterial',compact('materials','material_categories','search_code'));
             } else {
-                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');            
+                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');
             }
         } else {
             return view('purchase.stock.selectMaterial',compact('materials','material_categories','search_code'));
@@ -400,7 +403,7 @@ class SelectController extends Controller
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" style="width:120px; height: 30px; vertical-align: middle;">
             </td>
-            
+
         </tr>';
 
         return $data;
@@ -409,7 +412,7 @@ class SelectController extends Controller
     public function addRow_stock(Request $request)
     {
         $materialCount = $request->materialCount;
-  
+
         $is_init_str = '';
         $is_init_str .= '<option value="1"> 一般入庫</option>';
 
@@ -420,7 +423,7 @@ class SelectController extends Controller
         $is_init_str .= '<option value="4"> 採購單轉入庫</option>';
         $is_init_str .= '<option value="5"> 退貨入庫</option>';
 
-        $units = Material_unit::where('delete_flag','0')->orderBy('orderby', 'ASC')->get();     
+        $units = Material_unit::where('delete_flag','0')->orderBy('orderby', 'ASC')->get();
 
         $data = '<tr id="materialRow'.$materialCount.'" class="materialRow">
             <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red"><i class="fa fa-remove"></i></a></td>
@@ -443,7 +446,7 @@ class SelectController extends Controller
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" style="width:120px; height: 30px; vertical-align: middle;">
             </td>
-            
+
         </tr>';
 
         return $data;
@@ -472,7 +475,7 @@ class SelectController extends Controller
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" style="width:100px; height: 30px; vertical-align: middle;">
             </td>
-            
+
         </tr>';
 
         return $data;
@@ -533,7 +536,7 @@ class SelectController extends Controller
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" style="width:100px; height: 30px; vertical-align: middle;">
             </td>
-          
+
         </tr>';
 
         return $data;
@@ -543,7 +546,7 @@ class SelectController extends Controller
     public function get_warehouse_stock(Request $request)
     {
         $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$request->material_id)->get();
-        
+
         $stock = 0;
         foreach($material_warehouses as $material_warehouse){
 

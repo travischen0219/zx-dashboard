@@ -38,7 +38,7 @@ class SelectController extends Controller
 
     public function create_customer()
     {
-        return view('shopping.createCustomer');  
+        return view('shopping.createCustomer');
     }
 
     public function store_customer(Request $request)
@@ -58,6 +58,9 @@ class SelectController extends Controller
             $latest_code = Setting::where('set_key','customer_code')->first();
             $number = (int)$latest_code->set_value + 1;
             $code_str = "C".str_pad($number, 6, '0',STR_PAD_LEFT);
+
+            $latest_code->set_value += 1;
+            $latest_code->save();
 
             $customer = new Customer;
             $customer->code = $code_str;
@@ -95,7 +98,7 @@ class SelectController extends Controller
             $latest_code->set_value = $number;
             $latest_code->save();
             return redirect()->route('selectCustomer')->with('message','新增成功');
- 
+
         } catch (Exception $e) {
             return redirect()->route('selectCustomer')->with('error','新增失敗');
         }
@@ -113,7 +116,7 @@ class SelectController extends Controller
             </td>
             <td>
                 <span id="materialStock_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">0</span>
-                <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock">                
+                <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock">
             </td>
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;">
@@ -124,7 +127,7 @@ class SelectController extends Controller
             </td>
             <td>
                 <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">無</span>
-                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">                
+                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">
             </td>
             <td>
                 <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" value="" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;">
@@ -150,7 +153,7 @@ class SelectController extends Controller
             </td>
             <td>
                 <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">無</span>
-                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">                
+                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">
             </td>
             <td>
                 <button type="button" onclick="openSelectWarehouse('.$materialCount.');" id="materialWarehouseName'.$materialCount.'" name="materialWarehouseName'.$materialCount.'" class="btn btn-default get_material_warehouse" style="width: 100%; margin-right: 10px; overflow: hidden;"> 請選擇倉儲</button>
@@ -158,7 +161,7 @@ class SelectController extends Controller
             </td>
             <td>
                 <span id="materialStock_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">0</span>
-                <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock">                
+                <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock">
             </td>
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;">
@@ -167,7 +170,7 @@ class SelectController extends Controller
                 <span id="materialSubTotal_show'.$materialCount.'" class="materialSubTotal_show" style="line-height: 30px; vertical-align: middle;">0</span>
                 <input type="hidden" name="materialSubTotal[]" id="materialSubTotal'.$materialCount.'" class="materialSubTotal">
             </td>
-            
+
             <td>
                 <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" value="" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;">
             </td>
@@ -189,7 +192,7 @@ class SelectController extends Controller
                 $materials = Material::where('delete_flag','0')->where('status','1')->where('stock','>','0')->get();
                 return view('shopping.selectMaterial',compact('materials','material_categories','search_code'));
             } else {
-                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');            
+                return redirect()->route('material_category.index')->with('error', '尚無 物料分類 資料，請先建立');
             }
         } else {
             return view('shopping.selectMaterial',compact('materials','material_categories','search_code'));
@@ -211,7 +214,7 @@ class SelectController extends Controller
     public function selectMaterial_module_inventory(Request $request)
     {
         $modules = Material_module::where('delete_flag','0')->get();
-        return view('shopping.selectMaterial_module',compact('modules'));   
+        return view('shopping.selectMaterial_module',compact('modules'));
     }
 
     public function search_material_module_inventory(Request $request)
@@ -229,14 +232,14 @@ class SelectController extends Controller
         $id = $request->id;
         $materialCount = $request->materialCount;
         $modules = Material_module::find($id);
-        $materials = unserialize($modules->materials); 
+        $materials = unserialize($modules->materials);
         $total_materials = count($materials['material']);
         $return = [];
         $data = '';
         $disabled = '';
         $style = '';
         $readonly = '';
-        
+
         for($i = 0; $i < $total_materials; $i++){
             $material = Material::where('id',$materials['material'][$i])->first();
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
@@ -247,7 +250,7 @@ class SelectController extends Controller
                 </td>
                 <td>
                     <span id="materialStock_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->stock.'</span>
-                    <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock" value="'.$material->stock.'">                
+                    <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock" value="'.$material->stock.'">
                 </td>
                 <td>
                     <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
@@ -258,7 +261,7 @@ class SelectController extends Controller
                 </td>
                 <td>
                     <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'"> 
+                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
                 </td>
                 <td>
                     <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="'.$materials['materialPrice'][$i].'" '.$readonly.'>
@@ -280,7 +283,7 @@ class SelectController extends Controller
         $id = $request->id;
         $materialCount = $request->materialCount;
         $modules = Material_module::find($id);
-        $materials = unserialize($modules->materials); 
+        $materials = unserialize($modules->materials);
         $total_materials = count($materials['material']);
 
         $return = [];
@@ -288,10 +291,10 @@ class SelectController extends Controller
         $disabled = '';
         $style = '';
         $readonly = '';
-        
+
         for($i = 0; $i < $total_materials; $i++){
             $material = Material::where('id',$materials['material'][$i])->first();
-            $material_warehouse = Material_warehouse::where('delete_flag','0')->where('material_id',$material->id)->where('warehouse_id',$material->warehouse)->first();            
+            $material_warehouse = Material_warehouse::where('delete_flag','0')->where('material_id',$material->id)->where('warehouse_id',$material->warehouse)->first();
 
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
@@ -301,7 +304,7 @@ class SelectController extends Controller
                 </td>
                 <td>
                     <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'"> 
+                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
                 </td>
                 <td>
                     <button type="button" onclick="openSelectWarehouse('.$materialCount.');" id="materialWarehouseName'.$materialCount.'" name="materialWarehouseName'.$materialCount.'" class="btn btn-default get_material_warehouse" style="width: 100%; margin-right: 10px; overflow: hidden;"> '.$material->warehouse_name->code.'</button>
@@ -309,7 +312,7 @@ class SelectController extends Controller
                 </td>
                 <td>
                     <span id="materialStock_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material_warehouse->stock.'</span>
-                    <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock" value="'.$material_warehouse->stock.'">                
+                    <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock" value="'.$material_warehouse->stock.'">
                 </td>
                 <td>
                     <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
@@ -338,7 +341,7 @@ class SelectController extends Controller
         $id = $request->id;
         $materialCount = $request->materialCount;
         $modules = Material_module::find($id);
-        $materials = unserialize($modules->materials); 
+        $materials = unserialize($modules->materials);
         $total_materials = count($materials['material']);
         $materialCount = $materialCount+1;
         $return = [];
@@ -346,10 +349,10 @@ class SelectController extends Controller
         $disabled = '';
         $style = '';
         $readonly = '';
-        
+
         for($i = 0; $i < $total_materials; $i++){
             $material = Material::where('id',$materials['material'][$i])->first();
-            
+
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
                 <td>
@@ -361,7 +364,7 @@ class SelectController extends Controller
                 </td>
                 <td>
                     <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'"> 
+                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
                 </td>
                 <td>
                     <input type="text" name="materialPrice[]" id="materialPrice'.$materialCount.'" onkeyup="total();" onchange="total();" class="materialPrice" placeholder="0" style="width: 100px;height: 30px; vertical-align: middle;" value="'.$material->cost.'" '.$readonly.'>
@@ -393,7 +396,7 @@ class SelectController extends Controller
             </td>
             <td>
                 <span id="materialStock_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">0</span>
-                <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock">                
+                <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock">
             </td>
             <td>
                 <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;">
@@ -404,9 +407,9 @@ class SelectController extends Controller
             </td>
             <td>
                 <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">無</span>
-                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">                
+                <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit">
             </td>
-            <input type="hidden" name="stock_id[]" id="stock_id'.$materialCount.'" class="stock_id" value="0">                                   
+            <input type="hidden" name="stock_id[]" id="stock_id'.$materialCount.'" class="stock_id" value="0">
         </tr>';
 
         return $data;
@@ -417,19 +420,19 @@ class SelectController extends Controller
         $id = $request->id;
         $materialCount = $request->materialCount;
         $modules = Material_module::find($id);
-        $materials = unserialize($modules->materials); 
+        $materials = unserialize($modules->materials);
         $total_materials = count($materials['material']);
         $return = [];
         $data = '';
         $disabled = '';
         $style = '';
         $readonly = '';
-        
+
         for($i = 0; $i < $total_materials; $i++){
-      
+
             $material = Material::where('id',$materials['material'][$i])->first();
             $material_warehouse = Material_warehouse::where('delete_flag','0')->where('material_id',$material->id)->where('warehouse_id',$material->warehouse)->first();
-            
+
 
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
@@ -443,7 +446,7 @@ class SelectController extends Controller
                 </td>
                 <td>
                     <span id="materialStock_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material_warehouse->stock.'</span>
-                    <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock" value="'.$material_warehouse->stock.'">                
+                    <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock" value="'.$material_warehouse->stock.'">
                 </td>
                 <td>
                     <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
@@ -454,9 +457,9 @@ class SelectController extends Controller
                 </td>
                 <td>
                     <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'"> 
+                    <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
                 </td>
-                <input type="hidden" name="stock_id[]" id="stock_id'.$materialCount.'" class="stock_id" value="0">                       
+                <input type="hidden" name="stock_id[]" id="stock_id'.$materialCount.'" class="stock_id" value="0">
             </tr>';
             $materialCount++;
         }

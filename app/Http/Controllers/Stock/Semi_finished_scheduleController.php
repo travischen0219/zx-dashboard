@@ -64,7 +64,7 @@ class Semi_finished_scheduleController extends Controller
         //         $sale_no = $last_sale_no->sale_no + 1;
         //     }
         // }
-        return view('stock.semi_finished_schedule.create');  
+        return view('stock.semi_finished_schedule.create');
     }
 
     /**
@@ -76,18 +76,18 @@ class Semi_finished_scheduleController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'lot_number' => 'required',                      
+            'lot_number' => 'required',
             // 'supplier' => 'required',
             'start_date' => 'date_format:"Y-m-d"|required',
 
         ];
         $messages = [
-            'lot_number.required' => '批號 必填',                     
+            'lot_number.required' => '批號 必填',
             // 'supplier.required' => '尚未選擇 供應商',
             'start_date.required' => '開始日期 必填',
             'start_date.date_format' => '開始日期格式錯誤',
         ];
-       
+
         $this->validate($request, $rules, $messages);
 
         $total_materials = count($request->material);
@@ -110,7 +110,7 @@ class Semi_finished_scheduleController extends Controller
             $file_1=null;
             $file_2=null;
             $file_3=null;
-            
+
 
             try{
                 $processing = new Semi_finished_schedule;
@@ -153,7 +153,7 @@ class Semi_finished_scheduleController extends Controller
         $materialCount = 0;
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-        
+
             $material = Material::where('id',$materials['material'][$i])->first();
             $material_warehouse = Material_warehouse::where('delete_flag','0')->where('material_id',$materials['material'][$i])->where('warehouse_id',$materials['warehouse'][$i])->first();
             $warehouse_id = $materials['warehouse'][$i];
@@ -167,7 +167,7 @@ class Semi_finished_scheduleController extends Controller
                 $readonly = ' readonly';
                 $disabled = ' disabled';
             }
-            
+
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
                 <td>
@@ -187,7 +187,7 @@ class Semi_finished_scheduleController extends Controller
                 <td>
                     <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
                 </td>
-                
+
             </tr>';
             $materialCount++;
         }
@@ -230,7 +230,7 @@ class Semi_finished_scheduleController extends Controller
         $materialCount = 0;
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-        
+
             $material = Material::where('id',$materials['material'][$i])->first();
             $material_warehouse = Material_warehouse::where('delete_flag','0')->where('material_id',$materials['material'][$i])->where('warehouse_id',$materials['warehouse'][$i])->first();
             $warehouse_id = $materials['warehouse'][$i];
@@ -244,7 +244,7 @@ class Semi_finished_scheduleController extends Controller
                 $readonly = ' readonly';
                 $disabled = ' disabled';
             }
-            
+
             $data .= '<tr id="materialRow'.$materialCount.'" class="materialRow">
                 <td><a href="javascript:delMaterial('.$materialCount.');" class="btn red" '.$style.'><i class="fa fa-remove"></i></a></td>
                 <td>
@@ -264,7 +264,7 @@ class Semi_finished_scheduleController extends Controller
                 <td>
                     <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" style="width:100px; height: 30px; vertical-align: middle;" value="'.$materials['materialAmount'][$i].'" '.$readonly.'>
                 </td>
-                
+
             </tr>';
             $materialCount++;
         }
@@ -290,7 +290,7 @@ class Semi_finished_scheduleController extends Controller
         // }
 
         return view('stock.semi_finished_schedule.edit', compact('processing','data','materialCount','updated_user'));
-    
+
     }
 
 
@@ -304,18 +304,18 @@ class Semi_finished_scheduleController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            // 'lot_number' => 'required',                      
+            // 'lot_number' => 'required',
             // 'supplier' => 'required',
             // 'start_date' => 'date_format:"Y-m-d"|required',
 
         ];
         $messages = [
-            // 'lot_number.required' => '批號 必填',                     
+            // 'lot_number.required' => '批號 必填',
             // 'supplier.required' => '尚未選擇 供應商',
             // 'start_date.required' => '開始日期 必填',
             // 'start_date.date_format' => '開始日期格式錯誤',
         ];
-       
+
         $this->validate($request, $rules, $messages);
 
         $total_materials = count($request->material);
@@ -338,7 +338,7 @@ class Semi_finished_scheduleController extends Controller
             // $file_1=null;
             // $file_2=null;
             // $file_3=null;
-            
+
 
             try{
                 $processing = Semi_finished_schedule::find($id);
@@ -382,8 +382,8 @@ class Semi_finished_scheduleController extends Controller
             $processing->save();
             return redirect()->route('semi_finished_schedule.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('semi_finished_schedule.index')->with('error','刪除失敗');            
-        } 
+            return redirect()->route('semi_finished_schedule.index')->with('error','刪除失敗');
+        }
     }
 
     public function addRow_processing(Request $request)
@@ -392,7 +392,7 @@ class Semi_finished_scheduleController extends Controller
 
         // $manufacturers = Manufacturer::
         $process_functions = Process_function::orderBy('orderby', 'ASC')->get();
-  
+
         $is_init_str = '<option value="0"> 請選擇</option>';
         foreach($process_functions as $process_function){
             $is_init_str .= '<option value="'.$process_function->id.'"> '.$process_function->name.'</option>';
@@ -427,10 +427,10 @@ class Semi_finished_scheduleController extends Controller
             <td>
                 <input type="text" name="processMemo[]" id="processMemo'.$materialCount.'" class="processMemo" placeholder="" style="width:100%; height: 30px; vertical-align: middle;">
             </td>
-            
+
         </tr>';
 
-        
+
 
         return $data;
     }
@@ -460,12 +460,12 @@ class Semi_finished_scheduleController extends Controller
 
     public function create_manufacturer()
     {
-        return view('stock.createManufacturer');  
+        return view('stock.createManufacturer');
     }
 
     public function store_manufacturer(Request $request)
     {
-        
+
         $rules = [
             'fullName' => 'required|string',
             'shortName' => 'required|string',
@@ -481,6 +481,10 @@ class Semi_finished_scheduleController extends Controller
             $latest_code = Setting::where('set_key','manufacturer_code')->first();
             $number = (int)$latest_code->set_value + 1;
             $code_str = "M".str_pad($number, 6, '0',STR_PAD_LEFT);
+
+            // 更新最新 code
+            $latest_code->set_value = $number;
+            $latest_code->save();
 
             $manufacturer = new Manufacturer;
             $manufacturer->code = $code_str;
@@ -518,7 +522,7 @@ class Semi_finished_scheduleController extends Controller
             $latest_code->set_value = $number;
             $latest_code->save();
             return redirect()->route('selectManufacturer')->with('message','新增成功');
- 
+
         } catch (Exception $e) {
             return redirect()->route('selectManufacturer')->with('error','新增失敗');
         }

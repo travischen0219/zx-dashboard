@@ -98,6 +98,9 @@ class SupplierController extends Controller
             $number = (int)$latest_code->set_value + 1;
             $code_str = "S".str_pad($number, 6, '0', STR_PAD_LEFT);
             $supplier->code = $code_str;
+
+            $latest_code->set_value += 1;
+            $latest_code->save();
         } else {
             $supplier = Supplier::find($id);
         }

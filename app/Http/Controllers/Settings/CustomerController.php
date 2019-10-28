@@ -98,6 +98,8 @@ class CustomerController extends Controller
             $number = (int)$latest_code->set_value + 1;
             $code_str = "C" . str_pad($number, 6, '0', STR_PAD_LEFT);
             $customer->code = $code_str;
+            $latest_code->set_value += 1;
+            $latest_code->save();
         } else {
             $customer = Customer::find($id);
         }
