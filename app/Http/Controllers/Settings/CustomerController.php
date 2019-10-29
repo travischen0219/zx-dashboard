@@ -26,6 +26,9 @@ class CustomerController extends Controller
         $data['customers'] = $customers;
         $data['search_code'] = $search_code;
 
+        $categories = Customer::categories();
+        $data['categories'] = $categories;
+
         return view('settings.customer.index', $data);
     }
 
