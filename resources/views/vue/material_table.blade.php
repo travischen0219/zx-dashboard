@@ -42,8 +42,7 @@
                         <td title="物料">
                             <input type="hidden" name="material[]" v-model="item.id">
                             <button type="button"
-                                @click="listMaterial(idx);"
-                                class="btn btn-primary btn-block">
+                                class="btn btn-default btn-block">
                                 @{{ item.id === 0 ? '請選擇物料' : item.code + ' ' + item.name }}
                             </button>
                         </td>
@@ -234,6 +233,9 @@ Vue.component('material-table', {
 
 // 套用物料
 function applyMaterial(str, idx) {
+    // 一律新增，無法修改
+    idx = app.materials.length
+
     var material = JSON.parse(str)
     var duplicate = false
 

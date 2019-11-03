@@ -7,6 +7,19 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/11/03</li>
+            <ul>
+                <li>
+                    所有物料選擇的部分，皆改為可以多選
+                    <br>
+                    <img src="/images/dashboard/selm.png" width="600" style="margin: 10px 0;" />
+                </li>
+                <li>
+                    承上，由於多選原因，已經選的無法直接點選修改，重新選取即可
+                    <br>
+                    <img src="/images/dashboard/selm2.png" width="600" style="margin: 10px 0;" />
+                </li>
+            </ul>
         <li>
             2019/10/26
             <ul>

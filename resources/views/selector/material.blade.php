@@ -49,8 +49,11 @@
                     <tr>
                         <td title="操作" nowrap>
                             <button type="button"
+                                data-id="{{ $material->id }}"
                                 onclick="selectMaterial(JSON.stringify({{ json_encode($material, JSON_HEX_QUOT | JSON_HEX_TAG) }}), {{ $idx }});"
-                                class="btn btn-outline-primary">選擇</button>
+                                class="btn btn-outline-primary btn-select">
+                                選擇
+                            </button>
                         </td>
                         <td title="分類">
                             [{{ $material->material_categories_code }}]
@@ -77,12 +80,42 @@
                 "url": '/json/datatable.zh-tw.json'
             }
         });
-    });
+
+        // 更新選擇狀態
+        const selected = parent.app.materials.map((value, index, array) => {
+            return value.id
+        })
+
+        console.log(selected)
+
+        $('.btn-select').each(function (index) {
+            if (selected.indexOf($(this).data('id')) >= 0 || selected.indexOf($(this).data('id').toString()) >= 0) {
+                $(this)
+                    .html('已選')
+                    .removeClass('btn-outline-primary')
+                    .prop('disabled', true)
+            }
+        })
+    })
 
     function selectMaterial(str, idx) {
-        parent.applyMaterial(str, idx);
+        parent.applyMaterial(str, idx)
 
-        parent.$.magnificPopup.close();
+        // 更新選擇狀態
+        const selected = parent.app.materials.map((value, index, array) => {
+            return value.id
+        })
+
+        $('.btn-select').each(function (index) {
+            if (selected.indexOf($(this).data('id')) >= 0 || selected.indexOf($(this).data('id').toString()) >= 0) {
+                $(this)
+                    .html('已選')
+                    .removeClass('btn-outline-primary')
+                    .prop('disabled', true)
+            }
+        })
+
+        // parent.$.magnificPopup.close();
     }
     </script>
 @endsection
