@@ -10,6 +10,11 @@
         <li>2019/11/03</li>
             <ul>
                 <li>
+                    銷貨報表增加統計部分
+                    <br>
+                    <img src="/images/dashboard/sum.png" width="600" style="margin: 10px 0;" />
+                </li>
+                <li>
                     所有物料選擇的部分，皆改為可以多選
                     <br>
                     <img src="/images/dashboard/selm.png" width="600" style="margin: 10px 0;" />

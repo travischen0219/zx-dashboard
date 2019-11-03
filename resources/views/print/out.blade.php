@@ -159,10 +159,19 @@
             </tbody>
         </table>
 
+        <div class="">
+            <div class="text-right">總金額：${{ number_format($total_price) }}</div>
+            <div class="text-right">- 總成本：${{ number_format($total_cost) }}</div>
+            <div class="text-right">= 總利潤：${{ number_format($total_price - $total_cost) }}</div>
+        </div>
+
+        <hr>
+
         <div class="d-flex">
             <div class="flex-grow-1">製表人：{{session('admin_user')->fullname}}</div>
             <div class="flex-grow-1 text-right">製表日期：{{ date("Y/m/d") }}</div>
         </div>
+
     </div>
 
     <!-- Modal -->
