@@ -192,6 +192,8 @@ class Material_moduleController extends Controller
         $material_module->memo = $request->memo;
 
         $material_module->total_cost = Material::getTotalCost($material_module->materials);
+        // $material_module->total_cost = $request->material_total_cost ?? 0;
+
         $material_module->total_price = Material::getTotalPrice($material_module->materials);
         $material_module->price = $request->price ?? 0;
 

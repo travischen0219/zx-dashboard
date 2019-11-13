@@ -134,14 +134,21 @@ class Material extends Model
     // 物料總成本
     static public function getTotalCost($materials)
     {
-        $data = [];
         $materials = unserialize($materials);
 
         $total_cost = 0;
         foreach($materials as $material) {
-            $amount = $material['amount'] ?? 0;
-            $cost = $material['cost'] ?? 0;
-            $total_cost += ($amount * $cost);
+            $m = Material::find($material['id']);
+
+            if ($m->material_category_name->cal == 1) {
+                $amount = $material['buy_amount'] ?? 0;
+                $cost = $material['cal_price'] ?? 0;
+                $total_cost += ($amount * $cost);
+            } else {
+                $amount = $material['amount'] ?? 0;
+                $cost = $material['cost'] ?? 0;
+                $total_cost += ($amount * $cost);
+            }
         }
 
         return $total_cost;

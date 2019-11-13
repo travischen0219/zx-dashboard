@@ -115,13 +115,10 @@
             <div class="text-right">
                 共有 @{{ materials.length }} 種物料
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                計價總計：$@{{ total_cal | number_format }}
-                <input type="hidden" name="material_total_cal" v-model="total_cal">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                成本總計 (應付)：$@{{ total_cost | number_format }}
+                成本總計：$@{{ total_cost | number_format }}
                 <input type="hidden" name="material_total_cost" v-model="total_cost">
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                售價總計 (應收)：$@{{ total_price | number_format }}
+                售價總計：$@{{ total_price | number_format }}
                 <input type="hidden" name="material_total_price" v-model="total_price">
             </div>
         </div>
@@ -145,18 +142,14 @@ Vue.component('material-table', {
     },
 
     computed: {
-        total_cal: function() {
-            var total_cal = 0
-            this.materials.forEach(element => {
-                total_cal += parseFloat(element.cal_price) * parseFloat(element.buy_amount)
-            })
-
-            return total_cal
-        },
         total_cost: function() {
             var total_cost = 0
             this.materials.forEach(element => {
-                total_cost += parseFloat(element.cost) * parseFloat(element.amount)
+                if (element.cal == 1) {
+                    total_cost += parseFloat(element.cal_price) * parseFloat(element.buy_amount)
+                } else {
+                    total_cost += parseFloat(element.cost) * parseFloat(element.amount)
+                }
             })
 
             this.$emit('update:total_cost', total_cost);
@@ -227,7 +220,7 @@ Vue.component('material-table', {
     },
 
     mounted: function () {
-
+        // console.log(this.materials)
     }
 });
 
