@@ -125,6 +125,7 @@
         :materials="materials"
         :units="units"
         :module="true"
+        :update="true"
         :total_cost.sync="total_cost"
         ref="materialTable">
     </material-table>

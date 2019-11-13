@@ -205,4 +205,16 @@ class Material_moduleController extends Controller
 
         return $material_module;
     }
+
+    public function getall(Request $request)
+    {
+        $ids = $request->ids ?? [];
+        $material_modules = [];
+
+        foreach ($ids as $key => $id) {
+            $material_modules[] = Material_module::find($id);
+        }
+
+        return $material_modules;
+    }
 }

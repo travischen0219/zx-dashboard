@@ -135,6 +135,7 @@
         :material_modules="material_modules"
         :total_cost.sync="total_cost"
         :total_price.sync="total_price"
+        :update="true"
         ref="materialModuleView">
     </material-module-table>
 @endif

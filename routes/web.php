@@ -52,11 +52,13 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::resource('material', 'MaterialController');
     Route::post('material/search','MaterialController@index')->name('material.search');
     Route::post('material_file/delete/{file}/{material}/{id}','MaterialController@delete_file');
+    Route::post('material/getall', 'MaterialController@getall');
 
     // 物料模組
     Route::resource('material_module', 'Material_moduleController');
     Route::post('material_module/search','Material_moduleController@search')->name('material_module.search');
     Route::post('material_module_file/delete/{file}/{material}/{id}','Material_moduleController@delete_file');
+    Route::post('material_module/getall', 'Material_moduleController@getall');
 });
 
 Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->group(function(){

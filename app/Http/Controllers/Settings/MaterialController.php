@@ -320,5 +320,17 @@ class MaterialController extends Controller
 
         return $material;
     }
+
+    public function getall(Request $request)
+    {
+        $ids = $request->ids ?? [];
+        $materials = [];
+
+        foreach ($ids as $key => $id) {
+            $materials[] = Material::find($id);
+        }
+
+        return $materials;
+    }
 }
 

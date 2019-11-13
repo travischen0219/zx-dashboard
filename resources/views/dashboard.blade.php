@@ -7,6 +7,40 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/11/13</li>
+        <ul>
+            <li>
+                重新配置物料成本計算方式
+                <br>
+                <img src="/images/dashboard/cost.jpg" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                物料模組增加成本顯示
+                <br>
+                <img src="/images/dashboard/m_cost.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                採購物料清單增加更新價格功能 (根據物料基本資料設定的價格)
+                <br>
+                <img src="/images/dashboard/update.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                銷貨物料模組清單增加更新價格功能 (根據物料模組基本資料設定的價格)
+                <br>
+                <img src="/images/dashboard/update2.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                銷貨管銷費用 (建議建立一個通用的管銷費用模組，可在銷貨單內設定價錢比較快，其餘資料可以寫在備註說明)
+                <br>
+                <img src="/images/dashboard/gx.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                採購加工費用 (建議建立一個通用的加工費用物料，可在採購單內設定價錢比較快，其餘資料可以寫在備註說明，分類可以放在其他或是新建一個分類例如雜項)
+                <br>
+                <img src="/images/dashboard/jg.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
+        <hr class="my-5">
         <li>2019/11/03</li>
             <ul>
                 <li>

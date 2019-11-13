@@ -9,6 +9,11 @@
                 <button type="button" v-if="module" @click="listMaterialModule" class="btn btn-primary">
                     <i class="fa fa-plus"></i> 新增物料模組
                 </button>
+
+                <button type="button" v-if="update" @click="updatePrice" class="btn btn-warning float-right">
+                    <i class="fas fa-redo"></i>
+                    更新價錢
+                </button>
             </h4>
 
             <table id="" class="table">
@@ -138,7 +143,8 @@ Vue.component('material-table', {
     props: {
         units: Object,
         materials: Array,
-        module: true
+        module: true,
+        update: false
     },
 
     computed: {
@@ -216,6 +222,65 @@ Vue.component('material-table', {
 
             $("#batchAmount").val('');
             $("#batchEdit").hide();
+        },
+        updatePrice() {
+            const _this = this
+
+            swal.fire({
+                title: '所有成本及價錢將會更新成預設值',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '確定更新',
+                cancelButtonText: '取消',
+                width: 600
+            }).then((result) => {
+                if (result.value) {
+                    $.busyLoadFull("show", {
+                        textPosition: "bottom",
+                        textMargin: "20px",
+                        background: "rgba(0, 0, 0, 0.70)",
+                        text: '價錢更新中，請勿關閉或離開...'
+                    })
+
+                    const ids = this.materials.map(function(item, index, array) {
+                        return item.id
+                    })
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    })
+
+                    $.ajax({
+                        type: 'POST',
+                        data: { ids: ids },
+                        url: '/settings/material/getall',
+                        success: function(materials) {
+                            materials.forEach(function(material, materialIndex, materialArray) {
+                                _this.materials.forEach(function(item, index, array) {
+                                    if (material.id == item.id) {
+                                        // update price
+                                        item.cost = material.cost
+                                        item.price = material.price
+                                        item.cal_price = material.cal_price
+                                    }
+                                })
+                            })
+
+                            swal.fire(
+                                '價錢已更新',
+                                '請記得存檔以更新成本及價錢',
+                                'success'
+                            )
+
+                            $.busyLoadFull('hide')
+                        }
+                    })
+                } else {
+                    return false
+                }
+            })
         }
     },
 
