@@ -59,13 +59,13 @@
     @include('includes.messages')
     <div class="mb-3">
         <a href="{{ route('material.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增物料</a>
-        <span class="btn btn-primary" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆PDF列印</span>
+        {{-- <span class="btn btn-primary" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆PDF列印</span> --}}
     </div>
 
     <table class="table table-striped table-bordered table-hover" id="data">
         <thead>
             <tr class="bg-primary text-white">
-                <th>列 印</th>
+                {{-- <th>列 印</th> --}}
                 <th>分 類</th>
                 <th>品 名</th>
                 <th>尺 寸</th>
@@ -77,10 +77,10 @@
         <tbody>
             @foreach($materials as $material)
                 <tr>
-                    <td>
+                    {{-- <td>
                         <input type="checkbox" class="print_pdf" name="print_pdf"  value="{{$material->id}}">
                         <a href="{{url('barcode_PDF/'.$material->id)}}" target="_blank" class="btn blue btn-outline-primary btn-sm">列印</a>
-                    </td>
+                    </td> --}}
                     <td>
                         @if($material->material_categories_code == '')
                             <span style="color:red;">未指派</span>
