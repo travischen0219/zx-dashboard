@@ -159,8 +159,25 @@
                                     {{ $units[$material['unit']]->name ?? '' }}
                                 </td>
                             @endif
-                            @if(in_array(8, $selColumns))<td title="單價" class="text-right">${{ number_format($material['price'], 2) }}</td>@endif
-                            @if(in_array(9, $selColumns))<td title="金額" class="text-right">${{ number_format($material['amount'] * $material['price'], 2) }}</td>@endif
+                            @if(in_array(8, $selColumns))
+                                <td title="單價" class="text-right">
+                                    @if ($material['cal'] == 1)
+                                        ${{ number_format($material['cal_price'], 2) }}
+                                    @elseif ($material['cal'] == 2)
+                                        ${{ number_format($material['cost'], 2) }}
+                                    @endif
+                                </td>
+                            @endif
+
+                            @if(in_array(9, $selColumns))
+                                <td title="金額" class="text-right">
+                                    @if ($material['cal'] == 1)
+                                        ${{ number_format($material['buy_amount'] * $material['cal_price'], 2) }}
+                                    @elseif ($material['cal'] == 2)
+                                        ${{ number_format($material['amount'] * $material['cost'], 2) }}
+                                    @endif
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 @endforeach

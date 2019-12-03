@@ -141,7 +141,7 @@
         <div class="form-group">
             <label for="">計價單位：</label>
             <select class="form-control d-inline-block w-auto" id="cal_unit" name="cal_unit">
-                <option value="0"> 未指定</option>
+                {{-- <option value="0"> 未指定</option> --}}
                 @foreach($material_units as $unit)
                     <option value="{{ $unit->id }}" {{ (old('cal_unit') ?? $material->cal_unit) == $unit->id ? 'selected' : '' }}> {{$unit->name}}</option>
                 @endforeach
