@@ -7,6 +7,14 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/12/11</li>
+        <ul>
+            <li>
+                採購報表加上總金額
+                <br>
+                <img src="/images/dashboard/total.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
         <li>2019/11/13</li>
         <ul>
             <li>

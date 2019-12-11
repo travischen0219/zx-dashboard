@@ -136,6 +136,7 @@
                 </tr>
 
                 @php($index = 1)
+                @php($total = 0)
                 @foreach ($ins as $key1 => $in)
                     @foreach ($in->materials as $key2 => $material)
                         <tr>
@@ -172,8 +173,10 @@
                             @if(in_array(9, $selColumns))
                                 <td title="金額" class="text-right">
                                     @if ($material['cal'] == 1)
+                                        @php($total += $material['buy_amount'] * $material['cal_price'])
                                         ${{ number_format($material['buy_amount'] * $material['cal_price'], 2) }}
                                     @elseif ($material['cal'] == 2)
+                                        @php($total += $material['amount'] * $material['cost'])
                                         ${{ number_format($material['amount'] * $material['cost'], 2) }}
                                     @endif
                                 </td>
@@ -183,6 +186,8 @@
                 @endforeach
             </tbody>
         </table>
+
+        <p align="right">總金額：${{ number_format($total, 2) }}</p>
 
         <div class="d-flex">
             <div class="flex-grow-1">製表人：{{session('admin_user')->fullname}}</div>
