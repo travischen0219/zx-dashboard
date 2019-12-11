@@ -99,7 +99,7 @@ class LotController extends Controller
         $lot->start_date = $request->start_date;
         $lot->end_date = $request->end_date;
         $lot->status = $request->status;
-        $lot->is_finished = $request->is_finished;
+        $lot->is_finished = $request->is_finished ?? 0;
         $lot->memo = $request->memo;
         $lot->updated_user = session('admin_user')->id;
         $lot->save();
