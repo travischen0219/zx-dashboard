@@ -12,7 +12,7 @@
 @section('content')
     <div class="form-group">
         <label class="control-label">入出庫：</label>
-        <select class="form-control d-inline-block w-auto" name="way" onchange="location.href='/stock/stock/search/' + this.value + '/0'">
+        <select class="form-control d-inline-block w-auto" name="way" id="way" onchange="search()">
             @foreach ($ways as $key => $value)
                 <option value="{{ $key }}" {{ $key == $way ? 'selected' : ''}}>{{ $value }}</option>
             @endforeach
@@ -20,12 +20,29 @@
 
         @if ($way > 0)
             <label class="control-label ml-3">類別：</label>
-            <select class="form-control d-inline-block w-auto" name="type" onchange="location.href='/stock/stock/search/{{ $way }}/' + this.value">
+            <select class="form-control d-inline-block w-auto" name="type" id="type" onchange="search()">
                 @foreach ($types as $key => $value)
                     <option value="{{ $key }}" {{ $key == $type ? 'selected' : ''}}>{{ $value }}</option>
                 @endforeach
             </select>
+        @else
+            <input type="hidden" name="type" id="type" value="0">
         @endif
+
+        <label class="control-label ml-3">期間：</label>
+        <select name="year" id="year" class="form-control d-inline-block" style="width: 90px;" onchange="search()">
+            @for ($i = 2018; $i < date('Y') + 5; $i++)
+                <option value="{{ $i }}" {{ $year == $i ? 'selected' : '' }}>{{ $i }}年</option>
+            @endfor
+        </select>
+
+        <select name="month" id="month" class="form-control d-inline-block" style="width: 90px;" onchange="search()">
+            <option value="0">全部</option>
+            @for ($i = 1; $i <= 12; $i++)
+                <option value="{{ $i }}" {{ $month == $i ? 'selected' : '' }}>{{ $i }}月</option>
+            @endfor
+        </select>
+
     </div>
 
     <hr>
@@ -101,7 +118,17 @@
 @section('script')
     <script>
     $(function() {
+        dtOptions.dataLength = 50
         $('#data').DataTable(dtOptions);
     });
+
+    function search() {
+        const way = $('#way').val()
+        const type = $('#type').val()
+        const year = $('#year').val()
+        const month = $('#month').val()
+
+        location.href=`/stock/stock/search/${way}/${type}/${year}/${month}`
+    }
     </script>
 @endsection

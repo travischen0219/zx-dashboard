@@ -35,13 +35,21 @@ class StockController extends Controller
         $data['types2'] = Stock::types(2);
         $data['types'] = Stock::types($data['way']);
 
-        $stocks = Stock::orderBy('id', 'desc');
+        $data['year'] = $request->year ?? date('Y');
+        $data['month'] = $request->month ?? 0;
+
+        $stocks = Stock::whereYear('stock_date', $data['year'])
+            ->orderBy('id', 'desc');
         if ($data['way'] > 0) {
             $stocks = $stocks->where('way', $data['way']);
         }
 
         if ($data['type'] > 0) {
             $stocks = $stocks->where('type', $data['type']);
+        }
+
+        if ($data['month'] > 0) {
+            $stocks = $stocks->whereMonth('stock_date', $data['month']);
         }
 
         $stocks = $stocks->get();

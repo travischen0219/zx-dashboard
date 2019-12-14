@@ -141,8 +141,8 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(fun
     Route::get('inventory/show_list/{id}', 'InventoryController@show_list');
 
     // 入出庫
-    Route::get('stock/search/{way}/{type}', 'StockController@index')->name('stock.search')
-        ->where('way', '[0-9]+')->where('type', '[0-9]+');
+    Route::get('stock/search/{way}/{type}/{year}/{month}', 'StockController@index')->name('stock.search')
+        ->where('way', '[0-9]+')->where('type', '[0-9]+')->where('year', '[0-9]+')->where('month', '[0-9]+');
     Route::resource('stock', 'StockController');
 
     Route::resource('inventory_list', 'Inventory_listController');
