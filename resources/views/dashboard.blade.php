@@ -7,6 +7,24 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2019/12/14</li>
+        <ul>
+            <li>
+                採購報表加上簽核欄位
+                <br>
+                <img src="/images/dashboard/pin.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                銷貨報表加上簽核欄位
+                <br>
+                <img src="/images/dashboard/pout.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                出入庫功能可選年月區間
+                <br>
+                <img src="/images/dashboard/stock_date.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
         <li>2019/12/11</li>
         <ul>
             <li>
