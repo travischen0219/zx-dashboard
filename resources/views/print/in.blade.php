@@ -184,15 +184,25 @@
                         </tr>
                     @endforeach
                 @endforeach
+                <tr>
+                    <th colspan="99" class="text-right">總金額：${{ number_format($total, 2) }}</th>
+                </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="99" class="p-0">
+                        <div class="row align-items-center m-0">
+                            <div class="col-1 py-4 border-right text-center">採購</div>
+                            <div class="col-3 py-4"></div>
+                            <div class="col-1 py-4 border-right border-left text-center">總經理</div>
+                            <div class="col-3 py-4"></div>
+                            <div class="col-1 py-4 border-right border-left text-center">董事長</div>
+                            <div class="col-3 py-4"></div>
+                        </div>
+                    </th>
+                </tr>
+            </tfoot>
         </table>
-
-        <p align="right">總金額：${{ number_format($total, 2) }}</p>
-
-        <div class="d-flex">
-            <div class="flex-grow-1">製表人：{{session('admin_user')->fullname}}</div>
-            <div class="flex-grow-1 text-right">製表日期：{{ date("Y/m/d") }}</div>
-        </div>
     </div>
 
     <!-- Modal -->

@@ -37,7 +37,7 @@
     </style>
     <nav class="navbar navbar-dark bg-dark fixed-top text-light no-print mb-3">
         <div id="header">
-            <h3>列印採購報表</h3>
+            <h3>列印採購單</h3>
         </div>
 
         <button class="btn btn-success btn-lg" id="print" onclick="self.print();">
