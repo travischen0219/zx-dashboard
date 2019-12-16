@@ -192,11 +192,11 @@
                 <tr>
                     <th colspan="99" class="p-0">
                         <div class="row align-items-center m-0">
-                            <div class="col-1 py-4 border-right text-center">採購</div>
+                            <div class="col-1 py-4 border-right text-center">董事長</div>
                             <div class="col-3 py-4"></div>
                             <div class="col-1 py-4 border-right border-left text-center">總經理</div>
                             <div class="col-3 py-4"></div>
-                            <div class="col-1 py-4 border-right border-left text-center">董事長</div>
+                            <div class="col-1 py-4 border-right border-left text-center">採購</div>
                             <div class="col-3 py-4"></div>
                         </div>
                     </th>
