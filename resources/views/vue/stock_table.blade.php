@@ -94,7 +94,6 @@ Vue.component('stock-table', {
             this.stocks.splice(idx, 1);
         },
         listMaterial(idx) {
-            console.log(app.stocks)
             $.magnificPopup.open({
                 showCloseBtn : false,
                 closeOnBgClick: true,
@@ -145,6 +144,9 @@ Vue.component('stock-table', {
 
 // 套用物料
 function applyMaterial(str, idx) {
+    // 一律新增，無法修改
+    idx = app.stocks.length
+
     var material = JSON.parse(str)
     var duplicate = false
 
@@ -155,7 +157,14 @@ function applyMaterial(str, idx) {
         name: material.fullName,
         amount: 0,
         stock: material.stock,
-        unit: material.unit
+        cal_amount: 0,
+        buy_amount: 0,
+        unit: material.unit,
+        cost: material.cost ? parseFloat(material.cost) : 0,
+        price: material.price ? parseFloat(material.price) : 0,
+        cal: material.cal ? parseInt(material.cal) : 0,
+        cal_unit: material.cal_unit,
+        cal_price: material.cal_price ? parseFloat(material.cal_price) : 0
     }
 
     // 檢查是否重複
@@ -173,6 +182,35 @@ function applyMaterial(str, idx) {
         app.$set(app.stocks, idx, material)
     }
 }
+// function applyMaterial(str, idx) {
+//     var material = JSON.parse(str)
+//     var duplicate = false
+
+//     material = {
+//         id: material.id,
+//         category: material.material_categories_code,
+//         code: material.fullCode,
+//         name: material.fullName,
+//         amount: 0,
+//         stock: material.stock,
+//         unit: material.unit
+//     }
+
+//     // 檢查是否重複
+//     app.stocks.forEach(function(row, i) {
+//         if (material.id == row.id && i != idx) {
+//             duplicate = true
+//         }
+//     })
+
+//     if (duplicate) {
+//         swalOption.type = "error"
+//         swalOption.title = '物料已經存在'
+//         swal.fire(swalOption)
+//     } else {
+//         app.$set(app.stocks, idx, material)
+//     }
+// }
 
 // 套用物料模組
 function applyMaterialModule(str) {
@@ -181,8 +219,6 @@ function applyMaterialModule(str) {
     var duplicateMaterial = {}
 
     appendMaterials.forEach(function(material, idx) {
-        material.amount = 0
-
         // 檢查是否重複
         app.stocks.forEach(function(row, i) {
             if (material.id == row.id) {
@@ -200,8 +236,34 @@ function applyMaterialModule(str) {
     } else {
         app.stocks = app.stocks.concat(appendMaterials)
     }
-
 }
+// function applyMaterialModule(str) {
+//     var appendMaterials = JSON.parse(str)
+//     var duplicate = false
+//     var duplicateMaterial = {}
+
+//     appendMaterials.forEach(function(material, idx) {
+//         material.amount = 0
+
+//         // 檢查是否重複
+//         app.stocks.forEach(function(row, i) {
+//             if (material.id == row.id) {
+//                 duplicate = true
+//                 duplicateMaterial = material
+//             }
+//         })
+//     })
+
+//     if (duplicate) {
+//         swalOption.type = "error"
+//         swalOption.title = `物料重複`
+//         swalOption.text = `模組中 [ ${duplicateMaterial.code} ${duplicateMaterial.name} ] 已經存在，請先刪除重複的物料或重新選取物料模組`
+//         swal.fire(swalOption)
+//     } else {
+//         app.stocks = app.stocks.concat(appendMaterials)
+//     }
+
+// }
 
 // 顯示 / 隱藏 批量修改
 function batchEditAmount() {

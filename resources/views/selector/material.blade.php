@@ -74,7 +74,12 @@
 
 @section('script')
     <script>
+    var stock = 0
     $(function() {
+        if (parent.app.stock == 1) {
+            stock = 1
+        }
+
         $('#data').DataTable({
             "language": {
                 "url": '/json/datatable.zh-tw.json'
@@ -82,11 +87,17 @@
         });
 
         // 更新選擇狀態
-        const selected = parent.app.materials.map((value, index, array) => {
-            return value.id
-        })
+        var selected = []
 
-        console.log(selected)
+        if (stock == 1) {
+            selected = parent.app.stocks.map((value, index, array) => {
+                return value.id
+            })
+        } else {
+            selected = parent.app.materials.map((value, index, array) => {
+                return value.id
+            })
+        }
 
         $('.btn-select').each(function (index) {
             if (selected.indexOf($(this).data('id')) >= 0 || selected.indexOf($(this).data('id').toString()) >= 0) {
@@ -102,9 +113,16 @@
         parent.applyMaterial(str, idx)
 
         // 更新選擇狀態
-        const selected = parent.app.materials.map((value, index, array) => {
-            return value.id
-        })
+        var selected = []
+        if (stock == 1) {
+            selected = parent.app.stocks.map((value, index, array) => {
+                return value.id
+            })
+        } else {
+            selected = parent.app.materials.map((value, index, array) => {
+                return value.id
+            })
+        }
 
         $('.btn-select').each(function (index) {
             if (selected.indexOf($(this).data('id')) >= 0 || selected.indexOf($(this).data('id').toString()) >= 0) {

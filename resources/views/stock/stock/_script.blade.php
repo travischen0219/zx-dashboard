@@ -4,6 +4,7 @@
 var app = new Vue({
     el: '#app',
     data: {
+        stock: 1,
         stocks: [],
         units: {!! $units !!}
     }
