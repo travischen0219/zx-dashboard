@@ -48,7 +48,7 @@
     @foreach ($ins as $k => $value)
         @php($in = $value['in'])
         <div class="container">
-            <h2 align="center">真⼼蓮坊股份有限公司</h2>
+            <h2 align="center">真心蓮坊股份有限公司</h2>
             <table class="table table-bordered" style="page-break-after:always">
                 <thead>
                     <tr>
@@ -90,7 +90,7 @@
                         <th class="text-center">貨品編號</th>
                         <th class="text-center">品 名 規 格</th>
                         <th class="text-center">數量</th>
-                        <th class="text-center">單位</th>
+                        {{-- <th class="text-center">單位</th> --}}
                         <th class="text-center">單價</th>
                         <th class="text-center">小計</th>
                     </tr>
@@ -102,7 +102,7 @@
                             <td title="貨品編號">{{ $material['code'] }}</td>
                             <td title="品名規格">{{ $material['name'] }}</td>
                             <td title="數量" class="text-right">{{ number_format($material['amount'], 2) }}</td>
-                            <td title="單位" class="text-center">{{ $material['unit'] }}</td>
+                            {{-- <td title="單位" class="text-center">{{ $material['unit'] }}</td> --}}
                             <td title="單價" class="text-right">{{ number_format($material['cost'], 2) }}</td>
                             <td title="小計" class="text-right">{{ number_format($material['amount'] * $material['cost'], 2) }}</td>
                         </tr>
@@ -114,7 +114,7 @@
                             <td title="貨品編號"></td>
                             <td title="品名規格"></td>
                             <td title="數量" class="text-right"></td>
-                            <td title="單位" class="text-center"></td>
+                            {{-- <td title="單位" class="text-center"></td> --}}
                             <td title="單價" class="text-right"></td>
                             <td title="小計" class="text-right"></td>
                         </tr>

@@ -32,11 +32,11 @@ $(function () {
 
         var unsignedNumber = false
         app.material_modules.forEach(function(element) {
-            if (isNaN(element.amount) || element.amount <= 0) {
+            if (isNaN(element.amount)) {
                 unsignedNumber = true
             }
         })
-        if (unsignedNumber) error_message += '<div>數量請輸入大於0的數字</div>'
+        if (unsignedNumber) error_message += '<div>數量請輸入數字</div>'
 
         if (error_message != '') {
             swalOption.type = "error"

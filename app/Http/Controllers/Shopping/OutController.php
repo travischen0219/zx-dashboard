@@ -70,8 +70,12 @@ class OutController extends Controller
 
     public function store(Request $request)
     {
-        $this->save(0, $request);
-        return redirect()->route('out.index')->with('message', '修改成功');
+        $result = $this->save(0, $request);
+        if ($result) {
+            return redirect()->route('out.index')->with('message', '修改成功');
+        } else {
+            return redirect()->route('out.index')->with('error', '庫存不足，無法存檔');
+        }
     }
 
     /**
@@ -132,8 +136,13 @@ class OutController extends Controller
 
     public function update(Request $request, Out $out)
     {
-        $this->save($out->id, $request);
-        return redirect()->route('out.index')->with('message', '修改成功');
+        $result = $this->save($out->id, $request);
+
+        if ($result) {
+            return redirect()->route('out.index')->with('message', '修改成功');
+        } else {
+            return redirect()->route('out.index')->with('error', '庫存不足，無法存檔');
+        }
     }
 
     public function destroy(Out $out, Request $request)
@@ -198,9 +207,16 @@ class OutController extends Controller
 
         // 改變庫存，更新庫存
         if ($old_status != 40 && $new_status == 40) {
-            Material_module::storeToStock($out, 2, 2);
-        }
+            $stocks = Material_module::storeToStock($out, 2, 2);
 
-        return $out;
+            if ($stocks) {
+                return $out;
+            } else {
+                $out->delete();
+                return false;
+            }
+        } else {
+            $out->save();
+        }
     }
 }

@@ -7,6 +7,34 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2010/01/18</li>
+        <ul>
+            <li>修復物料理面的新增圖無法點開問題</li>
+            <li>
+                單獨列印採購單移除單位欄位並修正漏字
+                <br>
+                <img src="/images/dashboard/in-detail.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                銷貨單轉出庫若庫存不足無法存檔
+                <br>
+                <img src="/images/dashboard/less.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                一般出庫若庫存不足無法存檔
+                <br>
+                <img src="/images/dashboard/less2.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                若已入庫的銷售單才發現錯誤，可填一張內容相同但數量是負的互相抵銷並留下紀錄(如圖所示)
+                <br>
+                處此情形之外請勿輸入負的數量
+                <br>
+                因為銷貨單只看模組不看物料細項所以清單上的資訊會較少
+                <br>
+                <img src="/images/dashboard/back.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
         <li>2019/12/14</li>
         <ul>
             <li>

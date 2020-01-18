@@ -110,7 +110,7 @@ Vue.component('file-table', {
         },
 
         previewImageFromFile(idx) {
-            window.open("/storage/files" + this.files[idx].file_name)
+            window.open("/storage/files/" + this.files[idx].file_name)
         }
     }
 })

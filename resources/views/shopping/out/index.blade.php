@@ -222,6 +222,12 @@
 
     $(function () {
         var table = $('#data').DataTable(dtOptions)
+
+        @if(session()->has('error'))
+            swalOption.type = "error"
+            swalOption.title = '庫存不足，無法存檔'
+            swal.fire(swalOption)
+        @endif
     })
 </script>
 @endsection

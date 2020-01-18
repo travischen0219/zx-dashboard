@@ -124,6 +124,36 @@ class Material_module extends Model
 
             $materials = unserialize($ms->materials);
 
+            // 檢查是否出貨超過剩餘庫存
+            foreach($materials as $material) {
+                // 增加庫存紀錄
+                $stock = new Stock;
+                $m = Material::find($material['id']);
+
+                if (!$m) dd($m);
+
+                $stock->lot_id = $record->lot_id ?? 0;
+                $stock->in_id = ($class == 'App\Model\In' ? $record->id : 0);
+                $stock->out_id = ($class == 'App\Model\Out' ? $record->id : 0);
+                $stock->way = $way;
+                $stock->type = $type;
+                $stock->material_id = $material['id'];
+                $stock->supplier_id = $record->supplier_id ?? 0;
+                $stock->customer_id = $record->customer_id ?? 0;
+                $stock->amount = $material['amount'] * $material_module['amount'];
+                $stock->amount_before = $m->stock;
+
+                if ($way == 1) {
+                    $stock->amount_after = $stock->amount_before + $stock->amount;
+                } elseif ($way == 2) {
+                    $stock->amount_after = $stock->amount_before - $stock->amount;
+                }
+
+                if ($stock->amount_after < 0) {
+                    return false;
+                }
+            }
+
             foreach($materials as $material) {
                 // 增加庫存紀錄
                 $stock = new Stock;

@@ -44,6 +44,8 @@ $(function () {
         }
 
         // 入出庫檢查
+        var can_save = true
+
         stock_change_html = '<table class="table table-bordered">'
 
         app.stocks.forEach(function (element) {
@@ -59,6 +61,11 @@ $(function () {
                 new_stock = Number(element.stock) - Number(element.amount)
                 rotate = '<span class="rotate-down">→</span>'
             }
+
+            if (new_stock < 0) {
+                can_save = false
+            }
+
             new_stock = new_stock.toFixed(2)
 
             stock_change_html += `
@@ -71,28 +78,35 @@ $(function () {
 
         stock_change_html += `</table>`
 
-        swal.fire({
-            title: '庫存將發生改變',
-            html: stock_change_html,
-            type: 'info',
-            showCancelButton: true,
-            confirmButtonText: '確定{{ $title }}',
-            cancelButtonText: '取消',
-            width: 600
-        }).then((result) => {
-            if (result.value) {
-                $.busyLoadFull("show", {
-                    textPosition: "bottom",
-                    textMargin: "20px",
-                    background: "rgba(0, 0, 0, 0.70)",
-                    text: '資料送出中，請勿關閉或離開...'
-                })
+        if (can_save) {
+            swal.fire({
+                title: '庫存將發生改變',
+                html: stock_change_html,
+                type: 'info',
+                showCancelButton: true,
+                confirmButtonText: '確定{{ $title }}',
+                cancelButtonText: '取消',
+                width: 600
+            }).then((result) => {
+                if (result.value) {
+                    $.busyLoadFull("show", {
+                        textPosition: "bottom",
+                        textMargin: "20px",
+                        background: "rgba(0, 0, 0, 0.70)",
+                        text: '資料送出中，請勿關閉或離開...'
+                    })
 
-                $('#app')[0].submit()
-            } else {
-                return false
-            }
-        })
+                    $('#app')[0].submit()
+                } else {
+                    return false
+                }
+            })
+        } else {
+            swalOption.type = "error"
+            swalOption.title = '庫存不足，無法存檔'
+            swal.fire(swalOption)
+            return false
+        }
 
         return false
     })
