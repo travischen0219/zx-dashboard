@@ -20,11 +20,6 @@
                 <br>
                 <img src="/images/dashboard/out2.png" width="600" style="margin: 10px 0;" />
             </li>
-            <li>
-                單獨列印採購單移除單位欄位並修正漏字
-                <br>
-                <img src="/images/dashboard/in-detail.png" width="600" style="margin: 10px 0;" />
-            </li>
         </ul>
         <li>2020/01/18</li>
         <ul>
