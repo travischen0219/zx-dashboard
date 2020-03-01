@@ -57,7 +57,7 @@
 
 <div class="form-group">
     <label for="status">狀態：</label>
-    @if ($out->status == 40)
+    @if ($out->status == 40 || $out->status == 50)
         <span class="text-primary">{{ $statuses[$out->status] }}</span>
     @else
         <div class="d-inline-block pl-2">
@@ -71,6 +71,7 @@
                 <li data-status="30" class="btn {{ $status == 30 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[30] }}</li>
                 <li data-status="35" class="btn {{ $status == 35 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[35] }}</li>
                 <li data-status="40" class="btn {{ $status == 40 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[40] }}</li>
+                <li data-status="50" class="btn {{ $status == 50 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[50] }}</li>
             </ul>
         </div>
     @endif
