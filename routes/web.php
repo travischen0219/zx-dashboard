@@ -289,6 +289,7 @@ Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->gro
             ->where('pay_status', '[0-9]+')
             ->name('out.search');
         Route::resource('out', 'OutController');
+        Route::post('out/{out}/cancel', 'OutController@cancel')->name('out.cancel');
     }
 );
 

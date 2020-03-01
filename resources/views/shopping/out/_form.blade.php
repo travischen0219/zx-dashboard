@@ -123,7 +123,7 @@
 <input type="hidden" name="total_cost" v-model="total_cost">
 <input type="hidden" name="total_price" v-model="total_price">
 
-@if ($out->status == 40)
+@if ($out->status == 40 || $out->status == 60)
     <material-module-view
         :material_modules="material_modules"
         :total_cost.sync="total_cost"

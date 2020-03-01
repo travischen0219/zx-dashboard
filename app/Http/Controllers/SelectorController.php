@@ -125,6 +125,7 @@ class SelectorController extends Controller
         $stocks = Stock::where('out_id', $id)->get();
         $data['stocks'] = $stocks;
         $data['ways'] = Stock::ways();
+        $data['types1'] = Stock::types(1);
         $data['types2'] = Stock::types(2);
 
         return view('selector.stock_records', $data);

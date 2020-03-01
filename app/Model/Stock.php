@@ -35,6 +35,7 @@ class Stock extends Model
             $data[10] = '盤點 - 快速修正入庫';
             $data[12] = '盤點 - 差異處理入庫';
             $data[15] = '加工完成入庫';
+            $data[30] = '銷貨取消';
         } elseif ($way == 2) {
             // 出庫
             $data[0] = '全部';

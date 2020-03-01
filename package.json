@@ -10,8 +10,8 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.12.0",
-        "axios": "^0.19.1",
+        "@fortawesome/fontawesome-free": "^5.12.1",
+        "axios": "^0.19.2",
         "bootstrap": "^4.4.1",
         "busy-load": "^0.1.2",
         "cross-env": "^6.0.3",
@@ -35,14 +35,14 @@
         "magnific-popup": "^1.1.0",
         "node-sass": "^4.13.1",
         "open-iconic": "^1.1.1",
-        "popper.js": "^1.16.0",
+        "popper.js": "^1.16.1",
         "resolve-url-loader": "2.3.1",
-        "sass": "^1.25.0",
+        "sass": "^1.26.2",
         "sass-loader": "^8.0.2",
         "sweetalert": "^2.1.2",
         "sweetalert2": "^8.19.0",
         "vue": "^2.6.11",
         "vue-template-compiler": "^2.6.11",
-        "webpack": "^4.41.5"
+        "webpack": "^4.41.6"
     }
 }

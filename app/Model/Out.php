@@ -19,6 +19,7 @@ class Out extends Model
         $data[35] = '集貨撿貨';
         $data[40] = '轉出庫';
         $data[50] = '已取消';
+        $data[60] = '出庫取消';
 
         return $data;
     }

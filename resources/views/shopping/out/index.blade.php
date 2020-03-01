@@ -82,7 +82,7 @@
                     <td>
                         {{ $statuses[$out->status] ?? '' }}
 
-                        @if ($out->status == 40)
+                        @if ($out->status == 40 || $out->status == 60)
                             <br>
                             <button type="button" onclick="show_stock_records({{ $out->id }})" class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-eye"></i> 庫存紀錄
@@ -124,14 +124,27 @@
                             </button>
 
                             @if ($out->status != 40)
-                                <button type="button" onclick="deleteIn({{ $out->id }});" class="btn btn-outline-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i> 刪除
-                                </button>
+                                @if ($out->status != 60)
+                                    <button type="button" onclick="deleteIn({{ $out->id }});" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i> 刪除
+                                    </button>
+                                @endif
+                            @else
+                                <div>
+                                    <button type="button" onclick="cancelIn({{ $out->id }});" class="btn btn-outline-danger btn-sm mt-1">
+                                        <i class="fas fa-trash-alt"></i> 取消並補回庫存
+                                    </button>
+                                </div>
                             @endif
 
                             <form id="delete-form-{{ $out->id }}" action="{{ route('out.destroy', $out) }}" method="post">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
+                                <input type="hidden" name="referrer" value="{{ URL::current() }}">
+                            </form>
+
+                            <form id="cancel-form-{{ $out->id }}" action="{{ route('out.cancel', $out) }}" method="post">
+                                {{ csrf_field() }}
                                 <input type="hidden" name="referrer" value="{{ URL::current() }}">
                             </form>
                         @endif
@@ -203,8 +216,14 @@
     }
 
     function deleteIn(id) {
-        if(confirm('確定要刪除嗎 ?')){
+        if(confirm('確定要刪除嗎？')){
             $('#delete-form-' + id).submit()
+        }
+    }
+
+    function cancelIn(id) {
+        if(confirm('確定要取消並補回庫存嗎？')){
+            $('#cancel-form-' + id).submit()
         }
     }
 

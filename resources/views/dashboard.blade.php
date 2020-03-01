@@ -7,7 +7,26 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
-        <li>2010/01/18</li>
+        <li>2020/03/01</li>
+        <ul>
+            <li>
+                銷貨增加出庫之後可以取消的功能，並且會補回庫存
+                <br>
+                出貨後又取消的銷貨單會保留在管理介面上以查閱庫存紀錄
+                <br>
+                但是不會出現在成本報表中
+                <br>
+                <img src="/images/dashboard/out1.png" width="800" style="margin: 10px 0;" />
+                <br>
+                <img src="/images/dashboard/out2.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                單獨列印採購單移除單位欄位並修正漏字
+                <br>
+                <img src="/images/dashboard/in-detail.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
+        <li>2020/01/18</li>
         <ul>
             <li>修復物料理面的新增圖無法點開問題</li>
             <li>

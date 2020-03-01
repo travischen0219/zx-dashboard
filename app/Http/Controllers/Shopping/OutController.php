@@ -154,6 +154,16 @@ class OutController extends Controller
         return redirect()->route('out.index')->with('message', '刪除成功');
     }
 
+    public function cancel(Out $out, Request $request)
+    {
+        // 改變庫存，更新庫存
+        $stocks = Material_module::storeToStock($out, 1, 30);
+        $out->status = 60;
+        $out->save();
+
+        return redirect()->route('out.index')->with('message', '已取消');
+    }
+
     public function save($id, $request)
     {
         // 新增或修改
