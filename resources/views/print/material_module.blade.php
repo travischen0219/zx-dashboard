@@ -48,7 +48,7 @@
     @foreach ($modules as $k => $value)
         @php($module = $value['module'])
         <div class="container">
-            <h2 align="center">物料模組 ({{ $module->name }}) NO：{{ $module->code }}</h2>
+            <h2 align="center">物料模組 ({{ $module->name }})<br>NO：{{ $module->code }}</h2>
             <h4 align="center">{{ nl2br($module->memo) }}</h3>
             <table class="table table-bordered">
                 <tbody>
@@ -59,12 +59,15 @@
                         <th class="text-center">單位</th>
                         <th class="text-center">尺寸</th>
                         <th class="text-center">顏色</th>
-                        <th class="text-center">庫存</th>
+                        <th class="text-center">成本</th>
                         <th class="text-center">備註</th>
                     </tr>
 
                     @php($index = 1)
+                    @php($cost_total = 0)
                     @foreach ($module->materials as $key => $material)
+                        @php($m = \App\Model\Material::find($material['id']))
+
                         <tr style="height: 50px;">
                             <td title="序號" class="text-center">{{ $index++ }}</td>
                             <td title="品名">{{ $material['code'] }} {{ $material['name'] }}</td>
@@ -72,30 +75,37 @@
                             <td title="單位" class="text-center">{{ $material['unit'] }}</td>
                             <td title="尺寸">{{ $material['size'] }}</td>
                             <td title="顏色">{{ $material['color'] }}</td>
-                            <td title="庫存" class="text-right">{{ number_format($material['stock'], 2) }}</td>
+                            {{-- <td title="庫存" class="text-right">{{ number_format($material['stock'], 2) }}</td> --}}
+                            <td title="成本" class="text-right">{{ number_format($m->cost, 2) }}</td>
                             <td title="備註">{{ nl2br($material['memo']) }}</td>
                         </tr>
+
+                        @php($cost_total += ($m->cost * $material['amount']))
                     @endforeach
 
-                    @for ($i = 0; $i < 19 - count($module->materials); $i++)
-                        <tr style="height: 50px; display: none;">
-                            <td title="項次" class="text-center"></td>
-                            <td title="貨品編號"></td>
-                            <td title="品名規格"></td>
-                            <td title="數量" class="text-right"></td>
-                            <td title="單位" class="text-center"></td>
-                            <td title="單價" class="text-right"></td>
-                            <td title="小計" class="text-right"></td>
-                        </tr>
-                    @endfor
+                    <tr>
+                        <th colspan="99" class="text-right">
+                            成本合計：{{ number_format($cost_total, 2) }}
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th colspan="99" class="p-0">
+                            <div class="row align-items-center m-0">
+                                <div class="col-1 py-4 border-right text-center">董事長</div>
+                                <div class="col-3 py-4"></div>
+                                <div class="col-1 py-4 border-right border-left text-center">總經理</div>
+                                <div class="col-3 py-4"></div>
+                                <div class="col-1 py-4 border-right border-left text-center">經辦人</div>
+                                <div class="col-3 py-4"></div>
+                            </div>
+                        </th>
+                    </tr>
+
                 </tbody>
 
             </table>
 
-            <div class="d-flex" style="page-break-after:always">
-                <div class="flex-grow-1">製表人：{{session('admin_user')->fullname}}</div>
-                <div class="flex-grow-1 text-right">製表日期：{{ date("Y/m/d") }}</div>
-            </div>
         </div>
 
     @endforeach
