@@ -7,6 +7,23 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2020/03/08</li>
+        <ul>
+            <li>
+                修改列印物料模組<br>
+                1. 庫存改為成本<br>
+                2. 增加總金額<br>
+                3. 增加簽核欄位
+                <br>
+                <img src="/images/dashboard/r1.png" width="800" style="margin: 10px 0;" />
+            </li>
+            <li>
+                修改銷貨報表<br>
+                只顯示批號 客戶 本案總成本 本案總金額
+                <br>
+                <img src="/images/dashboard/r2.png" width="800" style="margin: 10px 0;" />
+            </li>
+        </ul>
         <li>2020/03/01</li>
         <ul>
             <li>
