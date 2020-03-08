@@ -137,24 +137,12 @@
 
                 @php($outdex = 1)
                 @foreach ($outs as $key1 => $out)
-                    @foreach ($out->material_modules as $key2 => $material_module)
-                        <tr>
-                            @if(in_array(0, $selColumns))<td title="項次" class="text-center">{{ $outdex++ }}</td>@endif
-                            @if(in_array(1, $selColumns))<td title="銷貨日期" class="text-center">{{ $out->created_date ?? '' }}</td>@endif
-                            @if(in_array(2, $selColumns))<td title="批號">{{ $out->lot->code ?? '' }}</td>@endif
-                            @if(in_array(3, $selColumns))<td title="客戶">{{ $out->customer->shortName ?? '' }}</td>@endif
-                            @if(in_array(4, $selColumns))<td title="編號">{{ $material_module['code'] }}</td>@endif
-                            @if(in_array(5, $selColumns))<td title="品名">{{ $material_module['name'] }}</td>@endif
-                            @if(in_array(6, $selColumns))
-                                <td title="銷貨數量" class="text-right">
-                                    {{ number_format($material_module['amount'], 2) }}
-                                </td>
-                            @endif
-                            @if(in_array(7, $selColumns))<td title="單位成本" class="text-right">${{ number_format($material_module['cost'], 2) }}</td>@endif
-                            @if(in_array(8, $selColumns))<td title="單價" class="text-right">${{ number_format($material_module['price'], 2) }}</td>@endif
-                            @if(in_array(9, $selColumns))<td title="金額" class="text-right">${{ number_format($material_module['amount'] * $material_module['price'], 2) }}</td>@endif
-                        </tr>
-                    @endforeach
+                    <tr>
+                        @if(in_array(0, $selColumns))<td title="批號">{{ $out->lot->code ?? '' }}</td>@endif
+                        @if(in_array(1, $selColumns))<td title="客戶">{{ $out->customer->shortName ?? '' }}</td>@endif
+                        @if(in_array(2, $selColumns))<td title="總成本" class="text-right">${{ number_format($out->total_cost, 2) }}</td>@endif
+                        @if(in_array(3, $selColumns))<td title="總金額" class="text-right">${{ number_format($out->total_price, 2) }}</td>@endif
+                    </tr>
                 @endforeach
                 <tr>
                     <th colspan="99" class="text-right">

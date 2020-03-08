@@ -95,7 +95,8 @@ class PrintController extends Controller
         $data["customer_id"] = $customer_id;
 
         // 參數：欄位選擇
-        $data['selColumns'] = $request->selColumns ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        // $data['selColumns'] = $request->selColumns ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        $data['selColumns'] = $request->selColumns ?? [0, 1, 2, 3];
 
         // 全部批號
         $lots = Lot::allWithKey();
@@ -106,7 +107,8 @@ class PrintController extends Controller
         $data["customers"] = $customers;
 
         // 全部欄位
-        $data['columns'] = ['項次', '銷貨日期', '批號', '客戶', '編號', '品名', '銷貨數量', '單位成本', '單價', '金額'];
+        // $data['columns'] = ['項次', '銷貨日期', '批號', '客戶', '編號', '品名', '銷貨數量', '單位成本', '單價', '金額'];
+        $data['columns'] = ['批號', '客戶', '總成本', '總金額'];
 
         $outs = Out::whereIn('status', [20, 30, 35, 40]);
 
