@@ -89,17 +89,17 @@
                         <div>加工廠商：{!! $in->manufacturer ? $in->manufacturer->shortName : $na !!}</div>
                     </td>
                     <td>
-                        <div>採購日期：{!! $in->buy_date ?? $na !!}</div>
-                        <div>預計到貨：{!! $in->should_arrive_date ?? $na !!}</div>
-                        <div>實際到貨：{!! $in->arrive_date ?? $na !!}</div>
+                        <div>採購：{!! $in->buy_date ?? $na !!}</div>
+                        <div>預計：{!! $in->should_arrive_date ?? $na !!}</div>
+                        <div>實際：{!! $in->arrive_date ?? $na !!}</div>
                     </td>
                     <td>
                         {{ $statuses[$in->status] ?? '' }}
 
                         @if ($in->status == 40)
                             <br>
-                            <button type="button" style="font-size: .7rem;" onclick="show_stock_records({{ $in->id }})" class="btn btn-outline-success btn-sm">
-                                <i class="fas fa-eye"></i> 庫存紀錄
+                            <button type="button" style="font-size: .5rem;" onclick="show_stock_records({{ $in->id }})" class="btn btn-outline-success btn-sm">
+                                庫存紀錄
                             </button>
                         @endif
                     </td>
