@@ -26,7 +26,7 @@
             <div>
                 供應商：
                 @foreach ($supplierKeys as $supplierKey)
-                    <label class="btn btn-primary mr-1">
+                    <label class="btn btn-primary mr-1 mb-1">
                         <input type="checkbox"
                             name="supplier"
                             class="supplier"
@@ -42,7 +42,7 @@
                 <button class="btn btn-light btn-sm ml-2" onclick="selectNone();">全不選</button> --}}
             </div>
         </div>
-        <button class="btn btn-success btn-lg float-right" onclick="self.print();">
+        <button class="btn btn-success btn-lg float-right mt-1" onclick="self.print();">
             <i class="fas fa-print"></i> 列印
         </button>
     </nav>
