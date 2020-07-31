@@ -16,7 +16,7 @@
                 </button>
             </h4>
 
-            <table id="" class="table">
+            <table id="" class="table" style="font-size: .8rem;">
                 <thead>
                     <tr class="">
                         <th width="1" style="white-space: nowrap">操作</th>
@@ -47,7 +47,8 @@
                         <td title="物料">
                             <input type="hidden" name="material[]" v-model="item.id">
                             <button type="button"
-                                class="btn btn-default btn-block">
+                                style="font-size: .8rem;"
+                                class="btn btn-default btn-block text-left">
                                 @{{ item.id === 0 ? '請選擇物料' : item.code + ' ' + item.name }}
                             </button>
                         </td>
@@ -57,7 +58,7 @@
                                 v-model="item.amount"
                                 name="material_amount[]"
                                 placeholder="請輸入數字"
-                                style="width: 100px;" />
+                                style="width: 75px;" />
                             / 庫存：@{{ item.stock }}@{{ units[item.unit].name }}
 
                             <template v-if="item.cal == 1">
@@ -67,7 +68,7 @@
                                         v-model="item.cal_amount"
                                         name="material_cal_amount[]"
                                         placeholder="請輸入數字"
-                                        style="width: 100px;" />
+                                        style="width: 75px;" />
                                     @{{ units[item.cal_unit].name }}
                                 </div>
                                 <div class="mt-1">
@@ -76,7 +77,7 @@
                                         v-model="item.buy_amount"
                                         name="material_buy_amount[]"
                                         placeholder="請輸入數字"
-                                        style="width: 100px;" />
+                                        style="width: 75px;" />
                                     @{{ units[item.cal_unit].name }}
                                 </div>
                             </template>
@@ -87,7 +88,7 @@
                                 v-model="item.cost"
                                 name="material_cost[]"
                                 placeholder="請輸入數字"
-                                style="width: 100px;">
+                                style="width: 75px;">
                             / $@{{ item.amount * item.cost | number_format }}
 
                             <template v-if="item.cal == 1">
@@ -97,7 +98,7 @@
                                         v-model="item.cal_price"
                                         name="material_cal_price[]"
                                         placeholder="請輸入數字"
-                                        style="width: 100px;">
+                                        style="width: 75px;">
                                     / $@{{ item.buy_amount * item.cal_price | number_format }}
                                 </div>
                             </template>
@@ -108,7 +109,7 @@
                                 v-model="item.price"
                                 name="material_price[]"
                                 placeholder="請輸入數字"
-                                style="width: 100px;">
+                                style="width: 75px;">
                             / $@{{ item.amount * item.price | number_format }}
                         </td>
                     </tr>
