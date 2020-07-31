@@ -57,7 +57,7 @@
 
     <br><br>
 
-    <table class="table table-striped table-bordered table-hover" id="data">
+    <table class="table table-striped table-bordered table-hover" id="data" style="font-size: .8rem;">
         <thead>
             <tr>
                 <th>列印</th>
@@ -78,7 +78,7 @@
                     <td>
                         <input type="checkbox" class="print_pdf" name="print_pdf" value="{{ $in->id }}">
                         <a href="/print/in_detail/{{ $in->id }}" target="_blank"
-                            class="btn blue btn-outline-primary btn-sm">列印</a>
+                            style="font-size: .7rem;" class="btn blue btn-outline-primary btn-sm">列印</a>
                     </td>
                     <td>P{{ $in->code }}</td>
                     <td>
@@ -98,7 +98,7 @@
 
                         @if ($in->status == 40)
                             <br>
-                            <button type="button" onclick="show_stock_records({{ $in->id }})" class="btn btn-outline-success btn-sm">
+                            <button type="button" style="font-size: .7rem;" onclick="show_stock_records({{ $in->id }})" class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-eye"></i> 庫存紀錄
                             </button>
                         @endif
@@ -122,12 +122,12 @@
                                 <i class="fas fa-eye"></i> 查看
                             </button>
                         @else
-                            <button type="button" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-primary btn-sm">
+                            <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-pen"></i> 修改
                             </button>
 
                             @if ($in->status != 40)
-                                <button type="button" onclick="deleteIn({{ $in->id }});" class="btn btn-outline-danger btn-sm">
+                                <button type="button" style="font-size: .7rem;" onclick="deleteIn({{ $in->id }});" class="btn btn-outline-danger btn-sm">
                                     <i class="fas fa-trash-alt"></i> 刪除
                                 </button>
                             @endif
