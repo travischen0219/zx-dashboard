@@ -44,13 +44,13 @@
 
     <br><br>
 
-    <table class="table table-striped table-bordered table-hover" id="data">
+    <table class="table table-striped table-bordered table-hover" id="data" style="font-size: .8rem;">
         <thead>
             <tr>
-                <th>列印</th>
+                <th nowrap>列印</th>
                 <th>單號</th>
                 <th>批號</th>
-                <th>客戶</th>
+                <th nowrap>客戶</th>
                 <th>日期</th>
                 <th>狀態</th>
                 <th>利潤</th>
@@ -65,7 +65,7 @@
                 <tr>
                     <td>
                         {{-- <input type="checkbox" class="print_pdf" name="print_pdf" value="{{ $out->id }}"> --}}
-                        <a href="/print/out_detail/{{ $out->id }}" target="_blank"
+                        <a href="/print/out_detail/{{ $out->id }}" target="_blank" style="font-size: .8rem;"
                             class="btn blue btn-outline-primary btn-sm">列印</a>
                     </td>
                     <td>S{{ $out->code }}</td>
@@ -75,33 +75,34 @@
                     <td>
                         {!! $out->customer ? $out->customer->shortName : $na !!}
                     </td>
-                    <td>
-                        <div>新增日期：{!! $out->created_date ?? $na !!}</div>
-                        <div>有效期限：{!! $out->expired_date ?? $na !!}</div>
+                    <td nowrap>
+                        <div>新增：{!! $out->created_date ?? $na !!}</div>
+                        <div>有效：{!! $out->expired_date ?? $na !!}</div>
                     </td>
-                    <td>
+                    <td nowrap>
                         {{ $statuses[$out->status] ?? '' }}
 
                         @if ($out->status == 40 || $out->status == 60)
                             <br>
                             <button type="button" onclick="show_stock_records({{ $out->id }})" class="btn btn-outline-success btn-sm">
-                                <i class="fas fa-eye"></i> 庫存紀錄
+                                庫存紀錄
                             </button>
                         @endif
                     </td>
-                    <td title="利潤">
+                    <td title="利潤" nowrap>
                         總成本：${{ number_format($out->total_cost) }}
                         <br>
                         利潤：${{ number_format($out->total_price - $out->total_cost) }}
+                        <br>
+                        利潤比例：
                         @if ($out->total_cost > 0)
-                            ({{ number_format(($out->total_price - $out->total_cost) / $out->total_cost * 100, 2) }}%)
+                            {{ number_format(($out->total_price - $out->total_cost) / $out->total_cost * 100, 2) }}%
                         @else
-                            (0%)
+                            0%
                         @endif
                     </td>
-                    <td>
+                    <td nowrap>
                         應收：${{ number_format($out->total_price, 2) }}
-                        <span class="text-primary">({{ $out->tax == 1 ? '含稅' : '未稅' }})</span>
                         <br>
                         實收：${{ number_format($out->total_pay, 2) }}
                         <br>
@@ -110,6 +111,8 @@
                         @else
                             剩餘：<span class="text-danger">${{ number_format($out->balance, 2) }}</span>
                         @endif
+                        <br>
+                        <span class="text-primary">({{ $out->tax == 1 ? '含稅' : '未稅' }})</span>
                     </td>
                     <td><div class="memo" title="{{ $out->memo }}">{!! nl2br($out->memo) !!}</div></td>
                     <td align="center">
@@ -119,14 +122,14 @@
                                 <i class="fas fa-eye"></i> 查看
                             </button>
                         @else
-                            <button type="button" onclick="location.href='{{ route('out.edit', $out->id) }}';" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-pen"></i> 修改
+                            <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('out.edit', $out->id) }}';" class="btn btn-outline-primary btn-sm p-1">
+                                修改
                             </button>
 
                             @if ($out->status != 40)
                                 @if ($out->status != 60)
-                                    <button type="button" onclick="deleteIn({{ $out->id }});" class="btn btn-outline-danger btn-sm">
-                                        <i class="fas fa-trash-alt"></i> 刪除
+                                    <button type="button" onclick="deleteIn({{ $out->id }});" class="btn btn-outline-danger btn-sm p-1">
+                                        刪除
                                     </button>
                                 @endif
                             @else
