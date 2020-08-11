@@ -21,6 +21,11 @@
     #print {
         position: absolute;
         top: 20px;
+        right: 180px;
+    }
+    #excel {
+        position: absolute;
+        top: 20px;
         right: 20px;
     }
     .table + .table {
@@ -42,6 +47,9 @@
 
         <button class="btn btn-success btn-lg" id="print" onclick="self.print();">
             <i class="fas fa-print"></i> 列印
+        </button>
+        <button class="btn btn-primary btn-lg" id="excel" onclick="location.href='/print/material_module_excel/{{ $id }}';">
+            <i class="fas fa-file-excel"></i> 匯出 Excel
         </button>
     </nav>
 

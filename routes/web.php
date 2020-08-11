@@ -220,6 +220,7 @@ Route::middleware('admin.login')->prefix('print')->group(
 
         // 物料模組
         Route::get('material_module/{id}', 'PrintController@material_module');
+        Route::get('material_module_excel/{id}', 'PrintController@material_module_excel');
     }
 );
 

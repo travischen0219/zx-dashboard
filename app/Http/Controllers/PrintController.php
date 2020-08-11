@@ -11,6 +11,9 @@ use App\Model\Out;
 use App\Model\Material;
 use App\Model\Material_unit;
 use App\Model\Material_module;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class PrintController extends Controller
 {
@@ -264,7 +267,7 @@ class PrintController extends Controller
     }
 
     public function material_module(Request $request)
-    {
+    {        
         $id = $request->id ?? 0;
         if ($id == 0) exit();
 
@@ -296,9 +299,66 @@ class PrintController extends Controller
 
         // 單筆列印
         $data = [];
+        $data['id'] = $id;
         $data['modules'][0]['module'] = $module;
 
         return view('print.material_module', $data);
+    }
+
+    public function material_module_excel(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) exit();
+
+        $module = Material_module::find($id);
+        if (!$module) exit();
+
+        $materials = unserialize($module->materials);
+
+        $array = [];
+        foreach ($materials as $material) {
+            $m = Material::find($material['id']);
+            $unit = Material_unit::find($m->unit);
+
+            $array[] = [
+                'id' => $material['id'],
+                'code' => $m->fullCode,
+                'name' => $m->fullName,
+                'size' => $m->size,
+                'color' => $m->color,
+                'stock' => $m->stock,
+                'memo' => $m->memo,
+                'amount' => $material['amount'],
+                'price' => (float) $material['price'],
+                'unit' =>  $unit->name
+            ];
+        }
+
+        $module->materials = $array;
+
+        $data = [];
+        $data['id'] = $id;
+        $data['modules'][0]['module'] = $module;
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->mergeCells("A1:G1")->setValue($module->name);
+
+        // Redirect output to a client’s web browser (Xlsx)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="01simple.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
     }
 
     public function buy(Request $request)
