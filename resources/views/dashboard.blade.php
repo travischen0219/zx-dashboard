@@ -7,6 +7,14 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2020/08/12</li>
+        <ul>
+            <li>
+                列印物料模組可以輸出成Excel格式
+                <br>
+                <img src="/images/dashboard/excel.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
         <li>2020/03/08</li>
         <ul>
             <li>
