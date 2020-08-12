@@ -340,13 +340,87 @@ class PrintController extends Controller
         $data['id'] = $id;
         $data['modules'][0]['module'] = $module;
 
+        $filename = $module->name;
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->mergeCells("A1:G1")->setValue($module->name);
 
-        // Redirect output to a client’s web browser (Xlsx)
+        // 標題
+        $sheet->mergeCells("A1:H1");
+        $sheet->getStyle('A1')
+            ->getFont()
+            ->setSize(24);
+        $sheet->setCellValue('A1', $module->name);
+
+        // 編號
+        $sheet->mergeCells("A2:H2");
+        $sheet->getStyle('A2')
+            ->getFont()
+            ->setSize(24);
+        $sheet->setCellValue('A2', '編號：' . $module->code);
+
+        // 欄位
+        $sheet->getStyle('A3:H3')
+            ->getFont()
+            ->setSize(16);
+        $sheet->setCellValue('A3', '序號');
+
+        $sheet->getColumnDimension('B')->setWidth(60);
+        $sheet->setCellValue('B3', '品名');
+        $sheet->setCellValue('C3', '數量');
+        $sheet->setCellValue('D3', '單位');
+        $sheet->getColumnDimension('E')->setWidth(15);
+        $sheet->setCellValue('E3', '尺寸');
+        $sheet->getColumnDimension('F')->setWidth(15);
+        $sheet->setCellValue('F3', '顏色');
+        $sheet->setCellValue('G3', '成本');
+        $sheet->getColumnDimension('H')->setWidth(30);
+        $sheet->setCellValue('H3', '備註');
+
+        // 內容
+        $index = 1;
+        $cost_total = 0;
+        foreach ($module->materials as $key => $material) {
+            $m = Material::find($material['id']);
+
+            $row = $index + 3;
+            $sheet->getStyle("A$row:H$row")
+                ->getFont()
+                ->setSize(16);
+
+            $sheet->setCellValue("A$row", $index);
+            $sheet->setCellValue("B$row", $material['code'] . ' ' . $material['name']);
+            $sheet->setCellValue("C$row", round($material['amount'], 2));
+            $sheet->setCellValue("D$row", $material['unit']);
+            $sheet->setCellValue("E$row", $material['size']);
+            $sheet->setCellValue("F$row", $material['color']);
+            $sheet->setCellValue("G$row", round($m->cost, 2));
+            $sheet->setCellValue("H$row", $material['memo']);
+            
+            $index++;
+            $cost_total += ($m->cost * $material['amount']);
+        }
+
+        // 總和
+        $row++;
+        $sheet->mergeCells("A$row:H$row");
+        $sheet->getStyle("A$row")
+            ->getFont()
+            ->setSize(24);
+        $sheet->getStyle("A$row")
+            ->getAlignment()
+            ->setHorizontal('right');
+        $sheet->setCellValue("A$row", '成本合計：' . round($cost_total, 2));
+
+        // 簽核
+        $row++;
+        $sheet->mergeCells("A$row:H$row");
+        $sheet->getStyle("A$row")
+            ->getFont()
+            ->setSize(24);
+        $sheet->setCellValue("A$row", "董事長：                         總經理：                         經辦人：");
+
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="01simple.xlsx"');
+        header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
