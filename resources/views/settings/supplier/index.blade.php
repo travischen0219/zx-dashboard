@@ -34,12 +34,19 @@
     <form role="form" action="{{ route('supplier.search') }}" method="POST" id="search_from">
         {{ csrf_field() }}
         <div class="form-group">
+            <label class="control-label"> 標籤 :</label>
+            <select class="mr-2 form-control d-inline-block w-auto" style="font-size: 14px;" name="search_tag" onchange="search();">
+                <option value="all" {{$search_tag == 'all' ? 'selected' : ''}}>全部</option>
+                <option value="supplier" {{$search_tag == 'supplier' ? 'selected' : ''}}>供應商</option>
+                <option value="manufacturer" {{$search_tag == 'manufacturer' ? 'selected' : ''}}>加工商</option>
+            </select>
+
             <label class="control-label"> 篩選分類 :</label>
             <select class="form-control d-inline-block w-auto" style="font-size: 14px;" name="search_category" onchange="search();">
                 <option value="all" {{$search_code == 'all' ? 'selected' : ''}}>全部</option>
                 <option value="1" {{$search_code == 1 ? 'selected' : ''}}>常用</option>
                 <option value="2" {{$search_code == 2 ? 'selected' : ''}}>不常用</option>
-                <option value="" {{$search_code == '' ? 'selected' : ''}}>未設定</option>
+                <option value="none" {{$search_code == 'none' ? 'selected' : ''}}>未設定</option>
             </select>
         </div>
     </form>
@@ -52,6 +59,8 @@
     <table class="table table-striped table-bordered table-hover" id="data" >
         <thead>
             <tr class="bg-primary text-white">
+                <th width="10%">標 籤</th>
+                <th width="10%">分 類</th>
                 <th width="10%">編 號</th>
                 <th width="10%">全 名</th>
                 <th width="10%">聯絡人</th>
@@ -65,12 +74,30 @@
             @foreach($suppliers as $supplier)
                 @if(true)
                 <tr>
+                    <td>
+                        @if ($supplier->supplier == 1)
+                            <span class="badge badge-primary p-1">供應商</span>
+                        @endif
+
+                        @if ($supplier->manufacturer == 1)
+                            <span class="badge badge-success p-1">加工商</span>
+                        @endif
+                    </td>
+                    <td>
+                        @if ($supplier->category == 1)
+                            常用
+                        @elseif ($supplier->category == 2)
+                            不常用
+                        @elseif ($supplier->category == null)
+                            未設定
+                        @endif
+                    </td>
                     <td>{{$supplier->code}}</td>
                     <td><a href="{{ route('supplier.show', $supplier->id) }}">{{$supplier->fullName}}</a></td>
                     <td>{{$supplier->contact}}</td>
                     <td>{{$supplier->tel}}</td>
                     <td>{{$supplier->memo}}</td>
-                    <td align="center" id="functions_btn">
+                    <td align="center" id="functions_btn" nowrap>
                         {{-- <a href="{{ route('supplier.show', $supplier->id) }}" class="btn purple btn-outline btn-sm">查看</a> --}}
                         <a href="{{ route('supplier.edit', $supplier->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
                         <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="

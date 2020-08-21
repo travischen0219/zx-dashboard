@@ -34,7 +34,7 @@
                             value="{{ $supplierKey }}"
                             checked
                             onclick="tapSupplier($(this))">
-                        {{ $suppliers[$supplierKey]['shortName'] }}
+                        {{ $suppliers[$supplierKey]['shortName'] ?? '' }}
                     </label>
                 @endforeach
 
@@ -54,8 +54,8 @@
             <table class="table table-bordered" id="table-{{ $key }}">
                 <tr>
                     <th rowspan="{{ count($unpay) + 2 }}" width="15%" class="align-middle text-center">
-                        <div>{{ $suppliers[$key]['code'] }}</div>
-                        <div>{{ $suppliers[$key]['shortName'] }}</div>
+                        <div>{{ $suppliers[$key]['code'] ?? '' }}</div>
+                        <div>{{ $suppliers[$key]['shortName'] ?? '' }}</div>
                     </th>
                     <th width="20%">批號</th>
                     <th width="20%">採購單號</th>

@@ -9,6 +9,31 @@
 @endif
 
 <div class="row">
+    <div class="col-md-12">
+        <div class="form-group" style="font-size: 18px;">
+            <label>標籤：</label>
+            
+            <label class="btn btn-lg">
+                <input type="checkbox" 
+                    name="supplier" 
+                    id="supplier" 
+                    value="1"
+                    {{ (old('supplier') ?? $supplier->supplier) == 1 ? 'checked' : '' }}
+                    onclick="tapCol($(this))"> 供應商
+            </label>
+
+            <label class="btn btn-lg">
+                <input type="checkbox" 
+                    name="manufacturer" 
+                    id="manufacturer" 
+                    value="1"
+                    {{ (old('manufacturer') ?? $supplier->manufacturer) == 1 ? 'checked' : '' }}
+                    onclick="tapCol($(this))"> 加工商
+            </label>
+        </div>    
+    </div>
+</div>
+<div class="row">
     <div class="col-md-3">
         <div class="form-group">
             <label>供應商編號：</label>
@@ -190,3 +215,18 @@
         </div>
     </div>
 </div>
+
+<script>
+// function tapCol(obj) {
+//     if (obj.prop('checked')) {
+//         obj.parent().addClass('btn-primary').removeClass('btn-light');
+//     } else {
+//         obj.parent().removeClass('btn-primary').addClass('btn-light');
+//     }
+// }    
+
+// $(function () {
+//     tapCol($('#supplier'))
+//     tapCol($('#manufacturer'))
+// })
+</script>

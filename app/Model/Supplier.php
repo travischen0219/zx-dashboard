@@ -21,7 +21,7 @@ class Supplier extends Model
 
     static public function allWithKey()
     {
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::where('supplier', 1)->get();
 
         $data = [];
         foreach ($suppliers as $supplier) {

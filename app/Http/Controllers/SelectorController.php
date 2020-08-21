@@ -70,9 +70,9 @@ class SelectorController extends Controller
         $data['categories'] = Supplier::categories();
 
         if ($category == '') {
-            $suppliers = Supplier::all();
+            $suppliers = Supplier::where('supplier', 1)->get();
         } else {
-            $suppliers = Supplier::where('category', $category)->get();
+            $suppliers = Supplier::where('supplier', 1)->where('category', $category)->get();
         }
         $data['suppliers'] = $suppliers;
 
@@ -85,12 +85,12 @@ class SelectorController extends Controller
         $category = $request->category ?? '';
 
         $data['category'] = $category;
-        $data['categories'] = Manufacturer::categories();
+        $data['categories'] = Supplier::categories();
 
         if ($category == '') {
-            $manufacturers = Manufacturer::all();
+            $manufacturers = Supplier::where('manufacturer', 1)->get();
         } else {
-            $manufacturers = Manufacturer::where('category', $category)->get();
+            $manufacturers = Supplier::where('manufacturer', 1)->where('category', $category)->get();
         }
         $data['manufacturers'] = $manufacturers;
 

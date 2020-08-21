@@ -21,11 +21,11 @@ class Sidebar
             'title' => '供應商'
         ];
 
-        $data[] = [
-            'route' => 'manufacturer.index',
-            'request' => 'settings/manufacturer*',
-            'title' => '加工廠商'
-        ];
+        // $data[] = [
+        //     'route' => 'manufacturer.index',
+        //     'request' => 'settings/manufacturer*',
+        //     'title' => '加工廠商'
+        // ];
 
         $data[] = [
             'route' => 'process_function.index',

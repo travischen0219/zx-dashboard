@@ -21,8 +21,9 @@ class Manufacturer extends Model
 
     static public function allWithKey()
     {
-        $manufacturers = Manufacturer::all();
-
+        // $manufacturers = Manufacturer::all();
+        $manufacturers = Supplier::where('manufacturer', 1)->get();
+        
         $data = [];
         foreach ($manufacturers as $manufacturer) {
             $data[$manufacturer['id']] = $manufacturer;

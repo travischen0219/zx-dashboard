@@ -45,7 +45,8 @@ class In extends Model
 
     public function manufacturer()
     {
-        return $this->hasOne(Manufacturer::class, 'id', 'manufacturer_id');
+        return $this->hasOne(Supplier::class, 'id', 'manufacturer_id');
+        // return $this->hasOne(Manufacturer::class, 'id', 'manufacturer_id');
     }
 
     public function total_cal()

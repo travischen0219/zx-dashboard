@@ -14,16 +14,30 @@ class SupplierController extends Controller
 
     public function index(Request $request)
     {
+        $search_tag = $request->search_tag ?? null;
         $search_code = $request->search_category ?? 'all';
 
-        if ($search_code == 'all') {
-            $suppliers = Supplier::all();
-        } else {
-            $suppliers = Supplier::where('category', $search_code)->get();
+        $suppliers = Supplier::orderBy('id');
+
+        if ($search_code == 'none') {
+            $suppliers = Supplier::where('category', null);
+        } elseif ($search_code != 'all') {
+            $suppliers = Supplier::where('category', $search_code);
         }
+
+        if ($search_tag != 'all') {
+            if ($search_tag == 'supplier') {
+                $suppliers = Supplier::where('supplier', 1);
+            } elseif ($search_tag == 'manufacturer') {
+                $suppliers = Supplier::where('manufacturer', 1);
+            }
+        }
+
+        $suppliers = $suppliers->get();
 
         $data = [];
         $data['suppliers'] = $suppliers;
+        $data['search_tag'] = $search_tag;
         $data['search_code'] = $search_code;
 
         return view('settings.supplier.index', $data);
@@ -32,6 +46,7 @@ class SupplierController extends Controller
     public function create()
     {
         $data['supplier'] = new Supplier;
+        $data['supplier']->supplier = 1;
         $data['supplier']->status = 1;
 
         return view('settings.supplier.create', $data);
@@ -104,6 +119,9 @@ class SupplierController extends Controller
         } else {
             $supplier = Supplier::find($id);
         }
+
+        $supplier->supplier = $request->supplier;
+        $supplier->manufacturer = $request->manufacturer;
 
         $supplier->gpn = $request->gpn;
         $supplier->fullName = $request->fullName;
