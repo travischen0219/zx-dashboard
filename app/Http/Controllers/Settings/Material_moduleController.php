@@ -64,6 +64,12 @@ class Material_moduleController extends Controller
         $data['material_module'] = $material_module;
 
         $data['materials'] = Material::appendMaterials($material_module->materials);
+        if (!$data['materials']) {
+            return '此模組內的物料已被刪除，請回上頁刪除此模組
+                <button onclick="history.back()">回上頁</button>
+            ';
+        }
+        
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson([
             $material_module->file1,
@@ -88,6 +94,12 @@ class Material_moduleController extends Controller
         $data['material_module'] = $material_module;
 
         $data['materials'] = Material::appendMaterials($material_module->materials);
+        if (!$data['materials']) {
+            return '此模組內的物料已被刪除，請回上頁刪除此模組
+                <button onclick="history.back()">回上頁</button>
+            ';
+        }
+        
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson([
             $material_module->file1,

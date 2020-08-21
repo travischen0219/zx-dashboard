@@ -76,8 +76,12 @@ class Material extends Model
         $materials = unserialize($materials);
 
         $i = 0;
-        foreach($materials as $material) {
+        foreach ($materials as $material) {
             $m = Material::find($material['id']);
+
+            if (!$m) {
+                return false;
+            }
 
             $data[$i]['id'] = $material['id'] ?? 0;
             $data[$i]['code'] = $m->fullCode;

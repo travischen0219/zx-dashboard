@@ -279,6 +279,11 @@ class PrintController extends Controller
         $array = [];
         foreach ($materials as $material) {
             $m = Material::find($material['id']);
+
+            if (!$m) {
+                return '此模組內的物料已被刪除，請刪除此模組';
+            }
+
             $unit = Material_unit::find($m->unit);
 
             $array[] = [
