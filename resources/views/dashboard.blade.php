@@ -7,6 +7,10 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2020/08/21</li>
+        <ul>
+            <li>合併供應商跟加工商</li>
+        </ul>
         <li>2020/08/12</li>
         <ul>
             <li>
