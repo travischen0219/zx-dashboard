@@ -234,8 +234,13 @@ class Material extends Model
     }
 
     // 最後物料編號
-    static public function lastFullCode()
+    static public function lastFullCode($material_categories_code = '')
     {
-        return Material::orderBy('created_at', 'desc')->first()->fullCode ?? '無';
+        if ($material_categories_code == '') {
+            return Material::orderBy('created_at', 'desc')->first()->fullCode ?? '無';
+        } else {
+            return Material::where('material_categories_code', $material_categories_code)->orderBy('created_at', 'desc')->first()->fullCode ?? '無';
+        }
+        
     }
 }

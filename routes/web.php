@@ -49,6 +49,8 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::post('material_unit/update_orderby', 'Material_unitController@update_orderby')->name('material_unit.update.orderby');
 
     // 物料管理
+    Route::get('material/lastFullCode', 'MaterialController@lastFullCode');
+    Route::get('material/lastFullCode/{material_categories_code}', 'MaterialController@lastFullCode');
     Route::resource('material', 'MaterialController');
     Route::post('material/search','MaterialController@index')->name('material.search');
     Route::post('material_file/delete/{file}/{material}/{id}','MaterialController@delete_file');

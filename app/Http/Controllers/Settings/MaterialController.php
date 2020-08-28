@@ -332,5 +332,13 @@ class MaterialController extends Controller
 
         return $materials;
     }
+
+    public function lastFullCode(Request $request)
+    {
+        $material_categories_code = $request->material_categories_code ?? '';
+        $lastFullCode = Material::lastFullCode($material_categories_code);
+        
+        return $lastFullCode;
+    }
 }
 

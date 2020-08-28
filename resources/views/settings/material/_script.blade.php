@@ -42,9 +42,14 @@ function showFullCode() {
     }
 }
 
+function getLastFullCode() {
+    $('#lastFullCode').html('loading...').load('/settings/material/lastFullCode/' + $('#material_category').val())
+}
+
 $(function () {
     // console.log($('#material_category').val())
     getCal($('#material_category').val())
     showFullCode()
+    getLastFullCode()
 })
 </script>

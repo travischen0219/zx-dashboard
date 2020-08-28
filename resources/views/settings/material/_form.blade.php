@@ -11,7 +11,7 @@
                     id="material_category"
                     name="material_category"
                     style="width: auto;"
-                    onchange="getCal($(this).val()); showFullCode();">
+                    onchange="getCal($(this).val()); showFullCode(); getLastFullCode();">
                     <option value="" {{ old('material_category') == '' ? 'selected' : '' }}>請選擇</option>
                     @foreach($material_categories as $cate)
                         <option value="{{$cate->code}}" {{ old('material_category') == $cate->code ? 'selected' : '' }}>[ {{$cate->code}} ] {{$cate->name}} </option>
@@ -31,7 +31,7 @@
     <div class="col-md-12">
         <div class="form-group">
             <label>最新編號：</label>
-            {{ $lastFullCode}}
+            <span id="lastFullCode"></span>
         </div>
     </div>
 
@@ -82,7 +82,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>完整編號：</label>
-                <span id="fullCode"></span>
+                <span id="lastFullCode"></span>
             </div>
         </div>
     @endif
