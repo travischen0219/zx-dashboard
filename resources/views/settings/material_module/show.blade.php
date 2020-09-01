@@ -58,7 +58,10 @@
                     <td>{{$material_module->memo}}</td>
 
                     <td align="center" id="functions_btn">
-                        {{-- <a href="{{ route('material_module.show', $material_module->id) }}" class="btn purple btn-outline btn-sm">查看</a>                                     --}}
+                        {{-- <a href="{{ route('material_module.show', $material_module->id) }}" class="btn purple btn-outline btn-sm">查看</a> --}}
+                        <a href="{{ route('material_module.duplicate', $material_module->id) }}" class="btn blue btn-outline-success btn-sm">
+                            <i class="fas fa-copy"></i> 複製
+                        </a>
                         <a href="{{ route('material_module.edit', $material_module->id) }}" class="btn blue btn-outline-primary btn-sm">
                             <i class="fas fa-pen"></i> 修改
                         </a>

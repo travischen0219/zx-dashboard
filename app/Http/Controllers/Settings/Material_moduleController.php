@@ -43,6 +43,28 @@ class Material_moduleController extends Controller
         return view('settings.material_module.create', $data);
     }
 
+    public function duplicate($from)
+    {
+        $material_module = Material_module::find($from);
+        $material_module->id = 0;
+        $material_module->code = null;
+        $data['material_module'] = $material_module;
+
+        $data['materials'] = Material::appendMaterials($material_module->materials);
+        if (!$data['materials']) {
+            return '此模組內的物料已被刪除，請回上頁刪除此模組
+                <button onclick="history.back()">回上頁</button>
+            ';
+        }
+        
+        $data['units'] = Material_unit::allJson();
+        $data['files'] = StorageFile::allJson([]);
+
+        $data["show"] = 0;
+
+        return view('settings.material_module.create', $data);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

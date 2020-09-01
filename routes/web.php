@@ -57,6 +57,7 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::post('material/getall', 'MaterialController@getall');
 
     // 物料模組
+    Route::get('material_module/duplicate/{from}', 'Material_moduleController@duplicate')->name('material_module.duplicate');
     Route::resource('material_module', 'Material_moduleController');
     Route::post('material_module/search','Material_moduleController@search')->name('material_module.search');
     Route::post('material_module_file/delete/{file}/{material}/{id}','Material_moduleController@delete_file');
