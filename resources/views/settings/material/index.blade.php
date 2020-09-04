@@ -69,6 +69,7 @@
                 <th>分 類</th>
                 <th>品 名</th>
                 <th>尺 寸</th>
+                <th>成 本</th>
                 <th>庫 存</th>
                 <th>操 作</th>
             </tr>
@@ -94,6 +95,7 @@
                         <a href="{{ route('material.show', $material->id) }}">{{$material->fullName}}</a>
                     </td>
                     <td>{{ $material->size }}</td>
+                    <td align="right">{{ $material->cost }}</td>
 
                     <td>
                         <span style="color: {{ $material->safe >= $material->stock ? 'red' : 'inherit' }}">
