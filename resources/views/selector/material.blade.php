@@ -37,6 +37,7 @@
                     <th nowrap>品名</th>
                     <th nowrap>單位</th>
                     <th nowrap>尺寸</th>
+                    <th nowrap>成本</th>
                     <th nowrap>顏色</th>
                     <th nowrap>庫存</th>
                 </tr>
@@ -63,6 +64,7 @@
                         <td title="品名">{{ $material->fullName }}</td>
                         <td title="單位" align="center">{{ $units[$material->unit]->name }}</td>
                         <td title="尺寸">{{ $material->size }}</td>
+                        <td title="成本" align="right">{{ $material->cost }}</td>
                         <td title="顏色">{{ $material->color }}</td>
                         <td title="庫存" align="right">{{ number_format($material->stock, 2) }}</td>
                     </tr>
