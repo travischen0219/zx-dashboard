@@ -71,6 +71,7 @@ class OutController extends Controller
     public function store(Request $request)
     {
         $result = $this->save(0, $request);
+
         if ($result) {
             return redirect()->route('out.index')->with('message', '修改成功');
         } else {
@@ -213,20 +214,21 @@ class OutController extends Controller
 
         $out->status = $request->status;
         $out->created_user = session('admin_user')->id;
-        $out->save();
 
         // 改變庫存，更新庫存
         if ($old_status != 40 && $new_status == 40) {
             $stocks = Material_module::storeToStock($out, 2, 2);
 
             if ($stocks) {
+                $out->save();
                 return $out;
             } else {
-                $out->delete();
+                // $out->delete();
                 return false;
             }
         } else {
             $out->save();
+            return $out;
         }
     }
 }
