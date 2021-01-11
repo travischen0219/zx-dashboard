@@ -115,7 +115,7 @@ class PrintController extends Controller
 
         $outs = Out::whereIn('status', [20, 30, 35, 40]);
 
-        if ($year != '') {
+        if ($year != 'all') {
             $outs->whereYear('created_date', $year);
         }
 
@@ -130,6 +130,7 @@ class PrintController extends Controller
         if ($customer_id != 0) {
             $outs->where('customer_id', $customer_id);
         }
+
 
         $outs = $outs->get();
 
@@ -267,7 +268,7 @@ class PrintController extends Controller
     }
 
     public function material_module(Request $request)
-    {        
+    {
         $id = $request->id ?? 0;
         if ($id == 0) exit();
 
@@ -400,7 +401,7 @@ class PrintController extends Controller
             $sheet->setCellValue("F$row", $material['color']);
             $sheet->setCellValue("G$row", round($m->cost, 2));
             $sheet->setCellValue("H$row", $material['memo']);
-            
+
             $index++;
             $cost_total += ($m->cost * $material['amount']);
         }

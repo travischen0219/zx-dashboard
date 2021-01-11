@@ -31,6 +31,15 @@
     input[type=text] {
         width: 150px;
     }
+    .table-bordered, .table-bordered th, .table-bordered td, .table-bordered thead th, .table-bordered thead td {
+        border: 1px solid #202122;
+    }
+    .border-left {
+        border-left: 1px solid #202122 !important;
+    }
+    .border-right {
+        border-right: 1px solid #202122 !important;
+    }
     </style>
     <nav class="navbar navbar-dark bg-dark text-light no-print mb-3">
         <div id="header">
@@ -41,6 +50,7 @@
                 <div class="form-group">
                     <label for="year">期間：</label>
                     <select name="year" id="year" class="form-control d-inline-block" style="width: 90px;">
+                        <option value="all">全部</option>
                         @for ($i = 2018; $i < date('Y') + 5; $i++)
                             <option value="{{ $i }}" {{ $year == $i ? 'selected' : '' }}>{{ $i }}</option>
                         @endfor
@@ -118,7 +128,7 @@
                         <div class="row align-items-center">
                             <div class="col-4"></div>
                             <div class="col-4 text-center" style="font-size: 24px;">
-                                {{ $year }}年{{ $month != 'all' ? $month . '月' : '' }}銷貨報表
+                                {{ $year != 'all' ? $year . '年' : '' }}{{ $month != 'all' ? $month . '月' : '' }}銷貨報表
                             </div>
                             <div class="col-4 text-right"><small>列印日期：{{ date('Y/m/d') }}</small></div>
                         </div>
