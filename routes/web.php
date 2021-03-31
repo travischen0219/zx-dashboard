@@ -20,6 +20,10 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     Route::resource('department', 'DepartmentController');
     Route::post('department/update_orderby','DepartmentController@update_orderby')->name('department.update.orderby');
 
+    // 權限設定
+    Route::resource('access', 'AccessController');
+    Route::post('access/update_orderby','AccessController@update_orderby')->name('access.update.orderby');
+
     // 職稱管理
     Route::resource('professional_title', 'Professional_titleController');
     Route::post('professional_title/update_orderby','Professional_titleController@update_orderby')->name('professional_title.update.orderby');

@@ -69,6 +69,12 @@ class Sidebar
             'title' => '批號管理'
         ];
 
+        // $data[] = [
+        //     'route' => 'access.index',
+        //     'request' => 'settings/access*',
+        //     'title' => '權限設定'
+        // ];
+
         return $data;
     }
 

@@ -10,13 +10,18 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="nav-link {{ Request::is('settings/access*') ? 'active' : '' }}" href="{{ route('access.index') }}">
+            <i class="fas fa-key active-color"></i> 權限角色
+        </a>
+    </li>
+    {{-- <li class="nav-item">
         <a class="nav-link {{ Request::is('settings/department*') ? 'active' : '' }}" href="{{ route('department.index') }}">
             <i class="fas fa-building active-color"></i> 部門設定
         </a>
-    </li>
-    <li class="nav-item">
+    </li> --}}
+    {{-- <li class="nav-item">
         <a class="nav-link {{ Request::is('settings/professional_title*') ? 'active' : '' }}" href="{{ route('professional_title.index') }}">
             <i class="fas fa-id-card-alt active-color"></i> 職稱設定
         </a>
-    </li>
+    </li> --}}
 </ul>
