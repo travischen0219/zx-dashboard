@@ -15,6 +15,8 @@ class AccessController extends Controller
     {
         $data = [];
         $data['accesses'] = Access::orderBy('orderby', 'ASC')->get();
+        $data['groups'] = Access::groups();
+        $data['modes'] = Access::modes();
 
         return view('settings.access.index', $data);
     }

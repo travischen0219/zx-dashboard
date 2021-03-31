@@ -10,15 +10,16 @@
 
 <a href="{{ route('access.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增權限角色</a>
 <a href="javascript: void(0)" id="save_recoder" class="btn btn-success"><i class="fa fa-check"></i> 儲存排序變更</a>
+<span class="mt-5 text-danger ml-2">(可拖曳排序)</span>
 
-<form id="this_form">
+<form id="this_form" class="mb-5">
     {{ csrf_field() }}
     <input type="hidden" name="count_accesses" value="{{count($accesses)}}">
 
     <table class="table table-striped table-checkable table-bordered table-hover" id="data" style="width: 600px;">
         <thead>
             <tr class="bg-success text-white">
-                <th>序 號 (可拖曳排序)</th>
+                <th nowrap>序 號</th>
                 <th>名 稱</th>
                 <th>操 作</th>
             </tr>
@@ -27,8 +28,27 @@
             @foreach($accesses as $key => $access)
             <tr class="recoder_tr_{{$key}}" style="cursor: move;">
                 <td accessid_{{$key}}="orderby_tb_{{$access->id}}" id="td_id_{{$key}}">{{$access->orderby}}</td>
-                <td>{{$access->name}}</td>
-                <td align="center"><a href="{{ route('access.edit', $access->id) }}"
+                <td>
+                    <strong style="font-size: 18px;">{{$access->name}}</strong>
+
+                    <div>
+                        @foreach ($groups as $gKey => $group)
+                            @php($access_mode = $access->getAccess($gKey))
+
+                            @if ($access_mode == 'view')
+                                <button type="button" class="btn btn-sm btn-outline-success my-1">
+                                    {{ $group }} {{ $modes[$access_mode] }}
+                                </button>
+                            @elseif ($access_mode == 'admin')
+                                <button type="button" class="btn btn-sm btn-outline-danger my-1">
+                                    {{ $group }} {{ $modes[$access_mode] }}
+                                </button>
+                            @endif
+
+                        @endforeach
+                    </div>
+                </td>
+                <td align="center" nowrap><a href="{{ route('access.edit', $access->id) }}"
                         class="btn btn-outline-primary btn-sm">修改</a>
                     <a href="javascript:;" class="btn btn-outline-danger btn-sm" onclick="
                                 if(confirm('確定要刪除嗎 ?')){
