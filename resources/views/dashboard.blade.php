@@ -7,6 +7,24 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2021/03/31</li>
+        <ul>
+            <li>
+                公司資料由於可以更改別人或自己的權限故從基本資料獨立出來
+                <br>
+                <img src="/images/dashboard/access-3.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                公司資料可管理各種權限角色
+                <br>
+                <img src="/images/dashboard/access-1.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                員工帳號可指定任一權限角色(會影響該帳號能使用或管理的功能)
+                <br>
+                <img src="/images/dashboard/access-2.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
         <li>2020/08/21</li>
         <ul>
             <li>合併供應商跟加工商</li>
