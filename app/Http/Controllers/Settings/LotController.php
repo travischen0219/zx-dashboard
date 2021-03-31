@@ -47,6 +47,10 @@ class LotController extends Controller
      */
     public function store(LotPostRequest $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         $lot = Lot::create($request->all());
@@ -91,6 +95,10 @@ class LotController extends Controller
      */
     public function update(LotPostRequest $request, $id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         $lot = Lot::find($id);
@@ -115,6 +123,10 @@ class LotController extends Controller
      */
     public function destroy($id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $lot = Lot::find($id);
 
         $lot->deleted_user = session('admin_user')->id;

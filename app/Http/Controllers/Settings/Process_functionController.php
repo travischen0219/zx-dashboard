@@ -23,6 +23,10 @@ class Process_functionController extends Controller
 
     public function update_orderby(Request $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $data_id = $request->data_id;
         $data_orderby = $request->data_orderby;
 
@@ -50,6 +54,10 @@ class Process_functionController extends Controller
 
     public function store(ProcessFunctionRequest $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         $unit = Process_function::create($request->all());
@@ -70,6 +78,10 @@ class Process_functionController extends Controller
 
     public function update(ProcessFunctionRequest $request, $id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         $unit = Process_function::find($id);
@@ -81,6 +93,10 @@ class Process_functionController extends Controller
 
     public function destroy($id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         try{
             // 刪除後排序重整
             $unit = Process_function::where('id', $id)->first();

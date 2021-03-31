@@ -20,6 +20,10 @@ class Material_unitController extends Controller
 
     public function update_orderby(Request $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $data_id = $request->data_id;
         $data_orderby = $request->data_orderby;
 
@@ -47,6 +51,10 @@ class Material_unitController extends Controller
 
     public function store(MaterialUnitRequest $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         if(Material_unit::count() > 0) {
@@ -77,6 +85,10 @@ class Material_unitController extends Controller
 
     public function update(MaterialUnitRequest $request, $id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         try{
@@ -92,6 +104,10 @@ class Material_unitController extends Controller
 
     public function destroy($id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         try{
             // 若物料尚有該資料 則提醒無法刪除
             $materials = Material::where('unit', $id)->get();

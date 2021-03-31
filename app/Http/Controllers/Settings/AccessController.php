@@ -24,6 +24,10 @@ class AccessController extends Controller
     // 排序
     public function update_orderby(Request $request)
     {
+        if (!User::canAdmin('admin')) {
+            return false;
+        }
+
         $data_id = $request->data_id;
         $data_orderby = $request->data_orderby;
 
@@ -53,6 +57,10 @@ class AccessController extends Controller
 
     public function store(AccessRequest $request)
     {
+        if (!User::canAdmin('admin')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         // Store Access
@@ -87,6 +95,10 @@ class AccessController extends Controller
 
     public function update(AccessRequest $request, $id)
     {
+        if (!User::canAdmin('admin')) {
+            return false;
+        }
+
         $validated = $request->validated();
         $access = Access::find($id);
         $access->name = $request->name;
@@ -107,6 +119,10 @@ class AccessController extends Controller
 
     public function destroy($id)
     {
+        if (!User::canAdmin('admin')) {
+            return false;
+        }
+
         try{
             // 若員工尚有該資料 則提醒無法刪除
             $users = User::where('access_id', $id)->get();

@@ -8,10 +8,11 @@
 @section('content')
 @include('includes.messages')
 
-<a href="{{ route('access.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增權限角色</a>
-<a href="javascript: void(0)" id="save_recoder" class="btn btn-success"><i class="fa fa-check"></i> 儲存排序變更</a>
-<span class="mt-5 text-danger ml-2">(可拖曳排序)</span>
-
+@if (\App\Model\User::canAdmin('admin'))
+    <a href="{{ route('access.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增權限角色</a>
+    <a href="javascript: void(0)" id="save_recoder" class="btn btn-success"><i class="fa fa-check"></i> 儲存排序變更</a>
+    <span class="mt-5 text-danger ml-2">(可拖曳排序)</span>
+@endif
 <form id="this_form" class="mb-5">
     {{ csrf_field() }}
     <input type="hidden" name="count_accesses" value="{{count($accesses)}}">
@@ -48,15 +49,19 @@
                         @endforeach
                     </div>
                 </td>
-                <td align="center" nowrap><a href="{{ route('access.edit', $access->id) }}"
-                        class="btn btn-outline-primary btn-sm">修改</a>
-                    <a href="javascript:;" class="btn btn-outline-danger btn-sm" onclick="
-                                if(confirm('確定要刪除嗎 ?')){
-                                    event.preventDefault();
-                                    document.getElementById('delete-form-{{$access->id}}').submit();
-                                } else {
-                                    event.preventDefault();
-                                }">刪除</a></td>
+                <td align="center" nowrap>
+                    @if (\App\Model\User::canAdmin('admin'))
+                        <a href="{{ route('access.edit', $access->id) }}"
+                            class="btn btn-outline-primary btn-sm">修改</a>
+                        <a href="javascript:;" class="btn btn-outline-danger btn-sm" onclick="
+                                    if(confirm('確定要刪除嗎 ?')){
+                                        event.preventDefault();
+                                        document.getElementById('delete-form-{{$access->id}}').submit();
+                                    } else {
+                                        event.preventDefault();
+                                    }">刪除</a>
+                    @endif
+                </td>
                 <form id="delete-form-{{$access->id}}" action="{{ route('access.destroy', $access->id) }}"
                     method="post">
                     {{ csrf_field() }}

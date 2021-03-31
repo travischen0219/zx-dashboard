@@ -89,6 +89,10 @@ class SupplierController extends Controller
 
     public function destroy($id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         try{
             $supplier = Supplier::find($id);
             $supplier->status = 2;
@@ -105,6 +109,10 @@ class SupplierController extends Controller
 
     public function save($id, $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         // 新增或修改
         if ($id == 0) {
             $supplier = new Supplier;

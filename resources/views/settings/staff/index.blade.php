@@ -9,11 +9,13 @@
 
 @section('content')
 
-    <a href="{{ route('staff.create') }}"
-        class="btn btn-primary mb-3">
-        <i class="fas fa-user-plus"></i>
-        新增人員
-    </a>
+    @if (\App\Model\User::canAdmin('admin'))
+        <a href="{{ route('staff.create') }}"
+            class="btn btn-primary mb-3">
+            <i class="fas fa-user-plus"></i>
+            新增人員
+        </a>
+    @endif
 
     <table class="table table-striped table-bordered table-hover" id="data">
         <thead>
@@ -51,23 +53,25 @@
                             @endif
                     </td>
                     <td align="center">
-                        <a href="{{ route('staff.edit', $user->id) }}"
-                            class="btn btn-outline-primary btn-sm">
-                            修改
-                        </a>
-                        <a href="javascript: void(0);"
-                            class="btn red btn-outline-danger btn-sm"
-                            onclick="
-                            if(confirm('確定要刪除嗎 ?')){
-                                event.preventDefault();
-                                document.getElementById('delete-form-{{$user->id}}').submit();
-                            } else {
-                                event.preventDefault();
-                            }">刪除</a></td>
-                        <form id="delete-form-{{$user->id}}" action="{{ route('staff.destroy', $user->id) }}" method="post">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
+                        @if (\App\Model\User::canAdmin('admin'))
+                            <a href="{{ route('staff.edit', $user->id) }}"
+                                class="btn btn-outline-primary btn-sm">
+                                修改
+                            </a>
+                            <a href="javascript: void(0);"
+                                class="btn red btn-outline-danger btn-sm"
+                                onclick="
+                                if(confirm('確定要刪除嗎 ?')){
+                                    event.preventDefault();
+                                    document.getElementById('delete-form-{{$user->id}}').submit();
+                                } else {
+                                    event.preventDefault();
+                                }">刪除</a></td>
+                            <form id="delete-form-{{$user->id}}" action="{{ route('staff.destroy', $user->id) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        @endif
                     </td>
                 </tr>
                 @endif

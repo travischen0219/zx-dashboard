@@ -77,6 +77,10 @@ class CustomerController extends Controller
 
     public function destroy($id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         try{
             $customer = Customer::find($id);
             $customer->status = 2;
@@ -93,6 +97,10 @@ class CustomerController extends Controller
 
     public function save($id, $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         // 新增或修改
         if ($id == 0) {
             $customer = new Customer;

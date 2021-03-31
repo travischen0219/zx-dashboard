@@ -143,6 +143,10 @@ class MaterialController extends Controller
 
     public function destroy($id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         try{
             $material = Material::find($id);
 
@@ -187,6 +191,10 @@ class MaterialController extends Controller
 
     public function delete_file($file_no,$material,$file_id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         try{
             $material = Material::find($material);
             if($file_no == 1){
@@ -279,6 +287,10 @@ class MaterialController extends Controller
 
     public function save($id, $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         // 新增或修改
         if ($id == 0) {
             $material = new Material;
@@ -337,7 +349,7 @@ class MaterialController extends Controller
     {
         $material_categories_code = $request->material_categories_code ?? '';
         $lastFullCode = Material::lastFullCode($material_categories_code);
-        
+
         return $lastFullCode;
     }
 }

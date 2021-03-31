@@ -13,12 +13,15 @@ Route::get('barcode_PDF/{id}','PDFController@barcode_pdf');
 Route::get('logout','LoginController@logout')->name('logout');
 
 Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->group(function(){
-    // 員工管理
-    Route::resource('staff', 'StaffController');
 
-    // 權限設定
-    Route::resource('access', 'AccessController');
-    Route::post('access/update_orderby','AccessController@update_orderby')->name('access.update.orderby');
+    Route::middleware('can.admin')->group(function() {
+        // 員工管理
+        Route::resource('staff', 'StaffController');
+
+        // 權限設定
+        Route::resource('access', 'AccessController');
+        Route::post('access/update_orderby','AccessController@update_orderby')->name('access.update.orderby');
+    });
 
     Route::middleware('can.settings')->group(function() {
 

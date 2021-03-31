@@ -36,6 +36,10 @@ class StaffController extends Controller
 
     public function store(StaffRequest $request)
     {
+        if (!User::canAdmin('admin')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         $request->password = bcrypt($request->password);
@@ -66,6 +70,10 @@ class StaffController extends Controller
 
     public function update(StaffRequest $request, $id)
     {
+        if (!User::canAdmin('admin')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         $user = User::find($id);
@@ -96,6 +104,10 @@ class StaffController extends Controller
      */
     public function destroy($id)
     {
+        if (!User::canAdmin('admin')) {
+            return false;
+        }
+
         $user = User::find($id);
 
         $user->deleted_user = session('admin_user')->id;

@@ -20,6 +20,10 @@ class Material_categoryController extends Controller
 
     public function update_orderby(Request $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $data_id = $request->data_id;
         $data_orderby = $request->data_orderby;
 
@@ -47,6 +51,10 @@ class Material_categoryController extends Controller
 
     public function store(MaterialCategoryRequest $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         if(Material_category::where('delete_flag','0')->count() > 0){
@@ -81,6 +89,10 @@ class Material_categoryController extends Controller
 
     public function update(MaterialCategoryRequest $request, $id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         try{
@@ -98,6 +110,10 @@ class Material_categoryController extends Controller
 
     public function destroy($id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         try{
             // 若物料尚有該資料 則提醒無法刪除
             $cate = Material_category::where('id', $id)->first();

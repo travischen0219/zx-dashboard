@@ -45,6 +45,10 @@ class Material_moduleController extends Controller
 
     public function duplicate($from)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         $material_module = Material_module::find($from);
         $material_module->id = 0;
         $material_module->code = null;
@@ -56,7 +60,7 @@ class Material_moduleController extends Controller
                 <button onclick="history.back()">回上頁</button>
             ';
         }
-        
+
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson([]);
 
@@ -91,7 +95,7 @@ class Material_moduleController extends Controller
                 <button onclick="history.back()">回上頁</button>
             ';
         }
-        
+
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson([
             $material_module->file1,
@@ -121,7 +125,7 @@ class Material_moduleController extends Controller
                 <button onclick="history.back()">回上頁</button>
             ';
         }
-        
+
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson([
             $material_module->file1,
@@ -156,6 +160,10 @@ class Material_moduleController extends Controller
      */
     public function destroy($id)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         try{
             $material_module = Material_module::find($id);
 
@@ -198,6 +206,10 @@ class Material_moduleController extends Controller
 
     public function save($id, $request)
     {
+        if (!User::canAdmin('settings')) {
+            return false;
+        }
+
         // 新增或修改
         if ($id == 0) {
             $material_module = new Material_module;
