@@ -20,8 +20,7 @@
             <tr class="bg-success text-white">
                 <th>編 號</th>
                 <th>姓 名</th>
-                <th>部 門</th>
-                <th>職 稱</th>
+                <th>權限角色</th>
                 <th>電 話</th>
                 <th>Email</th>
                 <th>狀 態</th>
@@ -37,17 +36,10 @@
                     <td>{{$user->staff_code}}</td>
                     <td>{{$user->fullname}}</td>
                     <td>
-                        @if($user->department_id == 0)
+                        @if($user->access_id == 0)
                             <span style="color:red">未指派</span>
                         @else
-                            {{$user->department_name->name}}
-                        @endif
-                    </td>
-                    <td>
-                        @if($user->professional_title_id == 0)
-                            <span style="color:red">未指派</span>
-                        @else
-                            {{$user->professional_title_name->name}}
+                            {{$user->access_name->name}}
                         @endif
                     </td>
                     <td>{{$user->mobile}}</td>

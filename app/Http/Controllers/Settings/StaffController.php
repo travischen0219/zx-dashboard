@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Model\User;
-use App\Model\Department;
+use App\Model\Access;
 use Illuminate\Http\Request;
-use App\Model\Professional_title;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StaffRequest;
 
@@ -25,14 +24,12 @@ class StaffController extends Controller
     // 新增員工
     public function create()
     {
-        $deps = Department::where('delete_flag','0')->orderBy('orderby', 'ASC')->get();
-        $pro_titles = Professional_title::orderBy('orderby', 'ASC')->get();
+        $accesses = Access::orderBy('orderby', 'ASC')->get();
 
         $data = [];
         $data['user'] = new User;
         $data['user']->status = 1;
-        $data['deps'] = $deps;
-        $data['pro_titles'] = $pro_titles;
+        $data['accesses'] = $accesses;
 
         return view('settings.staff.create', $data);
     }
@@ -47,7 +44,7 @@ class StaffController extends Controller
         $user->password = bcrypt($user->password);
         $user->save();
 
-        return redirect(route('staff.index'))->with('message','新增成功');
+        return redirect(route('staff.index'))->with('message', '新增成功');
     }
 
     /**
@@ -58,13 +55,11 @@ class StaffController extends Controller
      */
     public function edit($id)
     {
-        $deps = Department::where('delete_flag','0')->orderBy('orderby', 'ASC')->get();
-        $pro_titles = Professional_title::orderBy('orderby', 'ASC')->get();
+        $accesses = Access::orderBy('orderby', 'ASC')->get();
 
         $data = [];
         $data['user'] = User::find($id);
-        $data['deps'] = $deps;
-        $data['pro_titles'] = $pro_titles;
+        $data['accesses'] = $accesses;
 
         return view('settings.staff.edit', $data);
     }
@@ -75,8 +70,7 @@ class StaffController extends Controller
 
         $user = User::find($id);
         $user->fullname = $request->fullname;
-        $user->department_id = $request->department_id;
-        $user->professional_title_id = $request->professional_title_id;
+        $user->access_id = $request->access_id;
         $user->tel = $request->tel;
         $user->mobile = $request->mobile;
         $user->address = $request->address;
@@ -90,7 +84,7 @@ class StaffController extends Controller
         $user->updated_user = session('admin_user')->id;
         $user->save();
 
-        return redirect(route('staff.index'))->with('message','修改成功');
+        return redirect(route('staff.index'))->with('message', '修改成功');
     }
 
     /**

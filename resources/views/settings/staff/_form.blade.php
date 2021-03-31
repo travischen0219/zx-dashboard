@@ -26,18 +26,18 @@
 </div>
 
 <div class="form-group d-inline-block">
-    <label for="department"><span style="color:red;">*</span>部門：</label>
-    <select class="form-control w-auto d-inline-block" id="department_id" name="department_id">
-        <option value="">選擇部門</option>
-        @foreach($deps as $dep)
-        <option value="{{$dep->id}}" {{ (old('department_id') ?? $user->department_id) == $dep->id ? 'selected' : '' }}>
-            {{$dep->name}}
+    <label for="department"><span style="color:red;">*</span>權限角色：</label>
+    <select class="form-control w-auto d-inline-block" id="access_id" name="access_id">
+        <option value="">選擇權限角色</option>
+        @foreach($accesses as $access)
+        <option value="{{$access->id}}" {{ (old('access_id') ?? $user->access_id) == $access->id ? 'selected' : '' }}>
+            {{$access->name}}
         </option>
         @endforeach
     </select>
 </div>
 
-<div class="form-group d-inline-block">
+{{-- <div class="form-group d-inline-block">
     <label for="pro_title"><span style="color:red;">*</span>職稱：</label>
     <select class="form-control w-auto d-inline-block" id="professional_title_id" name="professional_title_id">
         <option value="">選擇職稱</option>
@@ -48,7 +48,7 @@
         </option>
         @endforeach
     </select>
-</div>
+</div> --}}
 
 <div class="clearfix"></div>
 

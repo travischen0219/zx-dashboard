@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\Access;
 use App\Model\Department;
 use App\Model\Professional_title;
 use Illuminate\Notifications\Notifiable;
@@ -18,6 +19,11 @@ class User extends Authenticatable
         return $this->hasOne(Department::class, 'id', 'department_id');
     }
 
+    public function access_name()
+    {
+        return $this->hasOne(Access::class, 'id', 'access_id');
+    }
+
     public function professional_title_name()
     {
         return $this->hasOne(Professional_title::class, 'id', 'professional_title_id');
@@ -31,8 +37,7 @@ class User extends Authenticatable
         'username',
         'staff_code',
         'fullname',
-        'department_id',
-        'professional_title_id',
+        'access_id',
         'tel',
         'mobile',
         'address',

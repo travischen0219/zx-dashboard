@@ -43,8 +43,7 @@ class StaffRequest extends FormRequest
             'username' => $username,
             'email' => $email,
             'password' => $password,
-            'department_id' => 'required',
-            'professional_title_id' => 'required'
+            'access_id' => 'required'
         ];
     }
 
@@ -56,8 +55,7 @@ class StaffRequest extends FormRequest
             'email' => 'Email',
             'username' => '帳號',
             'password' => '密碼',
-            'department_id' => '部門',
-            'professional_title_id' => '職稱'
+            'access_id' => '權限角色'
         ];
     }
 }
