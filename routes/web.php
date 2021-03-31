@@ -16,59 +16,63 @@ Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->gro
     // 員工管理
     Route::resource('staff', 'StaffController');
 
-    // 部門管理
-    Route::resource('department', 'DepartmentController');
-    Route::post('department/update_orderby','DepartmentController@update_orderby')->name('department.update.orderby');
-
     // 權限設定
     Route::resource('access', 'AccessController');
     Route::post('access/update_orderby','AccessController@update_orderby')->name('access.update.orderby');
 
-    // 職稱管理
-    Route::resource('professional_title', 'Professional_titleController');
-    Route::post('professional_title/update_orderby','Professional_titleController@update_orderby')->name('professional_title.update.orderby');
+    Route::middleware('can.settings')->group(function() {
 
-    // 供應商
-    Route::resource('supplier', 'SupplierController');
-    Route::post('supplier/search','SupplierController@index')->name('supplier.search');
+        // 部門管理
+        Route::resource('department', 'DepartmentController');
+        Route::post('department/update_orderby','DepartmentController@update_orderby')->name('department.update.orderby');
 
-    // 加工廠商
-    Route::resource('manufacturer', 'ManufacturerController');
-    Route::post('manufacturer/search','ManufacturerController@index')->name('manufacturer.search');
+        // 職稱管理
+        Route::resource('professional_title', 'Professional_titleController');
+        Route::post('professional_title/update_orderby','Professional_titleController@update_orderby')->name('professional_title.update.orderby');
 
-    // 加工方式
-    Route::resource('process_function', 'Process_functionController');
-    Route::post('process_function/update_orderby','Process_functionController@update_orderby')->name('process_function.update.orderby');
+        // 供應商
+        Route::resource('supplier', 'SupplierController');
+        Route::post('supplier/search','SupplierController@index')->name('supplier.search');
 
-    // 客戶管理
-    Route::resource('customer', 'CustomerController');
-    Route::post('customer/search', 'CustomerController@index')->name('customer.search');
+        // 加工廠商
+        Route::resource('manufacturer', 'ManufacturerController');
+        Route::post('manufacturer/search','ManufacturerController@index')->name('manufacturer.search');
 
-    // 物料分類
-    Route::resource('material_category', 'Material_categoryController');
-    Route::post('material_category/update_orderby', 'Material_categoryController@update_orderby')->name('material_category.update.orderby');
+        // 加工方式
+        Route::resource('process_function', 'Process_functionController');
+        Route::post('process_function/update_orderby','Process_functionController@update_orderby')->name('process_function.update.orderby');
 
-    // 單位
-    Route::resource('material_unit', 'Material_unitController');
-    Route::post('material_unit/update_orderby', 'Material_unitController@update_orderby')->name('material_unit.update.orderby');
+        // 客戶管理
+        Route::resource('customer', 'CustomerController');
+        Route::post('customer/search', 'CustomerController@index')->name('customer.search');
 
-    // 物料管理
-    Route::get('material/lastFullCode', 'MaterialController@lastFullCode');
-    Route::get('material/lastFullCode/{material_categories_code}', 'MaterialController@lastFullCode');
-    Route::resource('material', 'MaterialController');
-    Route::post('material/search','MaterialController@index')->name('material.search');
-    Route::post('material_file/delete/{file}/{material}/{id}','MaterialController@delete_file');
-    Route::post('material/getall', 'MaterialController@getall');
+        // 物料分類
+        Route::resource('material_category', 'Material_categoryController');
+        Route::post('material_category/update_orderby', 'Material_categoryController@update_orderby')->name('material_category.update.orderby');
 
-    // 物料模組
-    Route::get('material_module/duplicate/{from}', 'Material_moduleController@duplicate')->name('material_module.duplicate');
-    Route::resource('material_module', 'Material_moduleController');
-    Route::post('material_module/search','Material_moduleController@search')->name('material_module.search');
-    Route::post('material_module_file/delete/{file}/{material}/{id}','Material_moduleController@delete_file');
-    Route::post('material_module/getall', 'Material_moduleController@getall');
+        // 單位
+        Route::resource('material_unit', 'Material_unitController');
+        Route::post('material_unit/update_orderby', 'Material_unitController@update_orderby')->name('material_unit.update.orderby');
+
+        // 物料管理
+        Route::get('material/lastFullCode', 'MaterialController@lastFullCode');
+        Route::get('material/lastFullCode/{material_categories_code}', 'MaterialController@lastFullCode');
+        Route::resource('material', 'MaterialController');
+        Route::post('material/search','MaterialController@index')->name('material.search');
+        Route::post('material_file/delete/{file}/{material}/{id}','MaterialController@delete_file');
+        Route::post('material/getall', 'MaterialController@getall');
+
+        // 物料模組
+        Route::get('material_module/duplicate/{from}', 'Material_moduleController@duplicate')->name('material_module.duplicate');
+        Route::resource('material_module', 'Material_moduleController');
+        Route::post('material_module/search','Material_moduleController@search')->name('material_module.search');
+        Route::post('material_module_file/delete/{file}/{material}/{id}','Material_moduleController@delete_file');
+        Route::post('material_module/getall', 'Material_moduleController@getall');
+
+    });
 });
 
-Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->group(function(){
+Route::middleware('admin.login')->middleware('can.shopping')->namespace('Shopping')->prefix('shopping')->group(function(){
     Route::resource('sale', 'SaleController');
     Route::post('sale/search','SaleController@search')->name('sale.search');
     Route::post('sale_file/delete/{file}/{sale}/{id}','SaleController@delete_file');
@@ -139,7 +143,7 @@ Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->gro
     Route::post('prime_cost/search','Prime_costController@search')->name('prime_cost.search');
 });
 
-Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(function() {
+Route::middleware('admin.login')->middleware('can.stock')->namespace('Stock')->prefix('stock')->group(function() {
     // 盤點
     Route::get('inventory/quick_fix/{inventoryID}/{id}', 'InventoryController@quick_fix');
     Route::resource('inventory', 'InventoryController');
@@ -183,8 +187,6 @@ Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(fun
     Route::post('residual_material_processing/search','Residual_material_processingController@search')->name('residual_material_processing.search');
 
 });
-
-
 
 /*** 報表 ***/
 Route::middleware('admin.login')->prefix('print')->group(
@@ -269,14 +271,14 @@ Route::middleware('admin.login')->prefix('selector')->group(
 );
 
 /*** 批號管理 ***/
-Route::middleware('admin.login')->namespace('Settings')->prefix('settings')->group(
+Route::middleware('admin.login')->middleware('can.settings')->namespace('Settings')->prefix('settings')->group(
     function () {
         Route::resource('lot', 'LotController');
     }
 );
 
 // 進貨管理
-Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->group(
+Route::middleware('admin.login')->middleware('can.purchase')->namespace('Purchase')->prefix('purchase')->group(
     function () {
         Route::get('on', 'OnController@index')->name('on.index');
         Route::get('ion', 'OnController@in')->name('ion.index');
@@ -290,7 +292,7 @@ Route::middleware('admin.login')->namespace('Purchase')->prefix('purchase')->gro
 );
 
 // 銷貨管理
-Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->group(
+Route::middleware('admin.login')->middleware('can.shopping')->namespace('Shopping')->prefix('shopping')->group(
     function () {
         Route::get('out/search/{status}/{pay_status}', 'OutController@index')
             ->where('status', '[0-9]+')
@@ -311,7 +313,7 @@ Route::middleware('admin.login')->namespace('Shopping')->prefix('shopping')->gro
 // );
 
 /*** 庫存盤點 ***/
-Route::middleware('admin.login')->namespace('Stock')->prefix('stock')->group(
+Route::middleware('admin.login')->middleware('can.stock')->namespace('Stock')->prefix('stock')->group(
     function () {
         // 盤點
         Route::get('inventory/{id}/view', 'InventoryController@view')

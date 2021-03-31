@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Stock;
 
 use App\Model\Stock;
+use App\Model\User;
 use App\Model\Material;
 use App\Model\Material_unit;
 use Illuminate\Http\Request;

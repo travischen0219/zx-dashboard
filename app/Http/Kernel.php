@@ -44,6 +44,21 @@ class Kernel extends HttpKernel
         'admin.login' => [
             \App\Http\Middleware\AdminLogin::class,
         ],
+        'can.settings' => [
+            \App\Http\Middleware\CanSettings::class,
+        ],
+        'can.purchase' => [
+            \App\Http\Middleware\CanPurchase::class,
+        ],
+        'can.shopping' => [
+            \App\Http\Middleware\CanShopping::class,
+        ],
+        'can.stock' => [
+            \App\Http\Middleware\CanStock::class,
+        ],
+        'can.admin' => [
+            \App\Http\Middleware\CanAdmin::class,
+        ],
     ];
 
     /**
