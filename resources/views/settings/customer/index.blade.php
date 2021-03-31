@@ -23,8 +23,9 @@
     </form>
 
     @include('includes.messages')
-    <a href="{{ route('customer.create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> 新增客戶</a>
-
+    @if (\App\Model\User::canAdmin('settings'))
+        <a href="{{ route('customer.create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> 新增客戶</a>
+    @endif
     <table class="table table-striped table-bordered table-hover" id="data" >
         <thead>
             <tr class="bg-primary text-white">
@@ -51,20 +52,22 @@
                     <td>{{$customer->tel}}</td>
                     <td>{{$customer->address}}</td>
                     <td align="center" id="functions_btn">
-                        {{-- <a href="{{ route('customers.show', $customer->id) }}" class="btn purple btn-outline btn-sm">查看</a>                                 --}}
-                        <a href="{{ route('customer.edit', $customer->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
-                        <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
-                            if(confirm('確定要刪除嗎 ?')){
-                                event.preventDefault();
-                                document.getElementById('delete-form-{{$customer->id}}').submit();
-                            } else {
-                                event.preventDefault();
-                            }">刪除</a>
+                        @if (\App\Model\User::canAdmin('settings'))
+                            {{-- <a href="{{ route('customers.show', $customer->id) }}" class="btn purple btn-outline btn-sm">查看</a>                                 --}}
+                            <a href="{{ route('customer.edit', $customer->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
+                            <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
+                                if(confirm('確定要刪除嗎 ?')){
+                                    event.preventDefault();
+                                    document.getElementById('delete-form-{{$customer->id}}').submit();
+                                } else {
+                                    event.preventDefault();
+                                }">刪除</a>
 
-                        <form id="delete-form-{{$customer->id}}" action="{{ route('customer.destroy', $customer->id) }}" method="post" style="display:none">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
+                            <form id="delete-form-{{$customer->id}}" action="{{ route('customer.destroy', $customer->id) }}" method="post" style="display:none">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        @endif
                     </td>
                 </tr>
                 @endif

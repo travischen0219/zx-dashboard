@@ -10,11 +10,11 @@ class Sidebar
     {
         $data =[];
 
-        $data[] = [
-            'route' => 'staff.index',
-            'request' => 'settings/staff*',
-            'title' => '公司資料'
-        ];
+        // $data[] = [
+        //     'route' => 'staff.index',
+        //     'request' => 'settings/staff*',
+        //     'title' => '公司資料'
+        // ];
 
         $data[] = [
             'route' => 'supplier.index',

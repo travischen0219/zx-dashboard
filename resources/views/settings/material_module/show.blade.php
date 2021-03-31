@@ -25,8 +25,10 @@
 
 @section('content')
     @include('includes.messages')
-    <a href="{{ route('material_module.create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> 新增物料模組</a>
 
+    @if (\App\Model\User::canAdmin('settings'))
+        <a href="{{ route('material_module.create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> 新增物料模組</a>
+    @endif
     <table class="table table-striped table-bordered table-hover" id="data" >
         <thead>
             <tr class="bg-primary text-white">
@@ -58,24 +60,26 @@
                     <td>{{$material_module->memo}}</td>
 
                     <td align="center" id="functions_btn">
-                        {{-- <a href="{{ route('material_module.show', $material_module->id) }}" class="btn purple btn-outline btn-sm">查看</a> --}}
-                        <a href="{{ route('material_module.duplicate', $material_module->id) }}" class="btn blue btn-outline-success btn-sm">
-                            <i class="fas fa-copy"></i> 複製
-                        </a>
-                        <a href="{{ route('material_module.edit', $material_module->id) }}" class="btn blue btn-outline-primary btn-sm">
-                            <i class="fas fa-pen"></i> 修改
-                        </a>
-                        <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
-                            if(confirm('確定要刪除嗎 ?')){
-                                event.preventDefault();
-                                document.getElementById('delete-form-{{$material_module->id}}').submit();
-                            } else {
-                                event.preventDefault();
-                            }"><i class="fas fa-trash-alt"></i> 刪除</a>
-                        <form id="delete-form-{{$material_module->id}}" action="{{ route('material_module.destroy', $material_module->id) }}" method="post" style="display:none">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
+                        @if (\App\Model\User::canAdmin('settings'))
+                            {{-- <a href="{{ route('material_module.show', $material_module->id) }}" class="btn purple btn-outline btn-sm">查看</a> --}}
+                            <a href="{{ route('material_module.duplicate', $material_module->id) }}" class="btn blue btn-outline-success btn-sm">
+                                <i class="fas fa-copy"></i> 複製
+                            </a>
+                            <a href="{{ route('material_module.edit', $material_module->id) }}" class="btn blue btn-outline-primary btn-sm">
+                                <i class="fas fa-pen"></i> 修改
+                            </a>
+                            <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
+                                if(confirm('確定要刪除嗎 ?')){
+                                    event.preventDefault();
+                                    document.getElementById('delete-form-{{$material_module->id}}').submit();
+                                } else {
+                                    event.preventDefault();
+                                }"><i class="fas fa-trash-alt"></i> 刪除</a>
+                            <form id="delete-form-{{$material_module->id}}" action="{{ route('material_module.destroy', $material_module->id) }}" method="post" style="display:none">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        @endif
                     </td>
                 </tr>
 

@@ -13,7 +13,7 @@ class Access extends Model
     static public function groups()
     {
         $groups = [];
-        $groups['admin'] = '帳號權限';
+        $groups['admin'] = '公司資料';
         $groups['settings'] = '基本資料';
         $groups['purchase'] = '採購進貨';
         $groups['shopping'] = '銷貨出貨';

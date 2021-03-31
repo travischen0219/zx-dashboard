@@ -53,7 +53,9 @@
 
     @include('includes.messages')
     <div class="caption font-dark mb-3">
-        <a href="{{ route('supplier.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增供應商</a>
+        @if (\App\Model\User::canAdmin('settings'))
+            <a href="{{ route('supplier.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增供應商</a>
+        @endif
     </div>
 
     <table class="table table-striped table-bordered table-hover" id="data" >
@@ -98,25 +100,27 @@
                     <td>{{$supplier->tel}}</td>
                     <td>{{$supplier->memo}}</td>
                     <td align="center" id="functions_btn" nowrap>
-                        {{-- <a href="{{ route('supplier.show', $supplier->id) }}" class="btn purple btn-outline btn-sm">查看</a> --}}
-                        <a href="{{ route('supplier.edit', $supplier->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
-                        <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
-                            if(confirm('確定要刪除嗎 ?')){
-                                event.preventDefault();
-                                document.getElementById('delete-form-{{$supplier->id}}').submit();
-                            } else {
-                                event.preventDefault();
-                            }">刪除</a>
-                        <a href='
-                            @if($supplier->code != '' && $supplier->fullName != '')
-                                javascript: barcode("{{$supplier->fullName}}", "{{$supplier->code}}");' class="btn green btn-outline-success btn-sm">條碼</a>
-                            @else
-                                javascript:;' class="btn green btn-outline-success btn-sm" disabled>條碼</a>
-                            @endif
-                        <form id="delete-form-{{$supplier->id}}" action="{{ route('supplier.destroy', $supplier->id) }}" method="post" style="display:none">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
+                        @if (\App\Model\User::canAdmin('settings'))
+                            {{-- <a href="{{ route('supplier.show', $supplier->id) }}" class="btn purple btn-outline btn-sm">查看</a> --}}
+                            <a href="{{ route('supplier.edit', $supplier->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
+                            <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
+                                if(confirm('確定要刪除嗎 ?')){
+                                    event.preventDefault();
+                                    document.getElementById('delete-form-{{$supplier->id}}').submit();
+                                } else {
+                                    event.preventDefault();
+                                }">刪除</a>
+                            <a href='
+                                @if($supplier->code != '' && $supplier->fullName != '')
+                                    javascript: barcode("{{$supplier->fullName}}", "{{$supplier->code}}");' class="btn green btn-outline-success btn-sm">條碼</a>
+                                @else
+                                    javascript:;' class="btn green btn-outline-success btn-sm" disabled>條碼</a>
+                                @endif
+                            <form id="delete-form-{{$supplier->id}}" action="{{ route('supplier.destroy', $supplier->id) }}" method="post" style="display:none">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        @endif
                     </td>
                 </tr>
                 @endif

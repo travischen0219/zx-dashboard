@@ -9,9 +9,11 @@
 @section('content')
 
     @include('includes.messages')
-    <a href="{{ route('material_unit.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增單位</a>
-    <a href="javascript:;" id="save_recoder" class="btn btn-success"><i class="fa fa-check"></i> 儲存排序變更</a>
 
+    @if (\App\Model\User::canAdmin('settings'))
+        <a href="{{ route('material_unit.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增單位</a>
+        <a href="javascript:;" id="save_recoder" class="btn btn-success"><i class="fa fa-check"></i> 儲存排序變更</a>
+    @endif
     <form id="this_form" class="mb-5" style="width: 800px;">
         {{ csrf_field() }}
         <input type="hidden" name="count_units" value="{{count($material_units)}}">
@@ -31,16 +33,18 @@
                         <td>{{$unit->name}}</td>
 
                         <td align="center">
-                            <a href="{{ route('material_unit.edit', $unit->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
+                            @if (\App\Model\User::canAdmin('settings'))
+                                <a href="{{ route('material_unit.edit', $unit->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
 
-                            <a href="javascript:;" class="btn red btn-outline-danger btn-sm"
-                                onclick="if(confirm('確定要刪除嗎 ?')){
-                                            event.preventDefault();
-                                            document.getElementById('delete-form-{{$unit->id}}').submit();
-                                        } else {
-                                            event.preventDefault();
-                                        }"
-                                >刪除</a>
+                                <a href="javascript:;" class="btn red btn-outline-danger btn-sm"
+                                    onclick="if(confirm('確定要刪除嗎 ?')){
+                                                event.preventDefault();
+                                                document.getElementById('delete-form-{{$unit->id}}').submit();
+                                            } else {
+                                                event.preventDefault();
+                                            }"
+                                    >刪除</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

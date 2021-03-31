@@ -19,11 +19,11 @@
 
 
 @section('content')
-
-    <button type="button" onclick="location.href='{{ route('lot.create') }}';" class="btn btn-primary mb-3">
-        <i class="fas fa-plus"></i> 新增批號
-    </button>
-
+    @if (\App\Model\User::canAdmin('settings'))
+        <button type="button" onclick="location.href='{{ route('lot.create') }}';" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> 新增批號
+        </button>
+    @endif
     <table class="table table-striped table-bordered table-hover" id="data">
         <thead>
             <tr class="bg-success text-white">
@@ -53,17 +53,19 @@
                     <td>{!! $lot->is_finished == 1 ? '<span class="text-success">已完工</span>' : '進行中' !!}</td>
                     <td><div class="memo" title="{{ $lot->memo }}">{{ $lot->memo }}</div></td>
                     <td align="center">
-                        <button type="button" onclick="location.href='{{ route('lot.edit', $lot->id) }}';" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-pen"></i> 修改
-                        </button>
-                        <button type="button" onclick="deleteLot({{ $lot->id }});" class="btn btn-outline-danger btn-sm">
-                            <i class="fas fa-trash-alt"></i> 刪除
-                        </button>
+                        @if (\App\Model\User::canAdmin('settings'))
+                            <button type="button" onclick="location.href='{{ route('lot.edit', $lot->id) }}';" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-pen"></i> 修改
+                            </button>
+                            <button type="button" onclick="deleteLot({{ $lot->id }});" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> 刪除
+                            </button>
 
-                        <form id="delete-form-{{ $lot->id }}" action="{{ route('lot.destroy', $lot->id) }}" method="post">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
+                            <form id="delete-form-{{ $lot->id }}" action="{{ route('lot.destroy', $lot->id) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        @endif
                     </td>
                 </tr>
             @endforeach

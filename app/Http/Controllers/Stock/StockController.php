@@ -75,6 +75,10 @@ class StockController extends Controller
 
     public function store(Request $request)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         if (isset($request->material_id)) {
             for($i = 0; $i < count($request->material_id); $i++) {
                 $stock = new Stock;
@@ -158,6 +162,10 @@ class StockController extends Controller
 
     public function save($id, $request)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         // 新增或修改
         if ($id == 0) {
             $stock = new Stock;

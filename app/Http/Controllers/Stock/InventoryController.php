@@ -7,6 +7,7 @@ use App\Model\InventoryRecord;
 use App\Model\Material_category;
 use App\Model\Material;
 use App\Model\Stock;
+use App\Model\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InventoryRequest;
@@ -37,6 +38,10 @@ class InventoryController extends Controller
 
     public function create()
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         $data = [];
         $data['function'] = 'inventory';
         $data['title'] = '盤點 - 新增盤點';
@@ -51,6 +56,10 @@ class InventoryController extends Controller
 
     public function store(InventoryRequest $request)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         $this->save(0, $request);
@@ -84,6 +93,10 @@ class InventoryController extends Controller
      */
     public function update(InventoryRequest $request, Inventory $inventory)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         $validated = $request->validated();
 
         $this->save($inventory->id, $request);
@@ -98,6 +111,10 @@ class InventoryController extends Controller
      */
     public function destroy(Inventory $inventory)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         $inventoryRecords = InventoryRecord::where('inventory_id', $inventory->id);
         $inventoryRecords->update(['deleted_user' => session('admin_user')->id]);
         $inventoryRecords->delete();
@@ -111,6 +128,10 @@ class InventoryController extends Controller
 
     public function save($id, $request)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         // 新增或修改
         if ($id == 0) {
             $inventory = new Inventory;
@@ -215,6 +236,10 @@ class InventoryController extends Controller
 
     public function quickFix(Request $request)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         $id = $request->id ?? 0;
         if ($id == 0) abort(404);
 
@@ -248,6 +273,10 @@ class InventoryController extends Controller
 
     public function fix(Request $request)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         $id = $request->id ?? 0;
         if ($id == 0) abort(404);
 
@@ -269,6 +298,10 @@ class InventoryController extends Controller
 
     public function fixSave(Request $request)
     {
+        if (!User::canAdmin('stock')) {
+            return false;
+        }
+
         $id = $request->id ?? 0;
         $way = $request->way ?? 0;
         $amount = $request->amount ?? 0;

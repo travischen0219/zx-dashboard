@@ -6,6 +6,7 @@ use App\Model\Out;
 use App\Model\Lot;
 use App\Model\Customer;
 use App\Model\Pay;
+use App\Model\User;
 
 use App\Model\Material;
 use App\Model\Material_unit;
@@ -148,6 +149,10 @@ class OutController extends Controller
 
     public function destroy(Out $out, Request $request)
     {
+        if (!User::canAdmin('shopping')) {
+            return false;
+        }
+
         $out->deleted_user = session('admin_user')->id;
         $out->save();
         $out->delete();
@@ -167,6 +172,10 @@ class OutController extends Controller
 
     public function save($id, $request)
     {
+        if (!User::canAdmin('shopping')) {
+            return false;
+        }
+
         // 新增或修改
         if ($id == 0) {
             $out = new Out;

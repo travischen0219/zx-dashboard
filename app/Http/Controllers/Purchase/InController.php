@@ -161,6 +161,10 @@ class InController extends Controller
      */
     public function destroy(In $in, Request $request)
     {
+        if (!User::canAdmin('purchase')) {
+            return false;
+        }
+
         $in->deleted_user = session('admin_user')->id;
         $in->save();
         $in->delete();
@@ -170,6 +174,10 @@ class InController extends Controller
 
     public function save($id, $request)
     {
+        if (!User::canAdmin('purchase')) {
+            return false;
+        }
+
         // 新增或修改
         if ($id == 0) {
             $in = new In;

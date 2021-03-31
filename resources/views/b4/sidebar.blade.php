@@ -17,8 +17,17 @@
             </a>
         </li>
 
+        @if (\App\Model\User::canView('admin'))
+            <li class="{{ Request::is('settings/staff*') || Request::is('settings/access*') ? 'active' : '' }}">
+                <a href="{{ route('staff.index') }}">
+                    <i class="fas fa-key"></i>
+                    <span>公司資料</span>
+                </a>
+            </li>
+        @endif
+
         @if (\App\Model\User::canView('settings'))
-            <li class="{{ Request::is('settings*') ? 'active' : '' }}">
+            <li class="{{ Request::is('settings*') && !Request::is('settings/staff*') && !Request::is('settings/access*') ? 'active' : '' }}">
                 <a href="#">
                     <i class="fas fa-cog"></i>
                     <span class="extend">基本資料</span>
@@ -96,6 +105,7 @@
                 </ul>
             </li>
         @endif
+
     </ul>
 
     <div id="sidebar-account">

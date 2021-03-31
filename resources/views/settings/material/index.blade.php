@@ -58,8 +58,10 @@
 
     @include('includes.messages')
     <div class="mb-3">
-        <a href="{{ route('material.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增物料</a>
-        {{-- <span class="btn btn-primary" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆PDF列印</span> --}}
+        @if (\App\Model\User::canAdmin('settings'))
+            <a href="{{ route('material.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增物料</a>
+            {{-- <span class="btn btn-primary" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆PDF列印</span> --}}
+        @endif
     </div>
 
     <table class="table table-striped table-bordered table-hover" id="data">
@@ -116,14 +118,16 @@
                         {{-- <a href="javascript: show_stock_records('{{ $material->id }}');" class="btn blue btn-outline-primary btn-sm float-right">庫存紀錄</a> --}}
                     </td>
                     <td align="center" id="functions_btn">
-                        <a href="{{ route('material.edit', $material->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
-                        <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
-                            if(confirm('確定要刪除嗎 ?')){
-                                event.preventDefault();
-                                document.getElementById('delete-form-{{$material->id}}').submit();
-                            } else {
-                                event.preventDefault();
-                            }">刪除</a>
+                        @if (\App\Model\User::canAdmin('settings'))
+                            <a href="{{ route('material.edit', $material->id) }}" class="btn blue btn-outline-primary btn-sm">修改</a>
+                            <a href="javascript:;" class="btn red btn-outline-danger btn-sm" onclick="
+                                if(confirm('確定要刪除嗎 ?')){
+                                    event.preventDefault();
+                                    document.getElementById('delete-form-{{$material->id}}').submit();
+                                } else {
+                                    event.preventDefault();
+                                }">刪除</a>
+                        @endif
                         <a href='
                             @if($material->fullCode != '' && $material->fullName != '')
                                 javascript: barcode("{{$material->fullName}}", "{{$material->fullCode}}");' class="btn green btn-outline-success btn-sm">條碼</a>
