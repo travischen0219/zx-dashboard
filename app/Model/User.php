@@ -33,6 +33,10 @@ class User extends Authenticatable
     static public function canView($group)
     {
         $user = User::find(session('admin_user')->id);
+
+        if (!$user) {
+            return false;
+        }
         $access_id = $user->access_id;
         $access_detail = Access_detail
             ::where('access_id', $access_id)
@@ -46,6 +50,10 @@ class User extends Authenticatable
     static public function canAdmin($group)
     {
         $user = User::find(session('admin_user')->id);
+        if (!$user) {
+            return false;
+        }
+
         $access_id = $user->access_id;
         $access_detail = Access_detail
             ::where('access_id', $access_id)
