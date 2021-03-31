@@ -14,7 +14,7 @@ class StaffController extends Controller
     // 員工列表
     public function index()
     {
-        $users = User::where('staff_code', '<>', 'ADMIN')->get();
+        $users = User::all();
         $data = [];
         $data['users'] = $users;
 
@@ -72,6 +72,7 @@ class StaffController extends Controller
         $user->fullname = $request->fullname;
         $user->access_id = $request->access_id;
         $user->tel = $request->tel;
+        $user->email = $request->email;
         $user->mobile = $request->mobile;
         $user->address = $request->address;
 

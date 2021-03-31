@@ -113,7 +113,7 @@
 
 <input type="hidden" name="referrer" value="{{ URL::previous() }}">
 
-@if ($in->status == 40)
+@if ($in->status == 40 || !\App\Model\User::canAdmin('purchase'))
     <material-view
         :materials="materials"
         :units="units"
@@ -131,9 +131,11 @@
     </material-table>
 @endif
 
-<pay-table
-    :pays="pays"
-    :invoice_types="invoice_types"
-    :total_cost="total_cost"
-    ref="payTable">
-</pay-table>
+@if (\App\Model\User::canAdmin('purchase'))
+    <pay-table
+        :pays="pays"
+        :invoice_types="invoice_types"
+        :total_cost="total_cost"
+        ref="payTable">
+    </pay-table>
+@endif

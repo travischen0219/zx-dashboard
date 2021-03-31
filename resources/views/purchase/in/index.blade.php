@@ -51,7 +51,10 @@
 
     @include('includes.messages')
 
-    <a href="{{ route('in.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增採購</a>
+    @if (\App\Model\User::canAdmin('purchase'))
+        <a href="{{ route('in.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> 新增採購</a>
+    @endif
+
     <span class="btn btn-primary mr-2" onclick="pdfsubmit();"><i class="fa fa-print"></i> 多筆列印</span>
     <label for="checkAll">全選</label> <input type="checkbox" class="checkAll" id="checkAll" value="1">
 
@@ -117,11 +120,11 @@
                     <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>
                     <td align="center">
                         {{-- @if (in->status == 40) --}}
-                        @if (false)
-                            <button type="button" onclick="listStockRecords({{ $in->id }})" class="btn btn-outline-success btn-sm">
-                                <i class="fas fa-eye"></i> 查看
+                        @if (\App\Model\User::canView('purchase'))
+                            <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-success btn-sm p-1">
+                                查看
                             </button>
-                        @else
+                            @elseif (\App\Model\User::canAdmin('purchase'))
                             <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-pen"></i> 修改
                             </button>

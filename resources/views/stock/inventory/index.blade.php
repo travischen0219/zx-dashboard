@@ -25,9 +25,11 @@
 
     @include('includes.messages')
 
-    <button type="button" onclick="location.href='{{ route('inventory.create') }}';" class="btn btn-primary mb-3">
-        <i class="fas fa-plus"></i> 新增盤點
-    </button>
+    @if (\App\Model\User::canAdmin('stock'))
+        <button type="button" onclick="location.href='{{ route('inventory.create') }}';" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> 新增盤點
+        </button>
+    @endif
 
     <table class="table table-striped table-bordered table-hover" id="data">
         <thead>
@@ -75,28 +77,30 @@
                         </div>
                     </td>
                     <td align="center" class="align-middle">
-                        @if ($inventory->status == 1)
-                            <button type="button" onclick="location.href='/stock/inventory/{{ $inventory->id }}/check'" class="btn btn-outline-info btn-sm">
-                                <i class="fas fa-list-ol"></i> 盤點
-                            </button>
+                        @if (\App\Model\User::canAdmin('stock'))
+                            @if ($inventory->status == 1)
+                                <button type="button" onclick="location.href='/stock/inventory/{{ $inventory->id }}/check'" class="btn btn-outline-info btn-sm">
+                                    <i class="fas fa-list-ol"></i> 盤點
+                                </button>
 
-                            <button type="button" onclick="location.href='{{ route('inventory.edit', $inventory->id) }}';" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-pen"></i> 修改
-                            </button>
+                                <button type="button" onclick="location.href='{{ route('inventory.edit', $inventory->id) }}';" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-pen"></i> 修改
+                                </button>
 
-                            <button type="button" onclick="deleteLot({{ $inventory->id }});" class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> 刪除
-                            </button>
-                        @else
-                            <button type="button" onclick="location.href='/stock/inventory/{{ $inventory->id }}/view'" class="btn btn-outline-success btn-sm">
-                                <i class="fas fa-eye"></i> 查看及誤差處理
-                            </button>
+                                <button type="button" onclick="deleteLot({{ $inventory->id }});" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> 刪除
+                                </button>
+                            @else
+                                <button type="button" onclick="location.href='/stock/inventory/{{ $inventory->id }}/view'" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-eye"></i> 查看及誤差處理
+                                </button>
+                            @endif
+
+                            <form id="delete-form-{{ $inventory->id }}" action="{{ route('inventory.destroy', $inventory->id) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
                         @endif
-
-                        <form id="delete-form-{{ $inventory->id }}" action="{{ route('inventory.destroy', $inventory->id) }}" method="post">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
                     </td>
                 </tr>
             @endforeach

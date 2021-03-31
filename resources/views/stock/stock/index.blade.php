@@ -49,8 +49,10 @@
 
     @include('includes.messages')
 
-    <a href="{{ route('stock.create', ['way' => 1]) }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增入庫</a>
-    <a href="{{ route('stock.create', ['way' => 2]) }}" class="btn btn-danger ml-1"><i class="fa fa-plus"></i> 新增出庫</a>
+    @if (\App\Model\User::canAdmin('stock'))
+        <a href="{{ route('stock.create', ['way' => 1]) }}" class="btn btn-success"><i class="fa fa-plus"></i> 新增入庫</a>
+        <a href="{{ route('stock.create', ['way' => 2]) }}" class="btn btn-danger ml-1"><i class="fa fa-plus"></i> 新增出庫</a>
+    @endif
 
     <br><br>
 

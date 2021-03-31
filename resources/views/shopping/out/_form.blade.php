@@ -124,7 +124,7 @@
 <input type="hidden" name="total_cost" v-model="total_cost">
 <input type="hidden" name="total_price" v-model="total_price">
 
-@if ($out->status == 40 || $out->status == 60)
+@if ($out->status == 40 || $out->status == 60 || !\App\Model\User::canAdmin('shopping'))
     <material-module-view
         :material_modules="material_modules"
         :total_cost.sync="total_cost"
@@ -141,12 +141,14 @@
     </material-module-table>
 @endif
 
-<pay-table
-    :way="2"
-    :title="'收'"
-    :pays="pays"
-    :tax="tax"
-    :invoice_types="invoice_types"
-    :total_cost="total_price"
-    ref="payTable">
-</pay-table>
+@if (\App\Model\User::canAdmin('shopping'))
+    <pay-table
+        :way="2"
+        :title="'收'"
+        :pays="pays"
+        :tax="tax"
+        :invoice_types="invoice_types"
+        :total_cost="total_price"
+        ref="payTable">
+    </pay-table>
+@endif

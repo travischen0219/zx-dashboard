@@ -16,74 +16,86 @@
                 <span class="extend">首頁</span>
             </a>
         </li>
-        <li class="{{ Request::is('settings*') ? 'active' : '' }}">
-            <a href="#">
-                <i class="fas fa-cog"></i>
-                <span class="extend">基本資料</span>
-            </a>
 
-            <ul>
-                @foreach (App\Model\Sidebar::settings() as $item)
-                    <li>
-                        <a href="{{ route($item['route']) }}" class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                            {!! $item['title'] !!}
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </li>
-        <li class="{{ Request::is('purchase*') ? 'active' : '' }}">
-            <a href="#">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="extend">採購進貨</span>
-            </a>
+        @if (\App\Model\User::canView('settings'))
+            <li class="{{ Request::is('settings*') ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fas fa-cog"></i>
+                    <span class="extend">基本資料</span>
+                </a>
 
-            <ul>
-                @foreach (App\Model\Sidebar::purchases() as $item)
-                    <li>
-                        <a href="{{ route($item['route']) }}"
-                            target="{{ $item['target'] ?? '_self' }}"
-                            class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                            {!! $item['title'] !!}
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </li>
-        <li class="{{ Request::is('shopping*') ? 'active' : '' }}">
-            <a href="#">
-                <i class="fas fa-dolly-flatbed"></i>
-                <span class="extend">銷貨出貨</span>
-            </a>
-            <ul>
-                @foreach (App\Model\Sidebar::shoppings() as $item)
-                    <li>
-                        <a href="{{ route($item['route']) }}"
-                            target="{{ $item['target'] ?? '_self' }}"
-                            class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                            {!! $item['title'] !!}
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </li>
-        <li class="{{ Request::is('stock*') ? 'active' : '' }}">
-            <a href="#">
-                <i class="fas fa-cube"></i>
-                <span class="extend">庫存盤點</span>
-            </a>
-            <ul>
-                @foreach (App\Model\Sidebar::stocks() as $item)
-                    <li>
-                        <a href="{{ route($item['route']) }}"
-                            target="{{ $item['target'] ?? '_self' }}"
-                            class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                            {!! $item['title'] !!}
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </li>
+                <ul>
+                    @foreach (App\Model\Sidebar::settings() as $item)
+                        <li>
+                            <a href="{{ route($item['route']) }}" class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
+                                {!! $item['title'] !!}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+        @endif
+
+        @if (\App\Model\User::canView('purchase'))
+            <li class="{{ Request::is('purchase*') ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="extend">採購進貨</span>
+                </a>
+
+                <ul>
+                    @foreach (App\Model\Sidebar::purchases() as $item)
+                        <li>
+                            <a href="{{ route($item['route']) }}"
+                                target="{{ $item['target'] ?? '_self' }}"
+                                class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
+                                {!! $item['title'] !!}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+        @endif
+
+        @if (\App\Model\User::canView('shopping'))
+            <li class="{{ Request::is('shopping*') ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fas fa-dolly-flatbed"></i>
+                    <span class="extend">銷貨出貨</span>
+                </a>
+                <ul>
+                    @foreach (App\Model\Sidebar::shoppings() as $item)
+                        <li>
+                            <a href="{{ route($item['route']) }}"
+                                target="{{ $item['target'] ?? '_self' }}"
+                                class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
+                                {!! $item['title'] !!}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+        @endif
+
+        @if (\App\Model\User::canView('stock'))
+            <li class="{{ Request::is('stock*') ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fas fa-cube"></i>
+                    <span class="extend">庫存盤點</span>
+                </a>
+                <ul>
+                    @foreach (App\Model\Sidebar::stocks() as $item)
+                        <li>
+                            <a href="{{ route($item['route']) }}"
+                                target="{{ $item['target'] ?? '_self' }}"
+                                class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
+                                {!! $item['title'] !!}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+        @endif
     </ul>
 
     <div id="sidebar-account">

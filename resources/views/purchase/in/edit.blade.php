@@ -28,9 +28,11 @@
         @include('purchase.in._form')
 
         <div class="form-group mt-3 text-center">
-            <button type="submit" class="btn btn-primary px-5">
-                <i class="fas fa-check mr-1"></i> 修改採購
-            </button>
+            @if (\App\Model\User::canAdmin('purchase'))
+                <button type="submit" class="btn btn-primary px-5">
+                    <i class="fas fa-check mr-1"></i> 修改採購
+                </button>
+            @endif
             <button type="button" onclick="location.href='{{ route('in.index') }}'" class="btn btn-link ml-3">取消</button>
         </div>
     {!! Form::close() !!}

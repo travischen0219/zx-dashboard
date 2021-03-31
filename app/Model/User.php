@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Model\Access;
+use App\Model\Access_detail;
 use App\Model\Department;
 use App\Model\Professional_title;
 use Illuminate\Notifications\Notifiable;
@@ -28,6 +29,33 @@ class User extends Authenticatable
     {
         return $this->hasOne(Professional_title::class, 'id', 'professional_title_id');
     }
+
+    static public function canView($group)
+    {
+        $user = User::find(session('admin_user')->id);
+        $access_id = $user->access_id;
+        $access_detail = Access_detail
+            ::where('access_id', $access_id)
+            ->where('group', $group)
+            ->first();
+        $mode = $access_detail ? $access_detail->mode : 'none';
+
+        return ($mode == 'view' || $mode == 'admin');
+    }
+
+    static public function canAdmin($group)
+    {
+        $user = User::find(session('admin_user')->id);
+        $access_id = $user->access_id;
+        $access_detail = Access_detail
+            ::where('access_id', $access_id)
+            ->where('group', $group)
+            ->first();
+        $mode = $access_detail ? $access_detail->mode : 'none';
+
+        return ($mode == 'admin');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
