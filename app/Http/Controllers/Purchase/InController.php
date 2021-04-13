@@ -7,6 +7,7 @@ use App\Model\Lot;
 use App\Model\Supplier;
 use App\Model\Manufacturer;
 use App\Model\Pay;
+use App\Model\User;
 
 use App\Model\Material;
 use App\Model\Material_unit;
