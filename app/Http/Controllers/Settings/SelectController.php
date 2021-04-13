@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Model\User;
 use App\Model\Stock;
 use App\Model\Material;
 use App\Model\Warehouse;
@@ -19,18 +20,18 @@ class SelectController extends Controller
         if(Warehouse_category::where('delete_flag','0')->count() > 0){
             $cate_first = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->first();
             $search_code = $cate_first->id;
-            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();  
+            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
             $warehouses = Warehouse::where('delete_flag','0')->where('category',$cate_first->id)->orderBy('code','ASC')->get();
             return view('settings.selectWarehouse',compact('warehouses','search_code','cates'));
         } else {
-            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');                        
+            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');
         }
     }
 
     public function search_warehouse(Request $request)
     {
-        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();       
-        
+        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
+
         $search_like = $request->search_codeOrName;
         $search_code = $request->search_category;
         $warehouses = Warehouse::where(function($query) use ($search_code,$search_like) {
@@ -58,18 +59,18 @@ class SelectController extends Controller
 
     // 入庫的倉儲選擇
     public function selectWarehouse_stock($id){
-        
+
         $material = Material::find($id);
         $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$id)->get();
 
         if(Warehouse_category::where('delete_flag','0')->count() > 0){
             $cate_first = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->first();
             $search_code = $cate_first->id;
-            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();  
+            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
             $warehouses = Warehouse::where('delete_flag','0')->where('category',$cate_first->id)->orderBy('code','ASC')->get();
             return view('purchase.stock.selectWarehouse_stock',compact('warehouses','search_code','cates','material_warehouses','id'));
         } else {
-            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');                        
+            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');
         }
     }
     // 入庫的倉儲選擇搜尋
@@ -79,7 +80,7 @@ class SelectController extends Controller
         $material = Material::find($id);
         $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$id)->get();
 
-        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();       
+        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
         $search_like = $request->search_codeOrName;
         $search_code = $request->search_category;
         $warehouses = Warehouse::where(function($query) use ($search_code,$search_like) {
@@ -103,7 +104,7 @@ class SelectController extends Controller
         $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$id)->get();
         $array = [];
         foreach($material_warehouses as $material_warehouse){
-            $array[] = $material_warehouse->warehouse_id;           
+            $array[] = $material_warehouse->warehouse_id;
         }
         $warehouses = Warehouse::where('delete_flag','0')->whereIn('id',$array)->orderBy('code','ASC')->get();
         return view('stock.adjustment.selectWarehouse_byMaterial',compact('warehouses','material_warehouses'));
@@ -111,18 +112,18 @@ class SelectController extends Controller
 
     // 調撥的新倉儲選擇
     public function selectNewWarehouse_stock($id){
-        
+
         $material = Material::find($id);
         $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$id)->get();
 
         if(Warehouse_category::where('delete_flag','0')->count() > 0){
             $cate_first = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->first();
             $search_code = $cate_first->id;
-            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();  
+            $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
             $warehouses = Warehouse::where('delete_flag','0')->where('category',$cate_first->id)->orderBy('code','ASC')->get();
             return view('stock.transfer_inventory.select_new_warehouse',compact('warehouses','search_code','cates','material_warehouses','id'));
         } else {
-            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');                        
+            return redirect()->route('warehouse_category.index')->with('error', '尚無倉儲分類資料，請先建立');
         }
     }
     // 調撥的新倉儲選擇搜尋
@@ -132,7 +133,7 @@ class SelectController extends Controller
         $material = Material::find($id);
         $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$id)->get();
 
-        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();       
+        $cates = Warehouse_category::where('delete_flag','0')->where('status','1')->orderBy('orderby','ASC')->get();
         $search_like = $request->search_codeOrName;
         $search_code = $request->search_category;
         $warehouses = Warehouse::where(function($query) use ($search_code,$search_like) {
@@ -149,7 +150,7 @@ class SelectController extends Controller
                                 ->get();
         return view('stock.transfer_inventory.select_new_warehouse',compact('warehouses','search_code','cates','material_warehouses','id'));
     }
-    
+
 
     // 採購轉入庫 的 物料選擇
     public function selectMaterial_byId($id){
@@ -163,12 +164,12 @@ class SelectController extends Controller
         // $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$id)->get();
         // $array = [];
         // foreach($material_warehouses as $material_warehouse){
-        //     $array[] = $material_warehouse->warehouse_id;           
+        //     $array[] = $material_warehouse->warehouse_id;
         // }
         $selectMaterials = Material::where('delete_flag','0')->whereIn('id',$array)->orderBy('fullCode','ASC')->get();
         // $selectMaterials = Material::where('delete_flag','0')->orderBy('fullCode','ASC')->get();
         return view('purchase.selectMaterial_byId',compact('selectMaterials'));
     }
-    
+
 
 }

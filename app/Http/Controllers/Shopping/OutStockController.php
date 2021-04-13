@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shopping;
 
+use App\Model\User;
 use App\Model\Stock;
 use App\Model\Material;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class OutStockController extends Controller
      */
     public function index()
     {
-        $stocks = Stock::where('delete_flag','0')->where('stock_option','11')->orderBy('stock_date','desc')->orderBy('updated_at','desc')->orderBy('id','desc')->get();        
+        $stocks = Stock::where('delete_flag','0')->where('stock_option','11')->orderBy('stock_date','desc')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
         return view('shopping.out_stock.show',compact('stocks'));
     }
 
@@ -29,7 +30,7 @@ class OutStockController extends Controller
      */
     public function create()
     {
-        return view('shopping.out_stock.create');        
+        return view('shopping.out_stock.create');
     }
 
     /**
@@ -41,13 +42,13 @@ class OutStockController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'lot_number' => 'required',                                  
+            'lot_number' => 'required',
             'customer' => 'required',
             'outDate' => 'date_format:"Y-m-d"|required',
 
         ];
         $messages = [
-            'lot_number.required' => '批號 必填',                                 
+            'lot_number.required' => '批號 必填',
             'customer.required' => '尚未選擇 客戶',
             'outDate.required' => '出庫日期 必填',
             'outDate.date_format' => '出庫日期格式錯誤',
@@ -64,7 +65,7 @@ class OutStockController extends Controller
                 return redirect()->back()->with('error','單價不可為負數');
             }
         }
-        
+
         for($i=0; $i < $total_materials; $i++){
             if($request->materialAmount[$i] < 0){
                 return redirect()->back()->with('error','出庫數量不可為負數');
@@ -75,14 +76,14 @@ class OutStockController extends Controller
         }
 
         $material = [];
-        $warehouse = [];        
+        $warehouse = [];
         $materialAmount = [];
         $materialPrice = [];
         for($i=0; $i < $total_materials; $i++){
             if($request->material[$i]){
                 $material[] = $request->material[$i];
                 $materialAmount[] = $request->materialAmount[$i];
-                $warehouse[] = $request->materialWarehouse[$i];                
+                $warehouse[] = $request->materialWarehouse[$i];
                 $materialPrice[] = $request->materialPrice[$i];
             }
         }
@@ -104,16 +105,16 @@ class OutStockController extends Controller
                     $stock->lot_number = $request->lot_number;
                     $stock->stock_option = 11;
                     $stock->status = 0;
-                    $stock->stock_no = $material_stock->stock_no + 1;                                                                      
+                    $stock->stock_no = $material_stock->stock_no + 1;
                     $stock->material = $material[$i];
                     $stock->warehouse = $warehouse[$i];
                     $stock->customer = $request->customer;
-                    $stock->total_start_quantity = $material_stock->stock;                                    
+                    $stock->total_start_quantity = $material_stock->stock;
                     $stock->start_quantity = $warehouse_start_quantity;
                     $stock->quantity = $quantity;
                     $stock->calculate_quantity = $str;
                     $stock->stock_date = $request->outDate;
-                    $stock->memo = $request->memo;                    
+                    $stock->memo = $request->memo;
                     $stock->created_user = session('admin_user')->id;
                     $stock->delete_flag = 0;
                     $stock->save();
@@ -166,7 +167,7 @@ class OutStockController extends Controller
         // foreach($stock_materials as $stock_material){
         //     $material_id = $stock_material->material;
         //     $material = Material::where('id',$material_id)->first();
-            
+
         //     if($material->warehouse > 0){
         //         $warehouse = $material->warehouse_name->code;
         //         $warehouse_id = $material->warehouse;
@@ -191,7 +192,7 @@ class OutStockController extends Controller
         //         </td>
         //         <td>
         //             <span id="materialStock_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$warehouse_stock.'</span>
-        //             <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock" value="'.$warehouse_stock.'">                
+        //             <input type="hidden" name="materialStock[]" id="materialStock'.$materialCount.'" class="materialStock" value="'.$warehouse_stock.'">
         //         </td>
         //         <td>
         //             <input type="text" name="materialAmount[]" id="materialAmount'.$materialCount.'" class="materialAmount" placeholder="0" onkeyup="total();" onchange="total();" style="width:100px; height: 30px; vertical-align: middle;" value="'.$stock->quantity.'">
@@ -202,11 +203,11 @@ class OutStockController extends Controller
         //         </td>
         //         <td>
         //             <span id="materialUnit_show'.$materialCount.'" style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
-        //             <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'"> 
+        //             <input type="hidden" name="materialUnit[]" id="materialUnit'.$materialCount.'" class="materialUnit" value="'.$material->unit.'">
         //         </td>
-        //         <input type="hidden" name="stock_id[]" id="stock_id'.$materialCount.'" class="stock_id" value="'.$stock_material->id.'">              
+        //         <input type="hidden" name="stock_id[]" id="stock_id'.$materialCount.'" class="stock_id" value="'.$stock_material->id.'">
         //     </tr>';
-        //     $materialCount++;               
+        //     $materialCount++;
         // }
         // return view('shopping.out_stock.edit', compact('stock','data','materialCount'));
     }
@@ -221,13 +222,13 @@ class OutStockController extends Controller
     public function update(Request $request, $id)
     {
         // $rules = [
-        //     // 'lot_number' => 'required',                                  
+        //     // 'lot_number' => 'required',
         //     // 'customer' => 'required',
         //     'outDate' => 'date_format:"Y-m-d"|required',
 
         // ];
         // $messages = [
-        //     // 'lot_number.required' => '批號 必填',                                 
+        //     // 'lot_number.required' => '批號 必填',
         //     // 'customer.required' => '尚未選擇 客戶',
         //     'outDate.required' => '出庫日期 必填',
         //     'outDate.date_format' => '出庫日期格式錯誤',
@@ -240,29 +241,29 @@ class OutStockController extends Controller
         // //     if($request->materialAmount[$i] < 0){
         // //         return redirect()->back()->with('error','出庫數量不可為負數');
         // //     }
-          
+
         // // }
-        
+
         // // for($i=0; $i < $total_materials; $i++){
         // //     if($request->materialAmount[$i] < 0){
         // //         return redirect()->back()->with('error','出庫數量不可為負數');
         // //     }
-           
+
         // // }
 
         // $material = [];
-        // $warehouse = [];        
+        // $warehouse = [];
         // $materialAmount = [];
         // $stock_id = [];
         // for($i=0; $i < $total_materials; $i++){
         //     if($request->material[$i]){
         //         $material[] = $request->material[$i];
         //         $materialAmount[] = $request->materialAmount[$i];
-        //         $warehouse[] = $request->materialWarehouse[$i];                
+        //         $warehouse[] = $request->materialWarehouse[$i];
         //         $stock_id[] = $request->stock_id[$i];
         //     }
         // }
-        
+
 
         // if(count($material) > 0){
 
@@ -282,12 +283,12 @@ class OutStockController extends Controller
         //                 $cal_str = $warehouse_start_quantity.' '.$unit.' -> '.number_format($end,2,'.','').' '.$unit;
         //                 $stock->status = 0;
         //                 $stock->warehouse = $warehouse[$i];
-        //                 $stock->total_start_quantity = $material_stock->stock;                                    
+        //                 $stock->total_start_quantity = $material_stock->stock;
         //                 $stock->start_quantity = $warehouse_start_quantity;
         //                 $stock->quantity = $qua;
         //                 $stock->calculate_quantity = $cal_str;
         //                 $stock->stock_date = $request->outDate;
-        //                 $stock->memo = $request->memo;                    
+        //                 $stock->memo = $request->memo;
         //                 $stock->updated_user = session('admin_user')->id;
         //                 $stock->save();
 
@@ -315,24 +316,24 @@ class OutStockController extends Controller
         //                 $stock->material = $material[$i];
         //                 $stock->warehouse = $warehouse[$i];
         //                 $stock->customer = $original_stock->customer;
-        //                 $stock->total_start_quantity = $material_stock->stock;                                    
+        //                 $stock->total_start_quantity = $material_stock->stock;
         //                 $stock->start_quantity = $warehouse_start_quantity;
         //                 $stock->quantity = $qua;
         //                 $stock->calculate_quantity = $cal_str;
         //                 $stock->stock_date = $request->outDate;
-        //                 $stock->memo = $request->memo;                    
+        //                 $stock->memo = $request->memo;
         //                 $stock->created_user = session('admin_user')->id;
         //                 $stock->updated_at = date('Y-m-d H:i:s');
         //                 $stock->delete_flag = 0;
         //                 $stock->save();
-    
+
         //                 $material_warehouse->stock = $end;
         //                 $material_warehouse->save();
-    
+
         //                 $material_stock->stock = $material_stock->stock - $qua;
         //                 $material_stock->save();
         //             }
-                    
+
 
 
         //         }

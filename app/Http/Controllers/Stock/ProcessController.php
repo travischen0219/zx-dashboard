@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\In;
 use App\Model\Material;
+use App\Model\User;
 
 class ProcessController extends Controller
 {

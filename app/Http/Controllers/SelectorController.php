@@ -12,6 +12,7 @@ use App\Model\Lot;
 use App\Model\Supplier;
 use App\Model\Manufacturer;
 use App\Model\Stock;
+use App\Model\User;
 
 class SelectorController extends Controller
 {

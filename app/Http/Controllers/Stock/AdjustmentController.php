@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Model\Material_warehouse;
 use App\Model\Warehouse;
 use App\Http\Controllers\Controller;
+use App\Model\User;
 
 class AdjustmentController extends Controller
 {

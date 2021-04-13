@@ -11,6 +11,7 @@ use App\Model\Process_function;
 use App\Model\Material_warehouse;
 use App\Http\Controllers\Controller;
 use App\Model\Semi_finished_schedule;
+use App\Model\User;
 
 class Processing_listController extends Controller
 {
@@ -59,13 +60,13 @@ class Processing_listController extends Controller
         $total_materials = count($materials['material']);
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-        
+
             $material = Material::where('id',$materials['material'][$i])->first();
             // $material_warehouse = Material_warehouse::where('delete_flag','0')->where('material_id',$materials['material'][$i])->where('warehouse_id',$materials['warehouse'][$i])->first();
             // $warehouse_id = $materials['warehouse'][$i];
             $warehouse = Warehouse::find($materials['warehouse'][$i]);
             $warehouse_name = $warehouse->code;
-            
+
             $data .= '<tr>
 
                 <td>
@@ -75,26 +76,26 @@ class Processing_listController extends Controller
                     <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
                 </td>
                 <td>
-                    <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$warehouse_name.'</span>                    
+                    <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$warehouse_name.'</span>
                 </td>
-            
+
                 <td>
-                    <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$materials['materialAmount'][$i].'</span>                    
+                    <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$materials['materialAmount'][$i].'</span>
                 </td>
-                
+
             </tr>';
-            
+
         }
 
         $processing_lists = Processing_list::where('delete_flag','0')->where('semi_finished_schedule_id',$id)->orderBy('orderby','ASC')->get();
-        $process_functions = Process_function::orderBy('orderby', 'ASC')->get();        
-        $total_processings = count($processing_lists);        
+        $process_functions = Process_function::orderBy('orderby', 'ASC')->get();
+        $total_processings = count($processing_lists);
         $data_process = '';
         $materialCount = 0;
-        
-            
-            
-        
+
+
+
+
         foreach($processing_lists as $processing_list){
             $manufacturer = Manufacturer::where('id',$processing_list->manufacturer_id)->first();
 
@@ -146,7 +147,7 @@ class Processing_listController extends Controller
                 <td>
                     <input type="text" name="processMemo[]" id="processMemo'.$materialCount.'" class="processMemo" placeholder="" style="width:100%; height: 30px; vertical-align: middle;" value="'.$processing_list->memo.'" '.$readonly.'>
                 </td>
-                
+
             </tr>';
             $materialCount++;
         }
@@ -174,13 +175,13 @@ class Processing_listController extends Controller
         $total_materials = count($materials['material']);
         $data = '';
         for($i = 0; $i < $total_materials; $i++){
-        
+
             $material = Material::where('id',$materials['material'][$i])->first();
             // $material_warehouse = Material_warehouse::where('delete_flag','0')->where('material_id',$materials['material'][$i])->where('warehouse_id',$materials['warehouse'][$i])->first();
             // $warehouse_id = $materials['warehouse'][$i];
             $warehouse = Warehouse::find($materials['warehouse'][$i]);
             $warehouse_name = $warehouse->code;
-            
+
             $data .= '<tr>
 
                 <td>
@@ -190,26 +191,26 @@ class Processing_listController extends Controller
                     <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$material->material_unit_name->name.'</span>
                 </td>
                 <td>
-                    <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$warehouse_name.'</span>                    
+                    <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$warehouse_name.'</span>
                 </td>
-            
+
                 <td>
-                    <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$materials['materialAmount'][$i].'</span>                    
+                    <span style="width: 100px; line-height: 30px; vertical-align: middle;">'.$materials['materialAmount'][$i].'</span>
                 </td>
-                
+
             </tr>';
-            
+
         }
 
         $processing_lists = Processing_list::where('delete_flag','0')->where('semi_finished_schedule_id',$id)->orderBy('orderby','ASC')->get();
-        $process_functions = Process_function::orderBy('orderby', 'ASC')->get();        
-        $total_processings = count($processing_lists);        
+        $process_functions = Process_function::orderBy('orderby', 'ASC')->get();
+        $total_processings = count($processing_lists);
         $data_process = '';
         $materialCount = 0;
-        
-            
-            
-        
+
+
+
+
         foreach($processing_lists as $processing_list){
             $manufacturer = Manufacturer::where('id',$processing_list->manufacturer_id)->first();
             if($processing_list->process_function_id > 0){
@@ -290,7 +291,7 @@ class Processing_listController extends Controller
                 <td>
                     <input type="text" name="processMemo[]" id="processMemo'.$materialCount.'" class="processMemo" placeholder="" style="width:100%; height: 30px; vertical-align: middle;" value="'.$processing_list->memo.'" '.$readonly.'>
                 </td>
-                
+
             </tr>';
             $materialCount++;
         }
@@ -342,17 +343,17 @@ class Processing_listController extends Controller
         $final_orderby = count($old_processings);
 
         $processings = ['manufacturer'=>$manufacturer, 'processFunction'=>$processFunction,'startDate'=>$startDate,'endDate'=>$endDate,'processStatus'=>$processStatus,'processMemo'=>$processMemo];
-        
+
         $new_processing_count = count($manufacturer);
-        
+
         $new_loop_start = $final_orderby;
-        
+
         if($final_orderby > 0){
 
-            
+
             foreach($old_processings as $old_processing){
                 $j = (int)($old_processing->orderby - 1);
-                
+
                 $old_processing->process_function_id = $processings['processFunction'][$j];
                 $old_processing->start_date = $processings['startDate'][$j];
                 if($processings['endDate'][$j]){
@@ -377,7 +378,7 @@ class Processing_listController extends Controller
                     }
                     $new_processing->status = $processings['processStatus'][$k];
                     $new_processing->memo = $processings['processMemo'][$k];
-    
+
                     $new_processing->created_user = session('admin_user')->id;
                     $new_processing->delete_flag = 0;
                     $new_processing->save();
@@ -402,13 +403,13 @@ class Processing_listController extends Controller
                 $processing->created_user = session('admin_user')->id;
                 $processing->delete_flag = 0;
                 $processing->save();
-            
+
             }
-            
+
         }
 
         return redirect()->route('semi_finished_schedule.index')->with('message', '存檔成功');
-        
+
     }
 
     /**

@@ -11,6 +11,7 @@ use App\Model\Material_module;
 use App\Model\Material_category;
 use App\Model\Material_warehouse;
 use App\Http\Controllers\Controller;
+use App\Model\User;
 
 class SelectController extends Controller
 {

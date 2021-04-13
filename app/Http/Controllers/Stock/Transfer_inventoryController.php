@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Model\Material_warehouse;
 use App\Model\Transfer_inventory;
 use App\Http\Controllers\Controller;
+use App\Model\User;
 
 class Transfer_inventoryController extends Controller
 {
@@ -31,8 +32,8 @@ class Transfer_inventoryController extends Controller
      */
     public function create()
     {
-        return view('stock.transfer_inventory.create');        
-        
+        return view('stock.transfer_inventory.create');
+
     }
 
     /**
@@ -44,13 +45,13 @@ class Transfer_inventoryController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'lot_number' => 'required',                      
+            'lot_number' => 'required',
 
             'transfer_date' => 'date_format:"Y-m-d"|required',
 
         ];
         $messages = [
-            'lot_number.required' => '批號 必填',                     
+            'lot_number.required' => '批號 必填',
 
             'transfer_date.required' => '調撥日期 必填',
             'transfer_date.date_format' => '調撥日期格式錯誤',
@@ -77,7 +78,7 @@ class Transfer_inventoryController extends Controller
 
             try{
                 $total_materials = count($material);
-                for($i=0; $i < $total_materials; $i++){ 
+                for($i=0; $i < $total_materials; $i++){
 
                     $material_stock = Material::find($material[$i]);
                     $material_warehouses = Material_warehouse::where('delete_flag','0')->where('material_id',$material[$i])->get();
@@ -114,7 +115,7 @@ class Transfer_inventoryController extends Controller
                                 $unit = $material_stock->material_unit_name->name;
                                 $o_str = $o_warehouse_start_quantity.' '.$unit.' -> '.number_format($o_warehouse_end_quantity,2,'.','').' '.$unit;
                                 $n_str = $n_warehouse_start_quantity.' '.$unit.' -> '.number_format($n_warehouse_end_quantity,2,'.','').' '.$unit;
-                                
+
                                 $material_warehouse->stock = $n_warehouse_end_quantity;
                                 $material_warehouse->save();
                                 $o_warehouse->stock = $o_warehouse_end_quantity;
@@ -128,26 +129,26 @@ class Transfer_inventoryController extends Controller
 
                         $quantity = number_format($materialAmount[$i],2,'.','');
 
-                        $o_warehouse_end_quantity = $o_warehouse_start_quantity - $quantity;                            
+                        $o_warehouse_end_quantity = $o_warehouse_start_quantity - $quantity;
                         $n_warehouse_end_quantity = $n_warehouse_start_quantity + $quantity;
                         $unit = $material_stock->material_unit_name->name;
                         $o_str = $o_warehouse_start_quantity.' '.$unit.' -> '.number_format($o_warehouse_end_quantity,2,'.','').' '.$unit;
                         $n_str = $n_warehouse_start_quantity.' '.$unit.' -> '.number_format($n_warehouse_end_quantity,2,'.','').' '.$unit;
 
-                        $find_new_warehouse_category = Warehouse::find($new_warehouse[$i]);  
-                        
+                        $find_new_warehouse_category = Warehouse::find($new_warehouse[$i]);
+
                         $material_warehouse_add = new Material_warehouse;
                         $material_warehouse_add->material_id = $material[$i];
                         $material_warehouse_add->warehouse_id = $new_warehouse[$i];
                         $material_warehouse_add->warehouse_category_id = $find_new_warehouse_category->category;
-                        $material_warehouse_add->stock = $n_warehouse_end_quantity;                
+                        $material_warehouse_add->stock = $n_warehouse_end_quantity;
                         $material_warehouse_add->created_user = session('admin_user')->id;
                         $material_warehouse_add->delete_flag = 0;
                         $material_warehouse_add->save();
                         $o_warehouse->stock = $o_warehouse_end_quantity;
                         $o_warehouse->save();
                     }
-                    
+
                     $transfer = new Transfer_inventory;
                     $transfer->lot_number = $request->lot_number;
                     $transfer->transfer_date = $request->transfer_date;
@@ -160,15 +161,15 @@ class Transfer_inventoryController extends Controller
                     $transfer->created_user = session('admin_user')->id;
                     $transfer->delete_flag = 0;
                     $transfer->save();
-                    
+
                     $o_stock = new Stock;
-                    $o_stock->lot_number = $request->lot_number;        
+                    $o_stock->lot_number = $request->lot_number;
                     $o_stock->stock_option = 21;
-                    $o_stock->status = 0;            
-                    $o_stock->stock_no = $material_stock->stock_no + 1;                                                              
+                    $o_stock->status = 0;
+                    $o_stock->stock_no = $material_stock->stock_no + 1;
                     $o_stock->material = $material[$i];
                     $o_stock->warehouse = $o_warehouse->warehouse_id;
-                    $o_stock->total_start_quantity = $material_stock->stock;                                    
+                    $o_stock->total_start_quantity = $material_stock->stock;
                     $o_stock->start_quantity = $o_warehouse_start_quantity;
                     $o_stock->quantity = $quantity;
                     $o_stock->calculate_quantity = $o_str;
@@ -179,13 +180,13 @@ class Transfer_inventoryController extends Controller
                     $o_stock->save();
 
                     $n_stock = new Stock;
-                    $n_stock->lot_number = $request->lot_number;        
+                    $n_stock->lot_number = $request->lot_number;
                     $n_stock->stock_option = 22;
-                    $n_stock->status = 0;            
-                    $n_stock->stock_no = $material_stock->stock_no + 2;                                                              
+                    $n_stock->status = 0;
+                    $n_stock->stock_no = $material_stock->stock_no + 2;
                     $n_stock->material = $material[$i];
                     $n_stock->warehouse = $new_warehouse[$i];
-                    $n_stock->total_start_quantity = $material_stock->stock;                                    
+                    $n_stock->total_start_quantity = $material_stock->stock;
                     $n_stock->start_quantity = $n_warehouse_start_quantity;
                     $n_stock->quantity = $quantity;
                     $n_stock->calculate_quantity = $n_str;
@@ -195,7 +196,7 @@ class Transfer_inventoryController extends Controller
                     $n_stock->delete_flag = 0;
                     $n_stock->save();
 
-                    $material_stock->stock_no = $material_stock->stock_no + 2;                    
+                    $material_stock->stock_no = $material_stock->stock_no + 2;
                     $material_stock->save();
                 }
 

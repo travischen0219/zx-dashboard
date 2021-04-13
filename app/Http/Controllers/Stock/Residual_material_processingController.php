@@ -7,6 +7,7 @@ use App\Model\Material;
 use Illuminate\Http\Request;
 use App\Model\Material_warehouse;
 use App\Http\Controllers\Controller;
+use App\Model\User;
 
 class Residual_material_processingController extends Controller
 {
@@ -23,7 +24,7 @@ class Residual_material_processingController extends Controller
     }
 
     public function search(Request $request)
-    {   
+    {
         $stocks = Stock::where('delete_flag','0')->where('stock_option','31')->where('lot_number','like','%'.$request->search_lot_number.'%')->orderBy('updated_at','desc')->get();
         return view('stock.residual_material.show',compact('stocks'));
     }
@@ -34,7 +35,7 @@ class Residual_material_processingController extends Controller
      */
     public function create()
     {
-        return view('stock.residual_material.create');                
+        return view('stock.residual_material.create');
     }
 
     /**
@@ -46,11 +47,11 @@ class Residual_material_processingController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'lot_number' => 'required',                      
+            'lot_number' => 'required',
             'processing_date' => 'date_format:"Y-m-d"|required',
         ];
         $messages = [
-            'lot_number.required' => '批號 必填',                     
+            'lot_number.required' => '批號 必填',
             'processing_date.required' => '調撥日期 必填',
             'processing_date.date_format' => '調撥日期格式錯誤',
         ];
@@ -86,15 +87,15 @@ class Residual_material_processingController extends Controller
                     $stock->lot_number = $request->lot_number;
                     $stock->stock_option = 31;
                     $stock->status = 0;
-                    $stock->stock_no = $material_stock->stock_no + 1;                                                                      
+                    $stock->stock_no = $material_stock->stock_no + 1;
                     $stock->material = $material[$i];
                     $stock->warehouse = $warehouse[$i];
-                    $stock->total_start_quantity = $material_stock->stock;                                    
+                    $stock->total_start_quantity = $material_stock->stock;
                     $stock->start_quantity = $warehouse_start_quantity;
                     $stock->quantity = $quantity;
                     $stock->calculate_quantity = $str;
                     $stock->stock_date = $request->processing_date;
-                    $stock->memo = $request->memo;                    
+                    $stock->memo = $request->memo;
                     $stock->created_user = session('admin_user')->id;
                     $stock->delete_flag = 0;
                     $stock->save();

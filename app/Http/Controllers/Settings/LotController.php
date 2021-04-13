@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Lot;
 use App\Model\Customer;
+use App\Model\User;
 use App\Http\Requests\LotPostRequest;
 
 class LotController extends Controller

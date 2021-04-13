@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shopping;
 
+use App\Model\User;
 use App\Model\Stock;
 use App\Model\Material;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class PickingController extends Controller
      */
     public function index()
     {
-        $search_code = 'all'; 
+        $search_code = 'all';
         $applies = Apply_out_stock::where('delete_flag','0')->where('status','2')->orderBy('apply_no','DESC')->get();
         return view('shopping.picking.show',compact('applies','search_code'));
 

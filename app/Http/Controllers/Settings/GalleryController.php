@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Model\Gallery;
+use App\Model\User;
 use App\Libs\ImageProcess;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -48,7 +49,7 @@ class GalleryController extends Controller
                 'upload_image' => 'required | mimes:jpeg,jpg,png',
             ];
             $messages = [
-                'name.required' => '名稱 必填',                             
+                'name.required' => '名稱 必填',
                 'upload_image.required' => '未上傳檔案',
                 'upload_image.mimes' => '必須為 jpeg, jpg, png 檔案',
             ];
@@ -128,7 +129,7 @@ class GalleryController extends Controller
             $img->save();
             return redirect()->route('gallery.index')->with('message','刪除成功');
         } catch (Exception $e) {
-            return redirect()->route('gallery.index')->with('error','刪除失敗');            
+            return redirect()->route('gallery.index')->with('error','刪除失敗');
         }
     }
 
@@ -140,7 +141,7 @@ class GalleryController extends Controller
         $src_image = imagecreatefromstring(file_get_contents(asset('upload/'.$origin_file_name)));
         $src_width = imagesx($src_image);
         $src_height = imagesy($src_image);
-        
+
         $tmp_image_width = 0;
         $tmp_image_height = 0;
         if ($src_width / $src_height >= $width / $height) {
@@ -150,17 +151,17 @@ class GalleryController extends Controller
             $tmp_image_height = $height;
             $tmp_image_width = round($tmp_image_height * $src_width / $src_height);
         }
-        
+
         $tmpImage = imagecreatetruecolor($tmp_image_width, $tmp_image_height);
         imagecopyresampled($tmpImage, $src_image, 0, 0, 0, 0, $tmp_image_width, $tmp_image_height, $src_width, $src_height);
-        
+
         $final_image = imagecreatetruecolor($width, $height);
         $color = imagecolorallocate($final_image, 255, 255, 255);
         imagefill($final_image, 0, 0, $color);
-        
+
         $x = round(($width - $tmp_image_width) / 2);
         $y = round(($height - $tmp_image_height) / 2);
-        
+
         imagecopy($final_image, $tmpImage, $x, $y, 0, 0, $tmp_image_width, $tmp_image_height);
 
         if($img_type == '.jpeg' || $img_type == '.jpg'){
@@ -169,7 +170,7 @@ class GalleryController extends Controller
         $func = "image".substr($img_type,1);
         $func($final_image,'upload/'.$tmp_file_name);
         if(isset($final_image)) {imagedestroy($final_image);}
-        
+
     }
 
     public function file_download($id)
@@ -182,7 +183,7 @@ class GalleryController extends Controller
     }
 
     public function search(Request $request)
-    {    
+    {
         $search = $request->search;
         $images = Gallery::where('delete_flag','0')->where('name','like','%'.$search.'%')->paginate(16);
         return view('settings.gallery.show',compact('images'));

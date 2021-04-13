@@ -14,6 +14,7 @@ use App\Model\Material_module;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Model\User;
 
 class PrintController extends Controller
 {
