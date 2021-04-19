@@ -14,7 +14,7 @@ import 'busy-load'
 import swal from 'sweetalert2';
 window.swal = swal
 
-window.Vue = require('vue');
+window.Vue = require('vue').default;
 
 $('#sidebar-brand').click(function () {
     $('#sidebar').toggleClass('collapse')
