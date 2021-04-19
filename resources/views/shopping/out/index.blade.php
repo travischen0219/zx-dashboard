@@ -119,11 +119,7 @@
                     <td><div class="memo" title="{{ $out->memo }}">{!! nl2br($out->memo) !!}</div></td>
                     <td align="center">
                         {{-- @if (in->status == 40) --}}
-                        @if (\App\Model\User::canView('shopping'))
-                            <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('out.edit', $out->id) }}';" class="btn btn-outline-success btn-sm p-1">
-                                查看
-                            </button>
-                        @elseif (\App\Model\User::canAdmin('shopping'))
+                        @if (\App\Model\User::canAdmin('shopping'))
                             <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('out.edit', $out->id) }}';" class="btn btn-outline-primary btn-sm p-1">
                                 修改
                             </button>
@@ -152,6 +148,10 @@
                                 {{ csrf_field() }}
                                 <input type="hidden" name="referrer" value="{{ URL::current() }}">
                             </form>
+                        @elseif (\App\Model\User::canView('shopping'))
+                            <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('out.edit', $out->id) }}';" class="btn btn-outline-success btn-sm p-1">
+                                查看
+                            </button>
                         @endif
                     </td>
                 </tr>

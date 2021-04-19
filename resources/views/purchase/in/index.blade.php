@@ -120,11 +120,7 @@
                     <td><div class="memo" title="{{ $in->memo }}">{{ $in->memo }}</div></td>
                     <td align="center">
                         {{-- @if (in->status == 40) --}}
-                        @if (\App\Model\User::canView('purchase'))
-                            <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-success btn-sm p-1">
-                                查看
-                            </button>
-                            @elseif (\App\Model\User::canAdmin('purchase'))
+                        @if (\App\Model\User::canAdmin('purchase'))
                             <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-pen"></i> 修改
                             </button>
@@ -140,6 +136,10 @@
                                 {{ method_field('DELETE') }}
                                 <input type="hidden" name="referrer" value="{{ URL::current() }}">
                             </form>
+                        @elseif (\App\Model\User::canView('purchase'))
+                            <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('in.edit', $in->id) }}';" class="btn btn-outline-success btn-sm p-1">
+                                查看
+                            </button>
                         @endif
                     </td>
                 </tr>
