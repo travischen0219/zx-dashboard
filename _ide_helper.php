@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 8.37.0.
+ * Generated for Laravel 8.38.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -9970,7 +9970,7 @@
          *
          * @param string|null $key
          * @param string|array|null $default
-         * @return string|array 
+         * @return string|array|null 
          * @static 
          */ 
         public static function old($key = null, $default = null)

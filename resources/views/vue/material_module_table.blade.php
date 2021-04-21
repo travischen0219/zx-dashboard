@@ -48,9 +48,20 @@
                             <input type="hidden" name="material_module_cost[]" v-model="item.cost">
                             <button type="button"
                                 @click="listMaterialModule(idx);"
-                                class="btn btn-primary btn-block">
+                                class="btn btn-primary">
                                 @{{ item.id === 0 ? '請選擇物料模組' : item.code + ' ' + item.name }}
                             </button>
+
+                            <a href="javascript: void(0)" @click="inputMemo(idx)" class="ml-1">
+                                <i class="far fa-file-alt" :class="{'text-muted': item.memo == '' || item.memo == null}"></i>
+                            </a>
+                            <div v-show="item.show_memo == 1">
+                                註解：<input type="text"
+                                class="form-control mt-2"
+                                v-model="item.memo"
+                                name="material_module_memo[]"
+                                placeholder="請輸入註解" />
+                            </div>
                         </td>
                         <td title="數量">
                             數量：<input type="text"
@@ -131,6 +142,13 @@ Vue.component('material-module-table', {
     },
 
     methods: {
+        inputMemo(idx) {
+            if (this.material_modules[idx].show_memo == 1) {
+                this.$set(this.material_modules[idx], 'show_memo', 0)
+            } else {
+                this.$set(this.material_modules[idx], 'show_memo', 1)
+            }
+        },
         deleteRow: function(idx) {
             this.material_modules.splice(idx, 1);
         },

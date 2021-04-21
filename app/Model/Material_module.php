@@ -74,6 +74,7 @@ class Material_module extends Model
                     'id' => $request->material_module[$i],
                     'code' => $request->material_module_code[$i],
                     'name' => $request->material_module_name[$i],
+                    'memo' => $request->material_module_memo[$i],
                     'amount' => $request->material_module_amount[$i],
                     'cost' => $request->material_module_cost[$i],
                     'price' => $request->material_module_price[$i]
@@ -95,6 +96,7 @@ class Material_module extends Model
             $data[$i]['id'] = $material_module['id'] ?? 0;
             $data[$i]['code'] = $material_module['code'] ?? '';
             $data[$i]['name'] = $material_module['name'] ?? '';
+            $data[$i]['memo'] = $material_module['memo'] ?? '';
 
             $data[$i]['amount'] = $material_module['amount'] ?? 0;
             $data[$i]['cost'] = $material_module['cost'] ?? 0;
