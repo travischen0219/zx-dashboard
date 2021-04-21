@@ -104,11 +104,13 @@
             @php($outdex = 1)
             @php($total = 0)
             @foreach ($out->material_modules as $key => $material_module)
-                <tr style="height: 50px;">
+                <tr style="height: 50px; font-size: 0.8rem;">
                     <td title="項目" class="text-center align-middle">{{ $outdex++ }}</td>
                     <td title="品名規格">
-                        <div>{{ $material_module['name'] }}</div>
-                        <div>
+                        <div style="float: left;">
+                            {{ $material_module['name'] }} {{ $material_module['memo'] }}
+                        </div>
+                        <div style="float: right;">
                             <?php
                             $m = \App\Model\Material_module::find($material_module['id']);
                             $file1 = ($m->file_1 > 0) ? \App\Model\StorageFile::find($m->file_1) : false;

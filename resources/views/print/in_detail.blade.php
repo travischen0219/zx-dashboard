@@ -75,9 +75,9 @@
                                     廠商：{{ $in->supplier->shortName ?? '' }}
                                 </div>
                                 <div class="col-8 text-right">
-                                    訂購日期：{{ date('Y年m月d日'), strtotime($in->buy_date) }}
+                                    訂購日期：{{ date('Y年m月d日', strtotime($in->buy_date)) }}
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    交貨日期：{{ date('Y年m月d日'), strtotime($in->arrive_date) }}
+                                    交貨日期：{{ date('Y年m月d日', strtotime($in->arrive_date)) }}
                                 </div>
                             </div>
                         </th>
