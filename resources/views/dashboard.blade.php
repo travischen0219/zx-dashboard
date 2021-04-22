@@ -7,6 +7,20 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2021/04/22</li>
+        <ul>
+            <li>
+                銷貨單的物料模組可增加註解
+                <br>
+                <img src="/images/dashboard/ssm.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                銷貨單、報價單版面調整
+            </li>
+            <li>
+                採購單日期問題修正
+            </li>
+        </ul>
         <li>2021/03/31</li>
         <ul>
             <li>
