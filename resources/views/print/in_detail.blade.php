@@ -77,7 +77,7 @@
                                 <div class="col-8 text-right">
                                     訂購日期：{{ $in->buy_date ? date('Y年m月d日', strtotime($in->buy_date)) : '' }}
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    交貨日期：{{ $in->arrive_date ? date('Y年m月d日', strtotime($in->arrive_date)) : '' }}
+                                    交貨日期：{{ $in->should_arrive_date ? date('Y年m月d日', strtotime($in->should_arrive_date)) : '' }}
                                 </div>
                             </div>
                         </th>
