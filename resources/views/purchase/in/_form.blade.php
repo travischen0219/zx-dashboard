@@ -121,11 +121,16 @@
         ref="materialView">
     </material-view>
 @else
+    @php
+
+    @endphp
     <material-table
         :materials="materials"
         :units="units"
         :module="true"
         :update="true"
+        :can-in="{{ $in->status == 20 && \App\Model\User::canAdmin('purchase') ? 'true' : 'false' }}"
+        :data-id="{{ $in->id }}"
         :total_cost.sync="total_cost"
         ref="materialTable">
     </material-table>

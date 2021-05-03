@@ -155,6 +155,25 @@ class InController extends Controller
     }
 
     /**
+     * 單獨入庫
+     */
+    public function oneIn(Request $request)
+    {
+
+        if (!User::canAdmin('purchase')) {
+            return false;
+        }
+
+        $in = In::find($request->id);
+
+        $materials = Material::appendMaterials($in->materials, true);
+        $materials[$request->idx]['in'] = 1;
+        dd($materials[$request->idx]);
+
+        // return redirect($request->referrer);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Model\In  $in

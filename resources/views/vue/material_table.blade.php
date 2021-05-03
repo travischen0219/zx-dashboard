@@ -1,26 +1,40 @@
 <script type="text/x-template" id="material-table">
     <div class="card card-default">
         <div class="card-body">
-            <h4>
-                物料清單
-                <button type="button" @click="listMaterial(materials.length)" class="btn btn-primary ml-2">
+            <div class="float-left">
+                <small>物料清單</small>
+                <button type="button" @click="listMaterial(materials.length)" class="btn btn-primary btn-sm ml-2">
                     <i class="fa fa-plus"></i> 新增物料
                 </button>
-                <button type="button" v-if="module" @click="listMaterialModule" class="btn btn-primary">
+                <button type="button" v-if="module" @click="listMaterialModule" class="btn btn-primary btn-sm">
                     <i class="fa fa-plus"></i> 新增物料模組
                 </button>
+            </div>
 
-                <button type="button" v-if="update" @click="updatePrice" class="btn btn-warning float-right">
+            <div class="float-right">
+                <button type="button" v-if="update" @click="updatePrice" class="btn btn-warning btn-sm">
                     <i class="fas fa-redo"></i>
                     更新價錢
                 </button>
-            </h4>
 
-            <table id="" class="table" style="font-size: .8rem;">
+                <!--button type="button" @click="selectIn" class="btn btn-primary btn-sm ml-1">
+                    <i class="fas fa-archive"></i>
+                    入庫
+                </button-->
+
+                <!--button type="button" @click="selectDelete" class="btn btn-danger btn-sm ml-1">
+                    <i class="fas fa-trash"></i>
+                    刪除
+                </button-->
+            </div>
+
+            <div class="clearfix"></div>
+
+            <table id="" class="table mt-2" style="font-size: .6rem;">
                 <thead>
                     <tr class="">
                         <th width="1" style="white-space: nowrap">操作</th>
-                        <th width="400">物料</th>
+                        <th>物料</th>
                         <th style="white-space: nowrap">
                             數量
                             <a href="javascript: batchEditAmount();">
@@ -38,78 +52,95 @@
 
                 <tbody>
                     <tr v-for="(item, idx) in materials">
-                        <td title="操作">
+                        <td title="操作" class="align-middle">
                             <button type="button" @click="deleteRow(idx)"
-                                class="btn btn-danger">
+                                v-if="item.in != 1" class="btn btn-danger btn-sm">
                                 <i class="fas fa-times"></i>
                             </button>
+
+                            <!--input type="checkbox"
+                                :id="`idx-` + item.id"
+                                :value="idx"
+                                v-if="item.in != 1"
+                                v-model="idxs"-->
                         </td>
                         <td title="物料">
                             <input type="hidden" name="material[]" v-model="item.id">
+                            <!--button v-if="item.in != 1" type="button" @click="oneIn(idx)"
+                                class="btn btn-warning btn-sm">
+                                入庫
+                            </button-->
                             <button type="button"
-                                style="font-size: .8rem;"
-                                class="btn btn-default btn-block text-left">
+                                style="font-size: 12px;"
+                                class="btn btn-default btn-sm text-left">
                                 @{{ item.id === 0 ? '請選擇物料' : item.code + ' ' + item.name }}
                             </button>
+                            <label v-if="canIn && item.in != 1" class="text-primary w-auto">
+                                <input type="checkbox"
+                                    name="in[]"
+                                    class="align-middle"
+                                    :value="idx">
+                                    入庫
+                            </label>
                         </td>
                         <td title="數量">
                             數量：<input type="text"
-                                class="form-control"
+                                class="form-control p-1"
                                 v-model="item.amount"
                                 name="material_amount[]"
                                 placeholder="請輸入數字"
-                                style="width: 75px;" />
+                                style="width: 55px; font-size: 12px; height: 24px;" />
                             / 庫存：@{{ item.stock }}@{{ units[item.unit].name }}
 
                             <template v-if="item.cal == 1">
                                 <div class="mt-1">
                                     計價：<input type="text"
-                                        class="form-control"
+                                        class="form-control p-1"
                                         v-model="item.cal_amount"
                                         name="material_cal_amount[]"
                                         placeholder="請輸入數字"
-                                        style="width: 75px;" />
+                                        style="width: 55px;" />
                                     @{{ units[item.cal_unit].name }}
                                 </div>
                                 <div class="mt-1">
                                     採購：<input type="text"
-                                        class="form-control"
+                                        class="form-control p-1"
                                         v-model="item.buy_amount"
                                         name="material_buy_amount[]"
                                         placeholder="請輸入數字"
-                                        style="width: 75px;" />
+                                        style="width: 55px; font-size: 12px; height: 24px;" />
                                     @{{ units[item.cal_unit].name }}
                                 </div>
                             </template>
                         </td>
                         <td title="單位成本">
                             成本：<input type="text"
-                                class="form-control"
+                                class="form-control p-1"
                                 v-model="item.cost"
                                 name="material_cost[]"
                                 placeholder="請輸入數字"
-                                style="width: 75px;">
+                                style="width: 55px; font-size: 12px; height: 24px;">
                             / $@{{ item.amount * item.cost | number_format }}
 
                             <template v-if="item.cal == 1">
                                 <div class="mt-1">
                                     計價：<input type="text"
-                                        class="form-control"
+                                        class="form-control p-1"
                                         v-model="item.cal_price"
                                         name="material_cal_price[]"
                                         placeholder="請輸入數字"
-                                        style="width: 75px;">
+                                        style="width: 55px; font-size: 12px; height: 24px;">
                                     / $@{{ item.buy_amount * item.cal_price | number_format }}
                                 </div>
                             </template>
                         </td>
                         <td title="單位售價">
                             <input type="text"
-                                class="form-control"
+                                class="form-control p-1"
                                 v-model="item.price"
                                 name="material_price[]"
                                 placeholder="請輸入數字"
-                                style="width: 75px;">
+                                style="width: 55px; font-size: 12px; height: 24px;">
                             / $@{{ item.amount * item.price | number_format }}
                         </td>
                     </tr>
@@ -132,20 +163,23 @@
 </script>
 
 <script>
-Vue.component('material-table', {
+    Vue.component('material-table', {
     template: '#material-table',
 
     data: function () {
         return {
-            row: {}
+            row: {},
+            idxs: []
         }
     },
 
     props: {
+        dataId: Number,
         units: Object,
         materials: Array,
         module: true,
-        update: false
+        update: false,
+        canIn: false    // 是否可以入庫
     },
 
     computed: {
@@ -176,7 +210,9 @@ Vue.component('material-table', {
 
     methods: {
         deleteRow: function(idx) {
-            this.materials.splice(idx, 1);
+            if (confirm('確定刪除？')) {
+                this.materials.splice(idx, 1);
+            }
         },
         listMaterial(idx) {
             $.magnificPopup.open({
@@ -286,7 +322,7 @@ Vue.component('material-table', {
     },
 
     mounted: function () {
-        // console.log(this.materials)
+        console.log(this.dataId)
     }
 });
 

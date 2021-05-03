@@ -291,6 +291,8 @@ Route::middleware('admin.login')->middleware('can.purchase')->namespace('Purchas
             ->where('pay_status', '[0-9]+')
             ->name('in.search');
         Route::resource('in', 'InController');
+
+        Route::get('oneIn/{id}/{idx}', 'InController@oneIn');
     }
 );
 
