@@ -32,7 +32,7 @@ class User extends Authenticatable
 
     static public function canView($group)
     {
-        if (!isset(session('admin_user'))) {
+        if (session('admin_user') == null) {
             return false;
         }
 
