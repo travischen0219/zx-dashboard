@@ -121,9 +121,6 @@
         ref="materialView">
     </material-view>
 @else
-    @php
-
-    @endphp
     <material-table
         :materials="materials"
         :units="units"

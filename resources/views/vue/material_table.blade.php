@@ -41,8 +41,8 @@
                                 <small>倉庫批量修改</small>
                             </a>
                             <div id="batchEdit" style="margin-top: 2px; display: none;">
-                                <input type="text" name="batchAmount" id="batchAmount" size="5" style="width: 50px;">
-                                <button type="button" @click="batchAmountApply">x 倍數</button>
+                                <input type="text" name="batchAmount" id="batchAmount" value="1" size="5" class="py-1" style="width: 50px;">
+                                <button type="button" class="btn btn-info btn-sm py-1" @click="batchAmountApply">x 倍數</button>
                             </div>
                         </th>
                         <th style="white-space: nowrap">單位成本 / 小計</th>
@@ -54,34 +54,17 @@
                     <tr v-for="(item, idx) in materials">
                         <td title="操作" class="align-middle">
                             <button type="button" @click="deleteRow(idx)"
-                                v-if="item.in != 1" class="btn btn-danger btn-sm">
+                                class="btn btn-danger btn-sm">
                                 <i class="fas fa-times"></i>
                             </button>
-
-                            <!--input type="checkbox"
-                                :id="`idx-` + item.id"
-                                :value="idx"
-                                v-if="item.in != 1"
-                                v-model="idxs"-->
                         </td>
-                        <td title="物料">
+                        <td title="物料" class="align-middle">
                             <input type="hidden" name="material[]" v-model="item.id">
-                            <!--button v-if="item.in != 1" type="button" @click="oneIn(idx)"
-                                class="btn btn-warning btn-sm">
-                                入庫
-                            </button-->
                             <button type="button"
                                 style="font-size: 12px;"
                                 class="btn btn-default btn-sm text-left">
                                 @{{ item.id === 0 ? '請選擇物料' : item.code + ' ' + item.name }}
                             </button>
-                            <label v-if="canIn && item.in != 1" class="text-primary w-auto">
-                                <input type="checkbox"
-                                    name="in[]"
-                                    class="align-middle"
-                                    :value="idx">
-                                    入庫
-                            </label>
                         </td>
                         <td title="數量">
                             數量：<input type="text"
@@ -99,7 +82,7 @@
                                         v-model="item.cal_amount"
                                         name="material_cal_amount[]"
                                         placeholder="請輸入數字"
-                                        style="width: 55px;" />
+                                        style="width: 55px; font-size: 12px; height: 24px;" />
                                     @{{ units[item.cal_unit].name }}
                                 </div>
                                 <div class="mt-1">
@@ -112,6 +95,11 @@
                                     @{{ units[item.cal_unit].name }}
                                 </div>
                             </template>
+
+                            <div class="mt-1">
+                                已入庫：0 @{{ units[item.unit].name }}
+                                <a href="javascript: void(0)" v-if="canIn" @click="aloneIn(item.id)" class="pl-1">新增</a>
+                            </div>
                         </td>
                         <td title="單位成本">
                             成本：<input type="text"
@@ -318,11 +306,28 @@
                     return false
                 }
             })
+        },
+        aloneIn(material_id) {
+            $.magnificPopup.open({
+                showCloseBtn : false,
+                closeOnBgClick: true,
+                fixedContentPos: false,
+                items: {
+                    src: `/purchase/aloneIn/${this.dataId}/${material_id}`,
+                    type: "iframe"
+                },
+                callbacks: {
+                    close: function() {
+                        location.reload()
+                    }
+                }
+
+            })
         }
     },
 
     mounted: function () {
-        console.log(this.dataId)
+        // console.log(this.materials)
     }
 });
 

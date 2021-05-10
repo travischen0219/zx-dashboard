@@ -292,7 +292,7 @@ Route::middleware('admin.login')->middleware('can.purchase')->namespace('Purchas
             ->name('in.search');
         Route::resource('in', 'InController');
 
-        Route::get('oneIn/{id}/{idx}', 'InController@oneIn');
+        Route::get('aloneIn/{in_id}/{material_id}', 'InController@aloneIn');
     }
 );
 
