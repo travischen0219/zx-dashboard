@@ -32,6 +32,10 @@ class User extends Authenticatable
 
     static public function canView($group)
     {
+        if (session('admin_user') == null) {
+            return false;
+        }
+
         $user = User::find(session('admin_user')->id);
 
         if (!$user) {
