@@ -8,6 +8,7 @@ use App\Model\Supplier;
 use App\Model\Manufacturer;
 use App\Model\Pay;
 use App\Model\User;
+use App\Model\Stock;
 
 use App\Model\Material;
 use App\Model\Material_unit;
@@ -159,7 +160,26 @@ class InController extends Controller
      */
     public function aloneIn(Request $request)
     {
+        if (!User::canAdmin('purchase')) {
+            return false;
+        }
 
+        $in = In::find($request->in_id);
+        $material = Material::find($request->material_id);
+        $stocks = Stock::where('in_id', $request->in_id)
+            ->where('material_id', $request->material_id)
+            ->get();
+        $data = [
+            'in' => $in,
+            'material' => $material,
+            'stocks' => $stocks
+        ];
+
+        return view('purchase.in.alone', $data);
+    }
+
+    public function aloneInStore(Request $request)
+    {
         if (!User::canAdmin('purchase')) {
             return false;
         }
@@ -167,20 +187,30 @@ class InController extends Controller
         $in = In::find($request->in_id);
         $material = Material::find($request->material_id);
 
-        $data = [
-            'in' => $in,
-            'material' => $material
-        ];
+        $stock = new Stock;
+        $stock->lot_id = $in->lot_id ?? 0;
+        $stock->in_id = $in->id ?? 0;
+        $stock->out_id = 0;
+        $stock->way = 1;    // 1入庫
+        $stock->type = 2;  // 2採購轉入庫
+        $stock->material_id = $material->id;
+        $stock->supplier_id = $in->supplier_id ?? 0;
+        $stock->customer_id = $in->customer_id ?? 0;
+        $stock->amount = $request->amount;
+        $stock->amount_before = $material->stock;
 
-        // dd($in, $material);
+        $stock->amount_after = $stock->amount_before + $request->amount;
 
-        return view('purchase.in.alone', $data);
+        $stock->stock_date = date('Y-m-d');
+        $stock->memo = '';
 
-        // $materials = Material::appendMaterials($in->materials, true);
-        // $materials[$request->idx]['in'] = 1;
-        // dd($materials[$request->idx]);
+        $stock->save();
 
-        // return redirect($request->referrer);
+        // 更新物料庫存
+        $material->stock = $stock->amount_after;
+        $material->save();
+
+        return redirect("/purchase/aloneIn/{$in->id}/{$material->id}")->with('message', '入庫成功');
     }
 
     /**
@@ -257,7 +287,7 @@ class InController extends Controller
 
         // 改變庫存，更新庫存
         if ($old_status != 40 && $new_status == 40) {
-            Material::storeToStock($in, 1, 2);
+            // Material::storeToStock($in, 1, 2);
         }
 
         return $in;

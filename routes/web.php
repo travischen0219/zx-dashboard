@@ -293,6 +293,7 @@ Route::middleware('admin.login')->middleware('can.purchase')->namespace('Purchas
         Route::resource('in', 'InController');
 
         Route::get('aloneIn/{in_id}/{material_id}', 'InController@aloneIn');
+        Route::post('aloneIn', 'InController@aloneInStore');
     }
 );
 

@@ -98,7 +98,7 @@
 
                             <div class="mt-1">
                                 已入庫：0 @{{ units[item.unit].name }}
-                                <a href="javascript: void(0)" v-if="canIn" @click="aloneIn(item.id)" class="pl-1">新增</a>
+                                <a href="javascript: void(0)" v-if="canIn" @click="aloneIn(item.id)" class="pl-1">入庫</a>
                             </div>
                         </td>
                         <td title="單位成本">

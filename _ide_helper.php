@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 8.40.0.
+ * Generated for Laravel 8.41.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -9738,7 +9738,7 @@
          * if the proxy is trusted (see "setTrustedProxies()"), otherwise it returns
          * the latter (from the "SERVER_PROTOCOL" server parameter).
          *
-         * @return string 
+         * @return string|null 
          * @static 
          */ 
         public static function getProtocolVersion()
@@ -16692,6 +16692,23 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Eloquent\Builder $instance */
                                 return $instance->simplePaginate($perPage, $columns, $pageName, $page);
+            }
+             
+                /**
+             * Paginate the given query into a cursor paginator.
+             *
+             * @param int|null $perPage
+             * @param array $columns
+             * @param string $cursorName
+             * @param string|null $cursor
+             * @return \Illuminate\Contracts\Pagination\Paginator 
+             * @throws \Illuminate\Pagination\CursorPaginationException
+             * @static 
+             */ 
+            public static function cursorPaginate($perPage = null, $columns = [], $cursorName = 'cursor', $cursor = null)
+            {
+                                /** @var \Illuminate\Database\Eloquent\Builder $instance */
+                                return $instance->cursorPaginate($perPage, $columns, $cursorName, $cursor);
             }
              
                 /**
