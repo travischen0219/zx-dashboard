@@ -97,7 +97,7 @@
                             </template>
 
                             <div class="mt-1">
-                                已入庫：0 @{{ units[item.unit].name }}
+                                已入庫：@{{ in_stocks[`'${item.id}'`] }} @{{ units[item.unit].name }}
                                 <a href="javascript: void(0)" v-if="canIn" @click="aloneIn(item.id)" class="pl-1">入庫</a>
                             </div>
                         </td>
@@ -165,6 +165,7 @@
         dataId: Number,
         units: Object,
         materials: Array,
+        in_stocks: Object,
         module: true,
         update: false,
         canIn: false    // 是否可以入庫
@@ -327,7 +328,7 @@
     },
 
     mounted: function () {
-        // console.log(this.materials)
+        console.log(this.materials)
     }
 });
 

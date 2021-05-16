@@ -63,6 +63,7 @@ class InController extends Controller
 
         $in = new In;
 
+        $in->id = 0;
         $in->status = 10;
 
         $data['in'] = $in;
@@ -76,6 +77,7 @@ class InController extends Controller
         $data['materials'] = json_encode([]);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
         $data['total_cost'] = 0;
+        $data['in_stocks'] = 0;
 
         return view('purchase.in.create', $data);
     }
@@ -132,6 +134,17 @@ class InController extends Controller
         $data['manufacturers'] = Manufacturer::allWithKey();
 
         $data['materials'] = Material::appendMaterials($in->materials);
+
+        $inMaterials = unserialize($in->materials);
+        $in_stocks = [];
+
+        foreach ($inMaterials as $inMaterial) {
+            $in_stocks["'" . $inMaterial['id'] . "'"] = Stock::where('in_id', $in->id)
+                ->where('material_id', $inMaterial['id'])
+                ->sum('amount');
+        }
+
+        $data['in_stocks'] = json_encode($in_stocks, JSON_HEX_QUOT | JSON_HEX_TAG);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         $data['pays'] = Pay::appendPays($in->pays);
@@ -166,12 +179,14 @@ class InController extends Controller
 
         $in = In::find($request->in_id);
         $material = Material::find($request->material_id);
+        $unit = $material->material_unit_name->name;
         $stocks = Stock::where('in_id', $request->in_id)
             ->where('material_id', $request->material_id)
             ->get();
         $data = [
             'in' => $in,
             'material' => $material,
+            'unit' => $unit,
             'stocks' => $stocks
         ];
 

@@ -97,14 +97,13 @@
 
                     @php($index = 1)
                     @foreach ($in->materials as $key => $material)
-                        <tr style="height: 50px;">
-                            <td title="項次" class="text-center">{{ $index++ }}</td>
-                            <td title="貨品編號">{{ $material['code'] }}</td>
-                            <td title="品名規格">{{ $material['name'] }}</td>
-                            <td title="數量" class="text-right">{{ number_format($material['amount'], 2) }}</td>
-                            {{-- <td title="單位" class="text-center">{{ $material['unit'] }}</td> --}}
-                            <td title="單價" class="text-right">{{ number_format($material['cost'], 2) }}</td>
-                            <td title="小計" class="text-right">{{ number_format($material['amount'] * $material['cost'], 2) }}</td>
+                        <tr style="height: 50px; font-size: 18px;">
+                            <td title="項次" class="text-center p-0 align-middle">{{ $index++ }}</td>
+                            <td title="貨品編號" class="text-center align-middle">{{ $material['code'] }}</td>
+                            <td title="品名規格" class="p-1 align-middle">{{ $material['name'] }}</td>
+                            <td title="數量" class="text-right p-1 align-middle">{{ number_format($material['amount'], 2) }}</td>
+                            <td title="單價" class="text-right p-1 align-middle">{{ number_format($material['cost'], 2) }}</td>
+                            <td title="小計" class="text-right p-1 align-middle">{{ number_format($material['amount'] * $material['cost'], 2) }}</td>
                         </tr>
                     @endforeach
 

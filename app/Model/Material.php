@@ -198,7 +198,7 @@ class Material extends Model
         $class = get_class($record);
         $materials = unserialize($record->materials);
 
-        foreach($materials as $material) {
+        foreach ($materials as $material) {
             // 增加庫存紀錄
             $stock = new Stock;
             $m = Material::find($material['id']);
@@ -241,6 +241,6 @@ class Material extends Model
         } else {
             return Material::where('material_categories_code', $material_categories_code)->orderBy('created_at', 'desc')->first()->fullCode ?? '無';
         }
-        
+
     }
 }

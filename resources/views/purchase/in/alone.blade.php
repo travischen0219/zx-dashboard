@@ -30,12 +30,16 @@
 
   <script>
     function checkNumber() {
-      var amount = $("#amount").val()
-      if(isNaN(amount) || amount <= 0) {
-        alert('數量請輸入大於0的數字')
-        return false;
+      if (confirm('確定入庫？')) {
+        var amount = $("#amount").val()
+        if(isNaN(amount) || amount <= 0) {
+          alert('數量請輸入大於0的數字')
+          return false;
+        } else {
+          return true
+        }
       } else {
-        return true
+        return false
       }
     }
   </script>
@@ -46,19 +50,26 @@
   <table class="table table-bordered" id="data">
     <thead>
       <tr>
-          <th>類別</th>
           <th>日期</th>
-          <th>單號</th>
-          <th nowrap>批號</th>
-          <th>物料</th>
           <th>數量</th>
           <th nowrap>(前→後) 數量</th>
           <th nowrap>目前庫存</th>
       </tr>
     </thead>
-    @foreach ($stocks as $stock)
 
-
-    @endforeach
+    <tbody>
+      @foreach ($stocks as $stock)
+        <tr>
+          <td>{{ $stock->stock_date }}</td>
+          <td title="數量">{{ $stock->amount }}{{ $unit }}</td>
+          <td title="(前→後) 數量" nowrap>
+            {{ $stock->amount_before }}{{ $unit }}
+            <span class="rotate-up">→</span>
+            {{ $stock->amount_after }}{{ $unit }}
+          </td>
+          <td title="目前庫存">{{ $stock->material->stock ?? 0 }}{{ $unit }}</td>
+        </tr>
+      @endforeach
+    </tbody>
   </table>
 @endsection

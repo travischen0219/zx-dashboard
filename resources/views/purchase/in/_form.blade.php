@@ -18,7 +18,7 @@
 </div>
 
 <div class="form-group">
-    <label for="lot_id"><span class="text-danger">*</span> 批號：</label>
+    <label for="lot_id">批號：</label>
     <button type="button" id="btn_lot_id" class="btn btn-primary" onclick="listLots()">
         @if (old('lot_id'))
             {{ $lots[old('lot_id')]->code }} {{ $lots[old('lot_id')]->name }}
@@ -79,9 +79,7 @@
     @else
         <div class="d-inline-block pl-2">
             <ul class="steps" style="margin: 30px 0;">
-                @php
-                    $status = old('status') ?? $in->status;
-                @endphp
+                @php($status = old('status') ?? $in->status)
                 <li data-status="50" class="btn {{ $status == 50 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[50] }}</li>
                 <li data-status="10" class="btn {{ $status == 10 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[10] }}</li>
                 <li data-status="20" class="btn {{ $status == 20 ? 'btn-primary' : 'btn-secondary' }}">{{ $statuses[20] }}</li>
@@ -116,6 +114,7 @@
 @if ($in->status == 40 || !\App\Model\User::canAdmin('purchase'))
     <material-view
         :materials="materials"
+        :in_stocks="in_stocks"
         :units="units"
         :module="true"
         ref="materialView">
@@ -123,6 +122,7 @@
 @else
     <material-table
         :materials="materials"
+        :in_stocks="in_stocks"
         :units="units"
         :module="true"
         :update="true"

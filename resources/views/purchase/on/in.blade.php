@@ -5,9 +5,6 @@
     <i class="fas fa-truck active-color mr-2"></i>採購進貨 - 在途量追蹤 (依照採購單)
 @endsection
 
-@section('css')
-@endsection
-
 @section('content')
     @if (count($ins) == 0)
         <h1>沒有任何在途物料</h1>
@@ -24,7 +21,6 @@
                 <th>供應商</th>
                 <th>日期</th>
                 <th>說明</th>
-                {{-- <th>在途量</th> --}}
             </tr>
 
             <tr>
@@ -41,7 +37,6 @@
                     <div>實際到貨：{!! $in->arrive_date ?? '' !!}</div>
                 </td>
                 <td class="memo">{{ $in->memo }}</td>
-                {{-- <td>{{ number_format($m['amounts'][$key2], 2) }}</td> --}}
             </tr>
 
             @php($total = 0)
@@ -52,17 +47,13 @@
                         {{ $material['model']->material_category_name->name }}：
                         {{ $material['model']->fullCode }}
                         {{ $material['model']->fullName }}
-                        <big class="text-primary">在途量：{{ number_format($material['amount'], 2) }}</big>
+                        <big class="text-primary">在途量：
+                            @php($exts = \App\Model\Stock::where('in_id', $in->id)->where('material_id', $material['id'])->sum('amount'))
+                            {{ number_format($material['amount'] - $exts, 2) }}
+                        </big>
                     </th>
                 </tr>
-                @php($total += $material['amount'])
             @endforeach
-            {{-- <tr>
-                <th colspan="99">
-                    <big class="text-primary">在途總量：{{ number_format($total, 2) }}</big>
-                </th>
-            </tr> --}}
-
             <tr>
                 <td colspan="99">&nbsp;</td>
             </tr>

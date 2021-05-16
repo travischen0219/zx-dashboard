@@ -18,7 +18,7 @@ $(function () {
     $('#app').submit(function () {
         // 必填欄位檢查
         var error_message = ''
-        if ($('#lot_id').val() == 0) error_message += '<div>批號必須選擇</div>'
+        // if ($('#lot_id').val() == 0) error_message += '<div>批號必須選擇</div>'
         if ($('#supplier_id').val() == 0) error_message += '<div>供應商必須選擇</div>'
         if ($('#buy_date').val() == '') error_message += '<div>採購日期必須選擇</div>'
 
@@ -65,11 +65,10 @@ $(function () {
             stock_change_html += `</table>`
 
             swal.fire({
-                title: '庫存將發生改變',
-                html: stock_change_html,
+                title: '完成後便無法修改',
                 type: 'info',
                 showCancelButton: true,
-                confirmButtonText: '確定入庫',
+                confirmButtonText: '確定完成',
                 cancelButtonText: '取消',
                 width: 600
             }).then((result) => {
@@ -96,16 +95,19 @@ $(function () {
 
 var app = new Vue({
     el: '#app',
-    data: {
-        units: {!! $units !!},
-        materials: {!! $materials !!},
-        invoice_types: {!! $invoice_types !!},
-        total_cost: {!! $total_cost !!},
-        pays: {!! $pays !!}
+    data() {
+        return {
+            units: {!! $units !!},
+            materials: {!! $materials !!},
+            in_stocks: {!! $in_stocks !!},
+            invoice_types: {!! $invoice_types !!},
+            total_cost: {!! $total_cost !!},
+            pays: {!! $pays !!}
+        }
     },
     watch: {
         total_cost: function (val) {
-            console.log(val)
+            // console.log(val)
         }
     }
 })

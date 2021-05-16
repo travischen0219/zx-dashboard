@@ -9,6 +9,8 @@
 @endsection
 
 @section('content')
+    <script src="/js/app.js?{{ env('APP_VERSION') }}"></script>
+
     @if (count($ms) == 0)
         <h1>沒有任何在途物料</h1>
     @endif
@@ -22,7 +24,11 @@
                     {{ $m['material']->material_category_name->name }}：
                     {{ $m['material']->fullCode }}
                     {{ $m['material']->fullName }}
-                    <big class="text-warning float-right">在途總量：{{ number_format(array_sum($m['amounts']), 2) }}</big>
+                    {{-- <big class="text-warning float-right">
+                        在途總量：{{ number_format(array_sum($m['amounts']), 2) }}
+                    </big> --}}
+                    <big id="subTotal-{{ $key }}" class="text-warning float-right">
+                    </big>
                 </th>
             </tr>
 
@@ -35,6 +41,7 @@
                 <th>在途量</th>
             </tr>
 
+            @php($subTotal = 0)
             @foreach($m['ins'] as $key2 => $in)
                 <tr class="detail-{{ $key }}">
                     <td>P{{ $in->code }}</td>
@@ -50,7 +57,14 @@
                         <div>實際到貨：{!! $in->arrive_date ?? '' !!}</div>
                     </td>
                     <td class="memo">{{ $in->memo }}</td>
-                    <td>{{ number_format($m['amounts'][$key2], 2) }}</td>
+                    <td>
+                        @php($exts = \App\Model\Stock::where('in_id', $in->id)->where('material_id', $m['material']->id)->sum('amount'))
+                        @php($subTotal += $m['amounts'][$key2] - $exts)
+                        {{ number_format($m['amounts'][$key2] - $exts, 2) }}
+                        <script>
+                        $("#subTotal-{{ $key }}").html("{{ number_format($subTotal, 2) }}")
+                        </script>
+                    </td>
                 </tr>
             @endforeach
 
