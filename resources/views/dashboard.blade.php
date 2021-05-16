@@ -7,6 +7,23 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2021/05/16</li>
+        <ul>
+            <li>採購各項物料可單獨入庫</li>
+            <li>已完成採購單不再自動入庫以保持庫存數量正確</li>
+            <li>單獨入庫輸入後畫面會重新整理，請不要修改採購單入庫數量以外欄位</li>
+            <li>
+                在途量會扣除已經單獨入庫的數量
+                <br>
+                <img src="/images/dashboard/ain1.png" width="600" style="margin: 10px 0;" />
+            </li>
+            <li>
+                採購單加大字型
+                <br>
+                <img src="/images/dashboard/ain2.png" width="600" style="margin: 10px 0;" />
+            </li>
+        </ul>
+
         <li>2021/04/22</li>
         <ul>
             <li>
