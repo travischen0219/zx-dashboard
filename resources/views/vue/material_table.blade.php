@@ -96,9 +96,9 @@
                                 </div>
                             </template>
 
-                            <div class="mt-1">
+                            <div class="mt-1" v-if="canIn">
                                 已入庫：@{{ in_stocks[`'${item.id}'`] }} @{{ units[item.unit].name }}
-                                <a href="javascript: void(0)" v-if="canIn" @click="aloneIn(item.id)" class="pl-1">入庫</a>
+                                <a href="javascript: void(0)" @click="aloneIn(item.id)" class="pl-1">入庫</a>
                             </div>
                         </td>
                         <td title="單位成本">
@@ -165,7 +165,7 @@
         dataId: Number,
         units: Object,
         materials: Array,
-        in_stocks: Object,
+        in_stocks: Array,
         module: true,
         update: false,
         canIn: false    // 是否可以入庫
@@ -369,6 +369,11 @@ function applyMaterial(str, idx) {
         swalOption.title = '物料已經存在'
         swal.fire(swalOption)
     } else {
+        console.log(app.materials)
+        // console.log(idx)
+        // console.log(material)
+
+        // app.materials.$set(idx, material)
         app.$set(app.materials, idx, material)
     }
 }

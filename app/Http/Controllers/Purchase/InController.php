@@ -77,7 +77,7 @@ class InController extends Controller
         $data['materials'] = json_encode([]);
         $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
         $data['total_cost'] = 0;
-        $data['in_stocks'] = 0;
+        $data['in_stocks'] = json_encode([]);
 
         return view('purchase.in.create', $data);
     }

@@ -112,6 +112,8 @@
     })
 
     function selectMaterial(str, idx) {
+        // console.log(str, idx)
+
         parent.applyMaterial(str, idx)
 
         // 更新選擇狀態
