@@ -168,6 +168,142 @@ class PrintController extends Controller
         return view('print.in_detail', $data);
     }
 
+    public function in_detail_excel(Request $request)
+    {
+        $id = $request->id ?? 0;
+        if ($id == 0) exit();
+
+        $in = In::find($id);
+        if (!$in) exit();
+
+        $materials = unserialize($in->materials);
+
+        $array = [];
+        foreach ($materials as $material) {
+            $m = Material::find($material['id']);
+            $unit = Material_unit::find($m->unit);
+
+            $array[] = [
+                'id' => $material['id'],
+                'code' => $m->fullCode,
+                'name' => $m->fullName,
+                'size' => $m->size,
+                'color' => $m->color,
+                'stock' => $m->stock,
+                'memo' => $m->memo,
+                'amount' => $material['amount'],
+                'price' => (float) $material['price'],
+                'unit' =>  $unit->name
+            ];
+        }
+
+        $in->materials = $array;
+
+        $filename = 'P' . $in->code;
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // 標題
+        $sheet->mergeCells("A1:F1");
+        $sheet->getStyle('A1')
+            ->getFont()
+            ->setSize(24);
+        $sheet->getStyle('A1')
+            ->getAlignment()
+            ->setHorizontal('center');
+        $sheet->setCellValue('A1', '真心蓮坊股份有限公司採購單');
+
+        // 編號
+        $sheet->mergeCells("A2:F2");
+        $sheet->getStyle('A2')
+            ->getFont()
+            ->setSize(12);
+        $sheet->setCellValue('A2', '編號：P' . $in->code .
+            '    批號：' . $in->lot->code);
+
+        // 編號
+        $sheet->mergeCells("A2:F2");
+        $sheet->getStyle('A3')
+            ->getFont()
+            ->setSize(12);
+        $sheet->setCellValue('A3', '廠商：' . $in->supplier->shortName .
+            '    訂購日期：：' . ($in->buy_date ? date('Y年m月d日', strtotime($in->buy_date)) : '') .
+            '    交貨日期：' . ($in->should_arrive_date ? date('Y年m月d日', strtotime($in->should_arrive_date)) : ''));
+
+        // 欄位
+        $sheet->getStyle('A4:F4')
+            ->getFont()
+            ->setSize(16);
+        $sheet->setCellValue('A4', '項次');
+
+        $sheet->getColumnDimension('B')->setWidth(15);
+        $sheet->setCellValue('B4', '貨品編號');
+        $sheet->getColumnDimension('C')->setWidth(60);
+        $sheet->setCellValue('C4', '品名規格');
+        $sheet->setCellValue('D4', '數量');
+        $sheet->setCellValue('E4', '單價');
+        $sheet->setCellValue('F4', '小計');
+
+        // 內容
+        $row = 5;
+        foreach ($in->materials as $key => $material) {
+            $m = Material::find($material['id']);
+
+            $sheet->getStyle("A$row:F$row")
+                ->getFont()
+                ->setSize(16);
+
+            $sheet->setCellValue("A$row", $row - 4);
+            $sheet->setCellValue("B$row", $m['fullCode']);
+            $sheet->setCellValue("C$row", $m['fullName']);
+            $sheet->setCellValue("D$row", round($m['amount'], 2));
+            $sheet->setCellValue("E$row", round($m['cost'], 2));
+            $sheet->setCellValue("F$row", round($m['amount'] * $m['cost'], 2));
+
+            $row++;
+        }
+
+        if (count($in->materials) < 19) {
+            for ($i = 0; $i < 19 - count($in->materials); $i++) {
+                $sheet->getStyle("A$row:F$row")
+                ->getFont()
+                ->setSize(16);
+
+                $sheet->setCellValue("A$row", '');
+                $sheet->setCellValue("B$row", '');
+                $sheet->setCellValue("C$row", '');
+                $sheet->setCellValue("D$row", '');
+                $sheet->setCellValue("E$row", '');
+                $sheet->setCellValue("F$row", '');
+
+                $row++;
+            }
+        }
+
+        // 簽核
+        $row++;
+        $sheet->mergeCells("A$row:F$row");
+        $sheet->getStyle("A$row")
+            ->getFont()
+            ->setSize(24);
+        $sheet->setCellValue("A$row", "董事長：                   總經理：                   經辦人：");
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+    }
+
     public function out_detail(Request $request)
     {
         $id = $request->id ?? 0;

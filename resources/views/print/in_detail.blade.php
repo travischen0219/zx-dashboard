@@ -40,9 +40,19 @@
             <h3>列印採購單</h3>
         </div>
 
-        <button class="btn btn-success btn-lg" id="print" onclick="self.print();">
-            <i class="fas fa-print"></i> 列印
-        </button>
+        <div id="print">
+            <button class="btn btn-success btn-lg" onclick="self.print();">
+                <i class="fas fa-print"></i> 列印
+            </button>
+
+            @if (count($ins) == 1)
+                <button class="btn btn-primary btn-lg ml-2" id="excel"
+                    onclick="location.href='/print/in_detail_excel/{{ $ins[0]['in']->id }}';">
+                    <i class="fas fa-file-excel"></i> 匯出 Excel
+                </button>
+            @endif
+        </div>
+
     </nav>
 
     @foreach ($ins as $k => $value)

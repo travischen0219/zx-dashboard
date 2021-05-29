@@ -216,6 +216,7 @@ Route::middleware('admin.login')->prefix('print')->group(
 
         // 採購單報表
         Route::get('in_detail/{id}', 'PrintController@in_detail');
+        Route::get('in_detail_excel/{id}', 'PrintController@in_detail_excel');
         Route::post('in_detail', 'PrintController@in_detail');
 
         // 採購單報表 (多張)
