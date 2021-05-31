@@ -80,7 +80,7 @@ class Material extends Model
             $m = Material::find($material['id']);
 
             if (!$m) {
-                return false;
+                continue;
             }
 
             $data[$i]['id'] = $material['id'] ?? 0;
@@ -117,7 +117,7 @@ class Material extends Model
         // 打包物料模組 (不存單位、不存是否有計價)
         $materials = [];
         if (isset($request->material)) {
-            for($i = 0; $i < count($request->material); $i++) {
+            for ($i = 0; $i < count($request->material); $i++) {
                 $materials[] = [
                     'id' => $request->material[$i],
                     'amount' => $request->material_amount[$i],
@@ -141,10 +141,10 @@ class Material extends Model
         $materials = unserialize($materials);
 
         $total_cost = 0;
-        foreach($materials as $material) {
+        foreach ($materials as $material) {
             $m = Material::find($material['id']);
 
-            if ($m->material_category_name->cal == 1) {
+            if ($m && $m->material_category_name->cal == 1) {
                 $amount = $material['buy_amount'] ?? 0;
                 $cost = $material['cal_price'] ?? 0;
                 $total_cost += ($amount * $cost);

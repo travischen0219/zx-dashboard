@@ -179,8 +179,14 @@ class PrintController extends Controller
         $materials = unserialize($in->materials);
 
         $array = [];
+
         foreach ($materials as $material) {
             $m = Material::find($material['id']);
+
+            if (!$m) {
+                continue;
+            }
+
             $unit = Material_unit::find($m->unit);
 
             $array[] = [
@@ -192,7 +198,7 @@ class PrintController extends Controller
                 'stock' => $m->stock,
                 'memo' => $m->memo,
                 'amount' => $material['amount'],
-                'price' => (float) $material['price'],
+                'cost' => (float) $material['cost'],
                 'unit' =>  $unit->name
             ];
         }
@@ -256,9 +262,9 @@ class PrintController extends Controller
             $sheet->setCellValue("A$row", $row - 4);
             $sheet->setCellValue("B$row", $m['fullCode']);
             $sheet->setCellValue("C$row", $m['fullName']);
-            $sheet->setCellValue("D$row", round($m['amount'], 2));
-            $sheet->setCellValue("E$row", round($m['cost'], 2));
-            $sheet->setCellValue("F$row", round($m['amount'] * $m['cost'], 2));
+            $sheet->setCellValue("D$row", round($material['amount'], 2));
+            $sheet->setCellValue("E$row", round($material['cost'], 2));
+            $sheet->setCellValue("F$row", round($material['amount'] * $material['cost'], 2));
 
             $row++;
         }
