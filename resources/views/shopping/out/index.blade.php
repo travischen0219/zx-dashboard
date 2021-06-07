@@ -73,6 +73,9 @@
                     <td>S{{ $out->code }}</td>
                     <td>
                         {!! $out->lot ? $out->lot->code . '<br>' . $out->lot->name : $na !!}
+                        @if ($out->project != '')
+                            <div>工：{{ $out->project }}</div>
+                        @endif
                     </td>
                     <td>
                         {!! $out->customer ? $out->customer->shortName : $na !!}

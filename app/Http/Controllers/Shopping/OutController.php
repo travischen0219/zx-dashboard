@@ -220,6 +220,7 @@ class OutController extends Controller
         $out->created_date = $request->created_date;
         $out->expired_date = $request->expired_date;
         $out->memo = $request->memo;
+        $out->project = $request->project;
 
         $out->status = $request->status;
         $out->created_user = session('admin_user')->id;

@@ -107,7 +107,7 @@
 
                     @php($index = 1)
                     @foreach ($in->materials as $key => $material)
-                        <tr style="height: 50px; font-size: 18px;">
+                        <tr style="height: 50px; font-size: 22px; color: black;">
                             <td title="項次" class="text-center p-0 align-middle">{{ $index++ }}</td>
                             <td title="貨品編號" class="text-center align-middle">{{ $material['code'] }}</td>
                             <td title="品名規格" class="p-1 align-middle">{{ $material['name'] }}</td>

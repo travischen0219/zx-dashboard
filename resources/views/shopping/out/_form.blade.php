@@ -46,6 +46,12 @@
 </div>
 
 <div class="form-group">
+    <label for="project">工程名稱：</label>
+    <input type="text" name="project" id="project" value="{{ old('project') ?? $out->project }}"
+        class="form-control" placeholder="請輸入工程名稱" style="width: 300px;" autocomplete="off" />
+</div>
+
+<div class="form-group">
     <label for="created_date"><span class="text-danger">*</span> 新增日期：</label>
     <input type="text" name="created_date" id="created_date" value="{{ old('created_date') ?? $out->created_date }}"
         class="form-control datepicker" placeholder="請輸入新增日期" autocomplete="off" />
