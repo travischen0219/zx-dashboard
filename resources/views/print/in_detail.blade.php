@@ -117,17 +117,19 @@
                         </tr>
                     @endforeach
 
-                    @for ($i = 0; $i < 19 - count($in->materials); $i++)
-                        <tr style="height: 50px;">
-                            <td title="項次" class="text-center"></td>
-                            <td title="貨品編號"></td>
-                            <td title="品名規格"></td>
-                            <td title="數量" class="text-right"></td>
-                            {{-- <td title="單位" class="text-center"></td> --}}
-                            <td title="單價" class="text-right"></td>
-                            <td title="小計" class="text-right"></td>
-                        </tr>
-                    @endfor
+                    @if (count($in->materials) < 18)
+                        @for ($i = 0; $i < 18 - count($in->materials); $i++)
+                            <tr style="height: 50px;">
+                                <td title="項次" class="text-center"></td>
+                                <td title="貨品編號"></td>
+                                <td title="品名規格"></td>
+                                <td title="數量" class="text-right"></td>
+                                {{-- <td title="單位" class="text-center"></td> --}}
+                                <td title="單價" class="text-right"></td>
+                                <td title="小計" class="text-right"></td>
+                            </tr>
+                        @endfor
+                    @endif
                 </tbody>
 
                 <tfoot>

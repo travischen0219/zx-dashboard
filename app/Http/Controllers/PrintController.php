@@ -269,8 +269,8 @@ class PrintController extends Controller
             $row++;
         }
 
-        if (count($in->materials) < 19) {
-            for ($i = 0; $i < 19 - count($in->materials); $i++) {
+        if (count($in->materials) < 18) {
+            for ($i = 0; $i < 18 - count($in->materials); $i++) {
                 $sheet->getStyle("A$row:F$row")
                 ->getFont()
                 ->setSize(16);
