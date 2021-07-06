@@ -54,6 +54,7 @@ class Material_moduleController extends Controller
         $material_module->id = 0;
         $material_module->code = null;
         $data['material_module'] = $material_module;
+        $data['material_units'] = Material_unit::orderBy('orderby', 'ASC')->get();
 
         $data['materials'] = Material::appendMaterials($material_module->materials);
         if (!$data['materials']) {
