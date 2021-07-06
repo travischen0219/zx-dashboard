@@ -4,10 +4,16 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Model\Material_unit;
 
 class Material_module extends Model
 {
     use SoftDeletes;
+
+    public function material_unit_name()
+    {
+        return $this->hasOne(Material_unit::class, 'id', 'unit');
+    }
 
     public function image_1()
     {
@@ -98,6 +104,10 @@ class Material_module extends Model
             $data[$i]['name'] = $material_module['name'] ?? '';
             $data[$i]['memo'] = $material_module['memo'] ?? '';
 
+            $mm = Material_module::find($material_module['id']);
+            if ($mm) {
+                $data[$i]['unit'] = $mm->material_unit_name->name ?? '';
+            }
             $data[$i]['amount'] = $material_module['amount'] ?? 0;
             $data[$i]['cost'] = $material_module['cost'] ?? 0;
             $data[$i]['price'] = $material_module['price'] ?? 0;

@@ -35,6 +35,7 @@
                 <th>列印</th>
                 <th>編號</th>
                 <th>名稱</th>
+                <th>單位</th>
                 <th>價錢</th>
                 <th>產品說明</th>
                 <th>操 作</th>
@@ -52,6 +53,7 @@
                     </td>
                     <td>{{$material_module->code}}</td>
                     <td><a href="{{ route('material_module.show', $material_module->id) }}">{{$material_module->name}}</a></td>
+                    <td>{{$material_module->material_unit_name->name ?? ''}}</td>
                     <td>
                         價錢：${{number_format($material_module->price, 2)}}
                         <br>

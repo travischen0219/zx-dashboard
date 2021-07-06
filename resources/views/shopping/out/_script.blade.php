@@ -103,6 +103,7 @@ var app = new Vue({
     el: '#app',
     data: {
         material_modules: {!! $material_modules !!},
+        units: {!! $units !!},
         invoice_types: {!! $invoice_types !!},
         total_cost: {!! $total_cost !!},
         total_price: {!! $total_price !!},

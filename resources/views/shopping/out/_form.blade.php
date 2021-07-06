@@ -133,6 +133,7 @@
 @if ($out->status == 40 || $out->status == 60 || !\App\Model\User::canAdmin('shopping'))
     <material-module-view
         :material_modules="material_modules"
+        :units="units"
         :total_cost.sync="total_cost"
         :total_price.sync="total_price"
         ref="materialModuleView">
@@ -140,6 +141,7 @@
 @else
     <material-module-table
         :material_modules="material_modules"
+        :units="units"
         :total_cost.sync="total_cost"
         :total_price.sync="total_price"
         :update="true"

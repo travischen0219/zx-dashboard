@@ -36,6 +36,7 @@ class Material_moduleController extends Controller
         $data = [];
 
         $data['material_module'] = new Material_module;
+        $data['material_units'] = Material_unit::orderBy('orderby', 'ASC')->get();
         $data['materials'] = json_encode([]);
         $data['units'] = Material_unit::allJson();
         $data['files'] = StorageFile::allJson([]);
@@ -118,7 +119,7 @@ class Material_moduleController extends Controller
     {
         $material_module = Material_module::find($id);
         $data['material_module'] = $material_module;
-
+        $data['material_units'] = Material_unit::orderBy('orderby', 'ASC')->get();
         $data['materials'] = Material::appendMaterials($material_module->materials);
         if (!$data['materials']) {
             return '此模組內的物料已被刪除，請回上頁刪除此模組
@@ -235,6 +236,7 @@ class Material_moduleController extends Controller
         StorageFile::packFiles($request, $material_module);
 
         $material_module->name = $request->name ?? "$code - 未命名的模組";
+        $material_module->unit = $request->unit;
         $material_module->memo = $request->memo;
 
         $material_module->total_cost = Material::getTotalCost($material_module->materials);

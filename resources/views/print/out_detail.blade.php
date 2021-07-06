@@ -135,7 +135,7 @@
 
                         </div>
                     </td>
-                    <td title="數量" class="text-right align-middle">{{ number_format($material_module['amount'], 2) }}</td>
+                    <td title="數量" class="text-right align-middle">{{ number_format($material_module['amount'], 2) }}{{ $material_module['unit'] }}</td>
                     <td title="單價" class="text-right align-middle">{{ number_format($material_module['price'], 2) }}</td>
                     <td title="小計" class="text-right align-middle">
                         {{ number_format($material_module['amount'] * $material_module['price'], 2) }}</td>

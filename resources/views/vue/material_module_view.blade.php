@@ -21,7 +21,7 @@
                             @{{ item.code + ' ' + item.name }}
                         </td>
                         <td title="數量">
-                            @{{ item.amount }}
+                            @{{ item.amount }} @{{ item.unit }}
                         </td>
                         <td title="成本" class="align-middle">
                             $@{{ item.cost | number_format }}

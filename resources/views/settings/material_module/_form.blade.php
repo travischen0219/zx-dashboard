@@ -12,6 +12,16 @@
 </div>
 
 <div class="form-group">
+    <label for="unit"><span class="text-danger">*</span>單位：</label>
+    <select class="form-control d-inline-block" id="unit" name="unit" style="width: auto;">
+        <option value="0">請選擇</option>
+        @foreach($material_units as $unit)
+            <option value="{{ $unit->id }}" {{ (old('unit') ?? $material_module->unit) == $unit->id ? 'selected' : '' }}> {{$unit->name}}</option>
+        @endforeach
+    </select>
+</div>
+
+<div class="form-group">
     <label for="name"><span class="text-danger">*</span> 預設價錢：</label>
     <input type="number" step="0.01" name="price" id="price" value="{{ old('price') ?? $material_module->price }}"
         class="form-control w-auto d-inline-block" size="40" placeholder="請輸入價錢" />

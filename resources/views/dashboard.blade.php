@@ -7,6 +7,15 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2021/07/06</li>
+        <ul>
+            <li>
+                基本資料 - 物料模組可以選擇單位 (需要的單位也是在基本資料新增)
+                <br>
+                <img src="/images/dashboard/mmunit.png" width="300" style="margin: 10px 0;" />
+            </li>
+            <li>有設定單位的模組會在表單或報表出現</li>
+        </ul>
         <li>2021/05/16</li>
         <ul>
             <li>採購各項物料可單獨入庫</li>

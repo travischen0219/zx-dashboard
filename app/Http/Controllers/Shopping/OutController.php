@@ -58,6 +58,7 @@ class OutController extends Controller
         $data['out'] = $out;
         $data['statuses'] = Out::statuses();
         $data['lots'] = Lot::allWithKey();
+        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
         $data['customers'] = Customer::allWithKey();
         $data['invoice_types'] = json_encode(Pay::types(), JSON_HEX_QUOT | JSON_HEX_TAG);
         $data['tax'] = $out->tax == 1 ? 1.05 : 1;
@@ -125,6 +126,7 @@ class OutController extends Controller
         $data['statuses'] = Out::statuses();
         $data['lots'] = Lot::allWithKey();
         $data['customers'] = Customer::allWithKey();
+        $data['units'] = json_encode(Material_unit::allWithKey(), JSON_HEX_QUOT | JSON_HEX_TAG);
 
         $data['material_modules'] = Material_module::appendMaterialModules($out->material_modules);
         $data['pays'] = Pay::appendPays($out->pays);

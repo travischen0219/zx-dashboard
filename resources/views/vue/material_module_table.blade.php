@@ -70,6 +70,7 @@
                                 name="material_module_amount[]"
                                 placeholder="請輸入數字"
                                 style="width: 100px;" />
+                            @{{ item.unit }}
                         </td>
                         <td title="成本" class="align-middle">
                             $@{{ item.cost | number_format }}
@@ -109,13 +110,14 @@ Vue.component('material-module-table', {
 
     data: function () {
         return {
-            row: {}
+            row: {},
         }
     },
 
     props: {
         material_modules: Array,
-        update: false
+        update: false,
+        units: Object,
     },
 
     computed: {
