@@ -168,6 +168,7 @@
         in_stocks: Array,
         module: true,
         update: false,
+        update: false,  // 更新價錢
         canIn: false    // 是否可以入庫
     },
 

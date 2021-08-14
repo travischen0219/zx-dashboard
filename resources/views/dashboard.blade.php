@@ -7,6 +7,14 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2021/08/14</li>
+        <ul>
+            <li>
+                基本資料 - 修改物料模組 可更新價錢
+                <br>
+                <img src="/images/dashboard/upp.png" width="500" style="margin: 10px 0;" />
+            </li>
+        </ul>
         <li>2021/07/06</li>
         <ul>
             <li>

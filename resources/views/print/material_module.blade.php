@@ -84,11 +84,11 @@
                             <td title="尺寸">{{ $material['size'] }}</td>
                             <td title="顏色">{{ $material['color'] }}</td>
                             {{-- <td title="庫存" class="text-right">{{ number_format($material['stock'], 2) }}</td> --}}
-                            <td title="成本" class="text-right">{{ number_format($m->cost, 2) }}</td>
+                            <td title="成本" class="text-right">{{ number_format($material['cost'], 2) }}</td>
                             <td title="備註">{{ nl2br($material['memo']) }}</td>
                         </tr>
 
-                        @php($cost_total += ($m->cost * $material['amount']))
+                        @php($cost_total += ($material['cost'] * $material['amount']))
                     @endforeach
 
                     <tr>

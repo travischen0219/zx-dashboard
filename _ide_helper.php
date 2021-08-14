@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 8.49.1.
+ * Generated for Laravel 8.54.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -2654,7 +2654,7 @@
                     /**
          * Apply the echo handler for the value if it exists.
          *
-         * @param $value string
+         * @param string $value
          * @return string 
          * @static 
          */ 
@@ -5815,6 +5815,20 @@
         {
                         /** @var \Illuminate\Filesystem\Filesystem $instance */
                         $instance->replace($path, $content);
+        }
+                    /**
+         * Replace a given string within a given file.
+         *
+         * @param array|string $search
+         * @param array|string $replace
+         * @param string $path
+         * @return void 
+         * @static 
+         */ 
+        public static function replaceInFile($search, $replace, $path)
+        {
+                        /** @var \Illuminate\Filesystem\Filesystem $instance */
+                        $instance->replaceInFile($search, $replace, $path);
         }
                     /**
          * Prepend to a file.
@@ -10348,13 +10362,14 @@
          *
          * @param string $key
          * @param callable $callback
+         * @param callable|null $default
          * @return $this|mixed 
          * @static 
          */ 
-        public static function whenHas($key, $callback)
+        public static function whenHas($key, $callback, $default = null)
         {
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->whenHas($key, $callback);
+                        return $instance->whenHas($key, $callback, $default);
         }
                     /**
          * Determine if the request contains a non-empty value for an input item.
@@ -10397,13 +10412,14 @@
          *
          * @param string $key
          * @param callable $callback
+         * @param callable|null $default
          * @return $this|mixed 
          * @static 
          */ 
-        public static function whenFilled($key, $callback)
+        public static function whenFilled($key, $callback, $default = null)
         {
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->whenFilled($key, $callback);
+                        return $instance->whenFilled($key, $callback, $default);
         }
                     /**
          * Determine if the request is missing a given input item key.
@@ -13418,6 +13434,56 @@
                         /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                         return $instance->getDriver();
         }
+                    /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @return void 
+         * @static 
+         */ 
+        public static function macro($name, $macro)
+        {
+                        \Illuminate\Filesystem\FilesystemAdapter::macro($name, $macro);
+        }
+                    /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void 
+         * @throws \ReflectionException
+         * @static 
+         */ 
+        public static function mixin($mixin, $replace = true)
+        {
+                        \Illuminate\Filesystem\FilesystemAdapter::mixin($mixin, $replace);
+        }
+                    /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasMacro($name)
+        {
+                        return \Illuminate\Filesystem\FilesystemAdapter::hasMacro($name);
+        }
+                    /**
+         * Dynamically handle calls to the class.
+         *
+         * @param string $method
+         * @param array $parameters
+         * @return mixed 
+         * @throws \BadMethodCallException
+         * @static 
+         */ 
+        public static function macroCall($method, $parameters)
+        {
+                        /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+                        return $instance->macroCall($method, $parameters);
+        }
          
     }
             /**
@@ -13997,6 +14063,17 @@
         {
                         /** @var \Illuminate\Validation\Factory $instance */
                         $instance->replacer($rule, $replacer);
+        }
+                    /**
+         * Indicate that unvalidated array keys should be excluded, even if the parent array was validated.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function excludeUnvalidatedArrayKeys()
+        {
+                        /** @var \Illuminate\Validation\Factory $instance */
+                        $instance->excludeUnvalidatedArrayKeys();
         }
                     /**
          * Set the Validator instance resolver.
@@ -16908,9 +16985,8 @@ namespace  {
              * @param int|null $perPage
              * @param array $columns
              * @param string $cursorName
-             * @param string|null $cursor
+             * @param \Illuminate\Pagination\Cursor|string|null $cursor
              * @return \Illuminate\Contracts\Pagination\CursorPaginator 
-             * @throws \Illuminate\Pagination\CursorPaginationException
              * @static 
              */ 
             public static function cursorPaginate($perPage = null, $columns = [], $cursorName = 'cursor', $cursor = null)
@@ -17722,7 +17798,7 @@ namespace  {
              * @param mixed $value
              * @param callable $callback
              * @param callable|null $default
-             * @return mixed 
+             * @return $this|mixed 
              * @static 
              */ 
             public static function when($value, $callback, $default = null)
@@ -17737,7 +17813,7 @@ namespace  {
              * @param mixed $value
              * @param callable $callback
              * @param callable|null $default
-             * @return mixed 
+             * @return $this|mixed 
              * @static 
              */ 
             public static function unless($value, $callback, $default = null)
@@ -17833,6 +17909,7 @@ namespace  {
                 /**
              * Force the query to only return distinct results.
              *
+             * @param mixed $distinct
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -18943,7 +19020,7 @@ namespace  {
                 /**
              * Add a descending "order by" clause to the query.
              *
-             * @param string $column
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string $column
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -19079,7 +19156,7 @@ namespace  {
                 /**
              * Remove all existing orders and optionally add a new order.
              *
-             * @param string|null $column
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string|null $column
              * @param string $direction
              * @return \Illuminate\Database\Query\Builder 
              * @static 

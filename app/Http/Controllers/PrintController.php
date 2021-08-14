@@ -420,6 +420,8 @@ class PrintController extends Controller
 
         $materials = unserialize($module->materials);
 
+        // dd($materials);
+
         $array = [];
         foreach ($materials as $material) {
             $m = Material::find($material['id']);
@@ -439,6 +441,7 @@ class PrintController extends Controller
                 'stock' => $m->stock,
                 'memo' => $m->memo,
                 'amount' => $material['amount'],
+                'cost' => (float) $material['cost'],
                 'price' => (float) $material['price'],
                 'unit' =>  $unit->name
             ];
@@ -479,6 +482,7 @@ class PrintController extends Controller
                 'memo' => $m->memo,
                 'amount' => $material['amount'],
                 'price' => (float) $material['price'],
+                'cost' => (float) $material['cost'],
                 'unit' =>  $unit->name
             ];
         }
@@ -542,11 +546,11 @@ class PrintController extends Controller
             $sheet->setCellValue("D$row", $material['unit']);
             $sheet->setCellValue("E$row", $material['size']);
             $sheet->setCellValue("F$row", $material['color']);
-            $sheet->setCellValue("G$row", round($m->cost, 2));
+            $sheet->setCellValue("G$row", round($material['cost'], 2));
             $sheet->setCellValue("H$row", $material['memo']);
 
             $index++;
-            $cost_total += ($m->cost * $material['amount']);
+            $cost_total += ($material['cost'] * $material['amount']);
         }
 
         // 總和

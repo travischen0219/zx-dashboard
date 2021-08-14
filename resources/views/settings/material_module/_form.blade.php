@@ -41,6 +41,7 @@
     :materials="materials"
     :units="units"
     :module="false"
+    :update="true"
     ref="materialTable">
 </material-table>
 
