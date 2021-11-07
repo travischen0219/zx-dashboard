@@ -68,6 +68,12 @@
 </div>
 
 <div class="form-group">
+    <label for="cost"><span class="text-danger">*</span> 管銷成本：</label>
+    <input type="number" name="cost" id="cost" value="{{ old('cost') ?? $lot->cost }}"
+        class="form-control" placeholder="請輸入管銷成本" />
+</div>
+
+<div class="form-group">
     <label for="memo" class="align-top">備註：</label>
 
     <textarea name="memo" id="memo"

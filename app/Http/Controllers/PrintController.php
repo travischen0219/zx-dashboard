@@ -138,16 +138,21 @@ class PrintController extends Controller
         $total_cost = 0;
         $total_price = 0;
 
+        $total_add_cost = [];
+
         foreach ($outs as $key => $out) {
             $outs[$key]->material_modules = Material_module::appendMaterialModules($out->material_modules, true);
 
             $total_cost += $out->total_cost;
             $total_price += $out->total_price;
+
+            $total_add_cost[$out->lot_id] = $lots[$out->lot_id]->cost ?? 0;
         }
 
         $data["outs"] = $outs;
         $data["total_cost"] = $total_cost;
         $data["total_price"] = $total_price;
+        $data["total_add_cost"] = array_sum($total_add_cost);
 
         return view('print.out', $data);
     }

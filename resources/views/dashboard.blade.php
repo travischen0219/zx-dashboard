@@ -7,6 +7,21 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2021/11/07</li>
+        <ul>
+            <li>
+                選擇批號 - 選擇批號視窗現在可選已完工的批號
+                <br>
+                <img src="/images/dashboard/0102.png" width="500" style="margin: 10px 0;" />
+            </li>
+            <li>
+                銷貨報表 - 銷貨報表成本現在會加上管銷成本 (金額為測試數字)
+                <br>
+                <img src="/images/dashboard/addcost1.png" width="500" style="margin: 10px 0;" />
+                <br>
+                <img src="/images/dashboard/addcost2.png" width="500" style="margin: 10px 0;" />
+            </li>
+        </ul>
         <li>2021/08/14</li>
         <ul>
             <li>

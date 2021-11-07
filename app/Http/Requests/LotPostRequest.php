@@ -35,6 +35,7 @@ class LotPostRequest extends FormRequest
             'code' => $code,
             'name' => 'required',
             'customer_id' => 'required',
+            'cost' => 'required|numeric',
             'start_date' => 'required|date',
             'end_date' => 'required|date'
         ];
@@ -45,6 +46,7 @@ class LotPostRequest extends FormRequest
         return [
             'code' => '批號',
             'name' => '案件名稱',
+            'cost' => '管銷成本',
             'customer_id' => '客戶',
             'start_date' => '開始日期',
             'end_date' => '結束日期'

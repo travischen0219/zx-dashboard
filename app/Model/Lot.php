@@ -18,13 +18,15 @@ class Lot extends Model
         'status',
         'is_finished',
         'memo',
+        'cost',
         'created_user'
     ];
 
 
     static public function allWithKey()
     {
-        $lots = Lot::where('is_finished', '!=', 1)->get();
+        // $lots = Lot::where('is_finished', '!=', 1)->get();
+        $lots = Lot::all();
 
         $data = [];
         foreach ($lots as $lot) {

@@ -110,6 +110,7 @@ class LotController extends Controller
         $lot->status = $request->status;
         $lot->is_finished = $request->is_finished ?? 0;
         $lot->memo = $request->memo;
+        $lot->cost = $request->cost;
         $lot->updated_user = session('admin_user')->id;
         $lot->save();
 

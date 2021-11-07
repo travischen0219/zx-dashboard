@@ -101,7 +101,8 @@ class SelectorController extends Controller
     // 選擇批號
     public function lot(Request $request)
     {
-        $lots = Lot::where('is_finished', '!=', 1)->get();
+        // $lots = Lot::where('is_finished', '!=', 1)->get();
+        $lots = Lot::all();
         $data['lots'] = $lots;
 
         return view('selector.lot', $data);
