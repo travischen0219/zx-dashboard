@@ -67,11 +67,16 @@
     <label for="is_finished" class="w-auto text-primary">已經完工取勾選此方塊</label>
 </div>
 
-<div class="form-group">
-    <label for="cost"><span class="text-danger">*</span> 管銷成本：</label>
-    <input type="number" name="cost" id="cost" value="{{ old('cost') ?? $lot->cost }}"
-        class="form-control" placeholder="請輸入管銷成本" />
-</div>
+@if (\App\Model\User::canAdmin('shopping'))
+    <div class="form-group">
+        <label for="cost"><span class="text-danger">*</span> 管銷成本：</label>
+        <input type="number" name="cost" id="cost" value="{{ old('cost') ?? $lot->cost }}"
+            class="form-control" placeholder="請輸入管銷成本" />
+        <span class="text-danger ml-2">擁有銷貨出貨管理權限能看到此欄位</span>
+    </div>
+@else
+    <input type="hidden" name="cost" id="cost" value="{{ old('cost') ?? $lot->cost }}" />
+@endif
 
 <div class="form-group">
     <label for="memo" class="align-top">備註：</label>

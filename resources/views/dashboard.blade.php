@@ -7,6 +7,10 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2022/02/05</li>
+        <ul>
+            <li>擁有銷貨出貨管理權限才能看到或編輯批號的管銷成本</li>
+        </ul>
         <li>2021/11/07</li>
         <ul>
             <li>

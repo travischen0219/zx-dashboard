@@ -36,7 +36,7 @@
  */
 
 /*!
- * jQuery UI :data 1.13.0
+ * jQuery UI :data 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -45,7 +45,7 @@
  */
 
 /*!
- * jQuery UI Datepicker 1.13.0
+ * jQuery UI Datepicker 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -54,7 +54,7 @@
  */
 
 /*!
- * jQuery UI Keycode 1.13.0
+ * jQuery UI Keycode 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -63,7 +63,7 @@
  */
 
 /*!
- * jQuery UI Mouse 1.13.0
+ * jQuery UI Mouse 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -72,7 +72,7 @@
  */
 
 /*!
- * jQuery UI Scroll Parent 1.13.0
+ * jQuery UI Scroll Parent 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -81,7 +81,7 @@
  */
 
 /*!
- * jQuery UI Sortable 1.13.0
+ * jQuery UI Sortable 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -90,7 +90,7 @@
  */
 
 /*!
- * jQuery UI Widget 1.13.0
+ * jQuery UI Widget 1.13.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -110,7 +110,7 @@
  * ©2016-2021 SpryMedia Ltd - datatables.net/license
  */
 
-/*! DataTables 1.11.3
+/*! DataTables 1.11.4
  * ©2008-2021 SpryMedia Ltd - datatables.net/license
  */
 

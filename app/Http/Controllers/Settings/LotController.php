@@ -52,6 +52,10 @@ class LotController extends Controller
             return false;
         }
 
+        if (!User::canAdmin('shopping')) {
+            $request->cost = 0;
+        }
+
         $validated = $request->validated();
 
         $lot = Lot::create($request->all());
@@ -101,7 +105,6 @@ class LotController extends Controller
         }
 
         $validated = $request->validated();
-
         $lot = Lot::find($id);
         $lot->name = $request->name;
         $lot->customer_id = $request->customer_id;
@@ -110,7 +113,9 @@ class LotController extends Controller
         $lot->status = $request->status;
         $lot->is_finished = $request->is_finished ?? 0;
         $lot->memo = $request->memo;
-        $lot->cost = $request->cost;
+        if (User::canAdmin('shopping')) {
+            $lot->cost = $request->cost;
+        }
         $lot->updated_user = session('admin_user')->id;
         $lot->save();
 
