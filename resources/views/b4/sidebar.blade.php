@@ -49,7 +49,12 @@
             <li class="{{ Request::is('purchase*') ? 'active' : '' }}">
                 <a href="#">
                     <i class="fas fa-shopping-cart"></i>
-                    <span class="extend">採購進貨</span>
+                    <span class="extend">
+                        @if (App\Model\OutNotify::unread() > 0)
+                            <span class="badge badge-pill badge-danger d-inline-block">{{ App\Model\OutNotify::unread() }}</span>
+                        @endif
+                        採購進貨
+                    </span>
                 </a>
 
                 <ul>
@@ -58,6 +63,10 @@
                             <a href="{{ route($item['route']) }}"
                                 target="{{ $item['target'] ?? '_self' }}"
                                 class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
+
+                                @if ($item['route'] === 'in.notify' && App\Model\OutNotify::unread() > 0)
+                                    <span class="badge badge-pill badge-danger d-inline-block">{{ App\Model\OutNotify::unread() }}</span>
+                                @endif
                                 {!! $item['title'] !!}
                             </a>
                         </li>

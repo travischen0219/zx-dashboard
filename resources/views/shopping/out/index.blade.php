@@ -129,8 +129,12 @@
                     @endif
                     <td><div class="memo" title="{{ $out->memo }}">{!! nl2br($out->memo) !!}</div></td>
                     <td align="center">
-                        {{-- @if (in->status == 40) --}}
                         @if (\App\Model\User::canAdmin('shopping'))
+                            <div>
+                                <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('out.notify', $out->id) }}';" class="btn btn-outline-info btn-sm p-1 mb-1">
+                                    通知採購<br>{{ $out->notify->updated_at ?? '' }}
+                                </button>
+                            </div>
                             <button type="button" style="font-size: .7rem;" onclick="location.href='{{ route('out.edit', $out->id) }}';" class="btn btn-outline-primary btn-sm p-1">
                                 修改
                             </button>

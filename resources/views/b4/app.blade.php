@@ -31,7 +31,6 @@
     const dtOptions = {
         dom: `
             <"float-left mt-1"l>
-            <"float-right align-middle mb-2 ml-2"B>
             <"float-right mt-1"f>
             rt
             <"float-left"i>

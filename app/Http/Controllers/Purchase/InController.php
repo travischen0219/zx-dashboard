@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Purchase;
 
 use App\Model\In;
+use App\Model\Out;
+use App\Model\OutNotify;
 use App\Model\Lot;
 use App\Model\Supplier;
 use App\Model\Manufacturer;
@@ -306,5 +308,27 @@ class InController extends Controller
         }
 
         return $in;
+    }
+
+    public function notify()
+    {
+        $data = [];
+
+        $notifies = OutNotify::all();
+        $data['notifies'] = $notifies;
+        $data['statuses'] = Out::statuses();
+
+        return view('purchase.in.notify', $data);
+    }
+
+    public function notifyView(Request $request)
+    {
+        $notify = OutNotify::find($request->id);
+
+        // 設已讀
+        $notify->view = 1;
+        $notify->save();
+
+        return redirect("/shopping/out/{$notify->out_id}/view");
     }
 }

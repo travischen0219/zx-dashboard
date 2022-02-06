@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shopping;
 
 use App\Model\Out;
+use App\Model\OutNotify;
 use App\Model\Lot;
 use App\Model\Customer;
 use App\Model\Pay;
@@ -242,5 +243,15 @@ class OutController extends Controller
             $out->save();
             return $out;
         }
+    }
+
+    public function notify(Out $out, Request $request)
+    {
+        $outNotify = OutNotify::where('out_id', $out->id)->firstOrNew();
+        $outNotify->out_id = $out->id;
+        $outNotify->status = $out->status;
+        $outNotify->view = 0;
+        $outNotify->save();
+        return redirect()->route('out.index')->with('message', '已發出通知');
     }
 }

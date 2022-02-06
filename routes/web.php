@@ -295,6 +295,8 @@ Route::middleware('admin.login')->middleware('can.purchase')->namespace('Purchas
 
         Route::get('aloneIn/{in_id}/{material_id}', 'InController@aloneIn');
         Route::post('aloneIn', 'InController@aloneInStore');
+        Route::get('notify', 'InController@notify')->name('in.notify');
+        Route::get('notify/{id}', 'InController@notifyView')->name('in.notifyView');
     }
 );
 
@@ -307,6 +309,8 @@ Route::middleware('admin.login')->middleware('can.shopping')->namespace('Shoppin
             ->name('out.search');
         Route::resource('out', 'OutController');
         Route::post('out/{out}/cancel', 'OutController@cancel')->name('out.cancel');
+        Route::get('out/{out}/notify', 'OutController@notify')->name('out.notify');
+        Route::get('out/{out}/view', 'OutController@edit')->name('out.view');
     }
 );
 

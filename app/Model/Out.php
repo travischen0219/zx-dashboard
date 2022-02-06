@@ -58,4 +58,9 @@ class Out extends Model
     {
         return Pay::getTotalPay($this->pays);
     }
+
+    public function notify()
+    {
+        return $this->hasOne(OutNotify::class, 'out_id', 'id');
+    }
 }

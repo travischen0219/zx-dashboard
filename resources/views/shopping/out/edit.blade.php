@@ -33,7 +33,13 @@
                     <i class="fas fa-check mr-1"></i> 修改銷貨
                 </button>
             @endif
-            <button type="button" onclick="location.href='{{ route('out.index') }}'" class="btn btn-link ml-3">取消</button>
+
+            @if (Route::currentRouteName() === 'out.view')
+                <button type="button" onclick="location.href='/purchase/notify'" class="btn btn-link ml-3">返回</button>
+            @else
+                <button type="button" onclick="location.href='{{ route('out.index') }}'" class="btn btn-link ml-3">取消</button>
+            @endif
+
         </div>
     {!! Form::close() !!}
 @endsection

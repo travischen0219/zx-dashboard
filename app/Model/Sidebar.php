@@ -116,6 +116,12 @@ class Sidebar
             'target' => '_blank'
         ];
 
+        $data[] = [
+            'route' => 'in.notify',
+            'request' => '/purchase/notify*',
+            'title' => '銷貨通知'
+        ];
+
         return $data;
     }
 

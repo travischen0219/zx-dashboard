@@ -9,7 +9,28 @@
     <ul style="font-size: 24px;">
         <li>2022/02/05</li>
         <ul>
-            <li>擁有銷貨出貨管理權限才能看到或編輯批號的管銷成本</li>
+            <li>
+                有銷貨管理權限才能到的項目：<br>
+                批號-管銷成本<br>
+                銷貨-銷貨報表<br>
+                銷貨-未收款資料<br>
+                銷貨管理-列印<br>
+                銷貨管理-利潤<br>
+                銷貨管理-收款<br>
+                銷貨管理-模組清單-售價
+            </li>
+            <li>
+                銷貨管理可發出採購通知
+                <br>
+                <img src="/images/dashboard/pp1.png" width="500" style="margin: 10px 0;" />
+            </li>
+            <li>
+                採購權限可接收跟查看採購通知
+                <br>
+                <img src="/images/dashboard/pp2.png" width="500" style="margin: 10px 0;" />
+                <br>
+                <img src="/images/dashboard/pp3.png" width="500" style="margin: 10px 0;" />
+            </li>
         </ul>
         <li>2021/11/07</li>
         <ul>
