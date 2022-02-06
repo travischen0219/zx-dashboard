@@ -82,6 +82,9 @@ class PrintController extends Controller
 
     public function out(Request $request)
     {
+        if (!User::canAdmin('shopping')) {
+            return false;
+        }
         // 參數：年
         $year = $request->year ?? date('Y', strtotime('-1 month'));
         $data["year"] = $year;
@@ -393,6 +396,10 @@ class PrintController extends Controller
 
     public function out_unpay(Request $request)
     {
+        if (!User::canAdmin('shopping')) {
+            return false;
+        }
+
         $data = [];
         $unpaysOrigin = Out::whereIn('status', [20, 30, 35, 40])->where('balance', '>', 0)->get();
 

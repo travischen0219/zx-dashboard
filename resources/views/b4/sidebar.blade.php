@@ -74,13 +74,25 @@
                 </a>
                 <ul>
                     @foreach (App\Model\Sidebar::shoppings() as $item)
-                        <li>
-                            <a href="{{ route($item['route']) }}"
-                                target="{{ $item['target'] ?? '_self' }}"
-                                class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
-                                {!! $item['title'] !!}
-                            </a>
-                        </li>
+                        @if ($item['route'] !== 'out.index')
+                            @if (App\Model\User::canAdmin('shopping'))
+                                <li>
+                                    <a href="{{ route($item['route']) }}"
+                                        target="{{ $item['target'] ?? '_self' }}"
+                                        class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
+                                        {!! $item['title'] !!}
+                                    </a>
+                                </li>
+                            @endif
+                        @else
+                            <li>
+                                <a href="{{ route($item['route']) }}"
+                                    target="{{ $item['target'] ?? '_self' }}"
+                                    class="{{ explode('.', $item['route'])[0] == $routeNamePrefix ? 'active' : '' }}">
+                                    {!! $item['title'] !!}
+                                </a>
+                            </li>
+                        @endif
                     @endforeach
                 </ul>
             </li>

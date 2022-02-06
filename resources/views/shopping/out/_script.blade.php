@@ -108,7 +108,7 @@ var app = new Vue({
         total_cost: {!! $total_cost !!},
         total_price: {!! $total_price !!},
         pays: {!! $pays !!},
-        tax: {!! $tax !!},
+        tax: {!! $tax !!}
     }
 })
 

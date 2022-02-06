@@ -49,14 +49,18 @@
     <table class="table table-striped table-bordered table-hover" id="data" style="font-size: .8rem;">
         <thead>
             <tr>
-                <th nowrap>列印</th>
+                @if (\App\Model\User::canAdmin('shopping'))
+                    <th nowrap>列印</th>
+                @endif
                 <th>單號</th>
                 <th>批號</th>
                 <th nowrap>客戶</th>
                 <th>日期</th>
                 <th>狀態</th>
-                <th>利潤</th>
-                <th>收款</th>
+                @if (\App\Model\User::canAdmin('shopping'))
+                    <th>利潤</th>
+                    <th>收款</th>
+                @endif
                 <th>說明</th>
                 <th>操作</th>
             </tr>
@@ -65,11 +69,13 @@
             @foreach($outs as $out)
 
                 <tr>
-                    <td>
-                        {{-- <input type="checkbox" class="print_pdf" name="print_pdf" value="{{ $out->id }}"> --}}
-                        <a href="/print/out_detail/{{ $out->id }}" target="_blank" style="font-size: .8rem;"
-                            class="btn blue btn-outline-primary btn-sm">列印</a>
-                    </td>
+                    @if (\App\Model\User::canAdmin('shopping'))
+                        <td>
+                            {{-- <input type="checkbox" class="print_pdf" name="print_pdf" value="{{ $out->id }}"> --}}
+                                <a href="/print/out_detail/{{ $out->id }}" target="_blank" style="font-size: .8rem;"
+                                    class="btn blue btn-outline-primary btn-sm">列印</a>
+                        </td>
+                    @endif
                     <td>S{{ $out->code }}</td>
                     <td>
                         {!! $out->lot ? $out->lot->code . '<br>' . $out->lot->name : $na !!}
@@ -94,31 +100,33 @@
                             </button>
                         @endif
                     </td>
-                    <td title="利潤" nowrap>
-                        總成本：${{ number_format($out->total_cost) }}
-                        <br>
-                        利潤：${{ number_format($out->total_price - $out->total_cost) }}
-                        <br>
-                        利潤比例：
-                        @if ($out->total_cost > 0)
-                            {{ number_format(($out->total_price - $out->total_cost) / $out->total_cost * 100, 2) }}%
-                        @else
-                            0%
-                        @endif
-                    </td>
-                    <td nowrap>
-                        應收：${{ number_format($out->total_price, 2) }}
-                        <br>
-                        實收：${{ number_format($out->total_pay, 2) }}
-                        <br>
-                        @if ($out->balance <= 0)
-                            剩餘：<span class="text-success">收清</span>
-                        @else
-                            剩餘：<span class="text-danger">${{ number_format($out->balance, 2) }}</span>
-                        @endif
-                        <br>
-                        <span class="text-primary">({{ $out->tax == 1 ? '含稅' : '未稅' }})</span>
-                    </td>
+                    @if (\App\Model\User::canAdmin('shopping'))
+                        <td title="利潤" nowrap>
+                            總成本：${{ number_format($out->total_cost) }}
+                            <br>
+                            利潤：${{ number_format($out->total_price - $out->total_cost) }}
+                            <br>
+                            利潤比例：
+                            @if ($out->total_cost > 0)
+                                {{ number_format(($out->total_price - $out->total_cost) / $out->total_cost * 100, 2) }}%
+                            @else
+                                0%
+                            @endif
+                        </td>
+                        <td nowrap>
+                            應收：${{ number_format($out->total_price, 2) }}
+                            <br>
+                            實收：${{ number_format($out->total_pay, 2) }}
+                            <br>
+                            @if ($out->balance <= 0)
+                                剩餘：<span class="text-success">收清</span>
+                            @else
+                                剩餘：<span class="text-danger">${{ number_format($out->balance, 2) }}</span>
+                            @endif
+                            <br>
+                            <span class="text-primary">({{ $out->tax == 1 ? '含稅' : '未稅' }})</span>
+                        </td>
+                    @endif
                     <td><div class="memo" title="{{ $out->memo }}">{!! nl2br($out->memo) !!}</div></td>
                     <td align="center">
                         {{-- @if (in->status == 40) --}}

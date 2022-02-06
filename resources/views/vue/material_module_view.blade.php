@@ -11,7 +11,9 @@
                         <th width="400">物料模組</th>
                         <th style="white-space: nowrap">數量</th>
                         <th style="white-space: nowrap">成本 / 小計</th>
-                        <th style="white-space: nowrap">售價 / 小計</th>
+                        @if (App\Model\User::canAdmin('shopping'))
+                            <th style="white-space: nowrap">售價 / 小計</th>
+                        @endif
                     </tr>
                 </thead>
 
@@ -27,10 +29,12 @@
                             $@{{ item.cost | number_format }}
                             / $@{{ item.amount * item.cost | number_format }}
                         </td>
+                        @if (App\Model\User::canAdmin('shopping'))
                         <td title="售價">
                             $@{{ item.price | number_format }}
                             / $@{{ item.amount * item.price | number_format }}
                         </td>
+                        @endif
                     </tr>
                 </tbody>
             </table>
@@ -41,8 +45,10 @@
                 共有 @{{ material_modules.length }} 種物料模組
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 成本總計 (應付)：$@{{ total_cost | number_format }}
+                @if (App\Model\User::canAdmin('shopping'))
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 售價總計 (應收)：$@{{ total_price | number_format }}
+                @endif
             </div>
         </div>
     </div>
@@ -59,7 +65,8 @@ Vue.component('material-module-view', {
     },
 
     props: {
-        material_modules: Array
+        material_modules: Array,
+        show_price: Boolean
     },
 
     computed: {
