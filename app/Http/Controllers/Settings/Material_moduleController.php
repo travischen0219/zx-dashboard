@@ -91,6 +91,9 @@ class Material_moduleController extends Controller
         $material_module = Material_module::find($id);
         $data['material_module'] = $material_module;
 
+        $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
+        $data['material_units'] = $material_units;
+
         $data['materials'] = Material::appendMaterials($material_module->materials);
         if (!$data['materials']) {
             return '此模組內的物料已被刪除，請回上頁刪除此模組
