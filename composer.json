@@ -9,7 +9,6 @@
     "type": "project",
     "require": {
         "php": "^7.3",
-        "codeitnowin/barcode": "^3.0",
         "dompdf/dompdf": "^0.8.5",
         "fideloper/proxy": "^4.0",
         "intervention/image": "^2.5",
