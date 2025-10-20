@@ -204,7 +204,7 @@ Route::middleware('admin.login')->prefix('print')->group(
 
         // ��瑁疏蝮賢�梯”
         Route::get('out', 'PrintController@out')->name('print.out');
-        Route::post('out', 'PrintController@out')->name('print.out');
+        Route::post('out', 'PrintController@out')->name('print.out.post');
 
         // ��∟頃��芯��甈曄蜇��梯”
         Route::get('in_unpay', 'PrintController@in_unpay')->name('print.in_unpay');
@@ -212,7 +212,7 @@ Route::middleware('admin.login')->prefix('print')->group(
 
         // ��瑁疏��芣�嗆狡蝮賢�梯”
         Route::get('out_unpay', 'PrintController@out_unpay')->name('print.out_unpay');
-        Route::post('out_unpay', 'PrintController@out_unpay')->name('print.out_unpay');
+        Route::post('out_unpay', 'PrintController@out_unpay')->name('print.out_unpay.post');
 
         // ��∟頃��桀�梯”
         Route::get('in_detail/{id}', 'PrintController@in_detail');
