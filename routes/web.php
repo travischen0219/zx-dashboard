@@ -150,7 +150,7 @@ Route::middleware('admin.login')->middleware('can.stock')->namespace('Stock')->p
     // ��日��
     Route::get('inventory/quick_fix/{inventoryID}/{id}', 'InventoryController@quick_fix');
     Route::resource('inventory', 'InventoryController');
-    Route::post('inventory/search', 'InventoryController@search')->name('inventory.search');
+    Route::post('inventory/search', 'InventoryController@search')->name('inventory.search.post');
     Route::get('inventory/edit_list/{id}', 'InventoryController@edit_list');
     Route::get('inventory/show_list/{id}', 'InventoryController@show_list');
 
