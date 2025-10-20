@@ -23,7 +23,8 @@
         "setasign/fpdi": "^2.0",
         "setasign/fpdi-fpdf": "^2.0",
         "setasign/fpdi-tcpdf": "^2.0",
-        "tecnickcom/tcpdf": "^6.2"
+        "tecnickcom/tcpdf": "^6.2",
+        "milon/barcode": "^9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
