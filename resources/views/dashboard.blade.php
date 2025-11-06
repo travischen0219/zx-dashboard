@@ -7,6 +7,13 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2025/11/06</li>
+        <ul>
+            <li>
+                轉移資料庫及程式碼至新主機<br>
+                請幫忙測試功能 檢驗功能是否都正常無誤<br>
+            </li>
+        </ul>
         <li>2022/02/05</li>
         <ul>
             <li>
