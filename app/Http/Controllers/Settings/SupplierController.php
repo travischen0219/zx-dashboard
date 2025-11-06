@@ -62,6 +62,9 @@ class SupplierController extends Controller
     public function show($id)
     {
         $supplier = Supplier::find($id);
+        if (!$supplier) {
+            abort(404);
+        }
 
         $data = [];
         $data['supplier'] = $supplier;
@@ -73,6 +76,9 @@ class SupplierController extends Controller
     public function edit($id)
     {
         $supplier = Supplier::find($id);
+        if (!$supplier) {
+            abort(404);
+        }
 
         $data = [];
         $data['supplier'] = $supplier;
@@ -95,6 +101,9 @@ class SupplierController extends Controller
 
         try{
             $supplier = Supplier::find($id);
+            if (!$supplier) {
+                return redirect()->route('supplier.index')->with('error','刪除失敗: 找不到資料');
+            }
             $supplier->status = 2;
             $supplier->delete_flag = 1;
             $supplier->deleted_at = Now();
@@ -118,12 +127,14 @@ class SupplierController extends Controller
             $supplier = new Supplier;
 
             $latest_code = Setting::where('set_key', 'supplier_code')->first();
-            $number = (int)$latest_code->set_value + 1;
-            $code_str = "S".str_pad($number, 6, '0', STR_PAD_LEFT);
-            $supplier->code = $code_str;
+            if ($latest_code) {
+                $number = (int)$latest_code->set_value + 1;
+                $code_str = "S".str_pad($number, 6, '0', STR_PAD_LEFT);
+                $supplier->code = $code_str;
 
-            $latest_code->set_value += 1;
-            $latest_code->save();
+                $latest_code->set_value += 1;
+                $latest_code->save();
+            }
         } else {
             $supplier = Supplier::find($id);
         }

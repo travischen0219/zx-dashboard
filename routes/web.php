@@ -1,5 +1,9 @@
 <?php
 
+Route::get('favicon.ico', function () {
+    return response()->noContent(204);
+});
+
 Route::get('/', 'LoginController@index')->name('home');
 Route::post('login', 'LoginController@login')->name('login');
 Route::get('code', 'LoginController@code')->name('code');

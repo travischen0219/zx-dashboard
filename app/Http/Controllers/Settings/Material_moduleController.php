@@ -51,6 +51,9 @@ class Material_moduleController extends Controller
         }
 
         $material_module = Material_module::find($from);
+        if (!$material_module) {
+            abort(404);
+        }
         $material_module->id = 0;
         $material_module->code = null;
         $data['material_module'] = $material_module;
@@ -89,6 +92,9 @@ class Material_moduleController extends Controller
     public function show($id)
     {
         $material_module = Material_module::find($id);
+        if (!$material_module) {
+            abort(404);
+        }
         $data['material_module'] = $material_module;
 
         $material_units = Material_unit::orderBy('orderby', 'ASC')->get();
@@ -122,6 +128,9 @@ class Material_moduleController extends Controller
     public function edit($id)
     {
         $material_module = Material_module::find($id);
+        if (!$material_module) {
+            abort(404);
+        }
         $data['material_module'] = $material_module;
         $data['material_units'] = Material_unit::orderBy('orderby', 'ASC')->get();
         $data['materials'] = Material::appendMaterials($material_module->materials);
