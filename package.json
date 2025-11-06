@@ -6,7 +6,8 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "production": "mix --production",
-        "prod": "mix --production"
+        "prod": "mix --production",
+        "build": "mix --production"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
