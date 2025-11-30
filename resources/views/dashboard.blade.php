@@ -7,6 +7,13 @@
 
 <div class="row">
     <ul style="font-size: 24px;">
+        <li>2025/11/30</li>
+        <ul>
+            <li>
+                更新資料庫至2025-11-27<br>
+                成功轉移資料庫及網站主機<br>
+            </li>
+        </ul>
         <li>2025/11/06</li>
         <ul>
             <li>

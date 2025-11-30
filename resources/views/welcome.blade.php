@@ -19,7 +19,7 @@
     <div class="content">
         <div class="portlet box" style="margin-bottom: 0;">
             <div class="portlet-body">
-                <h3>真心蓮坊進銷存系統</h3>
+                <h3>真心蓮坊進銷存系統 (2025新版)</h3>
                 @include('includes.messages')
                 <div class="tabbable-line">
                     <div class="tab-content">
@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <div class="copyright"> 版本：0.99.5 </div>
+    <div class="copyright"> 版本：20251130 </div>
     <script src="{{asset('assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/global/plugins/bootstrap/js/bootstrap.min.js')}}" type="text/javascript"></script>
     <script>
